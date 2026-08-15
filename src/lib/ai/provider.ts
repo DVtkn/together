@@ -26,7 +26,7 @@ export async function getAIResponse(messages: Array<{role: string; content: stri
         model: OPENROUTER_MODEL,
         messages: messages,
         temperature: 0.7,
-        max_tokens: 2000,
+        max_tokens: 700,
       }),
     })
 

@@ -38,7 +38,7 @@ async function callProvider(model: string, messages: unknown[]): Promise<AIProvi
         model,
         messages,
         temperature: 0.7,
-        max_tokens: 2000,
+        max_tokens: 700,
       }),
       signal: controller.signal,
     })
@@ -164,11 +164,11 @@ export async function POST(request: NextRequest) {
       },
     })
 
-    // История беседы (до 40 сообщений)
+    // История беседы (до 20 сообщений); уже включает только что сохранённое
     const history = await prisma.aIMessage.findMany({
       where: { conversationId },
       orderBy: { createdAt: "asc" },
-      take: 40,
+      take: 20,
     })
 
     const chatMessages = history.map((m) => ({
@@ -176,7 +176,7 @@ export async function POST(request: NextRequest) {
       content: m.content,
     }))
 
-    const messages = buildMessages(SYSTEM_PROMPT, [...chatMessages, { role: "user", content: message }])
+    const messages = buildMessages(SYSTEM_PROMPT, chatMessages)
 
     // Пробуем основную модель, при 429 (rate-limit free-пула) — резервную
     let result = await callProvider(PRIMARY_MODEL, messages)
