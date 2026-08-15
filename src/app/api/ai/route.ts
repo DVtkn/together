@@ -3,11 +3,11 @@ import { rateLimit } from "@/lib/rate-limit"
 import { buildMessages, safeParseResponse, isValidContent, handleAIError } from "@/lib/ai/provider"
 import { SYSTEM_PROMPT } from "@/lib/ai/prompt"
 
-const NVIDIA_API_BASE = process.env.NVIDIA_API_BASE || "https://integrate.api.nvidia.com/v1"
-const apiKey = process.env.NVIDIA_API_KEY || process.env.OPENAI_API_KEY
+const OPENROUTER_API_BASE = process.env.OPENROUTER_API_BASE || "https://openrouter.ai/api/v1"
+const apiKey = process.env.OPENROUTER_API_KEY || process.env.OPENAI_API_KEY
 
 if (!apiKey) {
-  throw new Error("AI API key not configured. Set NVIDIA_API_KEY in .env.local")
+  throw new Error("AI API key not configured. Set OPENROUTER_API_KEY in .env.local")
 }
 
 export async function GET(
@@ -57,19 +57,30 @@ export async function POST(
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer " + process.env.NVIDIA_API_KEY,
+        "Authorization": "Bearer " + process.env.OPENROUTER_API_KEY,
       },
       body: JSON.stringify({
-        model: process.env.NVIDIA_MODEL_PRIMARY || "meta/llama-4-maverick",
+        model: process.env.OPENROUTER_MODEL || "liquid/lfm-2.5-2.6b:free",
         messages: messages,
         temperature: 0.7,
-        max_tokens: 1000,
+        max_tokens: 2000,
       }),
     }
 
-    const response = await fetch(NVIDIA_API_BASE + "chat/completions", fetchParams)
-    const data = await response.json()
-    const parsed = safeParseResponse(data)
+    const response = await fetch(OPENROUTER_API_BASE + "/chat/completions", fetchParams)
+    const text = await response.text()
+    let data: unknown
+    try {
+      data = JSON.parse(text)
+    } catch {
+      console.error("OpenRouter вернул не-JSON:", response.status, text.slice(0, 500))
+      return NextResponse.json({ error: "Некорректный ответ от ИИ-провайдера" }, { status: 502 })
+    }
+    if (!response.ok) {
+      console.error("OpenRouter API error:", response.status, text)
+      return NextResponse.json({ error: `OpenRouter вернул ${response.status}` }, { status: response.status })
+    }
+    const parsed = safeParseResponse(data as never)
 
     if (!isValidContent(parsed.content)) {
       return NextResponse.json(

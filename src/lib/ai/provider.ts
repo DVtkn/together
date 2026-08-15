@@ -1,8 +1,8 @@
-// AI provider for NVIDIA Build API
+// AI provider for OpenRouter API
 // Uses fetch directly to avoid openai npm package type issues
 
-export const NVIDIA_API_BASE = process.env.NVIDIA_API_BASE || 'https://integrate.api.nvidia.com/v1'
-export const NVIDIA_MODEL_PRIMARY = process.env.NVIDIA_MODEL_PRIMARY || 'meta/llama-4-maverick'
+export const OPENROUTER_API_BASE = process.env.OPENROUTER_API_BASE || 'https://openrouter.ai/api/v1'
+export const OPENROUTER_MODEL = process.env.OPENROUTER_MODEL || 'liquid/lfm-2.5-2.6b:free'
 
 export interface AIResponse {
   content: string
@@ -10,23 +10,23 @@ export interface AIResponse {
 }
 
 export async function getAIResponse(messages: Array<{role: string; content: string}>): Promise<AIResponse> {
-  const apiKey = process.env.NVIDIA_API_KEY
+  const apiKey = process.env.OPENROUTER_API_KEY
   if (!apiKey) {
-    return { content: 'AI API key not configured. Set NVIDIA_API_KEY in .env.local', usage: { input: 0, output: 0 } }
+    return { content: 'AI API key not configured. Set OPENROUTER_API_KEY in .env.local', usage: { input: 0, output: 0 } }
   }
 
   try {
-    const response = await fetch(NVIDIA_API_BASE + '/chat/completions', {
+    const response = await fetch(OPENROUTER_API_BASE + '/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + apiKey,
       },
       body: JSON.stringify({
-        model: NVIDIA_MODEL_PRIMARY,
+        model: OPENROUTER_MODEL,
         messages: messages,
         temperature: 0.7,
-        max_tokens: 1000,
+        max_tokens: 2000,
       }),
     })
 
@@ -35,15 +35,17 @@ export async function getAIResponse(messages: Array<{role: string; content: stri
       return { content: 'Ошибка ИИ: ' + err.slice(0, 200), usage: { input: 0, output: 0 } }
     }
 
-    const json: { choices?: Array<{ message?: { content?: string } }>; usage?: { input?: number; output?: number } } = await response.json()
+    const json: {
+      choices?: Array<{ message?: { content?: string | null; reasoning?: string } }>
+      usage?: { input?: number; output?: number }
+    } = await response.json()
     const choices = json.choices || []
     let content = ''
     let usage: { input: number; output: number } = { input: 0, output: 0 }
     if (choices.length > 0 && json.usage) {
       const firstChoice = choices[0]
-      if (firstChoice.message && firstChoice.message.content) {
-        content = firstChoice.message.content
-      }
+      const msg = firstChoice.message
+      content = msg?.content ?? msg?.reasoning ?? ''
       const usageData = json.usage
       if (usageData.input !== undefined && usageData.output !== undefined) {
         usage = { input: usageData.input, output: usageData.output }
@@ -62,19 +64,20 @@ export function buildMessages(systemPrompt: string, messages: Array<{role: strin
   ]
 }
 
-export function extractContent(response: {choices?: Array<{ message?: { content?: string } }>; usage?: { input?: number; output?: number }}): string {
+export function extractContent(response: {choices?: Array<{ message?: { content?: string | null; reasoning?: string } }>; usage?: { input?: number; output?: number }}): string {
   try {
     const choices = response.choices || []
     if (choices.length === 0) return ''
     const firstChoice = choices[0]
-    if (!firstChoice.message || !firstChoice.message.content) return ''
-    return firstChoice.message.content.trim()
+    const msg = firstChoice.message
+    if (!msg) return ''
+    return (msg.content ?? msg.reasoning ?? '').trim()
   } catch {
     return ''
   }
 }
 
-export function safeParseResponse(response: {choices?: Array<{ message?: { content?: string } }>; usage?: { input?: number; output?: number }}): AIResponse {
+export function safeParseResponse(response: {choices?: Array<{ message?: { content?: string | null; reasoning?: string } }>; usage?: { input?: number; output?: number }}): AIResponse {
   try {
     const content = extractContent(response)
     const rawUsage = response.usage || { input: 0, output: 0 }; const usage: { input: number; output: number } = { input: rawUsage.input ?? 0, output: rawUsage.output ?? 0 }
