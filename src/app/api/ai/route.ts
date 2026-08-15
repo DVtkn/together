@@ -12,9 +12,11 @@ if (!apiKey) {
   throw new Error("AI API key not configured. Set OPENROUTER_API_KEY in .env.local")
 }
 
-// Основная модель + резервная на случай rate-limit (429) на free-модели
-const PRIMARY_MODEL = process.env.OPENROUTER_MODEL || "google/gemma-4-26b-a4b-it:free"
-const FALLBACK_MODEL = process.env.OPENROUTER_FALLBACK_MODEL || "liquid/lfm-2.5-2.6b:free"
+// Основная модель + резервная на случай rate-limit (429) на free-модели.
+// nvidia/nemotron-3-nano-30b-a3b:free — самая быстрая free-модель (30B MoE, 3B активных, ~0.4с),
+// gemma-4-26b — запасная (медленнее, но стабильнее по ответам).
+const PRIMARY_MODEL = process.env.OPENROUTER_MODEL || "nvidia/nemotron-3-nano-30b-a3b:free"
+const FALLBACK_MODEL = process.env.OPENROUTER_FALLBACK_MODEL || "google/gemma-4-26b-a4b-it:free"
 
 interface AIProviderResult {
   ok: boolean
@@ -190,7 +192,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           error: isRateLimit
-            ? "ИИ временно перегружен (бесплатный лимит). Попробуйте через минуту."
+            ? "Бесплатный лимит ИИ исчерпан (50 запросов/день). Попробуйте завтра или пополните баланс на openrouter.ai, чтобы получить 1000 запросов/день."
             : result.status === 0
               ? "Нет ответа от ИИ. Проверьте соединение."
               : "ИИ не смог сформировать ответ. Попробуйте ещё раз.",
