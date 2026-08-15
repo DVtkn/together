@@ -12,6 +12,62 @@ if (!apiKey) {
   throw new Error("AI API key not configured. Set OPENROUTER_API_KEY in .env.local")
 }
 
+// Основная модель + резервная на случай rate-limit (429) на free-модели
+const PRIMARY_MODEL = process.env.OPENROUTER_MODEL || "google/gemma-4-26b-a4b-it:free"
+const FALLBACK_MODEL = process.env.OPENROUTER_FALLBACK_MODEL || "liquid/lfm-2.5-2.6b:free"
+
+interface AIProviderResult {
+  ok: boolean
+  status: number
+  content?: string
+  usage?: { input: number; output: number }
+}
+
+async function callProvider(model: string, messages: unknown[]): Promise<AIProviderResult> {
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), 60000)
+
+  try {
+    const response = await fetch(OPENROUTER_API_BASE + "/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + apiKey,
+      },
+      body: JSON.stringify({
+        model,
+        messages,
+        temperature: 0.7,
+        max_tokens: 2000,
+      }),
+      signal: controller.signal,
+    })
+
+    const text = await response.text()
+    let data: unknown
+    try {
+      data = JSON.parse(text)
+    } catch {
+      return { ok: false, status: response.status }
+    }
+
+    if (!response.ok) {
+      return { ok: false, status: response.status }
+    }
+
+    const parsed = safeParseResponse(data as never)
+    if (!isValidContent(parsed.content)) {
+      return { ok: false, status: 500 }
+    }
+
+    return { ok: true, status: response.status, content: parsed.content, usage: parsed.usage }
+  } catch {
+    return { ok: false, status: 0 }
+  } finally {
+    clearTimeout(timeout)
+  }
+}
+
 export async function GET(request: NextRequest) {
   const rl = await rateLimit("ai", request.headers.get("x-forwarded-for") || "anon")
   if (!rl.ok) {
@@ -95,6 +151,19 @@ export async function POST(request: NextRequest) {
       conversationId = created.id
     }
 
+    // Сразу сохраняем сообщение пользователя — переписка не потеряется,
+    // даже если ИИ не ответит (rate-limit, сеть и т.п.)
+    await prisma.aIMessage.create({
+      data: {
+        id: `msg_${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`,
+        conversationId,
+        userId: ctx.user.id,
+        role: "USER",
+        content: message,
+        model: PRIMARY_MODEL,
+      },
+    })
+
     // История беседы (до 40 сообщений)
     const history = await prisma.aIMessage.findMany({
       where: { conversationId },
@@ -109,63 +178,38 @@ export async function POST(request: NextRequest) {
 
     const messages = buildMessages(SYSTEM_PROMPT, [...chatMessages, { role: "user", content: message }])
 
-    const fetchParams = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + process.env.OPENROUTER_API_KEY,
-      },
-      body: JSON.stringify({
-        model: process.env.OPENROUTER_MODEL || "google/gemma-4-26b-a4b-it:free",
-        messages,
-        temperature: 0.7,
-        max_tokens: 2000,
-      }),
+    // Пробуем основную модель, при 429 (rate-limit free-пула) — резервную
+    let result = await callProvider(PRIMARY_MODEL, messages)
+    if (!result.ok && result.status === 429) {
+      console.log("Primary model rate-limited, falling back to", FALLBACK_MODEL)
+      result = await callProvider(FALLBACK_MODEL, messages)
     }
 
-    const response = await fetch(OPENROUTER_API_BASE + "/chat/completions", fetchParams)
-    const text = await response.text()
-    let data: unknown
-    try {
-      data = JSON.parse(text)
-    } catch {
-      console.error("OpenRouter вернул не-JSON:", response.status, text.slice(0, 500))
-      return NextResponse.json({ error: "Некорректный ответ от ИИ-провайдера" }, { status: 502 })
-    }
-    if (!response.ok) {
-      console.error("OpenRouter API error:", response.status, text)
-      return NextResponse.json({ error: `OpenRouter вернул ${response.status}` }, { status: response.status })
-    }
-    const parsed = safeParseResponse(data as never)
-
-    if (!isValidContent(parsed.content)) {
+    if (!result.ok || !result.content) {
+      const isRateLimit = result.status === 429
       return NextResponse.json(
-        { error: "Получен пустой ответ от ИИ" },
-        { status: 500 }
+        {
+          error: isRateLimit
+            ? "ИИ временно перегружен (бесплатный лимит). Попробуйте через минуту."
+            : result.status === 0
+              ? "Нет ответа от ИИ. Проверьте соединение."
+              : "ИИ не смог сформировать ответ. Попробуйте ещё раз.",
+          conversationId,
+        },
+        { status: isRateLimit ? 429 : 502 }
       )
     }
 
-    // Сохраняем сообщения
     await prisma.$transaction([
       prisma.aIMessage.create({
         data: {
           id: `msg_${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`,
           conversationId,
-          userId: ctx.user.id,
-          role: "USER",
-          content: message,
-          model: process.env.OPENROUTER_MODEL || "google/gemma-4-26b-a4b-it:free",
-        },
-      }),
-      prisma.aIMessage.create({
-        data: {
-          id: `msg_${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`,
-          conversationId,
           role: "ASSISTANT",
-          content: parsed.content,
-          tokensInput: parsed.usage.input,
-          tokensOutput: parsed.usage.output,
-          model: process.env.OPENROUTER_MODEL || "google/gemma-4-26b-a4b-it:free",
+          content: result.content,
+          tokensInput: result.usage?.input,
+          tokensOutput: result.usage?.output,
+          model: PRIMARY_MODEL,
         },
       }),
       prisma.aIConversation.update({
@@ -176,8 +220,8 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       conversationId,
-      choices: [{ index: 0, message: { role: "assistant", content: parsed.content }, finish_reason: "stop" }],
-      usage: { prompt_tokens: parsed.usage.input || 0, completion_tokens: parsed.usage.output || 0, total_tokens: (parsed.usage.input || 0) + (parsed.usage.output || 0) },
+      choices: [{ index: 0, message: { role: "assistant", content: result.content }, finish_reason: "stop" }],
+      usage: { prompt_tokens: result.usage?.input || 0, completion_tokens: result.usage?.output || 0, total_tokens: (result.usage?.input || 0) + (result.usage?.output || 0) },
     })
   } catch (error: unknown) {
     console.error("AI API error:", error)

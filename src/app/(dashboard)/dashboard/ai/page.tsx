@@ -77,7 +77,21 @@ export default function AIChatPage() {
         body: JSON.stringify({ message: msg, conversationId: currentConversationId }),
       })
       const data = await res.json()
-      const content = data.choices?.[0]?.message?.content || 'Ответ ИИ'
+
+      if (!res.ok) {
+        // ИИ не ответил (rate-limit и т.п.) — сообщение пользователя уже сохранено на сервере,
+        // показываем ошибку, а не подменяем текст
+        setMessages((prev) =>
+          prev.map((m) =>
+            m.id.startsWith('u')
+              ? { ...m, role: 'SYSTEM', content: data.error || 'ИИ не ответил. Попробуйте ещё раз.' }
+              : m
+          )
+        )
+        return
+      }
+
+      const content = data.choices?.[0]?.message?.content || 'ИИ не ответил. Попробуйте ещё раз.'
       setMessages((prev) =>
         prev.map((m) =>
           m.id.startsWith('u')
@@ -85,12 +99,16 @@ export default function AIChatPage() {
             : m
         )
       )
+      if (data.conversationId) {
+        setCurrentConversationId(data.conversationId)
+        fetchConversations()
+      }
     } catch (e) {
       console.error('Error:', e)
       setMessages((prev) =>
         prev.map((m) =>
           m.id.startsWith('u')
-            ? { ...m, role: 'ASSISTANT', content: 'Ошибка' }
+            ? { ...m, role: 'SYSTEM', content: 'Ошибка сети. Попробуйте ещё раз.' }
             : m
         )
       )
