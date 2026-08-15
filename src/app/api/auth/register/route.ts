@@ -8,12 +8,7 @@ export const registerSchema = z.object({
   username: z.string().min(3, 'Логин минимум 3 символа').max(20, 'Логин максимум 20 символов').regex(/^[a-zA-Z0-9_]+$/, 'Только буквы, цифры и подчёркивание'),
   password: z.string().min(8, 'Пароль минимум 8 символов'),
   name: z.string().min(2, 'Имя минимум 2 символа').max(50, 'Имя максимум 50 символов').optional(),
-  role: z.enum(['DRIVER', 'PASSENGER']).default('PASSENGER'),
-  preferredGender: z.string().optional().default('any'),
-  petFriendly: z.boolean().default(false),
-  smokeFree: z.boolean().default(true),
-  conversationLevel: z.string().optional().default('any'),
-  musicPreference: z.string().optional().default('any'),
+  dateOfBirth: z.string().optional(),
 })
 
 export async function POST(request: NextRequest) {
@@ -36,7 +31,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { username, password, name, role, preferredGender, petFriendly, smokeFree, conversationLevel, musicPreference } = validation.data
+    const { username, password, name, dateOfBirth } = validation.data
 
     const existingUser = await prisma.user.findUnique({
       where: { username },
@@ -55,14 +50,8 @@ export async function POST(request: NextRequest) {
       data: {
         username,
         passwordHash,
-        name,
-        role,
-        preferredGender,
-        petFriendly,
-        smokeFree,
-        conversationLevel,
-        musicPreference,
-        emailVerified: false,
+        name: name ?? username,
+        dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : null,
       },
     })
 
@@ -70,11 +59,6 @@ export async function POST(request: NextRequest) {
       id: user.id,
       username: user.username,
       name: user.name,
-      role: user.role,
-      preferredGender: user.preferredGender,
-      petFriendly: user.petFriendly,
-      smokeFree: user.smokeFree,
-      emailVerified: user.emailVerified,
     })
   } catch (error) {
     console.error('Registration error:', error)

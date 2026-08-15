@@ -56,6 +56,8 @@ export default function SettingsPage() {
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
   const [cities, setCities] = useState<City[]>([])
   const [cityId, setCityId] = useState<string | null>(null)
+  const [linkUsername, setLinkUsername] = useState('')
+  const [linking, setLinking] = useState(false)
 
   useEffect(() => {
     Promise.all([
@@ -167,6 +169,37 @@ const handleSave = async () => {
       setMessage({ type: 'error', text: 'Ошибка сети' })
     } finally {
       setDeleting(false)
+    }
+  }
+
+  const handleLinkPartner = async () => {
+    const username = linkUsername.trim()
+    if (!username) {
+      setMessage({ type: 'error', text: 'Укажите логин партнёра' })
+      return
+    }
+    setLinking(true)
+    setMessage(null)
+    try {
+      const res = await fetch('/api/couples/link', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ targetUsername: username }),
+      })
+      if (res.ok) {
+        setMessage({ type: 'success', text: 'Пара создана! Пригласите партнёра войти в аккаунт — общие данные станут доступны сразу.' })
+        setLinkUsername('')
+        const settingsRes = await fetch('/api/user/settings').then((r) => r.json())
+        setCouple(settingsRes.couple)
+        router.refresh()
+      } else {
+        const err = await res.json()
+        setMessage({ type: 'error', text: err.error || 'Не удалось создать пару' })
+      }
+    } catch {
+      setMessage({ type: 'error', text: 'Ошибка сети' })
+    } finally {
+      setLinking(false)
     }
   }
 
@@ -320,6 +353,41 @@ const handleSave = async () => {
         </Card>
 
         {/* Couple Management */}
+        {!couple && (
+          <Card>
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <Users className="h-5 w-5 text-rose-500" aria-hidden="true" />
+                <CardTitle>Создать пару</CardTitle>
+              </div>
+              <CardDescription>
+                Свяжите аккаунты: общие опросники, челленджи, места и диалог с ИИ-психологом станут доступны обоим.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="partner-username">Логин партнёра</Label>
+                <div className="flex items-center gap-2">
+                  <Input
+                    id="partner-username"
+                    value={linkUsername}
+                    onChange={(e) => setLinkUsername(e.target.value)}
+                    placeholder="Например: sveta"
+                    disabled={linking}
+                  />
+                  <Button onClick={handleLinkPartner} disabled={linking || !linkUsername.trim()}>
+                    {linking ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                    Связать
+                  </Button>
+                </div>
+                <p className="text-xs text-slate-500 dark:text-slate-400">
+                  Второй человек должен иметь зарегистрированный аккаунт и пока не состоять в другой паре.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {couple && (
           <Card className="border-amber-200 dark:border-amber-800">
             <CardHeader>

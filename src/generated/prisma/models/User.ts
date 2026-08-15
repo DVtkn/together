@@ -20,184 +20,136 @@ export type UserModel = runtime.Types.Result.DefaultSelection<Prisma.$UserPayloa
 
 export type AggregateUser = {
   _count: UserCountAggregateOutputType | null
-  _avg: UserAvgAggregateOutputType | null
-  _sum: UserSumAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
 }
 
-export type UserAvgAggregateOutputType = {
-  reputationScore: number | null
-  totalRides: number | null
-  completedRides: number | null
-  averageRating: number | null
-}
-
-export type UserSumAggregateOutputType = {
-  reputationScore: number | null
-  totalRides: number | null
-  completedRides: number | null
-  averageRating: number | null
-}
-
 export type UserMinAggregateOutputType = {
   id: string | null
+  username: string | null
   email: string | null
   name: string | null
-  avatarUrl: string | null
-  googleId: string | null
-  username: string | null
-  role: $Enums.UserRole | null
-  reputationScore: number | null
-  totalRides: number | null
-  completedRides: number | null
-  averageRating: number | null
-  emailVerified: boolean | null
-  verificationCode: string | null
-  preferredGender: string | null
-  petFriendly: boolean | null
-  smokeFree: boolean | null
-  conversationLevel: string | null
-  musicPreference: string | null
+  passwordHash: string | null
+  image: string | null
+  emailVerified: Date | null
+  dateOfBirth: Date | null
+  zodiacSign: string | null
+  chineseZodiac: string | null
   createdAt: Date | null
   updatedAt: Date | null
-  lastRideAt: Date | null
+  coupleId: string | null
+  cityId: string | null
+  pushEnabled: boolean | null
+  emailEnabled: boolean | null
+  weeklyPulseReminder: boolean | null
+  challengeReminder: boolean | null
 }
 
 export type UserMaxAggregateOutputType = {
   id: string | null
+  username: string | null
   email: string | null
   name: string | null
-  avatarUrl: string | null
-  googleId: string | null
-  username: string | null
-  role: $Enums.UserRole | null
-  reputationScore: number | null
-  totalRides: number | null
-  completedRides: number | null
-  averageRating: number | null
-  emailVerified: boolean | null
-  verificationCode: string | null
-  preferredGender: string | null
-  petFriendly: boolean | null
-  smokeFree: boolean | null
-  conversationLevel: string | null
-  musicPreference: string | null
+  passwordHash: string | null
+  image: string | null
+  emailVerified: Date | null
+  dateOfBirth: Date | null
+  zodiacSign: string | null
+  chineseZodiac: string | null
   createdAt: Date | null
   updatedAt: Date | null
-  lastRideAt: Date | null
+  coupleId: string | null
+  cityId: string | null
+  pushEnabled: boolean | null
+  emailEnabled: boolean | null
+  weeklyPulseReminder: boolean | null
+  challengeReminder: boolean | null
 }
 
 export type UserCountAggregateOutputType = {
   id: number
+  username: number
   email: number
   name: number
-  avatarUrl: number
-  googleId: number
-  username: number
-  role: number
-  reputationScore: number
-  totalRides: number
-  completedRides: number
-  averageRating: number
+  passwordHash: number
+  image: number
   emailVerified: number
-  verificationCode: number
-  preferredGender: number
-  petFriendly: number
-  smokeFree: number
-  conversationLevel: number
-  musicPreference: number
+  dateOfBirth: number
+  zodiacSign: number
+  chineseZodiac: number
   createdAt: number
   updatedAt: number
-  lastRideAt: number
+  coupleId: number
+  cityId: number
+  pushEnabled: number
+  emailEnabled: number
+  weeklyPulseReminder: number
+  challengeReminder: number
   _all: number
 }
 
 
-export type UserAvgAggregateInputType = {
-  reputationScore?: true
-  totalRides?: true
-  completedRides?: true
-  averageRating?: true
-}
-
-export type UserSumAggregateInputType = {
-  reputationScore?: true
-  totalRides?: true
-  completedRides?: true
-  averageRating?: true
-}
-
 export type UserMinAggregateInputType = {
   id?: true
+  username?: true
   email?: true
   name?: true
-  avatarUrl?: true
-  googleId?: true
-  username?: true
-  role?: true
-  reputationScore?: true
-  totalRides?: true
-  completedRides?: true
-  averageRating?: true
+  passwordHash?: true
+  image?: true
   emailVerified?: true
-  verificationCode?: true
-  preferredGender?: true
-  petFriendly?: true
-  smokeFree?: true
-  conversationLevel?: true
-  musicPreference?: true
+  dateOfBirth?: true
+  zodiacSign?: true
+  chineseZodiac?: true
   createdAt?: true
   updatedAt?: true
-  lastRideAt?: true
+  coupleId?: true
+  cityId?: true
+  pushEnabled?: true
+  emailEnabled?: true
+  weeklyPulseReminder?: true
+  challengeReminder?: true
 }
 
 export type UserMaxAggregateInputType = {
   id?: true
+  username?: true
   email?: true
   name?: true
-  avatarUrl?: true
-  googleId?: true
-  username?: true
-  role?: true
-  reputationScore?: true
-  totalRides?: true
-  completedRides?: true
-  averageRating?: true
+  passwordHash?: true
+  image?: true
   emailVerified?: true
-  verificationCode?: true
-  preferredGender?: true
-  petFriendly?: true
-  smokeFree?: true
-  conversationLevel?: true
-  musicPreference?: true
+  dateOfBirth?: true
+  zodiacSign?: true
+  chineseZodiac?: true
   createdAt?: true
   updatedAt?: true
-  lastRideAt?: true
+  coupleId?: true
+  cityId?: true
+  pushEnabled?: true
+  emailEnabled?: true
+  weeklyPulseReminder?: true
+  challengeReminder?: true
 }
 
 export type UserCountAggregateInputType = {
   id?: true
+  username?: true
   email?: true
   name?: true
-  avatarUrl?: true
-  googleId?: true
-  username?: true
-  role?: true
-  reputationScore?: true
-  totalRides?: true
-  completedRides?: true
-  averageRating?: true
+  passwordHash?: true
+  image?: true
   emailVerified?: true
-  verificationCode?: true
-  preferredGender?: true
-  petFriendly?: true
-  smokeFree?: true
-  conversationLevel?: true
-  musicPreference?: true
+  dateOfBirth?: true
+  zodiacSign?: true
+  chineseZodiac?: true
   createdAt?: true
   updatedAt?: true
-  lastRideAt?: true
+  coupleId?: true
+  cityId?: true
+  pushEnabled?: true
+  emailEnabled?: true
+  weeklyPulseReminder?: true
+  challengeReminder?: true
   _all?: true
 }
 
@@ -239,18 +191,6 @@ export type UserAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Select which fields to average
-  **/
-  _avg?: UserAvgAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
-   * Select which fields to sum
-  **/
-  _sum?: UserSumAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
    * Select which fields to find the minimum value
   **/
   _min?: UserMinAggregateInputType
@@ -281,37 +221,30 @@ export type UserGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
   take?: number
   skip?: number
   _count?: UserCountAggregateInputType | true
-  _avg?: UserAvgAggregateInputType
-  _sum?: UserSumAggregateInputType
   _min?: UserMinAggregateInputType
   _max?: UserMaxAggregateInputType
 }
 
 export type UserGroupByOutputType = {
   id: string
-  email: string
+  username: string
+  email: string | null
   name: string | null
-  avatarUrl: string | null
-  googleId: string | null
-  username: string | null
-  role: $Enums.UserRole
-  reputationScore: number
-  totalRides: number
-  completedRides: number
-  averageRating: number
-  emailVerified: boolean
-  verificationCode: string | null
-  preferredGender: string | null
-  petFriendly: boolean
-  smokeFree: boolean
-  conversationLevel: string | null
-  musicPreference: string | null
+  passwordHash: string | null
+  image: string | null
+  emailVerified: Date | null
+  dateOfBirth: Date | null
+  zodiacSign: string | null
+  chineseZodiac: string | null
   createdAt: Date
   updatedAt: Date
-  lastRideAt: Date | null
+  coupleId: string | null
+  cityId: string | null
+  pushEnabled: boolean
+  emailEnabled: boolean
+  weeklyPulseReminder: boolean
+  challengeReminder: boolean
   _count: UserCountAggregateOutputType | null
-  _avg: UserAvgAggregateOutputType | null
-  _sum: UserSumAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
 }
@@ -336,112 +269,146 @@ export type UserWhereInput = {
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   id?: Prisma.StringFilter<"User"> | string
-  email?: Prisma.StringFilter<"User"> | string
+  username?: Prisma.StringFilter<"User"> | string
+  email?: Prisma.StringNullableFilter<"User"> | string | null
   name?: Prisma.StringNullableFilter<"User"> | string | null
-  avatarUrl?: Prisma.StringNullableFilter<"User"> | string | null
-  googleId?: Prisma.StringNullableFilter<"User"> | string | null
-  username?: Prisma.StringNullableFilter<"User"> | string | null
-  role?: Prisma.EnumUserRoleFilter<"User"> | $Enums.UserRole
-  reputationScore?: Prisma.FloatFilter<"User"> | number
-  totalRides?: Prisma.IntFilter<"User"> | number
-  completedRides?: Prisma.IntFilter<"User"> | number
-  averageRating?: Prisma.FloatFilter<"User"> | number
-  emailVerified?: Prisma.BoolFilter<"User"> | boolean
-  verificationCode?: Prisma.StringNullableFilter<"User"> | string | null
-  preferredGender?: Prisma.StringNullableFilter<"User"> | string | null
-  petFriendly?: Prisma.BoolFilter<"User"> | boolean
-  smokeFree?: Prisma.BoolFilter<"User"> | boolean
-  conversationLevel?: Prisma.StringNullableFilter<"User"> | string | null
-  musicPreference?: Prisma.StringNullableFilter<"User"> | string | null
+  passwordHash?: Prisma.StringNullableFilter<"User"> | string | null
+  image?: Prisma.StringNullableFilter<"User"> | string | null
+  emailVerified?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  dateOfBirth?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  zodiacSign?: Prisma.StringNullableFilter<"User"> | string | null
+  chineseZodiac?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
-  lastRideAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
-  createdRides?: Prisma.RideListRelationFilter
-  requestedRides?: Prisma.RideRequestListRelationFilter
+  coupleId?: Prisma.StringNullableFilter<"User"> | string | null
+  cityId?: Prisma.StringNullableFilter<"User"> | string | null
+  pushEnabled?: Prisma.BoolFilter<"User"> | boolean
+  emailEnabled?: Prisma.BoolFilter<"User"> | boolean
+  weeklyPulseReminder?: Prisma.BoolFilter<"User"> | boolean
+  challengeReminder?: Prisma.BoolFilter<"User"> | boolean
+  AIMessage?: Prisma.AIMessageListRelationFilter
+  AssessmentResponse?: Prisma.AssessmentResponseListRelationFilter
+  AstroProfile?: Prisma.XOR<Prisma.AstroProfileNullableScalarRelationFilter, Prisma.AstroProfileWhereInput> | null
+  Bouquet?: Prisma.BouquetListRelationFilter
+  ChallengeCompletion?: Prisma.ChallengeCompletionListRelationFilter
+  ConsentLog?: Prisma.ConsentLogListRelationFilter
+  Couple_Couple_partnerAIdToUser?: Prisma.XOR<Prisma.CoupleNullableScalarRelationFilter, Prisma.CoupleWhereInput> | null
+  Couple_Couple_partnerBIdToUser?: Prisma.XOR<Prisma.CoupleNullableScalarRelationFilter, Prisma.CoupleWhereInput> | null
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestListRelationFilter
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestListRelationFilter
+  MoodStatus?: Prisma.XOR<Prisma.MoodStatusNullableScalarRelationFilter, Prisma.MoodStatusWhereInput> | null
+  PulseCheckin?: Prisma.PulseCheckinListRelationFilter
+  PushSubscription?: Prisma.PushSubscriptionListRelationFilter
+  SmallCraving?: Prisma.SmallCravingListRelationFilter
+  City?: Prisma.XOR<Prisma.CityNullableScalarRelationFilter, Prisma.CityWhereInput> | null
+  Couple_User_coupleIdToCouple?: Prisma.XOR<Prisma.CoupleNullableScalarRelationFilter, Prisma.CoupleWhereInput> | null
+  WishlistItem?: Prisma.WishlistItemListRelationFilter
+  Flower?: Prisma.FlowerListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  email?: Prisma.SortOrder
+  username?: Prisma.SortOrder
+  email?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrderInput | Prisma.SortOrder
-  avatarUrl?: Prisma.SortOrderInput | Prisma.SortOrder
-  googleId?: Prisma.SortOrderInput | Prisma.SortOrder
-  username?: Prisma.SortOrderInput | Prisma.SortOrder
-  role?: Prisma.SortOrder
-  reputationScore?: Prisma.SortOrder
-  totalRides?: Prisma.SortOrder
-  completedRides?: Prisma.SortOrder
-  averageRating?: Prisma.SortOrder
-  emailVerified?: Prisma.SortOrder
-  verificationCode?: Prisma.SortOrderInput | Prisma.SortOrder
-  preferredGender?: Prisma.SortOrderInput | Prisma.SortOrder
-  petFriendly?: Prisma.SortOrder
-  smokeFree?: Prisma.SortOrder
-  conversationLevel?: Prisma.SortOrderInput | Prisma.SortOrder
-  musicPreference?: Prisma.SortOrderInput | Prisma.SortOrder
+  passwordHash?: Prisma.SortOrderInput | Prisma.SortOrder
+  image?: Prisma.SortOrderInput | Prisma.SortOrder
+  emailVerified?: Prisma.SortOrderInput | Prisma.SortOrder
+  dateOfBirth?: Prisma.SortOrderInput | Prisma.SortOrder
+  zodiacSign?: Prisma.SortOrderInput | Prisma.SortOrder
+  chineseZodiac?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  lastRideAt?: Prisma.SortOrderInput | Prisma.SortOrder
-  createdRides?: Prisma.RideOrderByRelationAggregateInput
-  requestedRides?: Prisma.RideRequestOrderByRelationAggregateInput
+  coupleId?: Prisma.SortOrderInput | Prisma.SortOrder
+  cityId?: Prisma.SortOrderInput | Prisma.SortOrder
+  pushEnabled?: Prisma.SortOrder
+  emailEnabled?: Prisma.SortOrder
+  weeklyPulseReminder?: Prisma.SortOrder
+  challengeReminder?: Prisma.SortOrder
+  AIMessage?: Prisma.AIMessageOrderByRelationAggregateInput
+  AssessmentResponse?: Prisma.AssessmentResponseOrderByRelationAggregateInput
+  AstroProfile?: Prisma.AstroProfileOrderByWithRelationInput
+  Bouquet?: Prisma.BouquetOrderByRelationAggregateInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionOrderByRelationAggregateInput
+  ConsentLog?: Prisma.ConsentLogOrderByRelationAggregateInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleOrderByWithRelationInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleOrderByWithRelationInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestOrderByRelationAggregateInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestOrderByRelationAggregateInput
+  MoodStatus?: Prisma.MoodStatusOrderByWithRelationInput
+  PulseCheckin?: Prisma.PulseCheckinOrderByRelationAggregateInput
+  PushSubscription?: Prisma.PushSubscriptionOrderByRelationAggregateInput
+  SmallCraving?: Prisma.SmallCravingOrderByRelationAggregateInput
+  City?: Prisma.CityOrderByWithRelationInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleOrderByWithRelationInput
+  WishlistItem?: Prisma.WishlistItemOrderByRelationAggregateInput
+  Flower?: Prisma.FlowerOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  email?: string
-  googleId?: string
   username?: string
+  email?: string
+  coupleId?: string
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   name?: Prisma.StringNullableFilter<"User"> | string | null
-  avatarUrl?: Prisma.StringNullableFilter<"User"> | string | null
-  role?: Prisma.EnumUserRoleFilter<"User"> | $Enums.UserRole
-  reputationScore?: Prisma.FloatFilter<"User"> | number
-  totalRides?: Prisma.IntFilter<"User"> | number
-  completedRides?: Prisma.IntFilter<"User"> | number
-  averageRating?: Prisma.FloatFilter<"User"> | number
-  emailVerified?: Prisma.BoolFilter<"User"> | boolean
-  verificationCode?: Prisma.StringNullableFilter<"User"> | string | null
-  preferredGender?: Prisma.StringNullableFilter<"User"> | string | null
-  petFriendly?: Prisma.BoolFilter<"User"> | boolean
-  smokeFree?: Prisma.BoolFilter<"User"> | boolean
-  conversationLevel?: Prisma.StringNullableFilter<"User"> | string | null
-  musicPreference?: Prisma.StringNullableFilter<"User"> | string | null
+  passwordHash?: Prisma.StringNullableFilter<"User"> | string | null
+  image?: Prisma.StringNullableFilter<"User"> | string | null
+  emailVerified?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  dateOfBirth?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  zodiacSign?: Prisma.StringNullableFilter<"User"> | string | null
+  chineseZodiac?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
-  lastRideAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
-  createdRides?: Prisma.RideListRelationFilter
-  requestedRides?: Prisma.RideRequestListRelationFilter
-}, "id" | "email" | "googleId" | "username">
+  cityId?: Prisma.StringNullableFilter<"User"> | string | null
+  pushEnabled?: Prisma.BoolFilter<"User"> | boolean
+  emailEnabled?: Prisma.BoolFilter<"User"> | boolean
+  weeklyPulseReminder?: Prisma.BoolFilter<"User"> | boolean
+  challengeReminder?: Prisma.BoolFilter<"User"> | boolean
+  AIMessage?: Prisma.AIMessageListRelationFilter
+  AssessmentResponse?: Prisma.AssessmentResponseListRelationFilter
+  AstroProfile?: Prisma.XOR<Prisma.AstroProfileNullableScalarRelationFilter, Prisma.AstroProfileWhereInput> | null
+  Bouquet?: Prisma.BouquetListRelationFilter
+  ChallengeCompletion?: Prisma.ChallengeCompletionListRelationFilter
+  ConsentLog?: Prisma.ConsentLogListRelationFilter
+  Couple_Couple_partnerAIdToUser?: Prisma.XOR<Prisma.CoupleNullableScalarRelationFilter, Prisma.CoupleWhereInput> | null
+  Couple_Couple_partnerBIdToUser?: Prisma.XOR<Prisma.CoupleNullableScalarRelationFilter, Prisma.CoupleWhereInput> | null
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestListRelationFilter
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestListRelationFilter
+  MoodStatus?: Prisma.XOR<Prisma.MoodStatusNullableScalarRelationFilter, Prisma.MoodStatusWhereInput> | null
+  PulseCheckin?: Prisma.PulseCheckinListRelationFilter
+  PushSubscription?: Prisma.PushSubscriptionListRelationFilter
+  SmallCraving?: Prisma.SmallCravingListRelationFilter
+  City?: Prisma.XOR<Prisma.CityNullableScalarRelationFilter, Prisma.CityWhereInput> | null
+  Couple_User_coupleIdToCouple?: Prisma.XOR<Prisma.CoupleNullableScalarRelationFilter, Prisma.CoupleWhereInput> | null
+  WishlistItem?: Prisma.WishlistItemListRelationFilter
+  Flower?: Prisma.FlowerListRelationFilter
+}, "id" | "username" | "email" | "coupleId">
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  email?: Prisma.SortOrder
+  username?: Prisma.SortOrder
+  email?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrderInput | Prisma.SortOrder
-  avatarUrl?: Prisma.SortOrderInput | Prisma.SortOrder
-  googleId?: Prisma.SortOrderInput | Prisma.SortOrder
-  username?: Prisma.SortOrderInput | Prisma.SortOrder
-  role?: Prisma.SortOrder
-  reputationScore?: Prisma.SortOrder
-  totalRides?: Prisma.SortOrder
-  completedRides?: Prisma.SortOrder
-  averageRating?: Prisma.SortOrder
-  emailVerified?: Prisma.SortOrder
-  verificationCode?: Prisma.SortOrderInput | Prisma.SortOrder
-  preferredGender?: Prisma.SortOrderInput | Prisma.SortOrder
-  petFriendly?: Prisma.SortOrder
-  smokeFree?: Prisma.SortOrder
-  conversationLevel?: Prisma.SortOrderInput | Prisma.SortOrder
-  musicPreference?: Prisma.SortOrderInput | Prisma.SortOrder
+  passwordHash?: Prisma.SortOrderInput | Prisma.SortOrder
+  image?: Prisma.SortOrderInput | Prisma.SortOrder
+  emailVerified?: Prisma.SortOrderInput | Prisma.SortOrder
+  dateOfBirth?: Prisma.SortOrderInput | Prisma.SortOrder
+  zodiacSign?: Prisma.SortOrderInput | Prisma.SortOrder
+  chineseZodiac?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  lastRideAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  coupleId?: Prisma.SortOrderInput | Prisma.SortOrder
+  cityId?: Prisma.SortOrderInput | Prisma.SortOrder
+  pushEnabled?: Prisma.SortOrder
+  emailEnabled?: Prisma.SortOrder
+  weeklyPulseReminder?: Prisma.SortOrder
+  challengeReminder?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
-  _avg?: Prisma.UserAvgOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
-  _sum?: Prisma.UserSumOrderByAggregateInput
 }
 
 export type UserScalarWhereWithAggregatesInput = {
@@ -449,293 +416,315 @@ export type UserScalarWhereWithAggregatesInput = {
   OR?: Prisma.UserScalarWhereWithAggregatesInput[]
   NOT?: Prisma.UserScalarWhereWithAggregatesInput | Prisma.UserScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"User"> | string
-  email?: Prisma.StringWithAggregatesFilter<"User"> | string
+  username?: Prisma.StringWithAggregatesFilter<"User"> | string
+  email?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   name?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
-  avatarUrl?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
-  googleId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
-  username?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
-  role?: Prisma.EnumUserRoleWithAggregatesFilter<"User"> | $Enums.UserRole
-  reputationScore?: Prisma.FloatWithAggregatesFilter<"User"> | number
-  totalRides?: Prisma.IntWithAggregatesFilter<"User"> | number
-  completedRides?: Prisma.IntWithAggregatesFilter<"User"> | number
-  averageRating?: Prisma.FloatWithAggregatesFilter<"User"> | number
-  emailVerified?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
-  verificationCode?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
-  preferredGender?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
-  petFriendly?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
-  smokeFree?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
-  conversationLevel?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
-  musicPreference?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  passwordHash?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  image?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  emailVerified?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  dateOfBirth?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  zodiacSign?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  chineseZodiac?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
-  lastRideAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  coupleId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  cityId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  pushEnabled?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
+  emailEnabled?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
+  weeklyPulseReminder?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
+  challengeReminder?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
 }
 
 export type UserCreateInput = {
   id?: string
-  email: string
+  username: string
+  email?: string | null
   name?: string | null
-  avatarUrl?: string | null
-  googleId?: string | null
-  username?: string | null
-  role?: $Enums.UserRole
-  reputationScore?: number
-  totalRides?: number
-  completedRides?: number
-  averageRating?: number
-  emailVerified?: boolean
-  verificationCode?: string | null
-  preferredGender?: string | null
-  petFriendly?: boolean
-  smokeFree?: boolean
-  conversationLevel?: string | null
-  musicPreference?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastRideAt?: Date | string | null
-  createdRides?: Prisma.RideCreateNestedManyWithoutDriverInput
-  requestedRides?: Prisma.RideRequestCreateNestedManyWithoutPassengerInput
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
+  City?: Prisma.CityCreateNestedOneWithoutUserInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
+  WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
   id?: string
-  email: string
+  username: string
+  email?: string | null
   name?: string | null
-  avatarUrl?: string | null
-  googleId?: string | null
-  username?: string | null
-  role?: $Enums.UserRole
-  reputationScore?: number
-  totalRides?: number
-  completedRides?: number
-  averageRating?: number
-  emailVerified?: boolean
-  verificationCode?: string | null
-  preferredGender?: string | null
-  petFriendly?: boolean
-  smokeFree?: boolean
-  conversationLevel?: string | null
-  musicPreference?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastRideAt?: Date | string | null
-  createdRides?: Prisma.RideUncheckedCreateNestedManyWithoutDriverInput
-  requestedRides?: Prisma.RideRequestUncheckedCreateNestedManyWithoutPassengerInput
+  coupleId?: string | null
+  cityId?: string | null
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetUncheckedCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
+  WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  reputationScore?: Prisma.FloatFieldUpdateOperationsInput | number
-  totalRides?: Prisma.IntFieldUpdateOperationsInput | number
-  completedRides?: Prisma.IntFieldUpdateOperationsInput | number
-  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  verificationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  preferredGender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  petFriendly?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  smokeFree?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  conversationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  musicPreference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastRideAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdRides?: Prisma.RideUpdateManyWithoutDriverNestedInput
-  requestedRides?: Prisma.RideRequestUpdateManyWithoutPassengerNestedInput
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
+  City?: Prisma.CityUpdateOneWithoutUserNestedInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
+  WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  reputationScore?: Prisma.FloatFieldUpdateOperationsInput | number
-  totalRides?: Prisma.IntFieldUpdateOperationsInput | number
-  completedRides?: Prisma.IntFieldUpdateOperationsInput | number
-  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  verificationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  preferredGender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  petFriendly?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  smokeFree?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  conversationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  musicPreference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastRideAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdRides?: Prisma.RideUncheckedUpdateManyWithoutDriverNestedInput
-  requestedRides?: Prisma.RideRequestUncheckedUpdateManyWithoutPassengerNestedInput
+  coupleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUncheckedUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
+  WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
   id?: string
-  email: string
+  username: string
+  email?: string | null
   name?: string | null
-  avatarUrl?: string | null
-  googleId?: string | null
-  username?: string | null
-  role?: $Enums.UserRole
-  reputationScore?: number
-  totalRides?: number
-  completedRides?: number
-  averageRating?: number
-  emailVerified?: boolean
-  verificationCode?: string | null
-  preferredGender?: string | null
-  petFriendly?: boolean
-  smokeFree?: boolean
-  conversationLevel?: string | null
-  musicPreference?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastRideAt?: Date | string | null
+  coupleId?: string | null
+  cityId?: string | null
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
 }
 
 export type UserUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  reputationScore?: Prisma.FloatFieldUpdateOperationsInput | number
-  totalRides?: Prisma.IntFieldUpdateOperationsInput | number
-  completedRides?: Prisma.IntFieldUpdateOperationsInput | number
-  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  verificationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  preferredGender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  petFriendly?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  smokeFree?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  conversationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  musicPreference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastRideAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type UserUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  reputationScore?: Prisma.FloatFieldUpdateOperationsInput | number
-  totalRides?: Prisma.IntFieldUpdateOperationsInput | number
-  completedRides?: Prisma.IntFieldUpdateOperationsInput | number
-  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  verificationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  preferredGender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  petFriendly?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  smokeFree?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  conversationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  musicPreference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastRideAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  coupleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type UserCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  username?: Prisma.SortOrder
   email?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  avatarUrl?: Prisma.SortOrder
-  googleId?: Prisma.SortOrder
-  username?: Prisma.SortOrder
-  role?: Prisma.SortOrder
-  reputationScore?: Prisma.SortOrder
-  totalRides?: Prisma.SortOrder
-  completedRides?: Prisma.SortOrder
-  averageRating?: Prisma.SortOrder
+  passwordHash?: Prisma.SortOrder
+  image?: Prisma.SortOrder
   emailVerified?: Prisma.SortOrder
-  verificationCode?: Prisma.SortOrder
-  preferredGender?: Prisma.SortOrder
-  petFriendly?: Prisma.SortOrder
-  smokeFree?: Prisma.SortOrder
-  conversationLevel?: Prisma.SortOrder
-  musicPreference?: Prisma.SortOrder
+  dateOfBirth?: Prisma.SortOrder
+  zodiacSign?: Prisma.SortOrder
+  chineseZodiac?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  lastRideAt?: Prisma.SortOrder
-}
-
-export type UserAvgOrderByAggregateInput = {
-  reputationScore?: Prisma.SortOrder
-  totalRides?: Prisma.SortOrder
-  completedRides?: Prisma.SortOrder
-  averageRating?: Prisma.SortOrder
+  coupleId?: Prisma.SortOrder
+  cityId?: Prisma.SortOrder
+  pushEnabled?: Prisma.SortOrder
+  emailEnabled?: Prisma.SortOrder
+  weeklyPulseReminder?: Prisma.SortOrder
+  challengeReminder?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  username?: Prisma.SortOrder
   email?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  avatarUrl?: Prisma.SortOrder
-  googleId?: Prisma.SortOrder
-  username?: Prisma.SortOrder
-  role?: Prisma.SortOrder
-  reputationScore?: Prisma.SortOrder
-  totalRides?: Prisma.SortOrder
-  completedRides?: Prisma.SortOrder
-  averageRating?: Prisma.SortOrder
+  passwordHash?: Prisma.SortOrder
+  image?: Prisma.SortOrder
   emailVerified?: Prisma.SortOrder
-  verificationCode?: Prisma.SortOrder
-  preferredGender?: Prisma.SortOrder
-  petFriendly?: Prisma.SortOrder
-  smokeFree?: Prisma.SortOrder
-  conversationLevel?: Prisma.SortOrder
-  musicPreference?: Prisma.SortOrder
+  dateOfBirth?: Prisma.SortOrder
+  zodiacSign?: Prisma.SortOrder
+  chineseZodiac?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  lastRideAt?: Prisma.SortOrder
+  coupleId?: Prisma.SortOrder
+  cityId?: Prisma.SortOrder
+  pushEnabled?: Prisma.SortOrder
+  emailEnabled?: Prisma.SortOrder
+  weeklyPulseReminder?: Prisma.SortOrder
+  challengeReminder?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  username?: Prisma.SortOrder
   email?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  avatarUrl?: Prisma.SortOrder
-  googleId?: Prisma.SortOrder
-  username?: Prisma.SortOrder
-  role?: Prisma.SortOrder
-  reputationScore?: Prisma.SortOrder
-  totalRides?: Prisma.SortOrder
-  completedRides?: Prisma.SortOrder
-  averageRating?: Prisma.SortOrder
+  passwordHash?: Prisma.SortOrder
+  image?: Prisma.SortOrder
   emailVerified?: Prisma.SortOrder
-  verificationCode?: Prisma.SortOrder
-  preferredGender?: Prisma.SortOrder
-  petFriendly?: Prisma.SortOrder
-  smokeFree?: Prisma.SortOrder
-  conversationLevel?: Prisma.SortOrder
-  musicPreference?: Prisma.SortOrder
+  dateOfBirth?: Prisma.SortOrder
+  zodiacSign?: Prisma.SortOrder
+  chineseZodiac?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  lastRideAt?: Prisma.SortOrder
+  coupleId?: Prisma.SortOrder
+  cityId?: Prisma.SortOrder
+  pushEnabled?: Prisma.SortOrder
+  emailEnabled?: Prisma.SortOrder
+  weeklyPulseReminder?: Prisma.SortOrder
+  challengeReminder?: Prisma.SortOrder
 }
 
-export type UserSumOrderByAggregateInput = {
-  reputationScore?: Prisma.SortOrder
-  totalRides?: Prisma.SortOrder
-  completedRides?: Prisma.SortOrder
-  averageRating?: Prisma.SortOrder
+export type UserNullableScalarRelationFilter = {
+  is?: Prisma.UserWhereInput | null
+  isNot?: Prisma.UserWhereInput | null
 }
 
 export type UserScalarRelationFilter = {
   is?: Prisma.UserWhereInput
   isNot?: Prisma.UserWhereInput
+}
+
+export type UserListRelationFilter = {
+  every?: Prisma.UserWhereInput
+  some?: Prisma.UserWhereInput
+  none?: Prisma.UserWhereInput
+}
+
+export type UserOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type StringFieldUpdateOperationsInput = {
@@ -746,296 +735,3320 @@ export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
 }
 
-export type EnumUserRoleFieldUpdateOperationsInput = {
-  set?: $Enums.UserRole
-}
-
-export type FloatFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
 }
 
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
 }
 
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
 }
 
-export type UserCreateNestedOneWithoutCreatedRidesInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedRidesInput, Prisma.UserUncheckedCreateWithoutCreatedRidesInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedRidesInput
+export type UserCreateNestedOneWithoutAIMessageInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAIMessageInput, Prisma.UserUncheckedCreateWithoutAIMessageInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAIMessageInput
   connect?: Prisma.UserWhereUniqueInput
 }
 
-export type UserUpdateOneRequiredWithoutCreatedRidesNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedRidesInput, Prisma.UserUncheckedCreateWithoutCreatedRidesInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedRidesInput
-  upsert?: Prisma.UserUpsertWithoutCreatedRidesInput
+export type UserUpdateOneWithoutAIMessageNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAIMessageInput, Prisma.UserUncheckedCreateWithoutAIMessageInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAIMessageInput
+  upsert?: Prisma.UserUpsertWithoutAIMessageInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
   connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCreatedRidesInput, Prisma.UserUpdateWithoutCreatedRidesInput>, Prisma.UserUncheckedUpdateWithoutCreatedRidesInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAIMessageInput, Prisma.UserUpdateWithoutAIMessageInput>, Prisma.UserUncheckedUpdateWithoutAIMessageInput>
 }
 
-export type UserCreateNestedOneWithoutRequestedRidesInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutRequestedRidesInput, Prisma.UserUncheckedCreateWithoutRequestedRidesInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRequestedRidesInput
+export type UserCreateNestedOneWithoutAssessmentResponseInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAssessmentResponseInput, Prisma.UserUncheckedCreateWithoutAssessmentResponseInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAssessmentResponseInput
   connect?: Prisma.UserWhereUniqueInput
 }
 
-export type UserUpdateOneRequiredWithoutRequestedRidesNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutRequestedRidesInput, Prisma.UserUncheckedCreateWithoutRequestedRidesInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRequestedRidesInput
-  upsert?: Prisma.UserUpsertWithoutRequestedRidesInput
+export type UserUpdateOneRequiredWithoutAssessmentResponseNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAssessmentResponseInput, Prisma.UserUncheckedCreateWithoutAssessmentResponseInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAssessmentResponseInput
+  upsert?: Prisma.UserUpsertWithoutAssessmentResponseInput
   connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRequestedRidesInput, Prisma.UserUpdateWithoutRequestedRidesInput>, Prisma.UserUncheckedUpdateWithoutRequestedRidesInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAssessmentResponseInput, Prisma.UserUpdateWithoutAssessmentResponseInput>, Prisma.UserUncheckedUpdateWithoutAssessmentResponseInput>
 }
 
-export type UserCreateWithoutCreatedRidesInput = {
+export type UserCreateNestedOneWithoutAstroProfileInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAstroProfileInput, Prisma.UserUncheckedCreateWithoutAstroProfileInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAstroProfileInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutAstroProfileNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAstroProfileInput, Prisma.UserUncheckedCreateWithoutAstroProfileInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAstroProfileInput
+  upsert?: Prisma.UserUpsertWithoutAstroProfileInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAstroProfileInput, Prisma.UserUpdateWithoutAstroProfileInput>, Prisma.UserUncheckedUpdateWithoutAstroProfileInput>
+}
+
+export type UserCreateNestedOneWithoutBouquetInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBouquetInput, Prisma.UserUncheckedCreateWithoutBouquetInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBouquetInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutBouquetNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBouquetInput, Prisma.UserUncheckedCreateWithoutBouquetInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBouquetInput
+  upsert?: Prisma.UserUpsertWithoutBouquetInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutBouquetInput, Prisma.UserUpdateWithoutBouquetInput>, Prisma.UserUncheckedUpdateWithoutBouquetInput>
+}
+
+export type UserCreateNestedOneWithoutChallengeCompletionInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutChallengeCompletionInput, Prisma.UserUncheckedCreateWithoutChallengeCompletionInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutChallengeCompletionInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutChallengeCompletionNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutChallengeCompletionInput, Prisma.UserUncheckedCreateWithoutChallengeCompletionInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutChallengeCompletionInput
+  upsert?: Prisma.UserUpsertWithoutChallengeCompletionInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutChallengeCompletionInput, Prisma.UserUpdateWithoutChallengeCompletionInput>, Prisma.UserUncheckedUpdateWithoutChallengeCompletionInput>
+}
+
+export type UserCreateNestedManyWithoutCityInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCityInput, Prisma.UserUncheckedCreateWithoutCityInput> | Prisma.UserCreateWithoutCityInput[] | Prisma.UserUncheckedCreateWithoutCityInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCityInput | Prisma.UserCreateOrConnectWithoutCityInput[]
+  createMany?: Prisma.UserCreateManyCityInputEnvelope
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+}
+
+export type UserUncheckedCreateNestedManyWithoutCityInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCityInput, Prisma.UserUncheckedCreateWithoutCityInput> | Prisma.UserCreateWithoutCityInput[] | Prisma.UserUncheckedCreateWithoutCityInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCityInput | Prisma.UserCreateOrConnectWithoutCityInput[]
+  createMany?: Prisma.UserCreateManyCityInputEnvelope
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+}
+
+export type UserUpdateManyWithoutCityNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCityInput, Prisma.UserUncheckedCreateWithoutCityInput> | Prisma.UserCreateWithoutCityInput[] | Prisma.UserUncheckedCreateWithoutCityInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCityInput | Prisma.UserCreateOrConnectWithoutCityInput[]
+  upsert?: Prisma.UserUpsertWithWhereUniqueWithoutCityInput | Prisma.UserUpsertWithWhereUniqueWithoutCityInput[]
+  createMany?: Prisma.UserCreateManyCityInputEnvelope
+  set?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  disconnect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  delete?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  update?: Prisma.UserUpdateWithWhereUniqueWithoutCityInput | Prisma.UserUpdateWithWhereUniqueWithoutCityInput[]
+  updateMany?: Prisma.UserUpdateManyWithWhereWithoutCityInput | Prisma.UserUpdateManyWithWhereWithoutCityInput[]
+  deleteMany?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+}
+
+export type UserUncheckedUpdateManyWithoutCityNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCityInput, Prisma.UserUncheckedCreateWithoutCityInput> | Prisma.UserCreateWithoutCityInput[] | Prisma.UserUncheckedCreateWithoutCityInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCityInput | Prisma.UserCreateOrConnectWithoutCityInput[]
+  upsert?: Prisma.UserUpsertWithWhereUniqueWithoutCityInput | Prisma.UserUpsertWithWhereUniqueWithoutCityInput[]
+  createMany?: Prisma.UserCreateManyCityInputEnvelope
+  set?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  disconnect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  delete?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  update?: Prisma.UserUpdateWithWhereUniqueWithoutCityInput | Prisma.UserUpdateWithWhereUniqueWithoutCityInput[]
+  updateMany?: Prisma.UserUpdateManyWithWhereWithoutCityInput | Prisma.UserUpdateManyWithWhereWithoutCityInput[]
+  deleteMany?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+}
+
+export type UserCreateNestedOneWithoutConsentLogInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutConsentLogInput, Prisma.UserUncheckedCreateWithoutConsentLogInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutConsentLogInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutConsentLogNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutConsentLogInput, Prisma.UserUncheckedCreateWithoutConsentLogInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutConsentLogInput
+  upsert?: Prisma.UserUpsertWithoutConsentLogInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutConsentLogInput, Prisma.UserUpdateWithoutConsentLogInput>, Prisma.UserUncheckedUpdateWithoutConsentLogInput>
+}
+
+export type UserCreateNestedOneWithoutCouple_Couple_partnerAIdToUserInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCouple_Couple_partnerAIdToUserInput, Prisma.UserUncheckedCreateWithoutCouple_Couple_partnerAIdToUserInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCouple_Couple_partnerAIdToUserInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutCouple_Couple_partnerBIdToUserInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCouple_Couple_partnerBIdToUserInput, Prisma.UserUncheckedCreateWithoutCouple_Couple_partnerBIdToUserInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCouple_Couple_partnerBIdToUserInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutCouple_User_coupleIdToCoupleInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCouple_User_coupleIdToCoupleInput, Prisma.UserUncheckedCreateWithoutCouple_User_coupleIdToCoupleInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCouple_User_coupleIdToCoupleInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUncheckedCreateNestedOneWithoutCouple_User_coupleIdToCoupleInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCouple_User_coupleIdToCoupleInput, Prisma.UserUncheckedCreateWithoutCouple_User_coupleIdToCoupleInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCouple_User_coupleIdToCoupleInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutCouple_Couple_partnerAIdToUserNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCouple_Couple_partnerAIdToUserInput, Prisma.UserUncheckedCreateWithoutCouple_Couple_partnerAIdToUserInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCouple_Couple_partnerAIdToUserInput
+  upsert?: Prisma.UserUpsertWithoutCouple_Couple_partnerAIdToUserInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCouple_Couple_partnerAIdToUserInput, Prisma.UserUpdateWithoutCouple_Couple_partnerAIdToUserInput>, Prisma.UserUncheckedUpdateWithoutCouple_Couple_partnerAIdToUserInput>
+}
+
+export type UserUpdateOneRequiredWithoutCouple_Couple_partnerBIdToUserNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCouple_Couple_partnerBIdToUserInput, Prisma.UserUncheckedCreateWithoutCouple_Couple_partnerBIdToUserInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCouple_Couple_partnerBIdToUserInput
+  upsert?: Prisma.UserUpsertWithoutCouple_Couple_partnerBIdToUserInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCouple_Couple_partnerBIdToUserInput, Prisma.UserUpdateWithoutCouple_Couple_partnerBIdToUserInput>, Prisma.UserUncheckedUpdateWithoutCouple_Couple_partnerBIdToUserInput>
+}
+
+export type UserUpdateOneWithoutCouple_User_coupleIdToCoupleNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCouple_User_coupleIdToCoupleInput, Prisma.UserUncheckedCreateWithoutCouple_User_coupleIdToCoupleInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCouple_User_coupleIdToCoupleInput
+  upsert?: Prisma.UserUpsertWithoutCouple_User_coupleIdToCoupleInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCouple_User_coupleIdToCoupleInput, Prisma.UserUpdateWithoutCouple_User_coupleIdToCoupleInput>, Prisma.UserUncheckedUpdateWithoutCouple_User_coupleIdToCoupleInput>
+}
+
+export type UserUncheckedUpdateOneWithoutCouple_User_coupleIdToCoupleNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCouple_User_coupleIdToCoupleInput, Prisma.UserUncheckedCreateWithoutCouple_User_coupleIdToCoupleInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCouple_User_coupleIdToCoupleInput
+  upsert?: Prisma.UserUpsertWithoutCouple_User_coupleIdToCoupleInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCouple_User_coupleIdToCoupleInput, Prisma.UserUpdateWithoutCouple_User_coupleIdToCoupleInput>, Prisma.UserUncheckedUpdateWithoutCouple_User_coupleIdToCoupleInput>
+}
+
+export type UserCreateNestedOneWithoutCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserInput, Prisma.UserUncheckedCreateWithoutCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserInput, Prisma.UserUncheckedCreateWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserInput, Prisma.UserUncheckedCreateWithoutCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserInput
+  upsert?: Prisma.UserUpsertWithoutCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserInput, Prisma.UserUpdateWithoutCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserInput>, Prisma.UserUncheckedUpdateWithoutCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserInput>
+}
+
+export type UserUpdateOneRequiredWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserInput, Prisma.UserUncheckedCreateWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserInput
+  upsert?: Prisma.UserUpsertWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserInput, Prisma.UserUpdateWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserInput>, Prisma.UserUncheckedUpdateWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserInput>
+}
+
+export type UserCreateNestedManyWithoutFlowerInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFlowerInput, Prisma.UserUncheckedCreateWithoutFlowerInput> | Prisma.UserCreateWithoutFlowerInput[] | Prisma.UserUncheckedCreateWithoutFlowerInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFlowerInput | Prisma.UserCreateOrConnectWithoutFlowerInput[]
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+}
+
+export type UserUncheckedCreateNestedManyWithoutFlowerInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFlowerInput, Prisma.UserUncheckedCreateWithoutFlowerInput> | Prisma.UserCreateWithoutFlowerInput[] | Prisma.UserUncheckedCreateWithoutFlowerInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFlowerInput | Prisma.UserCreateOrConnectWithoutFlowerInput[]
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+}
+
+export type UserUpdateManyWithoutFlowerNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFlowerInput, Prisma.UserUncheckedCreateWithoutFlowerInput> | Prisma.UserCreateWithoutFlowerInput[] | Prisma.UserUncheckedCreateWithoutFlowerInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFlowerInput | Prisma.UserCreateOrConnectWithoutFlowerInput[]
+  upsert?: Prisma.UserUpsertWithWhereUniqueWithoutFlowerInput | Prisma.UserUpsertWithWhereUniqueWithoutFlowerInput[]
+  set?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  disconnect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  delete?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  update?: Prisma.UserUpdateWithWhereUniqueWithoutFlowerInput | Prisma.UserUpdateWithWhereUniqueWithoutFlowerInput[]
+  updateMany?: Prisma.UserUpdateManyWithWhereWithoutFlowerInput | Prisma.UserUpdateManyWithWhereWithoutFlowerInput[]
+  deleteMany?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+}
+
+export type UserUncheckedUpdateManyWithoutFlowerNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFlowerInput, Prisma.UserUncheckedCreateWithoutFlowerInput> | Prisma.UserCreateWithoutFlowerInput[] | Prisma.UserUncheckedCreateWithoutFlowerInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFlowerInput | Prisma.UserCreateOrConnectWithoutFlowerInput[]
+  upsert?: Prisma.UserUpsertWithWhereUniqueWithoutFlowerInput | Prisma.UserUpsertWithWhereUniqueWithoutFlowerInput[]
+  set?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  disconnect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  delete?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  update?: Prisma.UserUpdateWithWhereUniqueWithoutFlowerInput | Prisma.UserUpdateWithWhereUniqueWithoutFlowerInput[]
+  updateMany?: Prisma.UserUpdateManyWithWhereWithoutFlowerInput | Prisma.UserUpdateManyWithWhereWithoutFlowerInput[]
+  deleteMany?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+}
+
+export type UserCreateNestedOneWithoutMoodStatusInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMoodStatusInput, Prisma.UserUncheckedCreateWithoutMoodStatusInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMoodStatusInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutMoodStatusNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMoodStatusInput, Prisma.UserUncheckedCreateWithoutMoodStatusInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMoodStatusInput
+  upsert?: Prisma.UserUpsertWithoutMoodStatusInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutMoodStatusInput, Prisma.UserUpdateWithoutMoodStatusInput>, Prisma.UserUncheckedUpdateWithoutMoodStatusInput>
+}
+
+export type UserCreateNestedOneWithoutPulseCheckinInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPulseCheckinInput, Prisma.UserUncheckedCreateWithoutPulseCheckinInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPulseCheckinInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPulseCheckinNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPulseCheckinInput, Prisma.UserUncheckedCreateWithoutPulseCheckinInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPulseCheckinInput
+  upsert?: Prisma.UserUpsertWithoutPulseCheckinInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPulseCheckinInput, Prisma.UserUpdateWithoutPulseCheckinInput>, Prisma.UserUncheckedUpdateWithoutPulseCheckinInput>
+}
+
+export type UserCreateNestedOneWithoutPushSubscriptionInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPushSubscriptionInput, Prisma.UserUncheckedCreateWithoutPushSubscriptionInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPushSubscriptionInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPushSubscriptionNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPushSubscriptionInput, Prisma.UserUncheckedCreateWithoutPushSubscriptionInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPushSubscriptionInput
+  upsert?: Prisma.UserUpsertWithoutPushSubscriptionInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPushSubscriptionInput, Prisma.UserUpdateWithoutPushSubscriptionInput>, Prisma.UserUncheckedUpdateWithoutPushSubscriptionInput>
+}
+
+export type UserCreateNestedOneWithoutSmallCravingInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSmallCravingInput, Prisma.UserUncheckedCreateWithoutSmallCravingInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSmallCravingInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutSmallCravingNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSmallCravingInput, Prisma.UserUncheckedCreateWithoutSmallCravingInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSmallCravingInput
+  upsert?: Prisma.UserUpsertWithoutSmallCravingInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSmallCravingInput, Prisma.UserUpdateWithoutSmallCravingInput>, Prisma.UserUncheckedUpdateWithoutSmallCravingInput>
+}
+
+export type UserCreateNestedOneWithoutWishlistItemInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutWishlistItemInput, Prisma.UserUncheckedCreateWithoutWishlistItemInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutWishlistItemInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutWishlistItemNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutWishlistItemInput, Prisma.UserUncheckedCreateWithoutWishlistItemInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutWishlistItemInput
+  upsert?: Prisma.UserUpsertWithoutWishlistItemInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutWishlistItemInput, Prisma.UserUpdateWithoutWishlistItemInput>, Prisma.UserUncheckedUpdateWithoutWishlistItemInput>
+}
+
+export type UserCreateWithoutAIMessageInput = {
   id?: string
-  email: string
+  username: string
+  email?: string | null
   name?: string | null
-  avatarUrl?: string | null
-  googleId?: string | null
-  username?: string | null
-  role?: $Enums.UserRole
-  reputationScore?: number
-  totalRides?: number
-  completedRides?: number
-  averageRating?: number
-  emailVerified?: boolean
-  verificationCode?: string | null
-  preferredGender?: string | null
-  petFriendly?: boolean
-  smokeFree?: boolean
-  conversationLevel?: string | null
-  musicPreference?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastRideAt?: Date | string | null
-  requestedRides?: Prisma.RideRequestCreateNestedManyWithoutPassengerInput
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
+  City?: Prisma.CityCreateNestedOneWithoutUserInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
+  WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
 }
 
-export type UserUncheckedCreateWithoutCreatedRidesInput = {
+export type UserUncheckedCreateWithoutAIMessageInput = {
   id?: string
-  email: string
+  username: string
+  email?: string | null
   name?: string | null
-  avatarUrl?: string | null
-  googleId?: string | null
-  username?: string | null
-  role?: $Enums.UserRole
-  reputationScore?: number
-  totalRides?: number
-  completedRides?: number
-  averageRating?: number
-  emailVerified?: boolean
-  verificationCode?: string | null
-  preferredGender?: string | null
-  petFriendly?: boolean
-  smokeFree?: boolean
-  conversationLevel?: string | null
-  musicPreference?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastRideAt?: Date | string | null
-  requestedRides?: Prisma.RideRequestUncheckedCreateNestedManyWithoutPassengerInput
+  coupleId?: string | null
+  cityId?: string | null
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetUncheckedCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
+  WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
 }
 
-export type UserCreateOrConnectWithoutCreatedRidesInput = {
+export type UserCreateOrConnectWithoutAIMessageInput = {
   where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedRidesInput, Prisma.UserUncheckedCreateWithoutCreatedRidesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAIMessageInput, Prisma.UserUncheckedCreateWithoutAIMessageInput>
 }
 
-export type UserUpsertWithoutCreatedRidesInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutCreatedRidesInput, Prisma.UserUncheckedUpdateWithoutCreatedRidesInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedRidesInput, Prisma.UserUncheckedCreateWithoutCreatedRidesInput>
+export type UserUpsertWithoutAIMessageInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAIMessageInput, Prisma.UserUncheckedUpdateWithoutAIMessageInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAIMessageInput, Prisma.UserUncheckedCreateWithoutAIMessageInput>
   where?: Prisma.UserWhereInput
 }
 
-export type UserUpdateToOneWithWhereWithoutCreatedRidesInput = {
+export type UserUpdateToOneWithWhereWithoutAIMessageInput = {
   where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutCreatedRidesInput, Prisma.UserUncheckedUpdateWithoutCreatedRidesInput>
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAIMessageInput, Prisma.UserUncheckedUpdateWithoutAIMessageInput>
 }
 
-export type UserUpdateWithoutCreatedRidesInput = {
+export type UserUpdateWithoutAIMessageInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  reputationScore?: Prisma.FloatFieldUpdateOperationsInput | number
-  totalRides?: Prisma.IntFieldUpdateOperationsInput | number
-  completedRides?: Prisma.IntFieldUpdateOperationsInput | number
-  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  verificationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  preferredGender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  petFriendly?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  smokeFree?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  conversationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  musicPreference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastRideAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  requestedRides?: Prisma.RideRequestUpdateManyWithoutPassengerNestedInput
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
+  City?: Prisma.CityUpdateOneWithoutUserNestedInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
+  WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
 }
 
-export type UserUncheckedUpdateWithoutCreatedRidesInput = {
+export type UserUncheckedUpdateWithoutAIMessageInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  reputationScore?: Prisma.FloatFieldUpdateOperationsInput | number
-  totalRides?: Prisma.IntFieldUpdateOperationsInput | number
-  completedRides?: Prisma.IntFieldUpdateOperationsInput | number
-  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  verificationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  preferredGender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  petFriendly?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  smokeFree?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  conversationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  musicPreference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastRideAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  requestedRides?: Prisma.RideRequestUncheckedUpdateManyWithoutPassengerNestedInput
+  coupleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUncheckedUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
+  WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
 }
 
-export type UserCreateWithoutRequestedRidesInput = {
+export type UserCreateWithoutAssessmentResponseInput = {
   id?: string
-  email: string
+  username: string
+  email?: string | null
   name?: string | null
-  avatarUrl?: string | null
-  googleId?: string | null
-  username?: string | null
-  role?: $Enums.UserRole
-  reputationScore?: number
-  totalRides?: number
-  completedRides?: number
-  averageRating?: number
-  emailVerified?: boolean
-  verificationCode?: string | null
-  preferredGender?: string | null
-  petFriendly?: boolean
-  smokeFree?: boolean
-  conversationLevel?: string | null
-  musicPreference?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastRideAt?: Date | string | null
-  createdRides?: Prisma.RideCreateNestedManyWithoutDriverInput
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
+  City?: Prisma.CityCreateNestedOneWithoutUserInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
+  WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
 }
 
-export type UserUncheckedCreateWithoutRequestedRidesInput = {
+export type UserUncheckedCreateWithoutAssessmentResponseInput = {
   id?: string
-  email: string
+  username: string
+  email?: string | null
   name?: string | null
-  avatarUrl?: string | null
-  googleId?: string | null
-  username?: string | null
-  role?: $Enums.UserRole
-  reputationScore?: number
-  totalRides?: number
-  completedRides?: number
-  averageRating?: number
-  emailVerified?: boolean
-  verificationCode?: string | null
-  preferredGender?: string | null
-  petFriendly?: boolean
-  smokeFree?: boolean
-  conversationLevel?: string | null
-  musicPreference?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastRideAt?: Date | string | null
-  createdRides?: Prisma.RideUncheckedCreateNestedManyWithoutDriverInput
+  coupleId?: string | null
+  cityId?: string | null
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetUncheckedCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
+  WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
 }
 
-export type UserCreateOrConnectWithoutRequestedRidesInput = {
+export type UserCreateOrConnectWithoutAssessmentResponseInput = {
   where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutRequestedRidesInput, Prisma.UserUncheckedCreateWithoutRequestedRidesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAssessmentResponseInput, Prisma.UserUncheckedCreateWithoutAssessmentResponseInput>
 }
 
-export type UserUpsertWithoutRequestedRidesInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutRequestedRidesInput, Prisma.UserUncheckedUpdateWithoutRequestedRidesInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutRequestedRidesInput, Prisma.UserUncheckedCreateWithoutRequestedRidesInput>
+export type UserUpsertWithoutAssessmentResponseInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAssessmentResponseInput, Prisma.UserUncheckedUpdateWithoutAssessmentResponseInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAssessmentResponseInput, Prisma.UserUncheckedCreateWithoutAssessmentResponseInput>
   where?: Prisma.UserWhereInput
 }
 
-export type UserUpdateToOneWithWhereWithoutRequestedRidesInput = {
+export type UserUpdateToOneWithWhereWithoutAssessmentResponseInput = {
   where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutRequestedRidesInput, Prisma.UserUncheckedUpdateWithoutRequestedRidesInput>
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAssessmentResponseInput, Prisma.UserUncheckedUpdateWithoutAssessmentResponseInput>
 }
 
-export type UserUpdateWithoutRequestedRidesInput = {
+export type UserUpdateWithoutAssessmentResponseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  reputationScore?: Prisma.FloatFieldUpdateOperationsInput | number
-  totalRides?: Prisma.IntFieldUpdateOperationsInput | number
-  completedRides?: Prisma.IntFieldUpdateOperationsInput | number
-  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  verificationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  preferredGender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  petFriendly?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  smokeFree?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  conversationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  musicPreference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastRideAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdRides?: Prisma.RideUpdateManyWithoutDriverNestedInput
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
+  City?: Prisma.CityUpdateOneWithoutUserNestedInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
+  WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
 }
 
-export type UserUncheckedUpdateWithoutRequestedRidesInput = {
+export type UserUncheckedUpdateWithoutAssessmentResponseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  reputationScore?: Prisma.FloatFieldUpdateOperationsInput | number
-  totalRides?: Prisma.IntFieldUpdateOperationsInput | number
-  completedRides?: Prisma.IntFieldUpdateOperationsInput | number
-  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  verificationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  preferredGender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  petFriendly?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  smokeFree?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  conversationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  musicPreference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastRideAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdRides?: Prisma.RideUncheckedUpdateManyWithoutDriverNestedInput
+  coupleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUncheckedUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
+  WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutAstroProfileInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
+  Bouquet?: Prisma.BouquetCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
+  City?: Prisma.CityCreateNestedOneWithoutUserInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
+  WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutAstroProfileInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  coupleId?: string | null
+  cityId?: string | null
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
+  Bouquet?: Prisma.BouquetUncheckedCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
+  WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutAstroProfileInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAstroProfileInput, Prisma.UserUncheckedCreateWithoutAstroProfileInput>
+}
+
+export type UserUpsertWithoutAstroProfileInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAstroProfileInput, Prisma.UserUncheckedUpdateWithoutAstroProfileInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAstroProfileInput, Prisma.UserUncheckedCreateWithoutAstroProfileInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAstroProfileInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAstroProfileInput, Prisma.UserUncheckedUpdateWithoutAstroProfileInput>
+}
+
+export type UserUpdateWithoutAstroProfileInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
+  City?: Prisma.CityUpdateOneWithoutUserNestedInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
+  WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAstroProfileInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  coupleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUncheckedUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
+  WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutBouquetInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
+  City?: Prisma.CityCreateNestedOneWithoutUserInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
+  WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutBouquetInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  coupleId?: string | null
+  cityId?: string | null
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
+  WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutBouquetInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutBouquetInput, Prisma.UserUncheckedCreateWithoutBouquetInput>
+}
+
+export type UserUpsertWithoutBouquetInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutBouquetInput, Prisma.UserUncheckedUpdateWithoutBouquetInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutBouquetInput, Prisma.UserUncheckedCreateWithoutBouquetInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutBouquetInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutBouquetInput, Prisma.UserUncheckedUpdateWithoutBouquetInput>
+}
+
+export type UserUpdateWithoutBouquetInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
+  City?: Prisma.CityUpdateOneWithoutUserNestedInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
+  WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutBouquetInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  coupleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
+  WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutChallengeCompletionInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
+  City?: Prisma.CityCreateNestedOneWithoutUserInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
+  WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutChallengeCompletionInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  coupleId?: string | null
+  cityId?: string | null
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetUncheckedCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
+  WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutChallengeCompletionInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutChallengeCompletionInput, Prisma.UserUncheckedCreateWithoutChallengeCompletionInput>
+}
+
+export type UserUpsertWithoutChallengeCompletionInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutChallengeCompletionInput, Prisma.UserUncheckedUpdateWithoutChallengeCompletionInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutChallengeCompletionInput, Prisma.UserUncheckedCreateWithoutChallengeCompletionInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutChallengeCompletionInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutChallengeCompletionInput, Prisma.UserUncheckedUpdateWithoutChallengeCompletionInput>
+}
+
+export type UserUpdateWithoutChallengeCompletionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
+  City?: Prisma.CityUpdateOneWithoutUserNestedInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
+  WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutChallengeCompletionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  coupleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUncheckedUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
+  WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutCityInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
+  WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutCityInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  coupleId?: string | null
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetUncheckedCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
+  WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutCityInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCityInput, Prisma.UserUncheckedCreateWithoutCityInput>
+}
+
+export type UserCreateManyCityInputEnvelope = {
+  data: Prisma.UserCreateManyCityInput | Prisma.UserCreateManyCityInput[]
+  skipDuplicates?: boolean
+}
+
+export type UserUpsertWithWhereUniqueWithoutCityInput = {
+  where: Prisma.UserWhereUniqueInput
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCityInput, Prisma.UserUncheckedUpdateWithoutCityInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCityInput, Prisma.UserUncheckedCreateWithoutCityInput>
+}
+
+export type UserUpdateWithWhereUniqueWithoutCityInput = {
+  where: Prisma.UserWhereUniqueInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCityInput, Prisma.UserUncheckedUpdateWithoutCityInput>
+}
+
+export type UserUpdateManyWithWhereWithoutCityInput = {
+  where: Prisma.UserScalarWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateManyMutationInput, Prisma.UserUncheckedUpdateManyWithoutCityInput>
+}
+
+export type UserScalarWhereInput = {
+  AND?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+  OR?: Prisma.UserScalarWhereInput[]
+  NOT?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+  id?: Prisma.StringFilter<"User"> | string
+  username?: Prisma.StringFilter<"User"> | string
+  email?: Prisma.StringNullableFilter<"User"> | string | null
+  name?: Prisma.StringNullableFilter<"User"> | string | null
+  passwordHash?: Prisma.StringNullableFilter<"User"> | string | null
+  image?: Prisma.StringNullableFilter<"User"> | string | null
+  emailVerified?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  dateOfBirth?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  zodiacSign?: Prisma.StringNullableFilter<"User"> | string | null
+  chineseZodiac?: Prisma.StringNullableFilter<"User"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  coupleId?: Prisma.StringNullableFilter<"User"> | string | null
+  cityId?: Prisma.StringNullableFilter<"User"> | string | null
+  pushEnabled?: Prisma.BoolFilter<"User"> | boolean
+  emailEnabled?: Prisma.BoolFilter<"User"> | boolean
+  weeklyPulseReminder?: Prisma.BoolFilter<"User"> | boolean
+  challengeReminder?: Prisma.BoolFilter<"User"> | boolean
+}
+
+export type UserCreateWithoutConsentLogInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
+  City?: Prisma.CityCreateNestedOneWithoutUserInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
+  WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutConsentLogInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  coupleId?: string | null
+  cityId?: string | null
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetUncheckedCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
+  WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutConsentLogInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutConsentLogInput, Prisma.UserUncheckedCreateWithoutConsentLogInput>
+}
+
+export type UserUpsertWithoutConsentLogInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutConsentLogInput, Prisma.UserUncheckedUpdateWithoutConsentLogInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutConsentLogInput, Prisma.UserUncheckedCreateWithoutConsentLogInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutConsentLogInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutConsentLogInput, Prisma.UserUncheckedUpdateWithoutConsentLogInput>
+}
+
+export type UserUpdateWithoutConsentLogInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
+  City?: Prisma.CityUpdateOneWithoutUserNestedInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
+  WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutConsentLogInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  coupleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUncheckedUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
+  WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutCouple_Couple_partnerAIdToUserInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
+  City?: Prisma.CityCreateNestedOneWithoutUserInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
+  WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutCouple_Couple_partnerAIdToUserInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  coupleId?: string | null
+  cityId?: string | null
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetUncheckedCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
+  WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutCouple_Couple_partnerAIdToUserInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCouple_Couple_partnerAIdToUserInput, Prisma.UserUncheckedCreateWithoutCouple_Couple_partnerAIdToUserInput>
+}
+
+export type UserCreateWithoutCouple_Couple_partnerBIdToUserInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
+  City?: Prisma.CityCreateNestedOneWithoutUserInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
+  WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutCouple_Couple_partnerBIdToUserInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  coupleId?: string | null
+  cityId?: string | null
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetUncheckedCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
+  WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutCouple_Couple_partnerBIdToUserInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCouple_Couple_partnerBIdToUserInput, Prisma.UserUncheckedCreateWithoutCouple_Couple_partnerBIdToUserInput>
+}
+
+export type UserCreateWithoutCouple_User_coupleIdToCoupleInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
+  City?: Prisma.CityCreateNestedOneWithoutUserInput
+  WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutCouple_User_coupleIdToCoupleInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  cityId?: string | null
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetUncheckedCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
+  WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutCouple_User_coupleIdToCoupleInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCouple_User_coupleIdToCoupleInput, Prisma.UserUncheckedCreateWithoutCouple_User_coupleIdToCoupleInput>
+}
+
+export type UserUpsertWithoutCouple_Couple_partnerAIdToUserInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCouple_Couple_partnerAIdToUserInput, Prisma.UserUncheckedUpdateWithoutCouple_Couple_partnerAIdToUserInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCouple_Couple_partnerAIdToUserInput, Prisma.UserUncheckedCreateWithoutCouple_Couple_partnerAIdToUserInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCouple_Couple_partnerAIdToUserInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCouple_Couple_partnerAIdToUserInput, Prisma.UserUncheckedUpdateWithoutCouple_Couple_partnerAIdToUserInput>
+}
+
+export type UserUpdateWithoutCouple_Couple_partnerAIdToUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
+  City?: Prisma.CityUpdateOneWithoutUserNestedInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
+  WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCouple_Couple_partnerAIdToUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  coupleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUncheckedUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
+  WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserUpsertWithoutCouple_Couple_partnerBIdToUserInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCouple_Couple_partnerBIdToUserInput, Prisma.UserUncheckedUpdateWithoutCouple_Couple_partnerBIdToUserInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCouple_Couple_partnerBIdToUserInput, Prisma.UserUncheckedCreateWithoutCouple_Couple_partnerBIdToUserInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCouple_Couple_partnerBIdToUserInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCouple_Couple_partnerBIdToUserInput, Prisma.UserUncheckedUpdateWithoutCouple_Couple_partnerBIdToUserInput>
+}
+
+export type UserUpdateWithoutCouple_Couple_partnerBIdToUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
+  City?: Prisma.CityUpdateOneWithoutUserNestedInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
+  WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCouple_Couple_partnerBIdToUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  coupleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUncheckedUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
+  WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserUpsertWithoutCouple_User_coupleIdToCoupleInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCouple_User_coupleIdToCoupleInput, Prisma.UserUncheckedUpdateWithoutCouple_User_coupleIdToCoupleInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCouple_User_coupleIdToCoupleInput, Prisma.UserUncheckedCreateWithoutCouple_User_coupleIdToCoupleInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCouple_User_coupleIdToCoupleInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCouple_User_coupleIdToCoupleInput, Prisma.UserUncheckedUpdateWithoutCouple_User_coupleIdToCoupleInput>
+}
+
+export type UserUpdateWithoutCouple_User_coupleIdToCoupleInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
+  City?: Prisma.CityUpdateOneWithoutUserNestedInput
+  WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCouple_User_coupleIdToCoupleInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  cityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUncheckedUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
+  WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
+  City?: Prisma.CityCreateNestedOneWithoutUserInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
+  WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  coupleId?: string | null
+  cityId?: string | null
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetUncheckedCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
+  WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserInput, Prisma.UserUncheckedCreateWithoutCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserInput>
+}
+
+export type UserCreateWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
+  City?: Prisma.CityCreateNestedOneWithoutUserInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
+  WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  coupleId?: string | null
+  cityId?: string | null
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetUncheckedCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
+  WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserInput, Prisma.UserUncheckedCreateWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserInput>
+}
+
+export type UserUpsertWithoutCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserInput, Prisma.UserUncheckedUpdateWithoutCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserInput, Prisma.UserUncheckedCreateWithoutCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserInput, Prisma.UserUncheckedUpdateWithoutCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserInput>
+}
+
+export type UserUpdateWithoutCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
+  City?: Prisma.CityUpdateOneWithoutUserNestedInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
+  WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  coupleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUncheckedUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
+  WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserUpsertWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserInput, Prisma.UserUncheckedUpdateWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserInput, Prisma.UserUncheckedCreateWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserInput, Prisma.UserUncheckedUpdateWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserInput>
+}
+
+export type UserUpdateWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
+  City?: Prisma.CityUpdateOneWithoutUserNestedInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
+  WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  coupleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUncheckedUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
+  WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutFlowerInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
+  City?: Prisma.CityCreateNestedOneWithoutUserInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
+  WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutFlowerInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  coupleId?: string | null
+  cityId?: string | null
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetUncheckedCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
+  WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutFlowerInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutFlowerInput, Prisma.UserUncheckedCreateWithoutFlowerInput>
+}
+
+export type UserUpsertWithWhereUniqueWithoutFlowerInput = {
+  where: Prisma.UserWhereUniqueInput
+  update: Prisma.XOR<Prisma.UserUpdateWithoutFlowerInput, Prisma.UserUncheckedUpdateWithoutFlowerInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutFlowerInput, Prisma.UserUncheckedCreateWithoutFlowerInput>
+}
+
+export type UserUpdateWithWhereUniqueWithoutFlowerInput = {
+  where: Prisma.UserWhereUniqueInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutFlowerInput, Prisma.UserUncheckedUpdateWithoutFlowerInput>
+}
+
+export type UserUpdateManyWithWhereWithoutFlowerInput = {
+  where: Prisma.UserScalarWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateManyMutationInput, Prisma.UserUncheckedUpdateManyWithoutFlowerInput>
+}
+
+export type UserCreateWithoutMoodStatusInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
+  City?: Prisma.CityCreateNestedOneWithoutUserInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
+  WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutMoodStatusInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  coupleId?: string | null
+  cityId?: string | null
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetUncheckedCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
+  WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutMoodStatusInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutMoodStatusInput, Prisma.UserUncheckedCreateWithoutMoodStatusInput>
+}
+
+export type UserUpsertWithoutMoodStatusInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutMoodStatusInput, Prisma.UserUncheckedUpdateWithoutMoodStatusInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutMoodStatusInput, Prisma.UserUncheckedCreateWithoutMoodStatusInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutMoodStatusInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutMoodStatusInput, Prisma.UserUncheckedUpdateWithoutMoodStatusInput>
+}
+
+export type UserUpdateWithoutMoodStatusInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
+  City?: Prisma.CityUpdateOneWithoutUserNestedInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
+  WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutMoodStatusInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  coupleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUncheckedUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
+  WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutPulseCheckinInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
+  City?: Prisma.CityCreateNestedOneWithoutUserInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
+  WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutPulseCheckinInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  coupleId?: string | null
+  cityId?: string | null
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetUncheckedCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
+  WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutPulseCheckinInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPulseCheckinInput, Prisma.UserUncheckedCreateWithoutPulseCheckinInput>
+}
+
+export type UserUpsertWithoutPulseCheckinInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPulseCheckinInput, Prisma.UserUncheckedUpdateWithoutPulseCheckinInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPulseCheckinInput, Prisma.UserUncheckedCreateWithoutPulseCheckinInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPulseCheckinInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPulseCheckinInput, Prisma.UserUncheckedUpdateWithoutPulseCheckinInput>
+}
+
+export type UserUpdateWithoutPulseCheckinInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
+  City?: Prisma.CityUpdateOneWithoutUserNestedInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
+  WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPulseCheckinInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  coupleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUncheckedUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
+  WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutPushSubscriptionInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
+  City?: Prisma.CityCreateNestedOneWithoutUserInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
+  WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutPushSubscriptionInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  coupleId?: string | null
+  cityId?: string | null
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetUncheckedCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
+  WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutPushSubscriptionInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPushSubscriptionInput, Prisma.UserUncheckedCreateWithoutPushSubscriptionInput>
+}
+
+export type UserUpsertWithoutPushSubscriptionInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPushSubscriptionInput, Prisma.UserUncheckedUpdateWithoutPushSubscriptionInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPushSubscriptionInput, Prisma.UserUncheckedCreateWithoutPushSubscriptionInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPushSubscriptionInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPushSubscriptionInput, Prisma.UserUncheckedUpdateWithoutPushSubscriptionInput>
+}
+
+export type UserUpdateWithoutPushSubscriptionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
+  City?: Prisma.CityUpdateOneWithoutUserNestedInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
+  WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPushSubscriptionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  coupleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUncheckedUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
+  WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutSmallCravingInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  City?: Prisma.CityCreateNestedOneWithoutUserInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
+  WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutSmallCravingInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  coupleId?: string | null
+  cityId?: string | null
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetUncheckedCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutSmallCravingInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSmallCravingInput, Prisma.UserUncheckedCreateWithoutSmallCravingInput>
+}
+
+export type UserUpsertWithoutSmallCravingInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSmallCravingInput, Prisma.UserUncheckedUpdateWithoutSmallCravingInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSmallCravingInput, Prisma.UserUncheckedCreateWithoutSmallCravingInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSmallCravingInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSmallCravingInput, Prisma.UserUncheckedUpdateWithoutSmallCravingInput>
+}
+
+export type UserUpdateWithoutSmallCravingInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  City?: Prisma.CityUpdateOneWithoutUserNestedInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
+  WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSmallCravingInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  coupleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUncheckedUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutWishlistItemInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
+  City?: Prisma.CityCreateNestedOneWithoutUserInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
+  Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutWishlistItemInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  coupleId?: string | null
+  cityId?: string | null
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetUncheckedCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutWishlistItemInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutWishlistItemInput, Prisma.UserUncheckedCreateWithoutWishlistItemInput>
+}
+
+export type UserUpsertWithoutWishlistItemInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutWishlistItemInput, Prisma.UserUncheckedUpdateWithoutWishlistItemInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutWishlistItemInput, Prisma.UserUncheckedCreateWithoutWishlistItemInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutWishlistItemInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutWishlistItemInput, Prisma.UserUncheckedUpdateWithoutWishlistItemInput>
+}
+
+export type UserUpdateWithoutWishlistItemInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
+  City?: Prisma.CityUpdateOneWithoutUserNestedInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
+  Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutWishlistItemInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  coupleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUncheckedUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateManyCityInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  coupleId?: string | null
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+}
+
+export type UserUpdateWithoutCityInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
+  WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCityInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  coupleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUncheckedUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
+  WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateManyWithoutCityInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  coupleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+}
+
+export type UserUpdateWithoutFlowerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
+  City?: Prisma.CityUpdateOneWithoutUserNestedInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
+  WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutFlowerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  coupleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUncheckedUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
+  WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateManyWithoutFlowerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  coupleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 
@@ -1044,13 +4057,33 @@ export type UserUncheckedUpdateWithoutRequestedRidesInput = {
  */
 
 export type UserCountOutputType = {
-  createdRides: number
-  requestedRides: number
+  AIMessage: number
+  AssessmentResponse: number
+  Bouquet: number
+  ChallengeCompletion: number
+  ConsentLog: number
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser: number
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser: number
+  PulseCheckin: number
+  PushSubscription: number
+  SmallCraving: number
+  WishlistItem: number
+  Flower: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  createdRides?: boolean | UserCountOutputTypeCountCreatedRidesArgs
-  requestedRides?: boolean | UserCountOutputTypeCountRequestedRidesArgs
+  AIMessage?: boolean | UserCountOutputTypeCountAIMessageArgs
+  AssessmentResponse?: boolean | UserCountOutputTypeCountAssessmentResponseArgs
+  Bouquet?: boolean | UserCountOutputTypeCountBouquetArgs
+  ChallengeCompletion?: boolean | UserCountOutputTypeCountChallengeCompletionArgs
+  ConsentLog?: boolean | UserCountOutputTypeCountConsentLogArgs
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: boolean | UserCountOutputTypeCountCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserArgs
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: boolean | UserCountOutputTypeCountCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserArgs
+  PulseCheckin?: boolean | UserCountOutputTypeCountPulseCheckinArgs
+  PushSubscription?: boolean | UserCountOutputTypeCountPushSubscriptionArgs
+  SmallCraving?: boolean | UserCountOutputTypeCountSmallCravingArgs
+  WishlistItem?: boolean | UserCountOutputTypeCountWishlistItemArgs
+  Flower?: boolean | UserCountOutputTypeCountFlowerArgs
 }
 
 /**
@@ -1066,154 +4099,267 @@ export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountCreatedRidesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.RideWhereInput
+export type UserCountOutputTypeCountAIMessageArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AIMessageWhereInput
 }
 
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountRequestedRidesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.RideRequestWhereInput
+export type UserCountOutputTypeCountAssessmentResponseArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AssessmentResponseWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountBouquetArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BouquetWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountChallengeCompletionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ChallengeCompletionWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountConsentLogArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ConsentLogWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CoupleLinkRequestWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CoupleLinkRequestWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPulseCheckinArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PulseCheckinWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPushSubscriptionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PushSubscriptionWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSmallCravingArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SmallCravingWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountWishlistItemArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.WishlistItemWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountFlowerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FlowerWhereInput
 }
 
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  username?: boolean
   email?: boolean
   name?: boolean
-  avatarUrl?: boolean
-  googleId?: boolean
-  username?: boolean
-  role?: boolean
-  reputationScore?: boolean
-  totalRides?: boolean
-  completedRides?: boolean
-  averageRating?: boolean
+  passwordHash?: boolean
+  image?: boolean
   emailVerified?: boolean
-  verificationCode?: boolean
-  preferredGender?: boolean
-  petFriendly?: boolean
-  smokeFree?: boolean
-  conversationLevel?: boolean
-  musicPreference?: boolean
+  dateOfBirth?: boolean
+  zodiacSign?: boolean
+  chineseZodiac?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  lastRideAt?: boolean
-  createdRides?: boolean | Prisma.User$createdRidesArgs<ExtArgs>
-  requestedRides?: boolean | Prisma.User$requestedRidesArgs<ExtArgs>
+  coupleId?: boolean
+  cityId?: boolean
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: boolean | Prisma.User$AIMessageArgs<ExtArgs>
+  AssessmentResponse?: boolean | Prisma.User$AssessmentResponseArgs<ExtArgs>
+  AstroProfile?: boolean | Prisma.User$AstroProfileArgs<ExtArgs>
+  Bouquet?: boolean | Prisma.User$BouquetArgs<ExtArgs>
+  ChallengeCompletion?: boolean | Prisma.User$ChallengeCompletionArgs<ExtArgs>
+  ConsentLog?: boolean | Prisma.User$ConsentLogArgs<ExtArgs>
+  Couple_Couple_partnerAIdToUser?: boolean | Prisma.User$Couple_Couple_partnerAIdToUserArgs<ExtArgs>
+  Couple_Couple_partnerBIdToUser?: boolean | Prisma.User$Couple_Couple_partnerBIdToUserArgs<ExtArgs>
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: boolean | Prisma.User$CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserArgs<ExtArgs>
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: boolean | Prisma.User$CoupleLinkRequest_CoupleLinkRequest_toUserIdToUserArgs<ExtArgs>
+  MoodStatus?: boolean | Prisma.User$MoodStatusArgs<ExtArgs>
+  PulseCheckin?: boolean | Prisma.User$PulseCheckinArgs<ExtArgs>
+  PushSubscription?: boolean | Prisma.User$PushSubscriptionArgs<ExtArgs>
+  SmallCraving?: boolean | Prisma.User$SmallCravingArgs<ExtArgs>
+  City?: boolean | Prisma.User$CityArgs<ExtArgs>
+  Couple_User_coupleIdToCouple?: boolean | Prisma.User$Couple_User_coupleIdToCoupleArgs<ExtArgs>
+  WishlistItem?: boolean | Prisma.User$WishlistItemArgs<ExtArgs>
+  Flower?: boolean | Prisma.User$FlowerArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  username?: boolean
   email?: boolean
   name?: boolean
-  avatarUrl?: boolean
-  googleId?: boolean
-  username?: boolean
-  role?: boolean
-  reputationScore?: boolean
-  totalRides?: boolean
-  completedRides?: boolean
-  averageRating?: boolean
+  passwordHash?: boolean
+  image?: boolean
   emailVerified?: boolean
-  verificationCode?: boolean
-  preferredGender?: boolean
-  petFriendly?: boolean
-  smokeFree?: boolean
-  conversationLevel?: boolean
-  musicPreference?: boolean
+  dateOfBirth?: boolean
+  zodiacSign?: boolean
+  chineseZodiac?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  lastRideAt?: boolean
+  coupleId?: boolean
+  cityId?: boolean
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  City?: boolean | Prisma.User$CityArgs<ExtArgs>
+  Couple_User_coupleIdToCouple?: boolean | Prisma.User$Couple_User_coupleIdToCoupleArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  username?: boolean
   email?: boolean
   name?: boolean
-  avatarUrl?: boolean
-  googleId?: boolean
-  username?: boolean
-  role?: boolean
-  reputationScore?: boolean
-  totalRides?: boolean
-  completedRides?: boolean
-  averageRating?: boolean
+  passwordHash?: boolean
+  image?: boolean
   emailVerified?: boolean
-  verificationCode?: boolean
-  preferredGender?: boolean
-  petFriendly?: boolean
-  smokeFree?: boolean
-  conversationLevel?: boolean
-  musicPreference?: boolean
+  dateOfBirth?: boolean
+  zodiacSign?: boolean
+  chineseZodiac?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  lastRideAt?: boolean
+  coupleId?: boolean
+  cityId?: boolean
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  City?: boolean | Prisma.User$CityArgs<ExtArgs>
+  Couple_User_coupleIdToCouple?: boolean | Prisma.User$Couple_User_coupleIdToCoupleArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
   id?: boolean
+  username?: boolean
   email?: boolean
   name?: boolean
-  avatarUrl?: boolean
-  googleId?: boolean
-  username?: boolean
-  role?: boolean
-  reputationScore?: boolean
-  totalRides?: boolean
-  completedRides?: boolean
-  averageRating?: boolean
+  passwordHash?: boolean
+  image?: boolean
   emailVerified?: boolean
-  verificationCode?: boolean
-  preferredGender?: boolean
-  petFriendly?: boolean
-  smokeFree?: boolean
-  conversationLevel?: boolean
-  musicPreference?: boolean
+  dateOfBirth?: boolean
+  zodiacSign?: boolean
+  chineseZodiac?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  lastRideAt?: boolean
+  coupleId?: boolean
+  cityId?: boolean
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "name" | "avatarUrl" | "googleId" | "username" | "role" | "reputationScore" | "totalRides" | "completedRides" | "averageRating" | "emailVerified" | "verificationCode" | "preferredGender" | "petFriendly" | "smokeFree" | "conversationLevel" | "musicPreference" | "createdAt" | "updatedAt" | "lastRideAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "username" | "email" | "name" | "passwordHash" | "image" | "emailVerified" | "dateOfBirth" | "zodiacSign" | "chineseZodiac" | "createdAt" | "updatedAt" | "coupleId" | "cityId" | "pushEnabled" | "emailEnabled" | "weeklyPulseReminder" | "challengeReminder", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  createdRides?: boolean | Prisma.User$createdRidesArgs<ExtArgs>
-  requestedRides?: boolean | Prisma.User$requestedRidesArgs<ExtArgs>
+  AIMessage?: boolean | Prisma.User$AIMessageArgs<ExtArgs>
+  AssessmentResponse?: boolean | Prisma.User$AssessmentResponseArgs<ExtArgs>
+  AstroProfile?: boolean | Prisma.User$AstroProfileArgs<ExtArgs>
+  Bouquet?: boolean | Prisma.User$BouquetArgs<ExtArgs>
+  ChallengeCompletion?: boolean | Prisma.User$ChallengeCompletionArgs<ExtArgs>
+  ConsentLog?: boolean | Prisma.User$ConsentLogArgs<ExtArgs>
+  Couple_Couple_partnerAIdToUser?: boolean | Prisma.User$Couple_Couple_partnerAIdToUserArgs<ExtArgs>
+  Couple_Couple_partnerBIdToUser?: boolean | Prisma.User$Couple_Couple_partnerBIdToUserArgs<ExtArgs>
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: boolean | Prisma.User$CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserArgs<ExtArgs>
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: boolean | Prisma.User$CoupleLinkRequest_CoupleLinkRequest_toUserIdToUserArgs<ExtArgs>
+  MoodStatus?: boolean | Prisma.User$MoodStatusArgs<ExtArgs>
+  PulseCheckin?: boolean | Prisma.User$PulseCheckinArgs<ExtArgs>
+  PushSubscription?: boolean | Prisma.User$PushSubscriptionArgs<ExtArgs>
+  SmallCraving?: boolean | Prisma.User$SmallCravingArgs<ExtArgs>
+  City?: boolean | Prisma.User$CityArgs<ExtArgs>
+  Couple_User_coupleIdToCouple?: boolean | Prisma.User$Couple_User_coupleIdToCoupleArgs<ExtArgs>
+  WishlistItem?: boolean | Prisma.User$WishlistItemArgs<ExtArgs>
+  Flower?: boolean | Prisma.User$FlowerArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  City?: boolean | Prisma.User$CityArgs<ExtArgs>
+  Couple_User_coupleIdToCouple?: boolean | Prisma.User$Couple_User_coupleIdToCoupleArgs<ExtArgs>
+}
+export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  City?: boolean | Prisma.User$CityArgs<ExtArgs>
+  Couple_User_coupleIdToCouple?: boolean | Prisma.User$Couple_User_coupleIdToCoupleArgs<ExtArgs>
+}
 
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
   objects: {
-    createdRides: Prisma.$RidePayload<ExtArgs>[]
-    requestedRides: Prisma.$RideRequestPayload<ExtArgs>[]
+    AIMessage: Prisma.$AIMessagePayload<ExtArgs>[]
+    AssessmentResponse: Prisma.$AssessmentResponsePayload<ExtArgs>[]
+    AstroProfile: Prisma.$AstroProfilePayload<ExtArgs> | null
+    Bouquet: Prisma.$BouquetPayload<ExtArgs>[]
+    ChallengeCompletion: Prisma.$ChallengeCompletionPayload<ExtArgs>[]
+    ConsentLog: Prisma.$ConsentLogPayload<ExtArgs>[]
+    Couple_Couple_partnerAIdToUser: Prisma.$CouplePayload<ExtArgs> | null
+    Couple_Couple_partnerBIdToUser: Prisma.$CouplePayload<ExtArgs> | null
+    CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser: Prisma.$CoupleLinkRequestPayload<ExtArgs>[]
+    CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser: Prisma.$CoupleLinkRequestPayload<ExtArgs>[]
+    MoodStatus: Prisma.$MoodStatusPayload<ExtArgs> | null
+    PulseCheckin: Prisma.$PulseCheckinPayload<ExtArgs>[]
+    PushSubscription: Prisma.$PushSubscriptionPayload<ExtArgs>[]
+    SmallCraving: Prisma.$SmallCravingPayload<ExtArgs>[]
+    City: Prisma.$CityPayload<ExtArgs> | null
+    Couple_User_coupleIdToCouple: Prisma.$CouplePayload<ExtArgs> | null
+    WishlistItem: Prisma.$WishlistItemPayload<ExtArgs>[]
+    Flower: Prisma.$FlowerPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    email: string
+    username: string
+    email: string | null
     name: string | null
-    avatarUrl: string | null
-    googleId: string | null
-    username: string | null
-    role: $Enums.UserRole
-    reputationScore: number
-    totalRides: number
-    completedRides: number
-    averageRating: number
-    emailVerified: boolean
-    verificationCode: string | null
-    preferredGender: string | null
-    petFriendly: boolean
-    smokeFree: boolean
-    conversationLevel: string | null
-    musicPreference: string | null
+    passwordHash: string | null
+    image: string | null
+    emailVerified: Date | null
+    dateOfBirth: Date | null
+    zodiacSign: string | null
+    chineseZodiac: string | null
     createdAt: Date
     updatedAt: Date
-    lastRideAt: Date | null
+    coupleId: string | null
+    cityId: string | null
+    pushEnabled: boolean
+    emailEnabled: boolean
+    weeklyPulseReminder: boolean
+    challengeReminder: boolean
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -1608,8 +4754,24 @@ readonly fields: UserFieldRefs;
  */
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  createdRides<T extends Prisma.User$createdRidesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdRidesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RidePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  requestedRides<T extends Prisma.User$requestedRidesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$requestedRidesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RideRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  AIMessage<T extends Prisma.User$AIMessageArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$AIMessageArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AIMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  AssessmentResponse<T extends Prisma.User$AssessmentResponseArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$AssessmentResponseArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssessmentResponsePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  AstroProfile<T extends Prisma.User$AstroProfileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$AstroProfileArgs<ExtArgs>>): Prisma.Prisma__AstroProfileClient<runtime.Types.Result.GetResult<Prisma.$AstroProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  Bouquet<T extends Prisma.User$BouquetArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$BouquetArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BouquetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  ChallengeCompletion<T extends Prisma.User$ChallengeCompletionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ChallengeCompletionArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChallengeCompletionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  ConsentLog<T extends Prisma.User$ConsentLogArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ConsentLogArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConsentLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  Couple_Couple_partnerAIdToUser<T extends Prisma.User$Couple_Couple_partnerAIdToUserArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$Couple_Couple_partnerAIdToUserArgs<ExtArgs>>): Prisma.Prisma__CoupleClient<runtime.Types.Result.GetResult<Prisma.$CouplePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  Couple_Couple_partnerBIdToUser<T extends Prisma.User$Couple_Couple_partnerBIdToUserArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$Couple_Couple_partnerBIdToUserArgs<ExtArgs>>): Prisma.Prisma__CoupleClient<runtime.Types.Result.GetResult<Prisma.$CouplePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser<T extends Prisma.User$CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CoupleLinkRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser<T extends Prisma.User$CoupleLinkRequest_CoupleLinkRequest_toUserIdToUserArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$CoupleLinkRequest_CoupleLinkRequest_toUserIdToUserArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CoupleLinkRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  MoodStatus<T extends Prisma.User$MoodStatusArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$MoodStatusArgs<ExtArgs>>): Prisma.Prisma__MoodStatusClient<runtime.Types.Result.GetResult<Prisma.$MoodStatusPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  PulseCheckin<T extends Prisma.User$PulseCheckinArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$PulseCheckinArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PulseCheckinPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  PushSubscription<T extends Prisma.User$PushSubscriptionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$PushSubscriptionArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PushSubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  SmallCraving<T extends Prisma.User$SmallCravingArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$SmallCravingArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SmallCravingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  City<T extends Prisma.User$CityArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$CityArgs<ExtArgs>>): Prisma.Prisma__CityClient<runtime.Types.Result.GetResult<Prisma.$CityPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  Couple_User_coupleIdToCouple<T extends Prisma.User$Couple_User_coupleIdToCoupleArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$Couple_User_coupleIdToCoupleArgs<ExtArgs>>): Prisma.Prisma__CoupleClient<runtime.Types.Result.GetResult<Prisma.$CouplePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  WishlistItem<T extends Prisma.User$WishlistItemArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$WishlistItemArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WishlistItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  Flower<T extends Prisma.User$FlowerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$FlowerArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FlowerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1640,26 +4802,23 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
  */
 export interface UserFieldRefs {
   readonly id: Prisma.FieldRef<"User", 'String'>
+  readonly username: Prisma.FieldRef<"User", 'String'>
   readonly email: Prisma.FieldRef<"User", 'String'>
   readonly name: Prisma.FieldRef<"User", 'String'>
-  readonly avatarUrl: Prisma.FieldRef<"User", 'String'>
-  readonly googleId: Prisma.FieldRef<"User", 'String'>
-  readonly username: Prisma.FieldRef<"User", 'String'>
-  readonly role: Prisma.FieldRef<"User", 'UserRole'>
-  readonly reputationScore: Prisma.FieldRef<"User", 'Float'>
-  readonly totalRides: Prisma.FieldRef<"User", 'Int'>
-  readonly completedRides: Prisma.FieldRef<"User", 'Int'>
-  readonly averageRating: Prisma.FieldRef<"User", 'Float'>
-  readonly emailVerified: Prisma.FieldRef<"User", 'Boolean'>
-  readonly verificationCode: Prisma.FieldRef<"User", 'String'>
-  readonly preferredGender: Prisma.FieldRef<"User", 'String'>
-  readonly petFriendly: Prisma.FieldRef<"User", 'Boolean'>
-  readonly smokeFree: Prisma.FieldRef<"User", 'Boolean'>
-  readonly conversationLevel: Prisma.FieldRef<"User", 'String'>
-  readonly musicPreference: Prisma.FieldRef<"User", 'String'>
+  readonly passwordHash: Prisma.FieldRef<"User", 'String'>
+  readonly image: Prisma.FieldRef<"User", 'String'>
+  readonly emailVerified: Prisma.FieldRef<"User", 'DateTime'>
+  readonly dateOfBirth: Prisma.FieldRef<"User", 'DateTime'>
+  readonly zodiacSign: Prisma.FieldRef<"User", 'String'>
+  readonly chineseZodiac: Prisma.FieldRef<"User", 'String'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
-  readonly lastRideAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly coupleId: Prisma.FieldRef<"User", 'String'>
+  readonly cityId: Prisma.FieldRef<"User", 'String'>
+  readonly pushEnabled: Prisma.FieldRef<"User", 'Boolean'>
+  readonly emailEnabled: Prisma.FieldRef<"User", 'Boolean'>
+  readonly weeklyPulseReminder: Prisma.FieldRef<"User", 'Boolean'>
+  readonly challengeReminder: Prisma.FieldRef<"User", 'Boolean'>
 }
     
 
@@ -1914,6 +5073,10 @@ export type UserCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions
    */
   data: Prisma.UserCreateManyInput | Prisma.UserCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1984,6 +5147,10 @@ export type UserUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions
    * Limit how many Users to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -2053,51 +5220,405 @@ export type UserDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
 }
 
 /**
- * User.createdRides
+ * User.AIMessage
  */
-export type User$createdRidesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$AIMessageArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Ride
+   * Select specific fields to fetch from the AIMessage
    */
-  select?: Prisma.RideSelect<ExtArgs> | null
+  select?: Prisma.AIMessageSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Ride
+   * Omit specific fields from the AIMessage
    */
-  omit?: Prisma.RideOmit<ExtArgs> | null
+  omit?: Prisma.AIMessageOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.RideInclude<ExtArgs> | null
-  where?: Prisma.RideWhereInput
-  orderBy?: Prisma.RideOrderByWithRelationInput | Prisma.RideOrderByWithRelationInput[]
-  cursor?: Prisma.RideWhereUniqueInput
+  include?: Prisma.AIMessageInclude<ExtArgs> | null
+  where?: Prisma.AIMessageWhereInput
+  orderBy?: Prisma.AIMessageOrderByWithRelationInput | Prisma.AIMessageOrderByWithRelationInput[]
+  cursor?: Prisma.AIMessageWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.RideScalarFieldEnum | Prisma.RideScalarFieldEnum[]
+  distinct?: Prisma.AIMessageScalarFieldEnum | Prisma.AIMessageScalarFieldEnum[]
 }
 
 /**
- * User.requestedRides
+ * User.AssessmentResponse
  */
-export type User$requestedRidesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$AssessmentResponseArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the RideRequest
+   * Select specific fields to fetch from the AssessmentResponse
    */
-  select?: Prisma.RideRequestSelect<ExtArgs> | null
+  select?: Prisma.AssessmentResponseSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the RideRequest
+   * Omit specific fields from the AssessmentResponse
    */
-  omit?: Prisma.RideRequestOmit<ExtArgs> | null
+  omit?: Prisma.AssessmentResponseOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.RideRequestInclude<ExtArgs> | null
-  where?: Prisma.RideRequestWhereInput
-  orderBy?: Prisma.RideRequestOrderByWithRelationInput | Prisma.RideRequestOrderByWithRelationInput[]
-  cursor?: Prisma.RideRequestWhereUniqueInput
+  include?: Prisma.AssessmentResponseInclude<ExtArgs> | null
+  where?: Prisma.AssessmentResponseWhereInput
+  orderBy?: Prisma.AssessmentResponseOrderByWithRelationInput | Prisma.AssessmentResponseOrderByWithRelationInput[]
+  cursor?: Prisma.AssessmentResponseWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.RideRequestScalarFieldEnum | Prisma.RideRequestScalarFieldEnum[]
+  distinct?: Prisma.AssessmentResponseScalarFieldEnum | Prisma.AssessmentResponseScalarFieldEnum[]
+}
+
+/**
+ * User.AstroProfile
+ */
+export type User$AstroProfileArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AstroProfile
+   */
+  select?: Prisma.AstroProfileSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AstroProfile
+   */
+  omit?: Prisma.AstroProfileOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AstroProfileInclude<ExtArgs> | null
+  where?: Prisma.AstroProfileWhereInput
+}
+
+/**
+ * User.Bouquet
+ */
+export type User$BouquetArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Bouquet
+   */
+  select?: Prisma.BouquetSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Bouquet
+   */
+  omit?: Prisma.BouquetOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BouquetInclude<ExtArgs> | null
+  where?: Prisma.BouquetWhereInput
+  orderBy?: Prisma.BouquetOrderByWithRelationInput | Prisma.BouquetOrderByWithRelationInput[]
+  cursor?: Prisma.BouquetWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BouquetScalarFieldEnum | Prisma.BouquetScalarFieldEnum[]
+}
+
+/**
+ * User.ChallengeCompletion
+ */
+export type User$ChallengeCompletionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ChallengeCompletion
+   */
+  select?: Prisma.ChallengeCompletionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ChallengeCompletion
+   */
+  omit?: Prisma.ChallengeCompletionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ChallengeCompletionInclude<ExtArgs> | null
+  where?: Prisma.ChallengeCompletionWhereInput
+  orderBy?: Prisma.ChallengeCompletionOrderByWithRelationInput | Prisma.ChallengeCompletionOrderByWithRelationInput[]
+  cursor?: Prisma.ChallengeCompletionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ChallengeCompletionScalarFieldEnum | Prisma.ChallengeCompletionScalarFieldEnum[]
+}
+
+/**
+ * User.ConsentLog
+ */
+export type User$ConsentLogArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ConsentLog
+   */
+  select?: Prisma.ConsentLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ConsentLog
+   */
+  omit?: Prisma.ConsentLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ConsentLogInclude<ExtArgs> | null
+  where?: Prisma.ConsentLogWhereInput
+  orderBy?: Prisma.ConsentLogOrderByWithRelationInput | Prisma.ConsentLogOrderByWithRelationInput[]
+  cursor?: Prisma.ConsentLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ConsentLogScalarFieldEnum | Prisma.ConsentLogScalarFieldEnum[]
+}
+
+/**
+ * User.Couple_Couple_partnerAIdToUser
+ */
+export type User$Couple_Couple_partnerAIdToUserArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Couple
+   */
+  select?: Prisma.CoupleSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Couple
+   */
+  omit?: Prisma.CoupleOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CoupleInclude<ExtArgs> | null
+  where?: Prisma.CoupleWhereInput
+}
+
+/**
+ * User.Couple_Couple_partnerBIdToUser
+ */
+export type User$Couple_Couple_partnerBIdToUserArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Couple
+   */
+  select?: Prisma.CoupleSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Couple
+   */
+  omit?: Prisma.CoupleOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CoupleInclude<ExtArgs> | null
+  where?: Prisma.CoupleWhereInput
+}
+
+/**
+ * User.CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser
+ */
+export type User$CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CoupleLinkRequest
+   */
+  select?: Prisma.CoupleLinkRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CoupleLinkRequest
+   */
+  omit?: Prisma.CoupleLinkRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CoupleLinkRequestInclude<ExtArgs> | null
+  where?: Prisma.CoupleLinkRequestWhereInput
+  orderBy?: Prisma.CoupleLinkRequestOrderByWithRelationInput | Prisma.CoupleLinkRequestOrderByWithRelationInput[]
+  cursor?: Prisma.CoupleLinkRequestWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CoupleLinkRequestScalarFieldEnum | Prisma.CoupleLinkRequestScalarFieldEnum[]
+}
+
+/**
+ * User.CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser
+ */
+export type User$CoupleLinkRequest_CoupleLinkRequest_toUserIdToUserArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CoupleLinkRequest
+   */
+  select?: Prisma.CoupleLinkRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CoupleLinkRequest
+   */
+  omit?: Prisma.CoupleLinkRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CoupleLinkRequestInclude<ExtArgs> | null
+  where?: Prisma.CoupleLinkRequestWhereInput
+  orderBy?: Prisma.CoupleLinkRequestOrderByWithRelationInput | Prisma.CoupleLinkRequestOrderByWithRelationInput[]
+  cursor?: Prisma.CoupleLinkRequestWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CoupleLinkRequestScalarFieldEnum | Prisma.CoupleLinkRequestScalarFieldEnum[]
+}
+
+/**
+ * User.MoodStatus
+ */
+export type User$MoodStatusArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MoodStatus
+   */
+  select?: Prisma.MoodStatusSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MoodStatus
+   */
+  omit?: Prisma.MoodStatusOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MoodStatusInclude<ExtArgs> | null
+  where?: Prisma.MoodStatusWhereInput
+}
+
+/**
+ * User.PulseCheckin
+ */
+export type User$PulseCheckinArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PulseCheckin
+   */
+  select?: Prisma.PulseCheckinSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PulseCheckin
+   */
+  omit?: Prisma.PulseCheckinOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PulseCheckinInclude<ExtArgs> | null
+  where?: Prisma.PulseCheckinWhereInput
+  orderBy?: Prisma.PulseCheckinOrderByWithRelationInput | Prisma.PulseCheckinOrderByWithRelationInput[]
+  cursor?: Prisma.PulseCheckinWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PulseCheckinScalarFieldEnum | Prisma.PulseCheckinScalarFieldEnum[]
+}
+
+/**
+ * User.PushSubscription
+ */
+export type User$PushSubscriptionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PushSubscription
+   */
+  select?: Prisma.PushSubscriptionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PushSubscription
+   */
+  omit?: Prisma.PushSubscriptionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PushSubscriptionInclude<ExtArgs> | null
+  where?: Prisma.PushSubscriptionWhereInput
+  orderBy?: Prisma.PushSubscriptionOrderByWithRelationInput | Prisma.PushSubscriptionOrderByWithRelationInput[]
+  cursor?: Prisma.PushSubscriptionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PushSubscriptionScalarFieldEnum | Prisma.PushSubscriptionScalarFieldEnum[]
+}
+
+/**
+ * User.SmallCraving
+ */
+export type User$SmallCravingArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SmallCraving
+   */
+  select?: Prisma.SmallCravingSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SmallCraving
+   */
+  omit?: Prisma.SmallCravingOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SmallCravingInclude<ExtArgs> | null
+  where?: Prisma.SmallCravingWhereInput
+  orderBy?: Prisma.SmallCravingOrderByWithRelationInput | Prisma.SmallCravingOrderByWithRelationInput[]
+  cursor?: Prisma.SmallCravingWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SmallCravingScalarFieldEnum | Prisma.SmallCravingScalarFieldEnum[]
+}
+
+/**
+ * User.City
+ */
+export type User$CityArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the City
+   */
+  select?: Prisma.CitySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the City
+   */
+  omit?: Prisma.CityOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CityInclude<ExtArgs> | null
+  where?: Prisma.CityWhereInput
+}
+
+/**
+ * User.Couple_User_coupleIdToCouple
+ */
+export type User$Couple_User_coupleIdToCoupleArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Couple
+   */
+  select?: Prisma.CoupleSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Couple
+   */
+  omit?: Prisma.CoupleOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CoupleInclude<ExtArgs> | null
+  where?: Prisma.CoupleWhereInput
+}
+
+/**
+ * User.WishlistItem
+ */
+export type User$WishlistItemArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the WishlistItem
+   */
+  select?: Prisma.WishlistItemSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the WishlistItem
+   */
+  omit?: Prisma.WishlistItemOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WishlistItemInclude<ExtArgs> | null
+  where?: Prisma.WishlistItemWhereInput
+  orderBy?: Prisma.WishlistItemOrderByWithRelationInput | Prisma.WishlistItemOrderByWithRelationInput[]
+  cursor?: Prisma.WishlistItemWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.WishlistItemScalarFieldEnum | Prisma.WishlistItemScalarFieldEnum[]
+}
+
+/**
+ * User.Flower
+ */
+export type User$FlowerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Flower
+   */
+  select?: Prisma.FlowerSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Flower
+   */
+  omit?: Prisma.FlowerOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FlowerInclude<ExtArgs> | null
+  where?: Prisma.FlowerWhereInput
+  orderBy?: Prisma.FlowerOrderByWithRelationInput | Prisma.FlowerOrderByWithRelationInput[]
+  cursor?: Prisma.FlowerWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FlowerScalarFieldEnum | Prisma.FlowerScalarFieldEnum[]
 }
 
 /**

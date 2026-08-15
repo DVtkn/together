@@ -9,30 +9,82 @@
 * 🟢 You can import this file directly.
 */
 
-export const UserRole = {
-  DRIVER: 'DRIVER',
-  PASSENGER: 'PASSENGER'
-} as const
-
-export type UserRole = (typeof UserRole)[keyof typeof UserRole]
-
-
-export const RideStatus = {
+export const ChallengeStatus = {
   PENDING: 'PENDING',
-  IN_PROGRESS: 'IN_PROGRESS',
+  ACTIVE: 'ACTIVE',
   COMPLETED: 'COMPLETED',
-  CANCELLED: 'CANCELLED'
+  EXPIRED: 'EXPIRED'
 } as const
 
-export type RideStatus = (typeof RideStatus)[keyof typeof RideStatus]
+export type ChallengeStatus = (typeof ChallengeStatus)[keyof typeof ChallengeStatus]
 
 
-export const RideRequestStatus = {
+export const CoupleStatus = {
+  PENDING: 'PENDING',
+  ACTIVE: 'ACTIVE',
+  ARCHIVED: 'ARCHIVED',
+  DELETED: 'DELETED'
+} as const
+
+export type CoupleStatus = (typeof CoupleStatus)[keyof typeof CoupleStatus]
+
+
+export const CravingStatus = {
+  PENDING: 'PENDING',
+  PICKED_UP: 'PICKED_UP'
+} as const
+
+export type CravingStatus = (typeof CravingStatus)[keyof typeof CravingStatus]
+
+
+export const LinkRequestStatus = {
   PENDING: 'PENDING',
   ACCEPTED: 'ACCEPTED',
-  DECLINED: 'DECLINED',
-  COMPLETED: 'COMPLETED',
-  CANCELLED: 'CANCELLED'
+  REJECTED: 'REJECTED',
+  EXPIRED: 'EXPIRED'
 } as const
 
-export type RideRequestStatus = (typeof RideRequestStatus)[keyof typeof RideRequestStatus]
+export type LinkRequestStatus = (typeof LinkRequestStatus)[keyof typeof LinkRequestStatus]
+
+
+export const MessageRole = {
+  USER: 'USER',
+  ASSISTANT: 'ASSISTANT',
+  SYSTEM: 'SYSTEM'
+} as const
+
+export type MessageRole = (typeof MessageRole)[keyof typeof MessageRole]
+
+
+export const QuestionType = {
+  LIKERT_1_5: 'LIKERT_1_5',
+  SINGLE_CHOICE: 'SINGLE_CHOICE',
+  MULTIPLE_CHOICE: 'MULTIPLE_CHOICE',
+  TEXT: 'TEXT'
+} as const
+
+export type QuestionType = (typeof QuestionType)[keyof typeof QuestionType]
+
+
+export const VenueType = {
+  RESTAURANT: 'RESTAURANT',
+  CAFE: 'CAFE',
+  BAR: 'BAR',
+  PARK: 'PARK',
+  WALK: 'WALK',
+  MUSEUM: 'MUSEUM',
+  CINEMA: 'CINEMA',
+  SPA: 'SPA'
+} as const
+
+export type VenueType = (typeof VenueType)[keyof typeof VenueType]
+
+
+export const WishlistStatus = {
+  WANTED: 'WANTED',
+  BOUGHT: 'BOUGHT',
+  LATE: 'LATE',
+  CANCELED: 'CANCELED'
+} as const
+
+export type WishlistStatus = (typeof WishlistStatus)[keyof typeof WishlistStatus]

@@ -7,162 +7,453 @@ datasource db {
   provider = "postgresql"
 }
 
-enum UserRole {
-  DRIVER
-  PASSENGER
-}
-
 model User {
-  id                String       @id @default(cuid())
-  email             String       @unique
-  name              String?
-  avatarUrl         String?
-  googleId          String?      @unique
-  username          String?      @unique
-  role              UserRole     @default(PASSENGER)
-  reputationScore   Float        @default(0) // avg rating × 5, rounded
-  totalRides        Int          @default(0)
-  completedRides    Int          @default(0)
-  averageRating     Float        @default(0) // 1-5 stars
-  emailVerified     Boolean      @default(false)
-  verificationCode  String?
+  id                                                   String                @id @default(cuid())
+  username                                             String                @unique
+  email                                                String?               @unique
+  name                                                 String?
+  passwordHash                                         String?
+  image                                                String?
+  emailVerified                                        DateTime?
+  dateOfBirth                                          DateTime?
+  zodiacSign                                           String?
+  chineseZodiac                                        String?
+  createdAt                                            DateTime              @default(now())
+  updatedAt                                            DateTime              @updatedAt
+  coupleId                                             String?
+  cityId                                               String?
+  pushEnabled                                          Boolean               @default(false)
+  emailEnabled                                         Boolean               @default(true)
+  weeklyPulseReminder                                  Boolean               @default(true)
+  challengeReminder                                    Boolean               @default(true)
+  AIMessage                                            AIMessage[]
+  AssessmentResponse                                   AssessmentResponse[]
+  AstroProfile                                         AstroProfile?
+  Bouquet                                              Bouquet[]
+  ChallengeCompletion                                  ChallengeCompletion[]
+  ConsentLog                                           ConsentLog[]
+  Couple_Couple_partnerAIdToUser                       Couple?               @relation("Couple_partnerAIdToUser")
+  Couple_Couple_partnerBIdToUser                       Couple?               @relation("Couple_partnerBIdToUser")
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser CoupleLinkRequest[]   @relation("CoupleLinkRequest_fromUserIdToUser")
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser   CoupleLinkRequest[]   @relation("CoupleLinkRequest_toUserIdToUser")
+  MoodStatus                                           MoodStatus?
+  PulseCheckin                                         PulseCheckin[]
+  PushSubscription                                     PushSubscription[]
+  SmallCraving                                         SmallCraving[]
+  City                                                 City?                 @relation(fields: [cityId], references: [id])
+  Couple_User_coupleIdToCouple                         Couple?               @relation("User_coupleIdToCouple", fields: [coupleId], references: [id])
+  WishlistItem                                         WishlistItem[]
+  Flower                                               Flower[]              @relation("FavoriteFlowers")
 
-  // Authentication
-  passwordHash      String?      // for email/password auth
-
-  // Carpooling preferences
-  preferredGender   String?      // "male" | "female" | "any"
-  petFriendly       Boolean      @default(false)
-  smokeFree         Boolean      @default(true)
-  conversationLevel String?      // "quiet" | "chatty" | "any"
-  musicPreference   String?      // "any" | "playlist" | "podcast" | "no-music"
-
-  // Timestamps
-  createdAt         DateTime     @default(now())
-  updatedAt         DateTime     @updatedAt
-  lastRideAt        DateTime?
-
-// Relations
-  createdRides      Ride[] @relation("Driver")
-  requestedRides    RideRequest[] @relation("Passenger")
-
-  @@index([role])
-  @@index([emailVerified])
+  @@index([coupleId])
+  @@index([username])
 }
 
-model Ride {
-  id                String       @id @default(cuid())
-  driverId          String
-  driver            User         @relation("Driver", fields: [driverId], references: [id], onDelete: Cascade)
+model AIConversation {
+  id        String      @id
+  coupleId  String
+  title     String?
+  createdAt DateTime    @default(now())
+  updatedAt DateTime
+  Couple    Couple      @relation(fields: [coupleId], references: [id], onDelete: Cascade)
+  AIMessage AIMessage[]
+}
 
-  // Route details
-  origin            String       // city/area name
-  destination       String       // city/area name
-  originCoords      Json?        // {lat, lon} optional
-  destinationCoords Json?       // {lat, lon} optional
+model AIMessage {
+  id             String         @id
+  conversationId String
+  userId         String?
+  role           MessageRole
+  content        String
+  tokensInput    Int?
+  tokensOutput   Int?
+  model          String?
+  createdAt      DateTime       @default(now())
+  AIConversation AIConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  User           User?          @relation(fields: [userId], references: [id])
 
-  // Schedule
-  departureDate     DateTime     // ISO date + time
-  seatCount         Int          // total seats in car
-  availableSeats    Int          // seats still available
-  pricePerSeat      Int          // price in cents (or null for free)
-  currency          String       @default("RUB") // RUB/USD/KZT
+  @@index([conversationId])
+}
 
-  // Preferences
-  preferences       Json?        // {gender, pets, smoke, music, conversation}
-  carType           String       // "sedan" | "suv" | "hatchback" | "van" | "other"
-  carModel          String?      // e.g., "Toyota Camry 2020"
-  luggageSpace      Int          // 0-5 scale
+model Assessment {
+  id                 String               @id
+  key                String               @unique
+  title              String
+  description        String
+  version            Int                  @default(1)
+  isActive           Boolean              @default(true)
+  order              Int                  @default(0)
+  AssessmentResponse AssessmentResponse[]
+  Question           Question[]
+  CoupleReport       CoupleReport[]       @relation("ReportAssessments")
+}
 
-  // Status
-  status            RideStatus   @default(PENDING) // PENDING, IN_PROGRESS, COMPLETED, CANCELLED
-  isRoundTrip       Boolean      @default(false)
+model AssessmentResponse {
+  id           String     @id
+  userId       String
+  assessmentId String
+  questionId   String
+  answer       Json
+  answeredAt   DateTime   @default(now())
+  Assessment   Assessment @relation(fields: [assessmentId], references: [id])
+  Question     Question   @relation(fields: [questionId], references: [id])
+  User         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  // Payment
-  platformFee       Int          @default(0) // in cents, 10% of price
-  driverEarnings    Int          // in cents after fee
+  @@unique([userId, questionId])
+  @@index([assessmentId])
+  @@index([userId, assessmentId])
+}
 
-  // Metadata
-  createdAt         DateTime     @default(now())
-  updatedAt         DateTime     @updatedAt
-  cancelledAt       DateTime?
-  cancelledReason   String?
+model AstroProfile {
+  id             String           @id
+  userId         String           @unique
+  sunSign        String
+  moonSign       String
+  risingSign     String?
+  mercurySign    String
+  venusSign      String
+  marsSign       String
+  jupiterSign    String
+  saturnSign     String
+  chineseZodiac  String
+  chineseElement String
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime
+  User           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  PlanetPosition PlanetPosition[]
+}
 
-  @@index([driverId])
+model Bouquet {
+  id          String   @id
+  userId      String
+  name        String
+  flowerSlugs String[]
+  note        String?
+  createdAt   DateTime @default(now())
+  User        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Challenge {
+  id                  String                @id
+  coupleId            String
+  weekNumber          Int
+  year                Int
+  title               String
+  description         String
+  instruction         String
+  examplePhrase       String?
+  axis                String
+  difficulty          Int
+  durationMin         Int
+  status              ChallengeStatus       @default(PENDING)
+  createdAt           DateTime              @default(now())
+  completedAt         DateTime?
+  Couple              Couple                @relation(fields: [coupleId], references: [id], onDelete: Cascade)
+  ChallengeCompletion ChallengeCompletion[]
+
+  @@unique([coupleId, weekNumber, year])
+  @@index([coupleId])
+}
+
+model ChallengeCompletion {
+  id          String    @id
+  challengeId String
+  userId      String
+  completedAt DateTime  @default(now())
+  Challenge   Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+  User        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([challengeId, userId])
+}
+
+model City {
+  id       String  @id
+  slug     String  @unique
+  name     String
+  emoji    String
+  timezone String?
+  lat      Float?
+  lon      Float?
+  order    Int     @default(0)
+  User     User[]
+  Venue    Venue[]
+
+  @@index([name])
+}
+
+model ConsentLog {
+  id        String   @id
+  userId    String
+  type      String
+  accepted  Boolean  @default(true)
+  ip        String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  User      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, type])
+}
+
+model Couple {
+  id                           String           @id
+  partnerAId                   String           @unique
+  partnerBId                   String           @unique
+  status                       CoupleStatus     @default(PENDING)
+  startedAt                    DateTime?
+  createdAt                    DateTime         @default(now())
+  updatedAt                    DateTime
+  AIConversation               AIConversation[]
+  Challenge                    Challenge[]
+  User_Couple_partnerAIdToUser User             @relation("Couple_partnerAIdToUser", fields: [partnerAId], references: [id])
+  User_Couple_partnerBIdToUser User             @relation("Couple_partnerBIdToUser", fields: [partnerBId], references: [id])
+  CoupleReport                 CoupleReport[]
+  SynastryReport               SynastryReport?
+  User_User_coupleIdToCouple   User[]           @relation("User_coupleIdToCouple")
+
+  @@unique([partnerAId, partnerBId])
   @@index([status])
-  @@index([departureDate])
-  rideRequests      RideRequest[]
 }
 
-enum RideStatus {
+model CoupleLinkRequest {
+  id                                      String            @id
+  fromUserId                              String
+  toUserId                                String
+  status                                  LinkRequestStatus @default(PENDING)
+  expiresAt                               DateTime
+  createdAt                               DateTime          @default(now())
+  updatedAt                               DateTime
+  User_CoupleLinkRequest_fromUserIdToUser User              @relation("CoupleLinkRequest_fromUserIdToUser", fields: [fromUserId], references: [id])
+  User_CoupleLinkRequest_toUserIdToUser   User              @relation("CoupleLinkRequest_toUserIdToUser", fields: [toUserId], references: [id])
+
+  @@index([fromUserId, status])
+  @@index([toUserId, status])
+}
+
+model CoupleReport {
+  id                 String       @id
+  coupleId           String
+  version            Int          @default(1)
+  radarData          Json
+  strongSides        Json
+  growthAreas        Json
+  recommendations    Json
+  constellationState Json
+  astroCompatibility Json?
+  generatedAt        DateTime     @default(now())
+  basedOnAssessments String[]
+  Couple             Couple       @relation(fields: [coupleId], references: [id], onDelete: Cascade)
+  Assessment         Assessment[] @relation("ReportAssessments")
+
+  @@index([coupleId])
+}
+
+model Flower {
+  id        String  @id
+  slug      String  @unique
+  name      String
+  latinName String?
+  emoji     String
+  imageUrl  String?
+  meaning   String?
+  season    String?
+  hexColor  String?
+  order     Int     @default(0)
+  User      User[]  @relation("FavoriteFlowers")
+}
+
+model MoodStatus {
+  id        String   @id
+  userId    String   @unique
+  emoji     String
+  text      String?
+  setAt     DateTime @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+  User      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model PlanetPosition {
+  id             String       @id
+  astroProfileId String
+  planet         String
+  sign           String
+  degree         Int
+  house          Int?
+  retrograde     Boolean      @default(false)
+  createdAt      DateTime     @default(now())
+  AstroProfile   AstroProfile @relation(fields: [astroProfileId], references: [id], onDelete: Cascade)
+}
+
+model PulseCheckin {
+  id                 String   @id
+  userId             String
+  coupleId           String
+  weekNumber         Int
+  year               Int
+  closeness          Int
+  conflictResolution Int
+  missing            String?
+  createdAt          DateTime @default(now())
+  User               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, weekNumber, year])
+  @@index([coupleId, weekNumber, year])
+}
+
+model PushSubscription {
+  id             String    @id
+  userId         String
+  endpoint       String    @unique
+  keysP256dh     String
+  keysAuth       String
+  userAgent      String?
+  createdAt      DateTime  @default(now())
+  lastNotifiedAt DateTime?
+  User           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Question {
+  id                 String               @id
+  assessmentId       String
+  order              Int
+  text               String
+  type               QuestionType
+  options            Json?
+  dimension          String?
+  reverseScored      Boolean              @default(false)
+  visibleToPartner   Boolean              @default(true)
+  isRiskMarker       Boolean              @default(false)
+  AssessmentResponse AssessmentResponse[]
+  Assessment         Assessment           @relation(fields: [assessmentId], references: [id])
+}
+
+model SmallCraving {
+  id               String        @id
+  userId           String
+  item             String
+  category         String?
+  status           CravingStatus @default(PENDING)
+  pickedUpByUserId String?
+  pickedUpAt       DateTime?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime
+  User             User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model SynastryReport {
+  id                   String   @id
+  coupleId             String   @unique
+  aspects              Json
+  elementBalance       Json
+  modalityBalance      Json
+  sunMoonAspect        Json?
+  venusMarsAspect      Json?
+  mercuryMercuryAspect Json?
+  chineseCompatibility Json
+  overallScore         Int
+  generatedAt          DateTime @default(now())
+  updatedAt            DateTime
+  Couple               Couple   @relation(fields: [coupleId], references: [id], onDelete: Cascade)
+}
+
+model Venue {
+  id             String    @id
+  cityId         String
+  type           VenueType
+  name           String
+  description    String?
+  emoji          String
+  area           String?
+  address        String?
+  priceLevel     Int       @default(2)
+  romantic       Boolean   @default(false)
+  recommendation String?
+  lat            Float?
+  lon            Float?
+  order          Int       @default(0)
+  createdAt      DateTime  @default(now())
+  City           City      @relation(fields: [cityId], references: [id], onDelete: Cascade)
+
+  @@index([cityId])
+  @@index([cityId, type])
+}
+
+model WishlistItem {
+  id         String         @id
+  userId     String
+  title      String
+  link       String?
+  imageUrl   String?
+  priceRange String?
+  urgency    String?
+  status     WishlistStatus @default(WANTED)
+  giftId     String?
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime
+  User       User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+enum ChallengeStatus {
   PENDING
-  IN_PROGRESS
+  ACTIVE
   COMPLETED
-  CANCELLED
+  EXPIRED
 }
 
-model RideRequest {
-  id                String       @id @default(cuid())
-  rideId            String
-  ride              Ride          @relation(fields: [rideId], references: [id], onDelete: Cascade)
-  passengerId       String
-  passenger         User          @relation("Passenger", fields: [passengerId], references: [id], onDelete: Cascade)
-
-  // Request flow
-  status            RideRequestStatus @default(PENDING) // PENDING, ACCEPTED, DECLINED, COMPLETED, CANCELLED
-  requestedAt       DateTime       @default(now())
-  respondedAt       DateTime?      // when driver responded
-
-  // Meeting point
-  meetingPoint      String?      // optional: "city center", "train station"
-  meetingNotes      String?      // optional
-
-  // Payment (mock for MVP)
-  amountPaid        Int?         // in cents, null if not paid yet
-  paymentStatus     String?      // "pending" | "paid" | "refunded"
-
-  @@index([rideId, status])
-  @@index([passengerId, status])
+enum CoupleStatus {
+  PENDING
+  ACTIVE
+  ARCHIVED
+  DELETED
 }
 
-enum RideRequestStatus {
+enum CravingStatus {
+  PENDING
+  PICKED_UP
+}
+
+enum LinkRequestStatus {
   PENDING
   ACCEPTED
-  DECLINED
-  COMPLETED
-  CANCELLED
+  REJECTED
+  EXPIRED
 }
 
-model Review {
-  id                String       @id @default(cuid())
-  raterId           String       // user who gave rating
-  ratedId           String       // user who received rating
-  rideId            String
-
-  // Rating
-  rating            Int          // 1-5 stars
-  title             String?      // optional title
-  comment           String?      // optional review text
-
-  // Timestamps
-  createdAt         DateTime     @default(now())
-
-  @@unique([rideId, raterId]) // one review per ride per user
-  @@index([ratedId])
-  @@index([createdAt])
+enum MessageRole {
+  USER
+  ASSISTANT
+  SYSTEM
 }
 
-model CrisisResource {
-  id              String   @id @default(cuid())
-  type            String   // "emergency" | "safety" | "legal"
-  title           String
-  description     String
-  phone           String   // hotline number
-  url             String?  // resource link
-  country         String   // "RU" | "BY" | "KZ" | "UA" | "KG" | etc.
-  icon            String   // emoji or icon name
-  order           Int      @default(0)
+enum QuestionType {
+  LIKERT_1_5
+  SINGLE_CHOICE
+  MULTIPLE_CHOICE
+  TEXT
+}
 
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+enum VenueType {
+  RESTAURANT
+  CAFE
+  BAR
+  PARK
+  WALK
+  MUSEUM
+  CINEMA
+  SPA
+}
+
+enum WishlistStatus {
+  WANTED
+  BOUGHT
+  LATE
+  CANCELED
 }

@@ -52,10 +52,29 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
-  Ride: 'Ride',
-  RideRequest: 'RideRequest',
-  Review: 'Review',
-  CrisisResource: 'CrisisResource'
+  AIConversation: 'AIConversation',
+  AIMessage: 'AIMessage',
+  Assessment: 'Assessment',
+  AssessmentResponse: 'AssessmentResponse',
+  AstroProfile: 'AstroProfile',
+  Bouquet: 'Bouquet',
+  Challenge: 'Challenge',
+  ChallengeCompletion: 'ChallengeCompletion',
+  City: 'City',
+  ConsentLog: 'ConsentLog',
+  Couple: 'Couple',
+  CoupleLinkRequest: 'CoupleLinkRequest',
+  CoupleReport: 'CoupleReport',
+  Flower: 'Flower',
+  MoodStatus: 'MoodStatus',
+  PlanetPosition: 'PlanetPosition',
+  PulseCheckin: 'PulseCheckin',
+  PushSubscription: 'PushSubscription',
+  Question: 'Question',
+  SmallCraving: 'SmallCraving',
+  SynastryReport: 'SynastryReport',
+  Venue: 'Venue',
+  WishlistItem: 'WishlistItem'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -76,105 +95,368 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 
 export const UserScalarFieldEnum = {
   id: 'id',
+  username: 'username',
   email: 'email',
   name: 'name',
-  avatarUrl: 'avatarUrl',
-  googleId: 'googleId',
-  username: 'username',
-  role: 'role',
-  reputationScore: 'reputationScore',
-  totalRides: 'totalRides',
-  completedRides: 'completedRides',
-  averageRating: 'averageRating',
+  passwordHash: 'passwordHash',
+  image: 'image',
   emailVerified: 'emailVerified',
-  verificationCode: 'verificationCode',
-  preferredGender: 'preferredGender',
-  petFriendly: 'petFriendly',
-  smokeFree: 'smokeFree',
-  conversationLevel: 'conversationLevel',
-  musicPreference: 'musicPreference',
+  dateOfBirth: 'dateOfBirth',
+  zodiacSign: 'zodiacSign',
+  chineseZodiac: 'chineseZodiac',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  lastRideAt: 'lastRideAt'
+  coupleId: 'coupleId',
+  cityId: 'cityId',
+  pushEnabled: 'pushEnabled',
+  emailEnabled: 'emailEnabled',
+  weeklyPulseReminder: 'weeklyPulseReminder',
+  challengeReminder: 'challengeReminder'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
-export const RideScalarFieldEnum = {
+export const AIConversationScalarFieldEnum = {
   id: 'id',
-  driverId: 'driverId',
-  origin: 'origin',
-  destination: 'destination',
-  originCoords: 'originCoords',
-  destinationCoords: 'destinationCoords',
-  departureDate: 'departureDate',
-  seatCount: 'seatCount',
-  availableSeats: 'availableSeats',
-  pricePerSeat: 'pricePerSeat',
-  currency: 'currency',
-  preferences: 'preferences',
-  carType: 'carType',
-  carModel: 'carModel',
-  luggageSpace: 'luggageSpace',
-  status: 'status',
-  isRoundTrip: 'isRoundTrip',
-  platformFee: 'platformFee',
-  driverEarnings: 'driverEarnings',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  cancelledAt: 'cancelledAt',
-  cancelledReason: 'cancelledReason'
-} as const
-
-export type RideScalarFieldEnum = (typeof RideScalarFieldEnum)[keyof typeof RideScalarFieldEnum]
-
-
-export const RideRequestScalarFieldEnum = {
-  id: 'id',
-  rideId: 'rideId',
-  passengerId: 'passengerId',
-  status: 'status',
-  requestedAt: 'requestedAt',
-  respondedAt: 'respondedAt',
-  meetingPoint: 'meetingPoint',
-  meetingNotes: 'meetingNotes',
-  amountPaid: 'amountPaid',
-  paymentStatus: 'paymentStatus'
-} as const
-
-export type RideRequestScalarFieldEnum = (typeof RideRequestScalarFieldEnum)[keyof typeof RideRequestScalarFieldEnum]
-
-
-export const ReviewScalarFieldEnum = {
-  id: 'id',
-  raterId: 'raterId',
-  ratedId: 'ratedId',
-  rideId: 'rideId',
-  rating: 'rating',
+  coupleId: 'coupleId',
   title: 'title',
-  comment: 'comment',
-  createdAt: 'createdAt'
-} as const
-
-export type ReviewScalarFieldEnum = (typeof ReviewScalarFieldEnum)[keyof typeof ReviewScalarFieldEnum]
-
-
-export const CrisisResourceScalarFieldEnum = {
-  id: 'id',
-  type: 'type',
-  title: 'title',
-  description: 'description',
-  phone: 'phone',
-  url: 'url',
-  country: 'country',
-  icon: 'icon',
-  order: 'order',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type CrisisResourceScalarFieldEnum = (typeof CrisisResourceScalarFieldEnum)[keyof typeof CrisisResourceScalarFieldEnum]
+export type AIConversationScalarFieldEnum = (typeof AIConversationScalarFieldEnum)[keyof typeof AIConversationScalarFieldEnum]
+
+
+export const AIMessageScalarFieldEnum = {
+  id: 'id',
+  conversationId: 'conversationId',
+  userId: 'userId',
+  role: 'role',
+  content: 'content',
+  tokensInput: 'tokensInput',
+  tokensOutput: 'tokensOutput',
+  model: 'model',
+  createdAt: 'createdAt'
+} as const
+
+export type AIMessageScalarFieldEnum = (typeof AIMessageScalarFieldEnum)[keyof typeof AIMessageScalarFieldEnum]
+
+
+export const AssessmentScalarFieldEnum = {
+  id: 'id',
+  key: 'key',
+  title: 'title',
+  description: 'description',
+  version: 'version',
+  isActive: 'isActive',
+  order: 'order'
+} as const
+
+export type AssessmentScalarFieldEnum = (typeof AssessmentScalarFieldEnum)[keyof typeof AssessmentScalarFieldEnum]
+
+
+export const AssessmentResponseScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  assessmentId: 'assessmentId',
+  questionId: 'questionId',
+  answer: 'answer',
+  answeredAt: 'answeredAt'
+} as const
+
+export type AssessmentResponseScalarFieldEnum = (typeof AssessmentResponseScalarFieldEnum)[keyof typeof AssessmentResponseScalarFieldEnum]
+
+
+export const AstroProfileScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  sunSign: 'sunSign',
+  moonSign: 'moonSign',
+  risingSign: 'risingSign',
+  mercurySign: 'mercurySign',
+  venusSign: 'venusSign',
+  marsSign: 'marsSign',
+  jupiterSign: 'jupiterSign',
+  saturnSign: 'saturnSign',
+  chineseZodiac: 'chineseZodiac',
+  chineseElement: 'chineseElement',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AstroProfileScalarFieldEnum = (typeof AstroProfileScalarFieldEnum)[keyof typeof AstroProfileScalarFieldEnum]
+
+
+export const BouquetScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  name: 'name',
+  flowerSlugs: 'flowerSlugs',
+  note: 'note',
+  createdAt: 'createdAt'
+} as const
+
+export type BouquetScalarFieldEnum = (typeof BouquetScalarFieldEnum)[keyof typeof BouquetScalarFieldEnum]
+
+
+export const ChallengeScalarFieldEnum = {
+  id: 'id',
+  coupleId: 'coupleId',
+  weekNumber: 'weekNumber',
+  year: 'year',
+  title: 'title',
+  description: 'description',
+  instruction: 'instruction',
+  examplePhrase: 'examplePhrase',
+  axis: 'axis',
+  difficulty: 'difficulty',
+  durationMin: 'durationMin',
+  status: 'status',
+  createdAt: 'createdAt',
+  completedAt: 'completedAt'
+} as const
+
+export type ChallengeScalarFieldEnum = (typeof ChallengeScalarFieldEnum)[keyof typeof ChallengeScalarFieldEnum]
+
+
+export const ChallengeCompletionScalarFieldEnum = {
+  id: 'id',
+  challengeId: 'challengeId',
+  userId: 'userId',
+  completedAt: 'completedAt'
+} as const
+
+export type ChallengeCompletionScalarFieldEnum = (typeof ChallengeCompletionScalarFieldEnum)[keyof typeof ChallengeCompletionScalarFieldEnum]
+
+
+export const CityScalarFieldEnum = {
+  id: 'id',
+  slug: 'slug',
+  name: 'name',
+  emoji: 'emoji',
+  timezone: 'timezone',
+  lat: 'lat',
+  lon: 'lon',
+  order: 'order'
+} as const
+
+export type CityScalarFieldEnum = (typeof CityScalarFieldEnum)[keyof typeof CityScalarFieldEnum]
+
+
+export const ConsentLogScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  accepted: 'accepted',
+  ip: 'ip',
+  userAgent: 'userAgent',
+  createdAt: 'createdAt'
+} as const
+
+export type ConsentLogScalarFieldEnum = (typeof ConsentLogScalarFieldEnum)[keyof typeof ConsentLogScalarFieldEnum]
+
+
+export const CoupleScalarFieldEnum = {
+  id: 'id',
+  partnerAId: 'partnerAId',
+  partnerBId: 'partnerBId',
+  status: 'status',
+  startedAt: 'startedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CoupleScalarFieldEnum = (typeof CoupleScalarFieldEnum)[keyof typeof CoupleScalarFieldEnum]
+
+
+export const CoupleLinkRequestScalarFieldEnum = {
+  id: 'id',
+  fromUserId: 'fromUserId',
+  toUserId: 'toUserId',
+  status: 'status',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CoupleLinkRequestScalarFieldEnum = (typeof CoupleLinkRequestScalarFieldEnum)[keyof typeof CoupleLinkRequestScalarFieldEnum]
+
+
+export const CoupleReportScalarFieldEnum = {
+  id: 'id',
+  coupleId: 'coupleId',
+  version: 'version',
+  radarData: 'radarData',
+  strongSides: 'strongSides',
+  growthAreas: 'growthAreas',
+  recommendations: 'recommendations',
+  constellationState: 'constellationState',
+  astroCompatibility: 'astroCompatibility',
+  generatedAt: 'generatedAt',
+  basedOnAssessments: 'basedOnAssessments'
+} as const
+
+export type CoupleReportScalarFieldEnum = (typeof CoupleReportScalarFieldEnum)[keyof typeof CoupleReportScalarFieldEnum]
+
+
+export const FlowerScalarFieldEnum = {
+  id: 'id',
+  slug: 'slug',
+  name: 'name',
+  latinName: 'latinName',
+  emoji: 'emoji',
+  imageUrl: 'imageUrl',
+  meaning: 'meaning',
+  season: 'season',
+  hexColor: 'hexColor',
+  order: 'order'
+} as const
+
+export type FlowerScalarFieldEnum = (typeof FlowerScalarFieldEnum)[keyof typeof FlowerScalarFieldEnum]
+
+
+export const MoodStatusScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  emoji: 'emoji',
+  text: 'text',
+  setAt: 'setAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MoodStatusScalarFieldEnum = (typeof MoodStatusScalarFieldEnum)[keyof typeof MoodStatusScalarFieldEnum]
+
+
+export const PlanetPositionScalarFieldEnum = {
+  id: 'id',
+  astroProfileId: 'astroProfileId',
+  planet: 'planet',
+  sign: 'sign',
+  degree: 'degree',
+  house: 'house',
+  retrograde: 'retrograde',
+  createdAt: 'createdAt'
+} as const
+
+export type PlanetPositionScalarFieldEnum = (typeof PlanetPositionScalarFieldEnum)[keyof typeof PlanetPositionScalarFieldEnum]
+
+
+export const PulseCheckinScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  coupleId: 'coupleId',
+  weekNumber: 'weekNumber',
+  year: 'year',
+  closeness: 'closeness',
+  conflictResolution: 'conflictResolution',
+  missing: 'missing',
+  createdAt: 'createdAt'
+} as const
+
+export type PulseCheckinScalarFieldEnum = (typeof PulseCheckinScalarFieldEnum)[keyof typeof PulseCheckinScalarFieldEnum]
+
+
+export const PushSubscriptionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  endpoint: 'endpoint',
+  keysP256dh: 'keysP256dh',
+  keysAuth: 'keysAuth',
+  userAgent: 'userAgent',
+  createdAt: 'createdAt',
+  lastNotifiedAt: 'lastNotifiedAt'
+} as const
+
+export type PushSubscriptionScalarFieldEnum = (typeof PushSubscriptionScalarFieldEnum)[keyof typeof PushSubscriptionScalarFieldEnum]
+
+
+export const QuestionScalarFieldEnum = {
+  id: 'id',
+  assessmentId: 'assessmentId',
+  order: 'order',
+  text: 'text',
+  type: 'type',
+  options: 'options',
+  dimension: 'dimension',
+  reverseScored: 'reverseScored',
+  visibleToPartner: 'visibleToPartner',
+  isRiskMarker: 'isRiskMarker'
+} as const
+
+export type QuestionScalarFieldEnum = (typeof QuestionScalarFieldEnum)[keyof typeof QuestionScalarFieldEnum]
+
+
+export const SmallCravingScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  item: 'item',
+  category: 'category',
+  status: 'status',
+  pickedUpByUserId: 'pickedUpByUserId',
+  pickedUpAt: 'pickedUpAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SmallCravingScalarFieldEnum = (typeof SmallCravingScalarFieldEnum)[keyof typeof SmallCravingScalarFieldEnum]
+
+
+export const SynastryReportScalarFieldEnum = {
+  id: 'id',
+  coupleId: 'coupleId',
+  aspects: 'aspects',
+  elementBalance: 'elementBalance',
+  modalityBalance: 'modalityBalance',
+  sunMoonAspect: 'sunMoonAspect',
+  venusMarsAspect: 'venusMarsAspect',
+  mercuryMercuryAspect: 'mercuryMercuryAspect',
+  chineseCompatibility: 'chineseCompatibility',
+  overallScore: 'overallScore',
+  generatedAt: 'generatedAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SynastryReportScalarFieldEnum = (typeof SynastryReportScalarFieldEnum)[keyof typeof SynastryReportScalarFieldEnum]
+
+
+export const VenueScalarFieldEnum = {
+  id: 'id',
+  cityId: 'cityId',
+  type: 'type',
+  name: 'name',
+  description: 'description',
+  emoji: 'emoji',
+  area: 'area',
+  address: 'address',
+  priceLevel: 'priceLevel',
+  romantic: 'romantic',
+  recommendation: 'recommendation',
+  lat: 'lat',
+  lon: 'lon',
+  order: 'order',
+  createdAt: 'createdAt'
+} as const
+
+export type VenueScalarFieldEnum = (typeof VenueScalarFieldEnum)[keyof typeof VenueScalarFieldEnum]
+
+
+export const WishlistItemScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  title: 'title',
+  link: 'link',
+  imageUrl: 'imageUrl',
+  priceRange: 'priceRange',
+  urgency: 'urgency',
+  status: 'status',
+  giftId: 'giftId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type WishlistItemScalarFieldEnum = (typeof WishlistItemScalarFieldEnum)[keyof typeof WishlistItemScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -183,6 +465,13 @@ export const SortOrder = {
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const NullableJsonNullValueInput = {

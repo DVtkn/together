@@ -10,7 +10,7 @@ interface HeaderProps {
   variant?: 'landing' | 'dashboard'
 }
 
-function MobileMenu({ isOpen, onToggle, variant }: { isOpen: boolean; onToggle: (v: 'landing' | 'dashboard') => void; variant: 'landing' | 'dashboard' }) {
+function MobileMenu({ isOpen, onToggle, variant }: { isOpen: boolean; onToggle: () => void; variant: 'landing' | 'dashboard' }) {
   return (
     <div className="fixed inset-0 z-40 bg-slate-950/90 dark:bg-slate-900/90 backdrop-blur-sm transition-all duration-300 ease-in-out transform duration-200" onClick={onToggle} style={{ pointerEvents: isOpen ? 'all' : 'none' }}>
       <div className="flex items-center justify-center h-full">

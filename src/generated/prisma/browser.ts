@@ -23,22 +23,117 @@ export * from './enums';
  */
 export type User = Prisma.UserModel
 /**
- * Model Ride
+ * Model AIConversation
  * 
  */
-export type Ride = Prisma.RideModel
+export type AIConversation = Prisma.AIConversationModel
 /**
- * Model RideRequest
+ * Model AIMessage
  * 
  */
-export type RideRequest = Prisma.RideRequestModel
+export type AIMessage = Prisma.AIMessageModel
 /**
- * Model Review
+ * Model Assessment
  * 
  */
-export type Review = Prisma.ReviewModel
+export type Assessment = Prisma.AssessmentModel
 /**
- * Model CrisisResource
+ * Model AssessmentResponse
  * 
  */
-export type CrisisResource = Prisma.CrisisResourceModel
+export type AssessmentResponse = Prisma.AssessmentResponseModel
+/**
+ * Model AstroProfile
+ * 
+ */
+export type AstroProfile = Prisma.AstroProfileModel
+/**
+ * Model Bouquet
+ * 
+ */
+export type Bouquet = Prisma.BouquetModel
+/**
+ * Model Challenge
+ * 
+ */
+export type Challenge = Prisma.ChallengeModel
+/**
+ * Model ChallengeCompletion
+ * 
+ */
+export type ChallengeCompletion = Prisma.ChallengeCompletionModel
+/**
+ * Model City
+ * 
+ */
+export type City = Prisma.CityModel
+/**
+ * Model ConsentLog
+ * 
+ */
+export type ConsentLog = Prisma.ConsentLogModel
+/**
+ * Model Couple
+ * 
+ */
+export type Couple = Prisma.CoupleModel
+/**
+ * Model CoupleLinkRequest
+ * 
+ */
+export type CoupleLinkRequest = Prisma.CoupleLinkRequestModel
+/**
+ * Model CoupleReport
+ * 
+ */
+export type CoupleReport = Prisma.CoupleReportModel
+/**
+ * Model Flower
+ * 
+ */
+export type Flower = Prisma.FlowerModel
+/**
+ * Model MoodStatus
+ * 
+ */
+export type MoodStatus = Prisma.MoodStatusModel
+/**
+ * Model PlanetPosition
+ * 
+ */
+export type PlanetPosition = Prisma.PlanetPositionModel
+/**
+ * Model PulseCheckin
+ * 
+ */
+export type PulseCheckin = Prisma.PulseCheckinModel
+/**
+ * Model PushSubscription
+ * 
+ */
+export type PushSubscription = Prisma.PushSubscriptionModel
+/**
+ * Model Question
+ * 
+ */
+export type Question = Prisma.QuestionModel
+/**
+ * Model SmallCraving
+ * 
+ */
+export type SmallCraving = Prisma.SmallCravingModel
+/**
+ * Model SynastryReport
+ * 
+ */
+export type SynastryReport = Prisma.SynastryReportModel
+/**
+ * Model Venue
+ * 
+ */
+export type Venue = Prisma.VenueModel
+/**
+ * Model WishlistItem
+ * 
+ */
+export type WishlistItem = Prisma.WishlistItemModel
