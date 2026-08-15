@@ -13,10 +13,8 @@ if (!apiKey) {
 }
 
 // Основная модель + резервная на случай rate-limit (429) на free-модели.
-// nvidia/nemotron-3-nano-30b-a3b:free — самая быстрая free-модель (30B MoE, 3B активных, ~0.4с),
-// gemma-4-26b — запасная (медленнее, но стабильнее по ответам).
-const PRIMARY_MODEL = process.env.OPENROUTER_MODEL || "nvidia/nemotron-3-nano-30b-a3b:free"
-const FALLBACK_MODEL = process.env.OPENROUTER_FALLBACK_MODEL || "google/gemma-4-26b-a4b-it:free"
+const PRIMARY_MODEL = process.env.OPENROUTER_MODEL || "openai/gpt-oss-20b:free"
+const FALLBACK_MODEL = process.env.OPENROUTER_FALLBACK_MODEL || "nvidia/nemotron-3-nano-30b-a3b:free"
 
 interface AIProviderResult {
   ok: boolean

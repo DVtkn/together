@@ -2,7 +2,7 @@
 // Uses fetch directly to avoid openai npm package type issues
 
 export const OPENROUTER_API_BASE = process.env.OPENROUTER_API_BASE || 'https://openrouter.ai/api/v1'
-export const OPENROUTER_MODEL = process.env.OPENROUTER_MODEL || 'nvidia/nemotron-3-nano-30b-a3b:free'
+export const OPENROUTER_MODEL = process.env.OPENROUTER_MODEL || 'openai/gpt-oss-20b:free'
 
 export interface AIResponse {
   content: string
