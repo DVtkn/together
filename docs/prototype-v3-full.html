@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0F172A">
+<title>Together</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0F172A;--bg-alt:#1E293B;
+  --surface:rgba(255,255,255,.04);--surface-hover:rgba(255,255,255,.07);
+  --border:rgba(255,255,255,.08);--border-hover:rgba(139,92,246,.35);
+  --text:#F1F5F9;--text-dim:#94A3B8;--text-muted:#64748B;
+  --primary:#8B5CF6;--accent:#EC4899;
+  --success:#10B981;--warning:#F59E0B;--danger:#EF4444;
+  --grad:linear-gradient(135deg,#8B5CF6 0%,#EC4899 100%);
+  --grad-soft:linear-gradient(135deg,rgba(139,92,246,.15),rgba(236,72,153,.15));
+  --safe-b:env(safe-area-inset-bottom,0px);
+  --safe-t:env(safe-area-inset-top,0px);
+  --h:64px;
+}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased}
+.app{display:flex;flex-direction:column;height:100vh;height:100dvh;overflow:hidden;position:relative}
+
+.blob{position:fixed;border-radius:50%;filter:blur(140px);opacity:.18;pointer-events:none;z-index:0}
+.blob-1{top:-200px;right:-200px;width:600px;height:600px;background:var(--primary)}
+.blob-2{bottom:-200px;left:-200px;width:500px;height:500px;background:var(--accent)}
+
+/* ======= HEADER (desktop) ======= */
+.header{display:none;position:fixed;top:0;left:0;right:0;height:var(--h);background:rgba(15,23,42,.85);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);z-index:100;padding:0 28px}
+.header-in{max-width:1200px;margin:0 auto;height:100%;display:flex;align-items:center;gap:32px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;cursor:pointer;flex-shrink:0}
+.logo-i{width:34px;height:34px;border-radius:10px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 8px 20px rgba(139,92,246,.4)}
+
+.nav{display:flex;gap:4px;flex:1;justify-content:center;position:relative}
+.nav-item{position:relative}
+.nav-btn{padding:10px 16px;border-radius:10px;font-size:14px;font-weight:500;color:var(--text-dim);cursor:pointer;border:none;background:transparent;font-family:inherit;display:flex;align-items:center;gap:6px;transition:all .2s;white-space:nowrap}
+.nav-btn:hover{color:var(--text);background:var(--surface)}
+.nav-btn.active{color:var(--text);background:var(--surface)}
+.nav-btn.active::after{content:'';position:absolute;bottom:6px;left:50%;transform:translateX(-50%);width:16px;height:2px;background:var(--grad);border-radius:2px}
+.nav-btn .chev{font-size:10px;opacity:.5;transition:transform .2s}
+.nav-item.open .chev{transform:rotate(180deg)}
+
+/* Dropdown */
+.dropdown{position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%) translateY(-8px);background:var(--bg-alt);border:1px solid var(--border);border-radius:16px;padding:8px;min-width:220px;opacity:0;visibility:hidden;transition:all .2s;box-shadow:0 20px 40px rgba(0,0,0,.3)}
+.nav-item.open .dropdown{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+.drop-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;cursor:pointer;transition:all .15s;color:var(--text-dim);font-size:14px;font-weight:500;width:100%;text-align:left;border:none;background:transparent;font-family:inherit}
+.drop-item:hover{background:var(--surface);color:var(--text)}
+.drop-item.active{background:var(--grad-soft);color:var(--primary)}
+.drop-ic{font-size:18px;width:28px;text-align:center}
+.drop-info{display:block;font-size:11px;color:var(--text-muted);font-weight:400;margin-top:2px}
+
+.header-right{display:flex;align-items:center;gap:10px;flex-shrink:0;position:relative}
+.avatar-btn{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:100px;cursor:pointer;border:1px solid var(--border);background:var(--surface);transition:all .2s;font-family:inherit}
+.avatar-btn:hover{border-color:var(--border-hover);background:var(--surface-hover)}
+.av{width:30px;height:30px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:#fff}
+.av.partner{background:linear-gradient(135deg,#3B82F6,#8B5CF6)}
+.avatar-btn .chev{font-size:10px;opacity:.5;color:var(--text-dim);transition:transform .2s}
+.avatar-btn.open .chev{transform:rotate(180deg)}
+.avatars{display:flex}
+.avatars .av{margin-left:-6px;border:2px solid var(--bg)}
+.avatars .av:first-child{margin-left:0}
+
+.user-menu{position:absolute;top:calc(100% + 8px);right:0;background:var(--bg-alt);border:1px solid var(--border);border-radius:16px;padding:8px;min-width:220px;opacity:0;visibility:hidden;transition:all .2s;box-shadow:0 20px 40px rgba(0,0,0,.3)}
+.user-menu.open{opacity:1;visibility:visible}
+
+/* ======= TAB BAR (mobile) ======= */
+.tab-bar{display:flex;background:rgba(15,23,42,.95);backdrop-filter:blur(20px);border-top:1px solid var(--border);padding:6px 6px calc(6px + var(--safe-b));position:fixed;bottom:0;left:0;right:0;z-index:100;justify-content:space-around}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px;cursor:pointer;border:none;background:transparent;font-family:inherit;color:var(--text-dim);position:relative;transition:color .2s}
+.tab.active{color:var(--primary)}
+.tab.active::before{content:'';position:absolute;top:-6px;left:50%;transform:translateX(-50%);width:24px;height:3px;background:var(--grad);border-radius:0 0 3px 3px}
+.tab-i{font-size:20px}
+.tab-l{font-size:10px;font-weight:600;letter-spacing:.02em}
+
+/* ======= SCREENS ======= */
+.screen{display:none;flex:1;overflow-y:auto;overflow-x:hidden;padding:calc(16px + var(--safe-t)) 16px calc(90px + var(--safe-b));-webkit-overflow-scrolling:touch;overscroll-behavior:contain;position:relative;z-index:1}
+.screen.active{display:block;animation:sIn .4s cubic-bezier(.22,1,.36,1)}
+@keyframes sIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+.container{max-width:1000px;margin:0 auto}
+
+/* Typography */
+h1{font-size:clamp(26px,5vw,42px);font-weight:800;line-height:1.08;letter-spacing:-.03em;margin-bottom:10px}
+h2{font-size:clamp(20px,3.5vw,28px);font-weight:700;letter-spacing:-.02em;margin-bottom:14px}
+h3{font-size:clamp(15px,2.2vw,17px);font-weight:600;letter-spacing:-.01em;margin-bottom:6px}
+.grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.eyebrow{display:inline-block;padding:5px 12px;background:var(--grad-soft);border:1px solid rgba(139,92,246,.2);border-radius:100px;font-size:11px;font-weight:600;color:var(--primary);margin-bottom:14px;letter-spacing:.05em;text-transform:uppercase}
+.stitle{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin:28px 0 12px}
+.lede{color:var(--text-dim);font-size:15px;max-width:560px;line-height:1.55}
+
+/* Cards */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:12px;transition:all .2s;cursor:pointer}
+.card:hover{border-color:var(--border-hover);background:var(--surface-hover)}
+.card:active{transform:scale(.98)}
+.card-h{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px}
+.card-ic{width:42px;height:42px;border-radius:12px;background:var(--grad-soft);border:1px solid rgba(139,92,246,.2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.card h3{margin-bottom:4px}
+.card p{font-size:14px;color:var(--text-dim);line-height:1.45}
+.card-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.chip{padding:4px 10px;background:var(--surface);border:1px solid var(--border);border-radius:100px;font-size:11px;color:var(--text-dim);font-weight:500}
+.chip.pri{background:var(--grad-soft);border-color:rgba(139,92,246,.3);color:var(--primary)}
+.chip.ok{background:rgba(16,185,129,.1);color:var(--success);border-color:rgba(16,185,129,.2)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;border-radius:14px;font-weight:600;font-size:14px;border:none;cursor:pointer;font-family:inherit;transition:all .2s;text-decoration:none;color:var(--text)}
+.btn:active{transform:scale(.97)}
+.btn-p{background:var(--grad);color:#fff;box-shadow:0 8px 24px rgba(139,92,246,.3)}
+.btn-p:hover{box-shadow:0 12px 32px rgba(139,92,246,.4)}
+.btn-s{background:var(--surface);border:1px solid var(--border);color:var(--text)}
+.btn-s:hover{border-color:var(--border-hover)}
+
+/* Welcome */
+.welcome{background:var(--grad-soft);border:1px solid rgba(139,92,246,.2);border-radius:24px;padding:22px;margin-bottom:20px;position:relative;overflow:hidden}
+.welcome::before{content:'';position:absolute;top:-40px;right:-40px;width:120px;height:120px;background:var(--grad);border-radius:50%;opacity:.1;filter:blur(20px)}
+.welcome-h{display:flex;align-items:center;gap:14px;margin-bottom:14px;position:relative}
+.avatars-lg{display:flex}
+.avatars-lg .av{width:42px;height:42px;font-size:16px;margin-left:-8px;border:2px solid var(--bg-alt)}
+.avatars-lg .av:first-child{margin-left:0}
+.welcome h1{font-size:clamp(22px,4.5vw,32px)}
+.welcome p{color:var(--text-dim);font-size:14px}
+
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px}
+.stat-v{font-size:26px;font-weight:800;letter-spacing:-.02em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.1}
+.stat-l{font-size:12px;color:var(--text-dim);margin-top:4px}
+
+.prog{height:6px;background:var(--surface);border-radius:3px;overflow:hidden;margin:10px 0}
+.prog-f{height:100%;background:var(--grad);border-radius:3px;transition:width .5s}
+
+/* Quick grid */
+.q-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+
+/* Assessments */
+.assess-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:16px;margin-bottom:10px;cursor:pointer;transition:all .2s}
+.assess-card:hover{border-color:var(--border-hover);transform:translateY(-2px)}
+.assess-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px}
+.assess-score{font-size:11px;font-weight:700;padding:4px 10px;border-radius:100px;background:var(--grad-soft);color:var(--primary);white-space:nowrap}
+.assess-score.done{background:rgba(16,185,129,.12);color:var(--success)}
+.assess-score.new{background:rgba(245,158,11,.12);color:var(--warning)}
+
+/* Radar */
+.radar-wrap{background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:24px;margin-bottom:16px;display:flex;flex-direction:column;align-items:center}
+.radar-wrap svg{max-width:100%;height:auto}
+
+/* Pulse */
+.pulse-slider{display:flex;align-items:center;gap:12px;margin:14px 0}
+.pulse-slider label{font-size:14px;color:var(--text-dim);flex:1;min-width:90px}
+.pulse-slider input[type=range]{flex:2;-webkit-appearance:none;height:6px;background:var(--surface);border-radius:3px;outline:none}
+.pulse-slider input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--grad);cursor:pointer;box-shadow:0 4px 12px rgba(139,92,246,.4)}
+.pulse-slider input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--grad);cursor:pointer;border:none}
+.pulse-slider .val{font-weight:800;min-width:28px;text-align:center;font-size:16px}
+.pulse-history{display:flex;gap:6px;margin-top:14px;align-items:flex-end;height:70px}
+.pulse-bar{flex:1;background:var(--surface);border-radius:4px;min-height:8px;position:relative;cursor:pointer;transition:all .2s}
+.pulse-bar:hover{background:var(--surface-hover)}
+.pulse-bar .pulse-bar-fill{position:absolute;bottom:0;left:0;right:0;background:var(--grad);border-radius:4px}
+.pulse-bar span{position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);font-size:10px;color:var(--text-muted)}
+
+/* Challenges */
+.chal-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:16px;margin-bottom:12px}
+.chal-status{display:inline-block;padding:4px 10px;border-radius:100px;font-size:11px;font-weight:700;margin-bottom:8px;letter-spacing:.03em}
+.chal-status.active{background:rgba(139,92,246,.15);color:var(--primary)}
+.chal-status.done{background:rgba(16,185,129,.12);color:var(--success)}
+.chal-partners{display:flex;gap:8px;margin-top:12px}
+.chal-partner{flex:1;padding:10px;background:var(--surface);border:1px solid var(--border);border-radius:12px;display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;transition:all .2s}
+.chal-partner:hover{border-color:var(--border-hover)}
+.chal-partner.done{background:rgba(16,185,129,.08);border-color:rgba(16,185,129,.3)}
+.chal-check{width:20px;height:20px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;transition:all .2s}
+.chal-partner.done .chal-check{background:var(--success);border-color:var(--success);color:#fff}
+
+/* Partner */
+.know-section{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:16px;margin-bottom:12px}
+.know-title{display:flex;align-items:center;gap:10px;margin-bottom:12px;font-weight:600;font-size:15px}
+.flowers{display:flex;gap:8px;flex-wrap:wrap}
+.flower{width:56px;height:56px;border-radius:14px;background:var(--grad-soft);border:1px solid rgba(139,92,246,.2);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:24px;cursor:pointer;transition:all .2s}
+.flower:hover{transform:scale(1.08) rotate(-3deg)}
+.flower span{font-size:9px;color:var(--text-dim);margin-top:1px;font-weight:500}
+.craving{display:flex;align-items:center;gap:10px;padding:10px;background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:8px;transition:all .2s}
+.craving:hover{border-color:var(--border-hover)}
+.craving.done{opacity:.5}
+.craving.done .c-text{text-decoration:line-through}
+.c-text{flex:1;font-size:14px}
+.c-btn{padding:6px 12px;border-radius:100px;font-size:11px;font-weight:700;border:none;cursor:pointer;background:var(--grad);color:#fff;transition:all .15s}
+.c-btn:hover{transform:scale(1.05)}
+.c-btn.done{background:rgba(16,185,129,.15);color:var(--success)}
+.wish{display:flex;gap:12px;padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:8px;align-items:center}
+.wish-ic{width:44px;height:44px;border-radius:10px;background:var(--grad-soft);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.wish-info{flex:1;min-width:0}
+.wish-info h4{font-size:14px;margin-bottom:2px}
+.wish-info p{font-size:12px;color:var(--text-dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.urg{display:inline-block;padding:2px 6px;background:rgba(239,68,68,.15);color:var(--danger);border-radius:100px;font-size:10px;font-weight:700;margin-left:4px}
+
+/* Venues */
+.city-tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-bottom:14px;padding-bottom:4px}
+.city-tabs::-webkit-scrollbar{display:none}
+.city-tab{padding:8px 14px;border-radius:100px;background:var(--surface);border:1px solid var(--border);font-size:13px;font-weight:500;color:var(--text-dim);cursor:pointer;white-space:nowrap;transition:all .2s;font-family:inherit}
+.city-tab:hover{border-color:var(--border-hover);color:var(--text)}
+.city-tab.active{background:var(--grad);color:#fff;border-color:transparent}
+.venue{display:flex;gap:12px;padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:8px;align-items:center;cursor:pointer;transition:all .2s}
+.venue:hover{border-color:var(--border-hover)}
+.venue-ic{width:44px;height:44px;border-radius:10px;background:var(--grad-soft);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.venue-info{flex:1;min-width:0}
+.venue-info h4{font-size:14px;margin-bottom:3px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.venue-info p{font-size:12px;color:var(--text-dim)}
+.venue-meta{display:flex;gap:6px;margin-top:4px;align-items:center}
+.price{color:var(--warning);font-weight:700;font-size:12px}
+.romantic-tag{font-size:9px;padding:2px 7px;background:rgba(236,72,153,.15);color:var(--accent);border-radius:100px;font-weight:700;letter-spacing:.03em;text-transform:uppercase}
+
+/* Chat */
+.chat-layout{display:flex;flex-direction:column;height:calc(100vh - 120px - var(--safe-b));max-width:800px;margin:0 auto}
+.chat-win{flex:1;background:#0B1120;border:1px solid var(--border);border-radius:20px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.3)}
+.chat-h{padding:14px 16px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.chat-title{font-size:13px;color:var(--text-dim);font-weight:500}
+.chat-sub{font-size:11px;color:var(--text-muted)}
+.chat-status{margin-left:auto;font-size:11px;color:var(--success);display:flex;align-items:center;gap:6px}
+.chat-status::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--success);box-shadow:0 0 8px var(--success)}
+.chat-msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;-webkit-overflow-scrolling:touch}
+.msg{max-width:85%;padding:12px 14px;border-radius:16px;font-size:14px;line-height:1.45;animation:mIn .3s cubic-bezier(.22,1,.36,1) both;word-wrap:break-word}
+@keyframes mIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.msg.you{align-self:flex-end;background:var(--grad);color:#fff;border-bottom-right-radius:4px}
+.msg.ai{align-self:flex-start;background:var(--surface);border:1px solid var(--border);border-bottom-left-radius:4px}
+.msg .ai-l{font-size:11px;color:var(--primary);font-weight:600;margin-bottom:4px;display:flex;align-items:center;gap:4px}
+.msg-t{font-size:10px;margin-top:4px;opacity:.6}
+.typing{display:flex;gap:4px;padding:12px 14px;background:var(--surface);border:1px solid var(--border);border-radius:16px;border-bottom-left-radius:4px;align-self:flex-start}
+.typing span{width:6px;height:6px;border-radius:50%;background:var(--text-dim);animation:td 1.2s infinite}
+.typing span:nth-child(2){animation-delay:.2s}
+.typing span:nth-child(3){animation-delay:.4s}
+@keyframes td{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
+.chat-input{padding:12px;border-top:1px solid var(--border);background:rgba(255,255,255,.02)}
+.chat-box{display:flex;align-items:flex-end;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:4px 4px 4px 16px}
+.chat-box:focus-within{border-color:var(--border-hover)}
+.chat-box textarea{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-family:inherit;font-size:15px;resize:none;max-height:100px;padding:10px 0}
+.chat-box textarea::placeholder{color:var(--text-dim)}
+.send{width:38px;height:38px;border-radius:50%;background:var(--grad);border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;transition:transform .15s}
+.send:hover:not(:disabled){transform:scale(1.05)}
+.send:disabled{opacity:.4;cursor:not-allowed}
+
+/* Settings */
+.set-row{display:flex;align-items:center;gap:12px;padding:14px;background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:8px;cursor:pointer;transition:all .2s}
+.set-row:hover{border-color:var(--border-hover)}
+.set-row-i{width:36px;height:36px;border-radius:10px;background:var(--grad-soft);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.set-row-info{flex:1;min-width:0}
+.set-row-info h4{font-size:14px;margin-bottom:2px}
+.set-row-info p{font-size:12px;color:var(--text-dim)}
+.toggle{position:relative;width:42px;height:24px;background:var(--border);border-radius:100px;cursor:pointer;transition:background .2s;flex-shrink:0}
+.toggle.on{background:var(--grad)}
+.toggle::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .2s}
+.toggle.on::after{transform:translateX(18px)}
+
+/* Astro */
+.astro-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+.planet{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px;text-align:center;transition:all .2s}
+.planet:hover{border-color:var(--border-hover);transform:translateY(-2px)}
+.planet-ic{font-size:18px;margin-bottom:4px}
+.planet-name{font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+.planet-sign{font-size:14px;font-weight:600;margin-top:2px}
+.synastry{background:var(--grad-soft);border:1px solid rgba(139,92,246,.2);border-radius:20px;padding:22px;text-align:center;position:relative;overflow:hidden}
+.synastry::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(139,92,246,.1) 0%,transparent 60%);pointer-events:none}
+.syn-score{font-size:52px;font-weight:800;letter-spacing:-.03em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;margin:8px 0;line-height:1;position:relative}
+
+/* Hub screens */
+.hub-grid{display:grid;grid-template-columns:1fr;gap:12px}
+
+/* FAB */
+.fab{position:fixed;bottom:calc(80px + var(--safe-b));right:16px;width:48px;height:48px;border-radius:50%;background:var(--warning);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 10px 30px rgba(245,158,11,.4);z-index:90;transition:transform .2s}
+.fab:hover{transform:scale(1.1) rotate(10deg)}
+
+.empty{text-align:center;padding:40px 20px;color:var(--text-dim)}
+.empty-ic{font-size:48px;margin-bottom:12px;opacity:.4}
+
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+
+/* Media queries */
+@media(min-width:768px){
+  .screen{padding:calc(20px + var(--safe-t)) 24px calc(100px + var(--safe-b))}
+  .stats{grid-template-columns:repeat(4,1fr)}
+  .hub-grid{grid-template-columns:repeat(2,1fr)}
+  .q-grid{grid-template-columns:repeat(4,1fr)}
+  .astro-grid{grid-template-columns:repeat(5,1fr)}
+}
+@media(min-width:1024px){
+  .tab-bar{display:none}
+  .header{display:block}
+  .screen{padding:calc(var(--h) + 24px) 32px 40px}
+  .chat-layout{height:calc(100vh - var(--h) - 100px)}
+  .hub-grid{grid-template-columns:repeat(3,1fr)}
+  .astro-grid{grid-template-columns:repeat(9,1fr)}
+  .fab{bottom:32px;right:32px}
+}
+@media(hover:hover){
+  .card:hover,.assess-card:hover{transform:translateY(-3px)}
+}
+</style>
+</head>
+<body>
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+
+<div class="app">
+
+<!-- ======= DESKTOP HEADER ======= -->
+<header class="header">
+  <div class="header-in">
+    <div class="logo" onclick="show('home')"><div class="logo-i">💜</div><span>Together</span></div>
+
+    <nav class="nav">
+      <div class="nav-item">
+        <button class="nav-btn active" data-s="home" onclick="show('home')">Дом</button>
+      </div>
+
+      <div class="nav-item" id="nav-couple">
+        <button class="nav-btn" onclick="toggleNav('nav-couple')">Пара <span class="chev">▾</span></button>
+        <div class="dropdown">
+          <button class="drop-item" data-s="assess" onclick="show('assess')"><span class="drop-ic">🧪</span><div>Опросники<span class="drop-info">5 тестов на совместимость</span></div></button>
+          <button class="drop-item" data-s="report" onclick="show('report')"><span class="drop-ic">📊</span><div>Отчёт<span class="drop-info">Карта вашей пары</span></div></button>
+          <button class="drop-item" data-s="astro" onclick="show('astro')"><span class="drop-ic">🔮</span><div>Синастрия<span class="drop-info">Что говорят звёзды</span></div></button>
+        </div>
+      </div>
+
+      <div class="nav-item" id="nav-daily">
+        <button class="nav-btn" onclick="toggleNav('nav-daily')">Будни <span class="chev">▾</span></button>
+        <div class="dropdown">
+          <button class="drop-item" data-s="pulse" onclick="show('pulse')"><span class="drop-ic">🫀</span><div>Пульс<span class="drop-info">Как прошла неделя</span></div></button>
+          <button class="drop-item" data-s="chal" onclick="show('chal')"><span class="drop-ic">🎯</span><div>Челленджи<span class="drop-info">Растём вместе</span></div></button>
+          <button class="drop-item" data-s="partner" onclick="show('partner')"><span class="drop-ic">💐</span><div>Партнёр<span class="drop-info">Всё, что важно знать</span></div></button>
+        </div>
+      </div>
+
+      <div class="nav-item">
+        <button class="nav-btn" data-s="venues" onclick="show('venues')">Свидания</button>
+      </div>
+
+      <div class="nav-item">
+        <button class="nav-btn" data-s="ai" onclick="show('ai')">Сова <span style="font-size:14px">🦉</span></button>
+      </div>
+    </nav>
+
+    <div class="header-right">
+      <button class="avatar-btn" id="userBtn" onclick="toggleUser()">
+        <div class="avatars">
+          <div class="av">Д</div>
+          <div class="av partner">А</div>
+        </div>
+        <span class="chev">▾</span>
+      </button>
+      <div class="user-menu" id="userMenu">
+        <button class="drop-item" onclick="show('set')"><span class="drop-ic">⚙️</span><div>Настройки<span class="drop-info">Профиль, уведомления</span></div></button>
+        <button class="drop-item"><span class="drop-ic">📥</span><div>Мои данные<span class="drop-info">Экспорт по GDPR</span></div></button>
+        <button class="drop-item"><span class="drop-ic">💌</span><div>Пригласить партнёра<span class="drop-info">Ссылка-инвайт</span></div></button>
+        <button class="drop-item" style="color:var(--danger)"><span class="drop-ic">🚪</span><div>Выйти</div></button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ======= HOME ======= -->
+<div id="s-home" class="screen active">
+<div class="container">
+  <div class="welcome">
+    <div class="welcome-h">
+      <div class="avatars-lg">
+        <div class="av">Д</div>
+        <div class="av partner">А</div>
+      </div>
+      <div>
+        <div class="eyebrow">Вместе 4 месяца</div>
+        <h1>Дима, Аня — <span class="grad-text">как вы?</span></h1>
+        <p>За месяц стали ближе на 8%. Это видно даже со стороны.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-v">78%</div><div class="stat-l">совместимость</div></div>
+    <div class="stat"><div class="stat-v">4/5</div><div class="stat-l">тестов прошли</div></div>
+    <div class="stat"><div class="stat-v">8.2</div><div class="stat-l">пульс недели</div></div>
+    <div class="stat"><div class="stat-v">12</div><div class="stat-l">челленджей</div></div>
+  </div>
+
+  <div class="stitle">Что сделать прямо сейчас</div>
+  <div class="q-grid">
+    <div class="card" onclick="show('pulse')"><div class="card-h"><div class="card-ic">🫀</div><div><h3>Как неделя?</h3><p>Пара минут, честно</p></div></div></div>
+    <div class="card" onclick="show('chal')"><div class="card-h"><div class="card-ic">🎯</div><div><h3>Челлендж</h3><p>Телефоны — в ящик</p></div></div></div>
+    <div class="card" onclick="show('partner')"><div class="card-h"><div class="card-ic">💐</div><div><h3>Хотелки Ани</h3><p>3 свежих мелочи</p></div></div></div>
+    <div class="card" onclick="show('ai')"><div class="card-h"><div class="card-ic">🦉</div><div><h3>Спросить Сову</h3><p>Она помнит всё</p></div></div></div>
+  </div>
+
+  <div class="stitle">На этой неделе</div>
+  <div class="card">
+    <div class="card-h"><div class="card-ic">🌙</div><div><h3>Вечер без экранов</h3><p>Готовьте, гуляйте, молчите. 2 часа, только вы двое.</p></div></div>
+    <div class="prog"><div class="prog-f" style="width:50%"></div></div>
+    <div class="card-meta"><span class="chip pri">1 из 2 сделал</span><span class="chip">до воскресенья</span></div>
+  </div>
+</div>
+</div>
+
+<!-- ======= HUB: ПАРA ======= -->
+<div id="s-couple" class="screen">
+<div class="container">
+  <span class="eyebrow">О вас двоих</span>
+  <h1>Понять друг друга <span class="grad-text">глубже</span></h1>
+  <p class="lede">Тесты, отчёты, звёзды. Всё, что помогает увидеть, как вы устроены — по отдельности и вместе.</p>
+
+  <div class="hub-grid" style="margin-top:24px">
+    <div class="card" onclick="show('assess')">
+      <div class="card-h"><div class="card-ic">🧪</div><div><h3>Опросники</h3><p>5 тестов: привязанность, языки любви, конфликты, ценности, Big Five</p></div></div>
+      <div class="card-meta"><span class="chip pri">4 из 5 пройдено</span></div>
+    </div>
+    <div class="card" onclick="show('report')">
+      <div class="card-h"><div class="card-ic">📊</div><div><h3>Отчёт пары</h3><p>Радар совместимости: где вы сила, а где — точка роста</p></div></div>
+      <div class="card-meta"><span class="chip ok">78% вместе</span></div>
+    </div>
+    <div class="card" onclick="show('astro')">
+      <div class="card-h"><div class="card-ic">🔮</div><div><h3>Синастрия</h3><p>Лев и Водолей. Что говорят планеты о вас двоих</p></div></div>
+      <div class="card-meta"><span class="chip">82% по звёздам</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ======= ASSESSMENTS ======= -->
+<div id="s-assess" class="screen">
+<div class="container">
+  <span class="eyebrow">Опросники</span>
+  <h1>Без дураков — <span class="grad-text">о вас</span></h1>
+  <p class="lede">Каждый проходит отдельно. Честно. Результаты увидит только ваша пара.</p>
+
+  <div class="stitle">Основная пятёрка · 4 из 5</div>
+  <div class="prog"><div class="prog-f" style="width:80%"></div></div>
+
+  <div style="margin-top:16px">
+    <div class="assess-card">
+      <div class="assess-top"><div><h3>💞 Стиль привязанности</h3><p style="font-size:12px;color:var(--text-dim);margin-top:2px">12 вопросов · 5 минут · по ECR</p></div><span class="assess-score done">✓ Надёжный</span></div>
+      <p style="font-size:13px;margin-top:6px">Вы не убегаете и не цепляетесь. Умеете быть рядом — спокойно. Это редкость.</p>
+    </div>
+    <div class="assess-card">
+      <div class="assess-top"><div><h3>💝 5 языков любви</h3><p style="font-size:12px;color:var(--text-dim);margin-top:2px">15 вопросов · 7 минут · Чепмен</p></div><span class="assess-score done">✓ Слова</span></div>
+      <p style="font-size:13px;margin-top:6px">Вам важны слова. Ане — время вместе. Говорите на её языке хотя бы раз в день.</p>
+    </div>
+    <div class="assess-card">
+      <div class="assess-top"><div><h3>⚡ Как вы ссоритесь</h3><p style="font-size:12px;color:var(--text-dim);margin-top:2px">16 вопросов · 8 минут · Готтман</p></div><span class="assess-score done">✓ Low risk</span></div>
+      <p style="font-size:13px;margin-top:6px">Ни критики, ни презрения, ни стеноуоллинга. Ссоритесь по-человечески.</p>
+    </div>
+    <div class="assess-card">
+      <div class="assess-top"><div><h3>💎 Ценности</h3><p style="font-size:12px;color:var(--text-dim);margin-top:2px">10 вопросов · 5 минут · Шварц</p></div><span class="assess-score done">✓ 72%</span></div>
+      <p style="font-size:13px;margin-top:6px">Семья, рост, свобода — совпадает. На этом можно строить.</p>
+    </div>
+    <div class="assess-card" style="border-color:var(--warning);border-style:dashed">
+      <div class="assess-top"><div><h3>🌈 Big Five</h3><p style="font-size:12px;color:var(--text-dim);margin-top:2px">20 вопросов · 10 минут · последний</p></div><span class="assess-score new">Осталось</span></div>
+      <p style="font-size:13px;margin-top:6px">Открытость, добросовестность, экстраверсия, доброжелательность, нейротизм. Последний штрих к портрету.</p>
+      <button class="btn btn-p" style="margin-top:12px">Пройти</button>
+    </div>
+  </div>
+
+  <div class="stitle">Копнуть глубже</div>
+  <div class="grid-2">
+    <div class="card"><div class="card-h"><div class="card-ic">💰</div><div><h3>Деньги из детства</h3><p>Что про деньги говорили дома</p></div></div></div>
+    <div class="card"><div class="card-h"><div class="card-ic">🪞</div><div><h3>Семейные сценарии</h3><p>Что принесли из родительских</p></div></div></div>
+    <div class="card"><div class="card-h"><div class="card-ic">🌡️</div><div><h3>Доверие</h3><p>Триггеры ревности и границы</p></div></div></div>
+    <div class="card"><div class="card-h"><div class="card-ic">🎵</div><div><h3>Плейлист пары</h3><p>Песни, которые про вас</p></div></div></div>
+  </div>
+</div>
+</div>
+
+<!-- ======= REPORT ======= -->
+<div id="s-report" class="screen">
+<div class="container">
+  <span class="eyebrow">Отчёт пары</span>
+  <h1>Карта <span class="grad-text">вас двоих</span></h1>
+  <p class="lede">Где вы — команда. Где ещё притираетесь. Без оценок, только факты.</p>
+
+  <div class="radar-wrap">
+    <h3 style="margin-bottom:16px">Профиль пары</h3>
+    <svg id="radar" width="320" height="320" viewBox="0 0 320 320"></svg>
+    <div style="margin-top:16px;display:flex;gap:14px;font-size:12px;flex-wrap:wrap;justify-content:center">
+      <div style="display:flex;align-items:center;gap:6px"><div style="width:12px;height:12px;border-radius:50%;background:#8B5CF6"></div>Дима</div>
+      <div style="display:flex;align-items:center;gap:6px"><div style="width:12px;height:12px;border-radius:50%;background:#3B82F6"></div>Аня</div>
+    </div>
+  </div>
+
+  <div class="stitle">💪 Сильные стороны</div>
+  <div class="card" style="border-left:3px solid var(--success)">
+    <div class="card-h"><div class="card-ic">💬</div><div><h3>Коммуникация · 88%</h3><p>Вы умеете говорить. И слышать. Это золото — берегите.</p></div></div>
+  </div>
+  <div class="card" style="border-left:3px solid var(--success)">
+    <div class="card-h"><div class="card-ic">💞</div><div><h3>Связь · 82%</h3><p>Чувствуете друг друга даже на расстоянии. Мелочи, которыми делитесь — это цемент.</p></div></div>
+  </div>
+
+  <div class="stitle">🌱 Зоны роста</div>
+  <div class="card" style="border-left:3px solid var(--warning)">
+    <div class="card-h"><div class="card-ic">⚡</div><div><h3>Конфликты · 58%</h3><p>Разная скорость восстановления. Диме нужно 20 минут тишины, Ане — сразу поговорить. Договоритесь о сигнале «пауза».</p></div></div>
+  </div>
+  <div class="card" style="border-left:3px solid var(--warning)">
+    <div class="card-h"><div class="card-ic">💰</div><div><h3>Деньги · 62%</h3><p>Дима копит, Аня живёт сейчас. Это нормально. Попробуйте «три конверта»: общие, личные и мечты.</p></div></div>
+  </div>
+
+  <div class="stitle">💡 Что с этим делать</div>
+  <div class="card" style="background:var(--grad-soft);border-color:rgba(139,92,246,.3)">
+    <ul style="list-style:none;display:flex;flex-direction:column;gap:10px">
+      <li style="display:flex;gap:10px;font-size:14px"><span>📅</span><span>«Сверка часов» раз в неделю: 15 минут без телефонов, только вы и неделя.</span></li>
+      <li style="display:flex;gap:10px;font-size:14px"><span>💬</span><span>Говорите на языке Ани — совместные активности. Не только слова.</span></li>
+      <li style="display:flex;gap:10px;font-size:14px"><span>🎯</span><span>Общая цель на 3 месяца: копилка на что-то конкретное. Сближает.</span></li>
+    </ul>
+    <button class="btn btn-p" style="margin-top:14px" onclick="show('ai')">Обсудить с Совой</button>
+  </div>
+</div>
+</div>
+
+<!-- ======= PULSE ======= -->
+<div id="s-pulse" class="screen">
+<div class="container">
+  <span class="eyebrow">Пульс недели</span>
+  <h1>Как прошла <span class="grad-text">неделя?</span></h1>
+  <p class="lede">Честно, без прикрас. Это займёт минуту, но поможет замечать тренды.</p>
+
+  <div class="card" style="margin-top:20px">
+    <div class="pulse-slider">
+      <label>💞 Близость</label>
+      <input type="range" min="1" max="10" value="8" oninput="this.nextElementSibling.textContent=this.value">
+      <div class="val">8</div>
+    </div>
+    <div class="pulse-slider">
+      <label>🤝 Конструктив</label>
+      <input type="range" min="1" max="10" value="7" oninput="this.nextElementSibling.textContent=this.value">
+      <div class="val">7</div>
+    </div>
+    <textarea placeholder="Что запомнилось на этой неделе? (необязательно)" style="width:100%;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px;color:var(--text);font-family:inherit;resize:none;margin-top:14px;min-height:60px;font-size:14px"></textarea>
+    <button class="btn btn-p" style="margin-top:12px">Сохранить</button>
+  </div>
+
+  <div class="stitle">Последние 8 недель</div>
+  <div class="card">
+    <div class="pulse-history" id="pulseHist"></div>
+    <div style="display:flex;justify-content:space-between;margin-top:26px;font-size:11px;color:var(--text-muted)">
+      <span>неделя 25</span><span>сейчас</span>
+    </div>
+    <div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--border);display:flex;justify-content:space-between">
+      <div><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em">Средняя близость</div><div style="font-size:20px;font-weight:800;margin-top:4px">7.8</div></div>
+      <div style="text-align:right"><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em">Тренд</div><div style="font-size:20px;font-weight:800;color:var(--success);margin-top:4px">↑ +1.2</div></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ======= CHALLENGES ======= -->
+<div id="s-chal" class="screen">
+<div class="container">
+  <span class="eyebrow">Челленджи</span>
+  <h1>Маленькие шаги, <span class="grad-text">большая разница</span></h1>
+  <p class="lede">Один челлендж в неделю. Выполняете вдвоём — растёте вместе.</p>
+
+  <div class="chal-card" style="margin-top:20px">
+    <div class="chal-status active">активный · до воскресенья</div>
+    <h3>🌙 Телефон — в ящик</h3>
+    <p style="color:var(--text-dim);font-size:14px;margin:8px 0">2 часа вечером без экранов. Готовьте, гуляйте, молчите — что угодно, лишь бы вместе.</p>
+    <div class="chal-partners">
+      <div class="chal-partner done" onclick="this.classList.toggle('done')">
+        <div class="chal-check">✓</div>
+        <div class="av" style="width:28px;height:28px;font-size:12px">Д</div>
+        <span>Дима сделал</span>
+      </div>
+      <div class="chal-partner" onclick="this.classList.toggle('done')">
+        <div class="chal-check"></div>
+        <div class="av partner" style="width:28px;height:28px;font-size:12px">А</div>
+        <span>Аня — ждёт</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="stitle">Что уже получилось</div>
+  <div class="chal-card">
+    <div class="chal-status done">✓ 12 авг</div>
+    <h3>☕ Кофе молча</h3>
+    <p style="color:var(--text-dim);font-size:14px">5 минут утреннего кофе без разговоров о работе</p>
+    <div style="font-size:12px;color:var(--success);margin-top:8px;font-weight:600">✓ сделали вместе</div>
+  </div>
+  <div class="chal-card">
+    <div class="chal-status done">✓ 5 авг</div>
+    <h3>💌 Одно спасибо в день</h3>
+    <p style="color:var(--text-dim);font-size:14px">Каждый вечер говорить за что-то спасибо</p>
+    <div style="font-size:12px;color:var(--success);margin-top:8px;font-weight:600">✓ 7 дней подряд 🔥</div>
+  </div>
+</div>
+</div>
+
+<!-- ======= PARTNER ======= -->
+<div id="s-partner" class="screen">
+<div class="container">
+  <span class="eyebrow">Всё о ней</span>
+  <h1>Аня, <span class="grad-text">на память</span></h1>
+  <p class="lede">Что любит, чего хочет, какое у неё настроение. Чтобы не переспрашивать.</p>
+
+  <div class="know-section" style="margin-top:20px">
+    <div class="know-title">🌡️ Сейчас</div>
+    <div style="display:flex;align-items:center;gap:12px;padding:14px;background:var(--grad-soft);border-radius:12px">
+      <div style="font-size:40px">😊</div>
+      <div style="flex:1">
+        <div style="font-weight:600">Хорошее</div>
+        <div style="font-size:13px;color:var(--text-dim);margin-top:2px">«Закрыла проект наконец» · 2 часа назад</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="know-section">
+    <div class="know-title">💐 Любимые цветы</div>
+    <div class="flowers">
+      <div class="flower">🌸<span>пионы</span></div>
+      <div class="flower">🌹<span>розы</span></div>
+      <div class="flower">🌷<span>тюльп</span></div>
+      <div class="flower">🌼<span>ромаш</span></div>
+      <div class="flower">💜<span>лаванд</span></div>
+    </div>
+    <button class="btn btn-s" style="margin-top:14px">🎁 Собрать букет</button>
+  </div>
+
+  <div class="know-section">
+    <div class="know-title">🍫 Хочется прямо сейчас</div>
+    <div class="craving">
+      <span style="font-size:22px">🍦</span>
+      <div class="c-text">мороженое с карамелью</div>
+      <button class="c-btn">принести</button>
+    </div>
+    <div class="craving">
+      <span style="font-size:22px">☕</span>
+      <div class="c-text">лавандовый раф</div>
+      <button class="c-btn">принести</button>
+    </div>
+    <div class="craving done">
+      <span style="font-size:22px">🍫</span>
+      <div class="c-text">горький шоколад 85%</div>
+      <button class="c-btn done">✓ принёс</button>
+    </div>
+  </div>
+
+  <div class="know-section">
+    <div class="know-title">🎁 Виш-лист</div>
+    <div class="wish">
+      <div class="wish-ic">📚</div>
+      <div class="wish-info"><h4>«Атомные привычки» <span class="urg">горит</span></h4><p>книга · 1200 ₽</p></div>
+      <button class="c-btn">подарил</button>
+    </div>
+    <div class="wish">
+      <div class="wish-ic">🎧</div>
+      <div class="wish-info"><h4>Беспроводные наушники</h4><p>6500 ₽ · присматривает</p></div>
+      <button class="c-btn">подарил</button>
+    </div>
+    <div class="wish">
+      <div class="wish-ic">🎨</div>
+      <div class="wish-info"><h4>Картина по номерам</h4><p>800 ₽ · для вечера</p></div>
+      <button class="c-btn">подарил</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ======= HUB: БУДНИ ======= -->
+<div id="s-daily" class="screen">
+<div class="container">
+  <span class="eyebrow">Каждый день</span>
+  <h1>Мелочи, из которых <span class="grad-text">складывается</span></h1>
+  <p class="lede">Пульс, челленджи, всё о партнёре. То, что делает пару парой — изо дня в день.</p>
+
+  <div class="hub-grid" style="margin-top:24px">
+    <div class="card" onclick="show('pulse')">
+      <div class="card-h"><div class="card-ic">🫀</div><div><h3>Пульс</h3><p>Как прошла неделя</p></div></div>
+      <div class="card-meta"><span class="chip pri">8.2 из 10</span></div>
+    </div>
+    <div class="card" onclick="show('chal')">
+      <div class="card-h"><div class="card-ic">🎯</div><div><h3>Челленджи</h3><p>Растём вместе</p></div></div>
+      <div class="card-meta"><span class="chip">1 из 2 сделал</span></div>
+    </div>
+    <div class="card" onclick="show('partner')">
+      <div class="card-h"><div class="card-ic">💐</div><div><h3>Партнёр</h3><p>Всё, что важно знать</p></div></div>
+      <div class="card-meta"><span class="chip pri">3 хотелки</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ======= VENUES ======= -->
+<div id="s-venues" class="screen">
+<div class="container">
+  <span class="eyebrow">Куда сходить</span>
+  <h1>Идеи для <span class="grad-text">свиданий</span></h1>
+  <p class="lede">Проверенные места в вашем городе. Фильтр по настроению и бюджету.</p>
+
+  <div class="city-tabs" id="cityTabs" style="margin-top:20px"></div>
+
+  <div class="city-tabs" id="typeTabs" style="margin-top:8px">
+    <button class="city-tab active" onclick="filterVen('all',this)">всё</button>
+    <button class="city-tab" onclick="filterVen('RESTAURANT',this)">🍽️ поесть</button>
+    <button class="city-tab" onclick="filterVen('CAFE',this)">☕ кофе</button>
+    <button class="city-tab" onclick="filterVen('PARK',this)">🌳 гулять</button>
+    <button class="city-tab" onclick="filterVen('MUSEUM',this)">🎨 культура</button>
+    <button class="city-tab" onclick="filterVen('SPA',this)">💆 релакс</button>
+    <button class="city-tab" onclick="filterVen('BAR',this)">🍸 бары</button>
+  </div>
+
+  <div id="venueList" style="margin-top:12px"></div>
+</div>
+</div>
+
+<!-- ======= ASTRO ======= -->
+<div id="s-astro" class="screen">
+<div class="container">
+  <span class="eyebrow">Синастрия</span>
+  <h1>Что говорят <span class="grad-text">звёзды</span></h1>
+  <p class="lede">Не гороскоп на день, а натальные карты и их пересечения. Серьёзная штука.</p>
+
+  <div class="synastry" style="margin-top:20px">
+    <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.1em;font-weight:600">Совместимость по звёздам</div>
+    <div class="syn-score">82%</div>
+    <div style="color:var(--text-dim);font-size:14px">Лев и Водолей. Солнце и Луна в гармонии.</div>
+  </div>
+
+  <div class="stitle">Дима · ♌ Лев</div>
+  <div class="astro-grid">
+    <div class="planet"><div class="planet-ic">☀️</div><div class="planet-name">Солнце</div><div class="planet-sign">♌</div></div>
+    <div class="planet"><div class="planet-ic">🌙</div><div class="planet-name">Луна</div><div class="planet-sign">♓</div></div>
+    <div class="planet"><div class="planet-ic">☿</div><div class="planet-name">Меркурий</div><div class="planet-sign">♌</div></div>
+    <div class="planet"><div class="planet-ic">♀</div><div class="planet-name">Венера</div><div class="planet-sign">♎</div></div>
+    <div class="planet"><div class="planet-ic">♂</div><div class="planet-name">Марс</div><div class="planet-sign">♈</div></div>
+    <div class="planet"><div class="planet-ic">♃</div><div class="planet-name">Юпитер</div><div class="planet-sign">♐</div></div>
+    <div class="planet"><div class="planet-ic">♄</div><div class="planet-name">Сатурн</div><div class="planet-sign">♑</div></div>
+    <div class="planet"><div class="planet-ic">🐉</div><div class="planet-name">Восток</div><div class="planet-sign">🐲</div></div>
+    <div class="planet"><div class="planet-ic">🔥</div><div class="planet-name">Стихия</div><div class="planet-sign">Дерево</div></div>
+  </div>
+
+  <div class="stitle">Аня · ♒ Водолей</div>
+  <div class="astro-grid">
+    <div class="planet"><div class="planet-ic">☀️</div><div class="planet-name">Солнце</div><div class="planet-sign">♒</div></div>
+    <div class="planet"><div class="planet-ic">🌙</div><div class="planet-name">Луна</div><div class="planet-sign">♋</div></div>
+    <div class="planet"><div class="planet-ic">☿</div><div class="planet-name">Меркурий</div><div class="planet-sign">♒</div></div>
+    <div class="planet"><div class="planet-ic">♀</div><div class="planet-name">Венера</div><div class="planet-sign">♓</div></div>
+    <div class="planet"><div class="planet-ic">♂</div><div class="planet-name">Марс</div><div class="planet-sign">♏</div></div>
+    <div class="planet"><div class="planet-ic">♃</div><div class="planet-name">Юпитер</div><div class="planet-sign">♈</div></div>
+    <div class="planet"><div class="planet-ic">♄</div><div class="planet-name">Сатурн</div><div class="planet-sign">♎</div></div>
+    <div class="planet"><div class="planet-ic">🐉</div><div class="planet-name">Восток</div><div class="planet-sign">🐇</div></div>
+    <div class="planet"><div class="planet-ic">💧</div><div class="planet-name">Стихия</div><div class="planet-sign">Вода</div></div>
+  </div>
+
+  <div class="stitle">Что между вами</div>
+  <div class="card">
+    <div class="card-h"><div class="card-ic">✨</div><div><h3>Солнце ▵ Луна</h3><p>Ваше «я» ладит с её эмоциями. Редкая штука, цените.</p></div></div>
+  </div>
+  <div class="card">
+    <div class="card-h"><div class="card-ic">💫</div><div><h3>Венера ☍ Марс</h3><p>Сильное притяжение. Важно: страсть — это огонь, а не костёр. Не сжигайте.</p></div></div>
+  </div>
+  <div class="card">
+    <div class="card-h"><div class="card-ic">🌱</div><div><h3>Юпитер △ Юпитер</h3><p>Растёте в одну сторону. Это редкость и фундамент.</p></div></div>
+  </div>
+</div>
+</div>
+
+<!-- ======= AI ======= -->
+<div id="s-ai" class="screen">
+<div class="container">
+<div class="chat-layout">
+  <div class="chat-win">
+    <div class="chat-h">
+      <div class="avatars">
+        <div class="av" style="width:30px;height:30px;font-size:13px">Д</div>
+        <div class="av" style="width:30px;height:30px;font-size:13px;background:var(--grad-soft);border:1px solid rgba(139,92,246,.3)">🦉</div>
+      </div>
+      <div>
+        <div class="chat-title">Сова</div>
+        <div class="chat-sub">помнит вашу пару · 4 мес.</div>
+      </div>
+      <div class="chat-status">здесь</div>
+    </div>
+    <div class="chat-msgs" id="chatMsgs">
+      <div class="msg ai">
+        <div class="ai-l">🦉 Сова</div>
+        Привет, Дима. У вас сильная коммуникация (88%) и зона роста — финансы (62%). Что сегодня на душе?
+      </div>
+    </div>
+    <div class="chat-input">
+      <div class="chat-box">
+        <textarea id="chatIn" placeholder="О чём поговорим?" rows="1"></textarea>
+        <button class="send" onclick="sendMsg()">→</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- ======= SETTINGS ======= -->
+<div id="s-set" class="screen">
+<div class="container">
+  <span class="eyebrow">Настройки</span>
+  <h1>Ваш <span class="grad-text">угол</span></h1>
+
+  <div class="card" style="text-align:center;padding:24px;margin-top:16px">
+    <div class="av" style="width:60px;height:60px;font-size:24px;margin:0 auto 12px">Д</div>
+    <h3>Дима Вяткин</h3>
+    <p style="color:var(--text-dim);font-size:13px;margin-top:4px">@dmitry · dmitry@example.com</p>
+    <button class="btn btn-s" style="margin-top:14px">Редактировать</button>
+  </div>
+
+  <div class="stitle">Пара</div>
+  <div class="set-row">
+    <div class="set-row-i">💞</div>
+    <div class="set-row-info"><h4>Вместе с Аней</h4><p>4 месяца · активны</p></div>
+  </div>
+  <div class="set-row">
+    <div class="set-row-i">📍</div>
+    <div class="set-row-info"><h4>Город</h4><p>Санкт-Петербург</p></div>
+  </div>
+  <div class="set-row">
+    <div class="set-row-i">💌</div>
+    <div class="set-row-info"><h4>Пригласить партнёра</h4><p>Ссылка-инвайт</p></div>
+  </div>
+
+  <div class="stitle">Уведомления</div>
+  <div class="set-row" onclick="this.querySelector('.toggle').classList.toggle('on')">
+    <div class="set-row-i">🔔</div>
+    <div class="set-row-info"><h4>Push</h4><p>Челленджи, пульс, сообщения</p></div>
+    <div class="toggle on"></div>
+  </div>
+  <div class="set-row" onclick="this.querySelector('.toggle').classList.toggle('on')">
+    <div class="set-row-i">📧</div>
+    <div class="set-row-info"><h4>Email</h4><p>Отчёт раз в неделю</p></div>
+    <div class="toggle on"></div>
+  </div>
+  <div class="set-row" onclick="this.querySelector('.toggle').classList.toggle('on')">
+    <div class="set-row-i">🫀</div>
+    <div class="set-row-info"><h4>Напомнить о пульсе</h4><p>Каждое воскресенье, 19:00</p></div>
+    <div class="toggle on"></div>
+  </div>
+
+  <div class="stitle">Данные</div>
+  <div class="set-row">
+    <div class="set-row-i">📥</div>
+    <div class="set-row-info"><h4>Скачать всё</h4><p>JSON · GDPR / 152-ФЗ</p></div>
+  </div>
+  <div class="set-row" style="border-color:rgba(239,68,68,.2)">
+    <div class="set-row-i" style="background:rgba(239,68,68,.12)">🗑️</div>
+    <div class="set-row-info"><h4 style="color:var(--danger)">Удалить аккаунт</h4><p>Безвозвратно · всё сотрём</p></div>
+  </div>
+</div>
+</div>
+
+<!-- ======= TAB BAR (mobile) ======= -->
+<nav class="tab-bar">
+  <button class="tab active" data-s="home" onclick="show('home')"><span class="tab-i">🏠</span><span class="tab-l">Дом</span></button>
+  <button class="tab" data-s="couple" onclick="show('couple')"><span class="tab-i">💞</span><span class="tab-l">Пара</span></button>
+  <button class="tab" data-s="daily" onclick="show('daily')"><span class="tab-i">⚡</span><span class="tab-l">Будни</span></button>
+  <button class="tab" data-s="venues" onclick="show('venues')"><span class="tab-i">📍</span><span class="tab-l">Свидания</span></button>
+  <button class="tab" data-s="ai" onclick="show('ai')"><span class="tab-i">🦉</span><span class="tab-l">Сова</span></button>
+</nav>
+
+</div>
+
+<!-- FAB -->
+<button class="fab" onclick="alert('🕊️ Когда всё кипит:\n\n1. «Когда ты...» (без обвинений)\n2. «Я чувствую...»\n3. «Мне важно...»\n4. «Давай...» (конкретно)')">🕊️</button>
+
+<script>
+// === Navigation ===
+let currentScreen='home';
+const screenToParent={
+  home:'home', assess:'couple', report:'couple', astro:'couple',
+  pulse:'daily', chal:'daily', partner:'daily',
+  venues:'venues', ai:'ai', set:'home',
+  couple:'couple', daily:'daily'
+};
+
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const el=document.getElementById('s-'+id);
+  if(el) el.classList.add('active');
+  currentScreen=id;
+  const parent=screenToParent[id]||id;
+  document.querySelectorAll('.nav-btn').forEach(b=>{
+    b.classList.toggle('active',b.dataset.s===id || b.dataset.s===parent);
+  });
+  document.querySelectorAll('.tab').forEach(t=>{
+    t.classList.toggle('active',t.dataset.s===id || t.dataset.s===parent);
+  });
+  document.querySelectorAll('.drop-item').forEach(d=>{
+    d.classList.toggle('active',d.dataset.s===id);
+  });
+  closeAllMenus();
+  window.scrollTo(0,0);
+  if(el) el.scrollTo(0,0);
+  if(id==='report') setTimeout(drawRadar,50);
+  if(id==='pulse') initPulse();
+  if(id==='venues'){renderCityTabs();renderVenues();}
+  if(id==='ai') setTimeout(()=>document.getElementById('chatIn').focus(),300);
+}
+
+function toggleNav(id){
+  const el=document.getElementById(id);
+  const wasOpen=el.classList.contains('open');
+  closeAllMenus();
+  if(!wasOpen) el.classList.add('open');
+}
+function toggleUser(){
+  const el=document.getElementById('userBtn');
+  const wasOpen=el.classList.contains('open');
+  closeAllMenus();
+  if(!wasOpen){el.classList.add('open');document.getElementById('userMenu').classList.add('open');}
+}
+function closeAllMenus(){
+  document.querySelectorAll('.nav-item.open,.avatar-btn.open,.user-menu.open').forEach(e=>e.classList.remove('open'));
+}
+document.addEventListener('click',(e)=>{
+  if(!e.target.closest('.nav-item')&&!e.target.closest('.header-right')) closeAllMenus();
+});
+
+// === Radar ===
+function drawRadar(){
+  const svg=document.getElementById('radar');
+  if(!svg) return;
+  const S=320,cx=S/2,cy=S/2,R=S/2-60;
+  const cats=['Близость','Конфликты','Ценности','Коммуникация','Финансы','Будущее'];
+  const u1=[82,58,72,88,62,75];
+  const u2=[78,65,70,82,68,80];
+  const n=cats.length;
+  let s=`<defs>
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8B5CF6" stop-opacity=".35"/>
+      <stop offset="1" stop-color="#EC4899" stop-opacity=".35"/>
+    </linearGradient>
+    <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3B82F6" stop-opacity=".3"/>
+      <stop offset="1" stop-color="#8B5CF6" stop-opacity=".3"/>
+    </linearGradient>
+  </defs>`;
+  for(let l=1;l<=4;l++){
+    const r=R*l/4;let p='';
+    for(let i=0;i<n;i++){const a=i/n*2*Math.PI-Math.PI/2;p+=`${cx+r*Math.cos(a)},${cy+r*Math.sin(a)} `}
+    s+=`<polygon points="${p}" fill="none" stroke="rgba(255,255,255,.08)"/>`;
+  }
+  for(let i=0;i<n;i++){
+    const a=i/n*2*Math.PI-Math.PI/2;
+    s+=`<line x1="${cx}" y1="${cy}" x2="${cx+R*Math.cos(a)}" y2="${cy+R*Math.sin(a)}" stroke="rgba(255,255,255,.08)"/>`;
+  }
+  function poly(d,fill,stroke){
+    let p='';for(let i=0;i<n;i++){const a=i/n*2*Math.PI-Math.PI/2,r=d[i]/100*R;p+=`${cx+r*Math.cos(a)},${cy+r*Math.sin(a)} `}
+    s+=`<polygon points="${p}" fill="${fill}" stroke="${stroke}" stroke-width="2"/>`;
+  }
+  poly(u1,'url(#g1)','#8B5CF6');
+  poly(u2,'url(#g2)','#3B82F6');
+  for(let i=0;i<n;i++){
+    const a=i/n*2*Math.PI-Math.PI/2;
+    s+=`<circle cx="${cx+u1[i]/100*R*Math.cos(a)}" cy="${cy+u1[i]/100*R*Math.sin(a)}" r="3" fill="#8B5CF6" stroke="#fff" stroke-width="1.5"/>`;
+    s+=`<circle cx="${cx+u2[i]/100*R*Math.cos(a)}" cy="${cy+u2[i]/100*R*Math.sin(a)}" r="3" fill="#3B82F6" stroke="#fff" stroke-width="1.5"/>`;
+    const tx=cx+(R+28)*Math.cos(a),ty=cy+(R+28)*Math.sin(a);
+    const anc=Math.abs(Math.cos(a))<.3?'middle':Math.cos(a)>0?'start':'end';
+    s+=`<text x="${tx}" y="${ty}" text-anchor="${anc}" fill="#94A3B8" font-size="11" font-weight="500">${cats[i]}</text>`;
+  }
+  svg.innerHTML=s;
+}
+
+// === Pulse ===
+function initPulse(){
+  const hist=document.getElementById('pulseHist');
+  if(!hist||hist.children.length) return;
+  const data=[6,7,8,7,8,9,7,8];
+  const labels=['25','26','27','28','29','30','31','32'];
+  data.forEach((v,i)=>{
+    const b=document.createElement('div');
+    b.className='pulse-bar';
+    b.innerHTML=`<div class="pulse-bar-fill" style="height:${v*10}%"></div><span>${labels[i]}</span>`;
+    hist.appendChild(b);
+  });
+}
+
+// === Venues ===
+const cities=[
+  {slug:'spb',name:'СПб',emoji:'🌉'},
+  {slug:'msk',name:'Мск',emoji:'🏛️'},
+  {slug:'kzn',name:'Казань',emoji:'🕌'},
+  {slug:'sochi',name:'Сочи',emoji:'🏖️'},
+  {slug:'ekb',name:'Екб',emoji:'🏭'},
+  {slug:'nsk',name:'Новосиб',emoji:'❄️'},
+  {slug:'vl',name:'Владик',emoji:'🌊'},
+  {slug:'kaliningrad',name:'Калининград',emoji:'🏰'}
+];
+const venues=[
+  {city:'spb',type:'RESTAURANT',name:'Birch',emoji:'🍽️',area:'Крестовский',price:3,romantic:true,rec:'Северная кухня с видом на парк'},
+  {city:'spb',type:'CAFE',name:'Civil',emoji:'☕',area:'Петроградка',price:2,romantic:false,rec:'Лучший фильтр в городе'},
+  {city:'spb',type:'PARK',name:'Новая Голландия',emoji:'🌳',area:'Адмиралтейская',price:1,romantic:true,rec:'Остров, парк, фестивали'},
+  {city:'spb',type:'MUSEUM',name:'Эрарта',emoji:'🎨',area:'Васильевский',price:2,romantic:false,rec:'Современное искусство'},
+  {city:'spb',type:'SPA',name:'Terme di Bormio',emoji:'💆',area:'Центр',price:3,romantic:true,rec:'Парные программы'},
+  {city:'spb',type:'BAR',name:'El Copitas',emoji:'🍸',area:'Невский',price:3,romantic:true,rec:'Топ-50 баров мира'},
+  {city:'spb',type:'WALK',name:'Стрелка В.О.',emoji:'🌅',area:'Васильевский',price:1,romantic:true,rec:'Закат над Невой'},
+  {city:'spb',type:'RESTAURANT',name:'Пышечная',emoji:'🥐',area:'Невский',price:1,romantic:false,rec:'Те самые пышки'},
+  {city:'msk',type:'RESTAURANT',name:'White Rabbit',emoji:'🍽️',area:'Смоленская',price:3,romantic:true,rec:'Панорама, 16 этаж'},
+  {city:'msk',type:'PARK',name:'Зарядье',emoji:'🌳',area:'Кремль',price:1,romantic:true,rec:'Парящий мост и Кремль'},
+  {city:'msk',type:'MUSEUM',name:'Гараж',emoji:'🎨',area:'Парк Горького',price:2,romantic:false,rec:'Совр. искусство в парке'},
+  {city:'msk',type:'CAFE',name:'Skuratov',emoji:'☕',area:'Патриаршие',price:2,romantic:false,rec:'Specialty coffee'},
+  {city:'msk',type:'SPA',name:'Barvikha SPA',emoji:'💆',area:'Рублёвка',price:3,romantic:true,rec:'Премиум для двоих'},
+  {city:'kzn',type:'RESTAURANT',name:'Приют Холостяка',emoji:'🍽️',area:'Кремль',price:2,romantic:true,rec:'Татарская высокая кухня'},
+  {city:'kzn',type:'WALK',name:'Кремль',emoji:'🕌',area:'Центр',price:1,romantic:true,rec:'Мечеть и Казанка'},
+  {city:'sochi',type:'PARK',name:'Дендрарий',emoji:'🌳',area:'Центр',price:1,romantic:true,rec:'Субтропики и канатка'},
+  {city:'sochi',type:'RESTAURANT',name:'Dacha',emoji:'🍽️',area:'У моря',price:3,romantic:true,rec:'Рыба на гриле, шум волн'}
+];
+let curCity='spb',curType='all';
+
+function renderCityTabs(){
+  const ct=document.getElementById('cityTabs');
+  if(!ct) return;
+  ct.innerHTML=cities.map(c=>`<button class="city-tab ${c.slug===curCity?'active':''}" onclick="setCity('${c.slug}',this)">${c.emoji} ${c.name}</button>`).join('');
+}
+function setCity(slug,el){
+  curCity=slug;
+  document.querySelectorAll('#cityTabs .city-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  renderVenues();
+}
+function filterVen(type,el){
+  curType=type;
+  document.querySelectorAll('#typeTabs .city-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  renderVenues();
+}
+function renderVenues(){
+  const list=document.getElementById('venueList');
+  if(!list) return;
+  const f=venues.filter(v=>v.city===curCity && (curType==='all'||v.type===curType));
+  if(!f.length){list.innerHTML='<div class="empty"><div class="empty-ic">🗺️</div><p>В этом городе пока пусто. Скоро добавим.</p></div>';return}
+  list.innerHTML=f.map(v=>`
+    <div class="venue">
+      <div class="venue-ic">${v.emoji}</div>
+      <div class="venue-info">
+        <h4>${v.name} ${v.romantic?'<span class="romantic-tag">для долгих взглядов</span>':''}</h4>
+        <p>${v.area} · ${v.rec}</p>
+        <div class="venue-meta"><span class="price">${'₽'.repeat(v.price)}</span></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// === Chat ===
+const chatMsgs=document.getElementById('chatMsgs');
+const chatIn=document.getElementById('chatIn');
+const responses=[
+  'Расскажи подробнее. Что именно ты чувствуешь?',
+  'Интересная тема. А что в этом самое сложное?',
+  'Я слышу. Что бы ты хотел, чтобы Аня поняла?',
+  'Как давно ты это замечаешь?',
+  'У вас сильная коммуникация — 88%. Что её держит?',
+  'Пульс растёт. Что изменилось в лучшую сторону?',
+  'Похоже, это про деньги. Помнишь, у вас там 62% — зона роста. Что конкретно сейчас?',
+  'Это важный разговор. Хочешь, помогу сформулировать для Ани?'
+];
+function addMsg(text,type){
+  const m=document.createElement('div');
+  m.className='msg '+type;
+  const t=new Date().toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'});
+  m.innerHTML=type==='ai'?`<div class="ai-l">🦉 Сова</div>${text}<div class="msg-t">${t}</div>`:`${text}<div class="msg-t">${t}</div>`;
+  chatMsgs.appendChild(m);chatMsgs.scrollTop=chatMsgs.scrollHeight;
+}
+function addTyping(){
+  const t=document.createElement('div');
+  t.className='typing';t.id='typing';
+  t.innerHTML='<span></span><span></span><span></span>';
+  chatMsgs.appendChild(t);chatMsgs.scrollTop=chatMsgs.scrollHeight;
+}
+function rmTyping(){const t=document.getElementById('typing');if(t)t.remove()}
+function sendMsg(){
+  const v=chatIn.value.trim();if(!v)return;
+  addMsg(v,'you');chatIn.value='';chatIn.style.height='auto';
+  addTyping();
+  setTimeout(()=>{rmTyping();addMsg(responses[Math.floor(Math.random()*responses.length)],'ai')},1200+Math.random()*800);
+}
+chatIn.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg()}});
+chatIn.addEventListener('input',()=>{chatIn.style.height='auto';chatIn.style.height=Math.min(chatIn.scrollHeight,100)+'px'});
+
+document.addEventListener('DOMContentLoaded',()=>{
+  initPulse();
+  renderCityTabs();
+  renderVenues();
+  drawRadar();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0B0F19">
+<title>Together</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0B0F19;--card:#151B2B;--card2:#1C2438;
+  --line:rgba(255,255,255,.06);
+  --text:#F1F5F9;--dim:#8A94A7;--mute:#5B6474;
+  --pri:#8B5CF6;--acc:#EC4899;--ok:#10B981;--warn:#F59E0B;--blue:#3B82F6;
+  --grad:linear-gradient(135deg,#8B5CF6,#EC4899);
+  --grad-soft:linear-gradient(135deg,rgba(139,92,246,.15),rgba(236,72,153,.15));
+  --safe-b:env(safe-area-inset-bottom,0px);--safe-t:env(safe-area-inset-top,0px);
+}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased}
+.app{height:100vh;height:100dvh;display:flex;flex-direction:column;overflow:hidden}
+
+.hd{display:none;position:fixed;top:0;left:0;right:0;height:60px;background:rgba(11,15,25,.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--line);z-index:100}
+.hd-in{max-width:960px;margin:0 auto;height:100%;display:flex;align-items:center;gap:24px;padding:0 20px}
+.logo{display:flex;align-items:center;gap:8px;font-weight:700;cursor:pointer;font-size:16px}
+.logo i{width:28px;height:28px;border-radius:8px;background:var(--grad);display:block}
+.nav{display:flex;gap:2px;flex:1;justify-content:center}
+.nv{padding:8px 14px;border-radius:8px;font-size:14px;font-weight:500;color:var(--dim);cursor:pointer;border:none;background:none;font-family:inherit;transition:.15s;position:relative}
+.nv:hover{color:var(--text)}
+.nv.on{color:var(--text)}
+.nv.on::after{content:'';position:absolute;left:14px;right:14px;bottom:2px;height:2px;background:var(--grad);border-radius:2px}
+.hd-r{display:flex;align-items:center;gap:10px}
+.avs{display:flex}
+.av{width:28px;height:28px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;border:2px solid var(--bg);flex-shrink:0}
+.av.p{background:linear-gradient(135deg,#3B82F6,#8B5CF6)}
+.avs .av+.av{margin-left:-8px}
+.icon-btn{width:34px;height:34px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--dim);cursor:pointer;font-size:15px}
+.icon-btn:hover{color:var(--text)}
+
+.tb{display:flex;align-items:flex-end;background:rgba(11,15,25,.95);backdrop-filter:blur(20px);border-top:1px solid var(--line);padding:6px 8px calc(6px + var(--safe-b));position:fixed;bottom:0;left:0;right:0;z-index:100;justify-content:space-around}
+.tbi{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 0 6px;color:var(--dim);border:none;background:none;font-family:inherit;cursor:pointer;position:relative}
+.tbi.on{color:var(--text)}
+.tbi.on::before{content:'';position:absolute;top:-6px;left:50%;transform:translateX(-50%);width:20px;height:2px;background:var(--grad);border-radius:2px}
+.tbi i{font-size:19px;font-style:normal}
+.tbi b{font-size:10px;font-weight:600}
+.tbi.fab-m{flex:0 0 60px}
+.tbi.fab-m i{width:50px;height:50px;border-radius:16px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:22px;margin-top:-26px;box-shadow:0 8px 24px rgba(139,92,246,.4)}
+.tbi.fab-m b{margin-top:3px}
+
+.sc{display:none;flex:1;overflow-y:auto;padding:calc(20px + var(--safe-t)) 20px calc(96px + var(--safe-b));-webkit-overflow-scrolling:touch}
+.sc.on{display:block;animation:in .35s ease}
+@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.wrap{max-width:960px;margin:0 auto}
+
+.h1{font-size:clamp(26px,6vw,40px);font-weight:800;letter-spacing:-.03em;line-height:1.1;margin-bottom:8px}
+.h2{font-size:clamp(18px,4vw,24px);font-weight:700;letter-spacing:-.02em;margin-bottom:14px}
+.dim{color:var(--dim);font-size:15px}
+.small{font-size:13px;color:var(--dim)}
+.mt{margin-top:24px}
+.k{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin:22px 0 10px}
+
+.cd{background:var(--card);border-radius:16px;padding:18px;margin-bottom:10px;cursor:pointer;transition:.15s;border:1px solid transparent}
+.cd:hover{background:var(--card2)}
+.cd:active{transform:scale(.98)}
+.cd-r{display:flex;align-items:center;gap:14px}
+.cd-ic{width:40px;height:40px;border-radius:12px;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+.cd-t{flex:1;min-width:0}
+.cd-t b{display:block;font-size:15px;font-weight:600;margin-bottom:2px}
+.cd-t span{font-size:13px;color:var(--dim)}
+.cd-v{font-weight:800;font-size:17px;letter-spacing:-.02em}
+.arr{color:var(--mute);font-size:16px}
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:18px 0}
+.st{background:var(--card);border-radius:14px;padding:14px 12px;text-align:center}
+.st b{display:block;font-size:22px;font-weight:800;letter-spacing:-.02em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.st span{font-size:11px;color:var(--dim)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 22px;border-radius:12px;font-weight:600;font-size:15px;border:none;cursor:pointer;font-family:inherit;transition:.15s}
+.btn:active{transform:scale(.97)}
+.btn-p{background:var(--grad);color:#fff}
+.btn-s{background:var(--card);color:var(--text);border:1px solid var(--line)}
+.btn-w{width:100%}
+.btn-sm{padding:8px 16px;font-size:13px}
+
+/* ===== Mood ===== */
+.mood-now{display:grid;grid-template-columns:1fr;gap:10px}
+.mood-card{background:var(--card);border-radius:16px;padding:18px}
+.mood-card h3{font-size:13px;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;font-weight:600;margin-bottom:12px}
+.mood-pick{display:flex;gap:8px;justify-content:space-between}
+.mood-btn{flex:1;aspect-ratio:1;border-radius:14px;border:2px solid transparent;background:var(--card2);font-size:26px;cursor:pointer;transition:.15s;display:flex;align-items:center;justify-content:center}
+.mood-btn:hover{transform:scale(1.05)}
+.mood-btn.sel{border-color:var(--pri);background:var(--card);box-shadow:0 4px 16px rgba(139,92,246,.3)}
+.mood-cur{display:flex;align-items:center;gap:14px}
+.mood-cur .big{font-size:44px}
+.mood-cur .info b{display:block;font-size:16px;font-weight:600}
+.mood-cur .info span{font-size:13px;color:var(--dim)}
+.mood-note{width:100%;background:var(--card2);border:none;border-radius:12px;padding:12px;color:var(--text);font-family:inherit;font-size:14px;resize:none;min-height:44px;margin-top:12px}
+.mood-note::placeholder{color:var(--mute)}
+.feed-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.feed-item:last-child{border:none}
+.feed-item .fe{font-size:22px;width:32px;text-align:center}
+.feed-item .ft{flex:1;min-width:0}
+.feed-item .ft b{display:block;font-size:14px}
+.feed-item .ft span{font-size:12px;color:var(--dim)}
+.feed-item .ftime{font-size:12px;color:var(--mute);font-weight:600}
+.week-chart{display:flex;gap:8px;align-items:flex-end;height:120px;margin-top:14px}
+.wc-day{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px}
+.wc-bars{display:flex;gap:3px;align-items:flex-end;height:90px;width:100%}
+.wc-bar{flex:1;border-radius:4px 4px 0 0;min-height:4px}
+.wc-bar.dima{background:var(--grad)}
+.wc-bar.anya{background:var(--blue)}
+.wc-day span{font-size:11px;color:var(--mute)}
+.legend{display:flex;gap:16px;margin-top:14px;font-size:12px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px}
+.legend .dima i{background:var(--grad)}
+.legend .anya i{background:var(--blue)}
+.insight{display:flex;gap:10px;padding:12px 0;border-bottom:1px solid var(--line);font-size:14px}
+.insight:last-child{border:none}
+.insight i{font-style:normal}
+
+/* ===== Wizard ===== */
+.wiz-dots{display:flex;gap:6px;justify-content:center;margin:16px 0}
+.wd{width:8px;height:8px;border-radius:50%;background:var(--card2);transition:.3s}
+.wd.on{background:var(--grad);width:22px;border-radius:4px}
+.wd.done{background:var(--ok)}
+
+.vibe-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:16px}
+.vibe{background:var(--card);border:2px solid transparent;border-radius:16px;padding:18px 12px;text-align:center;cursor:pointer;transition:.15s;font-family:inherit;color:var(--text)}
+.vibe i{display:block;font-size:34px;font-style:normal;margin-bottom:8px}
+.vibe b{font-size:13px;font-weight:600;display:block;margin-bottom:2px}
+.vibe span{font-size:11px;color:var(--dim)}
+.vibe:hover{background:var(--card2)}
+.vibe.sel{border-color:var(--pri);background:var(--card2)}
+.vibe-extra{display:flex;gap:10px;margin-top:12px}
+.vibe-btn{flex:1;padding:14px;border-radius:12px;background:var(--card);border:1px solid var(--line);color:var(--text);font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:.15s}
+.vibe-btn:hover{border-color:var(--pri);background:var(--card2)}
+#customBox{margin-top:12px;display:none}
+#customInput{width:100%;background:var(--card2);border:none;border-radius:12px;padding:14px;color:var(--text);font-family:inherit;resize:none;min-height:52px;font-size:15px;margin-bottom:10px}
+#customInput::placeholder{color:var(--mute)}
+
+.ven{display:flex;gap:12px;align-items:center;background:var(--card);border:2px solid transparent;border-radius:14px;padding:12px;margin-bottom:8px;cursor:pointer;transition:.15s}
+.ven:hover{background:var(--card2)}
+.ven.sel{border-color:var(--pri)}
+.ven-ic{width:44px;height:44px;border-radius:10px;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.ven-t{flex:1;min-width:0}
+.ven-t b{display:block;font-size:14px}
+.ven-t span{font-size:12px;color:var(--dim)}
+.ven-tag{display:inline-block;margin-left:6px;padding:2px 7px;background:rgba(16,185,129,.12);color:var(--ok);border-radius:100px;font-size:10px;font-weight:600}
+.price{color:var(--warn);font-weight:700;font-size:12px}
+
+/* ===== Date & Time picker ===== */
+.sel-info{background:var(--card2);border-radius:12px;padding:13px 16px;margin-top:14px;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;color:var(--dim);transition:.2s}
+.sel-info.ready{background:var(--grad-soft);color:var(--text)}
+
+.day-strip{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:4px 2px;margin-top:4px}
+.day-strip::-webkit-scrollbar{display:none}
+.day-card{flex-shrink:0;width:58px;padding:12px 6px;border-radius:14px;background:var(--card);border:2px solid var(--line);text-align:center;cursor:pointer;transition:.15s}
+.day-card:hover{background:var(--card2)}
+.day-card.sel{background:var(--grad);border-color:transparent;box-shadow:0 4px 14px rgba(139,92,246,.3)}
+.day-card .dw{font-size:10px;color:var(--dim);text-transform:uppercase;font-weight:700;letter-spacing:.05em}
+.day-card .dn{font-size:20px;font-weight:700;margin-top:4px}
+.day-card.sel .dw{color:rgba(255,255,255,.75)}
+.day-card.sel .dn{color:#fff}
+.day-card.today{border-color:var(--pri)}
+.day-card.today .dw{color:var(--pri)}
+
+.link-btn{background:none;border:none;color:var(--pri);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;margin-top:12px;padding:6px 0;display:inline-flex;align-items:center;gap:6px}
+.link-btn:hover{opacity:.8}
+
+.cal-wrap{background:var(--card);border-radius:16px;padding:16px;margin-top:12px;display:none}
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.cal-head b{font-size:15px;font-weight:600}
+.cal-nav{width:32px;height:32px;border-radius:8px;border:none;background:var(--card2);color:var(--text);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:.15s}
+.cal-nav:hover:not(:disabled){background:var(--pri)}
+.cal-nav:disabled{opacity:.3;cursor:default}
+.cal-week{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:6px}
+.cal-week span{text-align:center;font-size:11px;font-weight:600;color:var(--mute);text-transform:uppercase}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;transition:.15s;color:var(--text)}
+.cal-day:hover:not(.past):not(.sel){background:var(--card2)}
+.cal-day.past{color:var(--mute);cursor:default;opacity:.35}
+.cal-day.today{border:1px solid var(--pri);color:var(--pri);font-weight:700}
+.cal-day.sel{background:var(--grad);color:#fff;font-weight:700}
+.cal-empty{aspect-ratio:1}
+
+.time-group{margin-top:16px}
+.tg-label{font-size:11px;color:var(--mute);text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:8px}
+.tg-slots{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.slot{padding:11px 4px;border-radius:10px;background:var(--card);border:1px solid var(--line);color:var(--text);font-size:13px;font-weight:600;cursor:pointer;transition:.15s;font-family:inherit}
+.slot:hover:not(:disabled){border-color:var(--pri);background:var(--card2)}
+.slot.sel{background:var(--grad);color:#fff;border-color:transparent}
+.slot:disabled{opacity:.25;cursor:not-allowed;text-decoration:line-through}
+
+.sum{background:var(--card);border-radius:16px;padding:18px;margin-top:16px}
+.sum-r{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}
+.sum-r:last-child{border:none}
+.sum-r span{color:var(--dim)}
+.sum-r b{font-weight:600}
+
+.radar{background:var(--card);border-radius:20px;padding:20px;display:flex;flex-direction:column;align-items:center;margin-bottom:12px}
+.radar svg{max-width:100%;height:auto}
+
+.bars{display:flex;gap:5px;align-items:flex-end;height:64px;margin-top:14px}
+.bar{flex:1;background:var(--card2);border-radius:3px;position:relative}
+.bar i{position:absolute;bottom:0;left:0;right:0;background:var(--grad);border-radius:3px}
+
+.chat{display:flex;flex-direction:column;height:calc(100vh - 130px - var(--safe-b));max-width:720px;margin:0 auto}
+.chat-w{flex:1;background:var(--card);border-radius:18px;display:flex;flex-direction:column;overflow:hidden}
+.chat-h{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.chat-h b{font-size:14px}
+.chat-h span{font-size:12px;color:var(--dim)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--ok);margin-left:auto;box-shadow:0 0 8px var(--ok)}
+.msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
+.m{max-width:85%;padding:11px 14px;border-radius:14px;font-size:14px;line-height:1.45;animation:in .25s ease}
+.m.you{align-self:flex-end;background:var(--grad);color:#fff;border-bottom-right-radius:4px}
+.m.ai{align-self:flex-start;background:var(--card2);border-bottom-left-radius:4px}
+.m .who{font-size:11px;color:var(--pri);font-weight:700;margin-bottom:3px}
+.typing{display:flex;gap:4px;padding:12px 14px;background:var(--card2);border-radius:14px;border-bottom-left-radius:4px;align-self:flex-start}
+.typing i{width:6px;height:6px;border-radius:50%;background:var(--dim);animation:td 1.2s infinite}
+.typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
+@keyframes td{0%,60%,100%{opacity:.3}30%{opacity:1;transform:translateY(-3px)}}
+.chat-in{padding:10px;border-top:1px solid var(--line)}
+.chat-b{display:flex;gap:8px;align-items:flex-end;background:var(--card2);border-radius:20px;padding:4px 4px 4px 16px}
+.chat-b textarea{flex:1;background:none;border:none;outline:none;color:var(--text);font-family:inherit;font-size:15px;resize:none;max-height:90px;padding:9px 0}
+.chat-b textarea::placeholder{color:var(--mute)}
+.send{width:36px;height:36px;border-radius:50%;background:var(--grad);border:none;color:#fff;cursor:pointer;font-size:15px;flex-shrink:0}
+
+.tgl{width:42px;height:24px;border-radius:100px;background:var(--line);position:relative;cursor:pointer;transition:.2s;flex-shrink:0}
+.tgl.on{background:var(--grad)}
+.tgl::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.2s}
+.tgl.on::after{left:21px}
+
+.badge{display:inline-block;padding:4px 10px;border-radius:100px;font-size:11px;font-weight:700}
+.badge.ok{background:rgba(16,185,129,.12);color:var(--ok)}
+.badge.warn{background:rgba(245,158,11,.12);color:var(--warn)}
+.badge.pri{background:rgba(139,92,246,.12);color:var(--pri)}
+.seg{display:flex;background:var(--card);border-radius:100px;padding:4px;gap:4px;margin:16px auto;width:fit-content}
+.seg button{padding:8px 18px;border-radius:100px;border:none;background:none;color:var(--dim);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:.15s}
+.seg button.on{background:var(--grad);color:#fff}
+.flower-row{display:flex;gap:8px;font-size:24px}
+.done-state{opacity:.5}
+.done-state b{text-decoration:line-through}
+
+@media(min-width:768px){
+  .vibe-grid{grid-template-columns:repeat(4,1fr)}
+  .cal-wrap{max-width:380px}
+  .tg-slots{grid-template-columns:repeat(6,1fr)}
+  .mood-now{grid-template-columns:1fr 1fr}
+}
+@media(min-width:1024px){
+  .tb{display:none}
+  .hd{display:block}
+  .sc{padding:calc(60px + 28px) 24px 40px}
+  .chat{height:calc(100vh - 60px - 100px)}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<header class="hd">
+  <div class="hd-in">
+    <div class="logo" onclick="go('home')"><i></i>Together</div>
+    <nav class="nav">
+      <button class="nv on" data-s="home" onclick="go('home')">Дом</button>
+      <button class="nv" data-s="couple" onclick="go('couple')">Мы</button>
+      <button class="nv" data-s="daily" onclick="go('daily')">Будни</button>
+      <button class="nv" data-s="date" onclick="go('date')">Свидание</button>
+      <button class="nv" data-s="ai" onclick="go('ai')">Сова</button>
+    </nav>
+    <div class="hd-r">
+      <div class="avs"><div class="av">Д</div><div class="av p">А</div></div>
+      <button class="icon-btn" onclick="go('set')">⚙</button>
+    </div>
+  </div>
+</header>
+
+<!-- ===== HOME ===== -->
+<div class="sc on" id="s-home"><div class="wrap">
+  <div class="h1">Привет, Дима.</div>
+  <div class="dim">Вы с Аней стали ближе. На 8% за месяц.</div>
+  <div class="stats">
+    <div class="st"><b>78%</b><span>совместимость</span></div>
+    <div class="st"><b>8.2</b><span>пульс недели</span></div>
+    <div class="st"><b>4/5</b><span>тестов</span></div>
+  </div>
+  <div class="k">Аня сейчас</div>
+  <div class="cd" onclick="go('pulse')"><div class="cd-r"><div class="cd-ic" style="font-size:24px" id="homeAnyaEmoji">😊</div><div class="cd-t"><b id="homeAnyaLabel">Хорошее</b><span id="homeAnyaTime">«Отпустило» · 18:00</span></div><span class="arr">›</span></div></div>
+  <div class="k">Эта неделя</div>
+  <div class="cd" onclick="go('chal')"><div class="cd-r"><div class="cd-ic">🌙</div><div class="cd-t"><b>Телефон — в ящик</b><span>Дима сделал, Аня — нет</span></div><span class="arr">›</span></div></div>
+  <div class="cd" onclick="go('pulse')"><div class="cd-r"><div class="cd-ic">🫀</div><div class="cd-t"><b>Настроение</b><span>Отметь, как ты. Аня увидит.</span></div><span class="arr">›</span></div></div>
+  <div class="cd" onclick="go('date')"><div class="cd-r"><div class="cd-ic">📍</div><div class="cd-t"><b>Свидание</b><span>Позови Аню. Она выберет место.</span></div><span class="arr">›</span></div></div>
+  <div class="cd" onclick="go('ai')"><div class="cd-r"><div class="cd-ic">🦉</div><div class="cd-t"><b>Сова</b><span>Помнит всё о вашей паре.</span></div><span class="arr">›</span></div></div>
+</div></div>
+
+<!-- ===== HUB: МЫ ===== -->
+<div class="sc" id="s-couple"><div class="wrap">
+  <div class="h1">Кто вы вдвоём</div>
+  <div class="dim">Тесты, отчёт, звёзды.</div>
+  <div class="k">Опросники · 4 из 5</div>
+  <div class="cd" onclick="go('assess')"><div class="cd-r"><div class="cd-ic">🧪</div><div class="cd-t"><b>Пройти тесты</b><span>Остался Big Five</span></div><span class="badge warn">1</span></div></div>
+  <div class="k">Результаты</div>
+  <div class="cd" onclick="go('report')"><div class="cd-r"><div class="cd-ic">📊</div><div class="cd-t"><b>Отчёт пары</b><span>Где вы сила, где — рост</span></div><span class="cd-v">78%</span></div></div>
+  <div class="cd" onclick="go('astro')"><div class="cd-r"><div class="cd-ic">🔮</div><div class="cd-t"><b>Синастрия</b><span>Лев + Водолей</span></div><span class="cd-v">82%</span></div></div>
+</div></div>
+
+<!-- ===== ASSESS ===== -->
+<div class="sc" id="s-assess"><div class="wrap">
+  <div class="h1">Тесты</div>
+  <div class="dim">Каждый проходит отдельно. Честно.</div>
+  <div class="k">Пройдено</div>
+  <div class="cd"><div class="cd-r"><div class="cd-ic">💞</div><div class="cd-t"><b>Привязанность</b><span>Надёжный тип</span></div><span class="badge ok">✓</span></div></div>
+  <div class="cd"><div class="cd-r"><div class="cd-ic">💝</div><div class="cd-t"><b>Языки любви</b><span>Ты — слова. Аня — время.</span></div><span class="badge ok">✓</span></div></div>
+  <div class="cd"><div class="cd-r"><div class="cd-ic">⚡</div><div class="cd-t"><b>Конфликты</b><span>Ссоритесь по-человечески</span></div><span class="badge ok">✓</span></div></div>
+  <div class="cd"><div class="cd-r"><div class="cd-ic">💎</div><div class="cd-t"><b>Ценности</b><span>Семья, рост, свобода</span></div><span class="badge ok">72%</span></div></div>
+  <div class="k">Осталось</div>
+  <div class="cd" style="border:1px dashed var(--warn)"><div class="cd-r"><div class="cd-ic">🌈</div><div class="cd-t"><b>Big Five</b><span>10 минут. Последний штрих.</span></div><button class="btn btn-p btn-sm" onclick="alert('Тест откроется в следующей версии')">Пройти</button></div></div>
+</div></div>
+
+<!-- ===== REPORT ===== -->
+<div class="sc" id="s-report"><div class="wrap">
+  <div class="h1">Карта пары</div>
+  <div class="dim">Без оценок. Только факты.</div>
+  <div class="radar mt"><svg id="radar" width="300" height="300" viewBox="0 0 300 300"></svg>
+    <div style="display:flex;gap:14px;font-size:12px;margin-top:12px"><span style="display:flex;gap:6px;align-items:center"><i style="width:10px;height:10px;border-radius:50%;background:#8B5CF6;display:inline-block"></i>Дима</span><span style="display:flex;gap:6px;align-items:center"><i style="width:10px;height:10px;border-radius:50%;background:#3B82F6;display:inline-block"></i>Аня</span></div>
+  </div>
+  <div class="k">Сила</div>
+  <div class="cd"><div class="cd-r"><div class="cd-ic">💬</div><div class="cd-t"><b>Коммуникация · 88%</b><span>Вы говорите и слышите. Это золото.</span></div></div></div>
+  <div class="k">Рост</div>
+  <div class="cd"><div class="cd-r"><div class="cd-ic">⚡</div><div class="cd-t"><b>Конфликты · 58%</b><span>Тебе нужна пауза, Ане — разговор. Договоритесь о сигнале.</span></div></div></div>
+  <div class="cd"><div class="cd-r"><div class="cd-ic">💰</div><div class="cd-t"><b>Деньги · 62%</b><span>Ты копишь, Аня живёт. Попробуй «три конверта».</span></div></div></div>
+  <button class="btn btn-p btn-w mt" onclick="go('ai')">Обсудить с Совой</button>
+</div></div>
+
+<!-- ===== ASTRO ===== -->
+<div class="sc" id="s-astro"><div class="wrap">
+  <div class="h1">Синастрия</div>
+  <div class="dim">Натальные карты и их пересечения.</div>
+  <div class="cd mt" style="text-align:center;padding:24px">
+    <div class="small" style="text-transform:uppercase;letter-spacing:.1em">по звёздам</div>
+    <div style="font-size:48px;font-weight:800;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;margin:6px 0">82%</div>
+    <div class="dim">Солнце и Луна в гармонии.</div>
+  </div>
+  <div class="k">Между вами</div>
+  <div class="cd"><div class="cd-r"><div class="cd-ic">✨</div><div class="cd-t"><b>Солнце ▵ Луна</b><span>Твоё «я» ладит с её эмоциями.</span></div></div></div>
+  <div class="cd"><div class="cd-r"><div class="cd-ic">💫</div><div class="cd-t"><b>Венера ☍ Марс</b><span>Сильное притяжение. Не сжигайте.</span></div></div></div>
+  <div class="cd"><div class="cd-r"><div class="cd-ic">🌱</div><div class="cd-t"><b>Юпитер △ Юпитер</b><span>Растёте в одну сторону.</span></div></div></div>
+</div></div>
+
+<!-- ===== HUB: БУДНИ ===== -->
+<div class="sc" id="s-daily"><div class="wrap">
+  <div class="h1">Будни</div>
+  <div class="dim">Мелочи, из которых всё складывается.</div>
+  <div class="cd mt" onclick="go('pulse')"><div class="cd-r"><div class="cd-ic">🫀</div><div class="cd-t"><b>Настроение</b><span>Аня сейчас: 😊</span></div><span class="arr">›</span></div></div>
+  <div class="cd" onclick="go('chal')"><div class="cd-r"><div class="cd-ic">🎯</div><div class="cd-t"><b>Челленджи</b><span>Телефон — в ящик</span></div><span class="badge pri">1/2</span></div></div>
+  <div class="cd" onclick="go('partner')"><div class="cd-r"><div class="cd-ic">💐</div><div class="cd-t"><b>Аня</b><span>Что любит, чего хочет</span></div><span class="arr">›</span></div></div>
+</div></div>
+
+<!-- ===== PULSE / MOOD ===== -->
+<div class="sc" id="s-pulse"><div class="wrap">
+  <div class="h1">Настроение</div>
+  <div class="dim">Отметь, как ты. Партнёр увидит.</div>
+  <div class="mood-now mt">
+    <div class="mood-card">
+      <h3>Ты сейчас</h3>
+      <div class="mood-pick" id="moodPick">
+        <button class="mood-btn" data-e="😢" data-l="Тяжело" data-v="1" onclick="pickMood(this)">😢</button>
+        <button class="mood-btn" data-e="😔" data-l="Так себе" data-v="2" onclick="pickMood(this)">😔</button>
+        <button class="mood-btn" data-e="😐" data-l="Ровно" data-v="3" onclick="pickMood(this)">😐</button>
+        <button class="mood-btn sel" data-e="😊" data-l="Хорошее" data-v="4" onclick="pickMood(this)">😊</button>
+        <button class="mood-btn" data-e="😄" data-l="Отлично" data-v="5" onclick="pickMood(this)">😄</button>
+      </div>
+      <textarea class="mood-note" id="moodNote" placeholder="Пара слов (необязательно)"></textarea>
+      <button class="btn btn-p btn-w" style="margin-top:10px" onclick="saveMood()">Сохранить</button>
+    </div>
+    <div class="mood-card">
+      <h3>Аня сейчас</h3>
+      <div class="mood-cur">
+        <div class="big" id="anyaEmoji">😊</div>
+        <div class="info">
+          <b id="anyaLabel">Хорошее</b>
+          <span id="anyaNote">«Отпустило»</span>
+          <div class="small" style="margin-top:4px" id="anyaTime">изменила в 18:00</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="k">Сегодня</div>
+  <div class="cd" id="feedList" style="cursor:default"></div>
+  <div class="k">Неделя</div>
+  <div class="cd" style="cursor:default">
+    <div class="week-chart" id="weekChart"></div>
+    <div class="legend"><span class="dima"><i></i>Дима</span><span class="anya"><i></i>Аня</span></div>
+    <div style="display:flex;justify-content:space-between;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)">
+      <div><div class="small">среднее Димы</div><b style="font-size:18px">3.7</b></div>
+      <div style="text-align:center"><div class="small">среднее Ани</div><b style="font-size:18px">3.6</b></div>
+      <div style="text-align:right"><div class="small">тренд</div><b style="font-size:18px;color:var(--ok)">↑</b></div>
+    </div>
+  </div>
+  <div class="k">Инсайты</div>
+  <div class="cd" style="cursor:default">
+    <div class="insight"><i>🌟</i><span><b>Пятница — ваш лучший день.</b> Планируйте свидания на вечер пятницы.</span></div>
+    <div class="insight"><i>🌧️</i><span><b>Вторник был тяжёлым.</b> Начало рабочей недели давит на обоих.</span></div>
+    <div class="insight"><i>💡</i><span><b>Аня оживает к вечеру.</b> Утро — не время для серьёзных разговоров.</span></div>
+  </div>
+</div></div>
+
+<!-- ===== CHALLENGES ===== -->
+<div class="sc" id="s-chal"><div class="wrap">
+  <div class="h1">Челленджи</div>
+  <div class="dim">Один в неделю. Вдвоём.</div>
+  <div class="cd mt">
+    <span class="badge pri">до воскресенья</span>
+    <div class="h2" style="margin:10px 0 4px">🌙 Телефон — в ящик</div>
+    <div class="dim">2 часа вечером без экранов.</div>
+    <div style="display:flex;gap:8px;margin-top:14px">
+      <div class="cd" style="flex:1;margin:0;background:var(--card2)" onclick="toggleChal(this)"><div class="cd-r"><div class="av" style="width:26px;height:26px;font-size:11px">Д</div><div class="cd-t"><b>Дима</b><span>сделал ✓</span></div></div></div>
+      <div class="cd" style="flex:1;margin:0;background:var(--card2)" onclick="toggleChal(this)"><div class="cd-r"><div class="av p" style="width:26px;height:26px;font-size:11px">А</div><div class="cd-t"><b>Аня</b><span>ещё нет</span></div></div></div>
+    </div>
+  </div>
+  <div class="k">Сделано</div>
+  <div class="cd"><div class="cd-r"><div class="cd-ic">☕</div><div class="cd-t"><b>Кофе молча</b><span>5 минут без разговоров о работе</span></div><span class="badge ok">✓</span></div></div>
+  <div class="cd"><div class="cd-r"><div class="cd-ic">💌</div><div class="cd-t"><b>Спасибо в день</b><span>7 дней подряд</span></div><span class="badge ok">🔥</span></div></div>
+</div></div>
+
+<!-- ===== PARTNER ===== -->
+<div class="sc" id="s-partner"><div class="wrap">
+  <div class="h1">Аня</div>
+  <div class="dim">Чтобы не переспрашивать.</div>
+  <div class="cd mt"><div class="cd-r"><div class="cd-ic" style="font-size:26px" id="partnerMoodEmoji">😊</div><div class="cd-t"><b id="partnerMoodLabel">Хорошее</b><span id="partnerMoodNote">«Отпустило» · 18:00</span></div></div></div>
+  <div class="k">Цветы</div>
+  <div class="cd"><div class="flower-row">🌸 🌹 🌷 🌼 💜</div><div class="small" style="margin-top:8px">пионы · розы · тюльпаны · ромашки · лаванда</div></div>
+  <div class="k">Хочет сейчас</div>
+  <div class="cd" onclick="toggleCraving(this)"><div class="cd-r"><div class="cd-ic">🍦</div><div class="cd-t"><b>Мороженое с карамелью</b></div><button class="btn btn-p btn-sm crv-btn">принести</button></div></div>
+  <div class="cd" onclick="toggleCraving(this)"><div class="cd-r"><div class="cd-ic">☕</div><div class="cd-t"><b>Лавандовый раф</b></div><button class="btn btn-p btn-sm crv-btn">принести</button></div></div>
+  <div class="k">Виш-лист</div>
+  <div class="cd" onclick="toggleWish(this)"><div class="cd-r"><div class="cd-ic">📚</div><div class="cd-t"><b>«Атомные привычки»</b><span>1200 ₽ · горит</span></div><button class="btn btn-s btn-sm wsh-btn">подарил</button></div></div>
+  <div class="cd" onclick="toggleWish(this)"><div class="cd-r"><div class="cd-ic">🎧</div><div class="cd-t"><b>Наушники</b><span>6500 ₽</span></div><button class="btn btn-s btn-sm wsh-btn">подарил</button></div></div>
+</div></div>
+
+<!-- ===== DATE ===== -->
+<div class="sc" id="s-date"><div class="wrap">
+  <div class="h1">Свидание</div>
+  <div class="dim">Ты зовёшь. Она выбирает. Ты бронируешь.</div>
+  <div class="seg">
+    <button id="viewD" class="on" onclick="setView('d')">Ты — Дима</button>
+    <button id="viewA" onclick="setView('a')">Она — Аня</button>
+  </div>
+
+  <div id="dView">
+    <div id="dIdle">
+      <div class="cd" style="text-align:center;padding:32px 20px">
+        <div style="font-size:40px;margin-bottom:12px">💌</div>
+        <div class="h2" style="margin-bottom:6px">Позови Аню</div>
+        <div class="dim" style="margin-bottom:18px">Она выберет вайб, место и время.<br>Тебе останется забронировать.</div>
+        <button class="btn btn-p btn-w" onclick="sendInvite()">Отправить инвайт</button>
+      </div>
+    </div>
+    <div id="dWait" style="display:none">
+      <div class="cd" style="text-align:center;padding:28px 20px">
+        <div style="font-size:36px;margin-bottom:10px">⏳</div>
+        <div class="h2" style="margin-bottom:4px">Ждём Аню</div>
+        <div class="dim">Инвайт отправлен. Она выбирает.</div>
+        <button class="btn btn-s btn-w" style="margin-top:16px" onclick="setView('a')">Посмотреть глазами Ани →</button>
+      </div>
+    </div>
+    <div id="dPlan" style="display:none">
+      <div class="cd" style="border:1px solid rgba(16,185,129,.3)">
+        <span class="badge ok">Аня выбрала</span>
+        <div class="h2" style="margin:12px 0 4px" id="planTitle">Birch</div>
+        <div class="dim" id="planSub">Крестовский · ₽₽₽</div>
+        <div class="sum" style="margin-top:14px">
+          <div class="sum-r"><span>Когда</span><b id="planWhen">—</b></div>
+          <div class="sum-r"><span>Адрес</span><b id="planAddr">Крестовский пр., 21</b></div>
+          <div class="sum-r"><span>Телефон</span><b>+7 812 000-00-00</b></div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:14px">
+          <button class="btn btn-p" style="flex:1" onclick="alert('Звоним…')">📞 Позвонить</button>
+          <button class="btn btn-s" style="flex:1" onclick="alert('Открываем бронь…')">Забронировать</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="aView" style="display:none">
+    <div class="wiz-dots"><div class="wd on" id="wd1"></div><div class="wd" id="wd2"></div><div class="wd" id="wd3"></div><div class="wd" id="wd4"></div></div>
+
+    <div id="w1">
+      <div class="h2" style="text-align:center;margin-top:14px">Чего хочется?</div>
+      <div class="vibe-grid" id="vibeGrid"></div>
+      <div class="vibe-extra">
+        <button class="vibe-btn" onclick="pickRandom()">✨ Удиви меня</button>
+        <button class="vibe-btn" onclick="showCustom()">✏️ Своё</button>
+      </div>
+      <div id="customBox">
+        <textarea id="customInput" placeholder="Например: шаурма на лавочке у Невы"></textarea>
+        <button class="btn btn-p btn-w" onclick="applyCustom()">Показать места</button>
+      </div>
+    </div>
+
+    <div id="w2" style="display:none">
+      <div class="h2" style="text-align:center;margin-top:14px" id="venTitle">Куда пойдём?</div>
+      <div id="venList"></div>
+    </div>
+
+    <div id="w3" style="display:none">
+      <div class="h2" style="text-align:center;margin-top:14px">Когда?</div>
+      <div class="sel-info" id="selInfo">Выбери дату и время</div>
+
+      <div class="k">Дата</div>
+      <div class="day-strip" id="dayStrip"></div>
+      <button class="link-btn" onclick="toggleCal()">📅 Выбрать в календаре</button>
+      <div class="cal-wrap" id="calWrap">
+        <div class="cal-head">
+          <button class="cal-nav" id="calPrev" onclick="calMove(-1)">‹</button>
+          <b id="calTitle">Август 2026</b>
+          <button class="cal-nav" onclick="calMove(1)">›</button>
+        </div>
+        <div class="cal-week"><span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span></div>
+        <div class="cal-grid" id="calGrid"></div>
+      </div>
+
+      <div class="k">Время</div>
+      <div id="timeGroups"></div>
+    </div>
+
+    <div id="w4" style="display:none">
+      <div class="h2" style="text-align:center;margin-top:14px">Точно?</div>
+      <div class="sum">
+        <div class="sum-r"><span>Место</span><b id="sumVen">—</b></div>
+        <div class="sum-r"><span>Когда</span><b id="sumWhen">—</b></div>
+      </div>
+      <button class="btn btn-p btn-w" style="margin-top:14px" onclick="confirmDate()">Отправить Диме</button>
+    </div>
+  </div>
+</div></div>
+
+<!-- ===== AI ===== -->
+<div class="sc" id="s-ai"><div class="wrap">
+<div class="chat">
+  <div class="chat-w">
+    <div class="chat-h"><div class="av" style="width:30px;height:30px;font-size:13px;background:var(--card2)">🦉</div><div><b>Сова</b><br><span>помнит вашу пару</span></div><div class="dot"></div></div>
+    <div class="msgs" id="msgs">
+      <div class="m ai"><div class="who">🦉 Сова</div>Привет, Дима. Связь — ваша сила (88%). Деньги — зона роста (62%). Что сейчас?</div>
+    </div>
+    <div class="chat-in"><div class="chat-b"><textarea id="cin" placeholder="О чём поговорим?" rows="1"></textarea><button class="send" onclick="send()">→</button></div></div>
+  </div>
+</div>
+</div></div>
+
+<!-- ===== SETTINGS ===== -->
+<div class="sc" id="s-set"><div class="wrap">
+  <div class="h1">Настройки</div>
+  <div class="cd mt"><div class="cd-r"><div class="av" style="width:40px;height:40px;font-size:16px">Д</div><div class="cd-t"><b>Дима Вяткин</b><span>@dmitry</span></div><span class="arr">›</span></div></div>
+  <div class="k">Пара</div>
+  <div class="cd"><div class="cd-r"><div class="cd-ic">💞</div><div class="cd-t"><b>Аня</b><span>4 месяца вместе</span></div></div></div>
+  <div class="cd"><div class="cd-r"><div class="cd-ic">📍</div><div class="cd-t"><b>Санкт-Петербург</b></div></div></div>
+  <div class="k">Уведомления</div>
+  <div class="cd"><div class="cd-r"><div class="cd-t"><b>Push</b><span>челленджи, настроение</span></div><div class="tgl on" onclick="this.classList.toggle('on')"></div></div></div>
+  <div class="cd"><div class="cd-r"><div class="cd-t"><b>Email</b><span>отчёт раз в неделю</span></div><div class="tgl" onclick="this.classList.toggle('on')"></div></div></div>
+  <div class="k">Данные</div>
+  <div class="cd"><div class="cd-r"><div class="cd-t"><b>Скачать всё</b><span>JSON · GDPR</span></div><span class="arr">›</span></div></div>
+  <div class="cd"><div class="cd-r"><div class="cd-t"><b style="color:#EF4444">Удалить аккаунт</b></div><span class="arr">›</span></div></div>
+</div></div>
+
+<nav class="tb">
+  <button class="tbi on" data-s="home" onclick="go('home')"><i>🏠</i><b>Дом</b></button>
+  <button class="tbi" data-s="couple" onclick="go('couple')"><i>💞</i><b>Мы</b></button>
+  <button class="tbi fab-m" data-s="date" onclick="go('date')"><i>📍</i><b>Свидание</b></button>
+  <button class="tbi" data-s="daily" onclick="go('daily')"><i>⚡</i><b>Будни</b></button>
+  <button class="tbi" data-s="ai" onclick="go('ai')"><i>🦉</i><b>Сова</b></button>
+</nav>
+
+</div>
+
+<script>
+// ===== Nav =====
+const parent={home:'home',couple:'couple',assess:'couple',report:'couple',astro:'couple',daily:'daily',pulse:'daily',chal:'daily',partner:'daily',date:'date',ai:'ai',set:'home'};
+function go(id){
+  document.querySelectorAll('.sc').forEach(s=>s.classList.remove('on'));
+  document.getElementById('s-'+id).classList.add('on');
+  const p=parent[id]||id;
+  document.querySelectorAll('.nv,.tbi').forEach(t=>t.classList.toggle('on',t.dataset.s===p));
+  document.getElementById('s-'+id).scrollTo(0,0);
+  if(id==='report')setTimeout(radar,50);
+  if(id==='pulse'){renderFeed();renderWeek();}
+}
+
+// ===== Radar =====
+function radar(){
+  const svg=document.getElementById('radar');if(!svg)return;
+  const S=300,cx=150,cy=150,R=95;
+  const cats=['Близость','Конфл.','Ценности','Коммун.','Деньги','Будущее'];
+  const a=[82,58,72,88,62,75],b=[78,65,70,82,68,80];
+  let s='<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8B5CF6" stop-opacity=".35"/><stop offset="1" stop-color="#EC4899" stop-opacity=".35"/></linearGradient></defs>';
+  for(let l=1;l<=4;l++){let p='';for(let i=0;i<6;i++){const an=i/6*2*Math.PI-Math.PI/2,r=R*l/4;p+=`${cx+r*Math.cos(an)},${cy+r*Math.sin(an)} `}s+=`<polygon points="${p}" fill="none" stroke="rgba(255,255,255,.07)"/>`}
+  for(let i=0;i<6;i++){const an=i/6*2*Math.PI-Math.PI/2;s+=`<line x1="${cx}" y1="${cy}" x2="${cx+R*Math.cos(an)}" y2="${cy+R*Math.sin(an)}" stroke="rgba(255,255,255,.07)"/>`}
+  const poly=(d,f,st)=>{let p='';for(let i=0;i<6;i++){const an=i/6*2*Math.PI-Math.PI/2,r=d[i]/100*R;p+=`${cx+r*Math.cos(an)},${cy+r*Math.sin(an)} `}s+=`<polygon points="${p}" fill="${f}" stroke="${st}" stroke-width="2"/>`};
+  poly(a,'url(#g)','#8B5CF6');poly(b,'rgba(59,130,246,.2)','#3B82F6');
+  for(let i=0;i<6;i++){const an=i/6*2*Math.PI-Math.PI/2;
+    s+=`<text x="${cx+(R+22)*Math.cos(an)}" y="${cy+(R+22)*Math.sin(an)}" text-anchor="${Math.abs(Math.cos(an))<.3?'middle':Math.cos(an)>0?'start':'end'}" fill="#8A94A7" font-size="10" font-weight="600">${cats[i]}</text>`}
+  svg.innerHTML=s;
+}
+
+// ===== Mood =====
+let myMood={e:'😊',l:'Хорошее',v:4};
+let feed=[
+  {who:'dima',e:'😊',t:'',min:8*60},
+  {who:'anya',e:'😊',t:'Утро хорошее',min:9*60},
+  {who:'anya',e:'😐',t:'Завал на работе',min:13*60+30},
+  {who:'dima',e:'😴',t:'Сонный после обеда',min:15*60},
+  {who:'anya',e:'😊',t:'Отпустило',min:18*60}
+];
+function fmtMin(m){return Math.floor(m/60)+':'+String(m%60).padStart(2,'0')}
+function nowMin(){const d=new Date();return d.getHours()*60+d.getMinutes()}
+function pickMood(btn){
+  document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+  myMood={e:btn.dataset.e,l:btn.dataset.l,v:+btn.dataset.v};
+}
+function saveMood(){
+  const note=document.getElementById('moodNote').value.trim();
+  feed.push({who:'dima',e:myMood.e,t:note,min:nowMin()});
+  document.getElementById('moodNote').value='';
+  renderFeed();
+}
+function renderFeed(){
+  const el=document.getElementById('feedList');if(!el)return;
+  const sorted=[...feed].sort((a,b)=>a.min-b.min);
+  el.innerHTML=sorted.map(f=>{
+    const who=f.who==='dima'
+      ?'<div class="av" style="width:26px;height:26px;font-size:11px">Д</div>'
+      :'<div class="av p" style="width:26px;height:26px;font-size:11px">А</div>';
+    return `<div class="feed-item">${who}<div class="fe">${f.e}</div><div class="ft"><b>${f.who==='dima'?'Дима':'Аня'}</b><span>${f.t||'без слов'}</span></div><div class="ftime">${fmtMin(f.min)}</div></div>`;
+  }).join('');
+  const anyaLast=[...feed].filter(f=>f.who==='anya').pop();
+  if(anyaLast){
+    document.getElementById('anyaEmoji').textContent=anyaLast.e;
+    document.getElementById('anyaNote').textContent=anyaLast.t?'«'+anyaLast.t+'»':'без слов';
+    document.getElementById('anyaTime').textContent='изменила в '+fmtMin(anyaLast.min);
+    document.getElementById('homeAnyaEmoji').textContent=anyaLast.e;
+    document.getElementById('homeAnyaTime').textContent=(anyaLast.t?'«'+anyaLast.t+'»':'')+' · '+fmtMin(anyaLast.min);
+    document.getElementById('partnerMoodEmoji').textContent=anyaLast.e;
+    document.getElementById('partnerMoodNote').textContent=(anyaLast.t?'«'+anyaLast.t+'»':'')+' · '+fmtMin(anyaLast.min);
+  }
+}
+function renderWeek(){
+  const el=document.getElementById('weekChart');if(!el||el.children.length)return;
+  const days=['пн','вт','ср','чт','пт','сб','вс'];
+  const dima=[4,2,3,4,5,4,3];
+  const anya=[3,2,4,3,4,5,4];
+  el.innerHTML=days.map((d,i)=>`
+    <div class="wc-day">
+      <div class="wc-bars">
+        <div class="wc-bar dima" style="height:${dima[i]/5*100}%"></div>
+        <div class="wc-bar anya" style="height:${anya[i]/5*100}%"></div>
+      </div>
+      <span>${d}</span>
+    </div>`).join('');
+}
+
+// ===== Toggles =====
+function toggleChal(el){
+  const s=el.querySelector('span');
+  s.textContent=s.textContent.includes('сделал')?'ещё нет':'сделал ✓';
+}
+function toggleCraving(el){
+  const b=el.querySelector('.crv-btn');
+  if(b.textContent==='принести'){b.textContent='✓ принёс';b.classList.remove('btn-p');b.classList.add('btn-ok');el.classList.add('done-state')}
+  else{b.textContent='принести';b.classList.add('btn-p');b.classList.remove('btn-ok');el.classList.remove('done-state')}
+}
+function toggleWish(el){
+  const b=el.querySelector('.wsh-btn');
+  if(b.textContent==='подарил'){b.textContent='✓ подарил';b.classList.remove('btn-s');b.classList.add('btn-ok');el.classList.add('done-state')}
+  else{b.textContent='подарил';b.classList.add('btn-s');b.classList.remove('btn-ok');el.classList.remove('done-state')}
+}
+
+// ===== DATE WIZARD =====
+const vibes=[
+  {id:'cheap',e:'🌯',t:'Быстро и дёшево',d:'шаурма, стритфуд'},
+  {id:'simple',e:'🍕',t:'Вкусно и просто',d:'пицца, бургеры'},
+  {id:'nice',e:'🍣',t:'Красиво посидеть',d:'ресторан, не спеша'},
+  {id:'talk',e:'☕',t:'Поболтать',d:'кофе, десерт'},
+  {id:'night',e:'🍸',t:'Вечер',d:'бар, коктейли'},
+  {id:'walk',e:'🌳',t:'Погулять',d:'парк, набережная'},
+  {id:'picnic',e:'🧺',t:'Пикник',d:'плед и вкусности'},
+  {id:'home',e:'🏠',t:'Дома',d:'доставка, фильм'}
+];
+const vibeVenues={
+  cheap:[
+    {n:'Шаурма у Ашота',a:'Невский',p:1,e:'🌯',tag:'можно на лавочке'},
+    {n:'Фалафель бар',a:'Петроградка',p:1,e:'🥙',tag:'навынос'},
+    {n:'Пышечная',a:'Б. Конюшенная',p:1,e:'🥐',tag:'легенда'}
+  ],
+  simple:[
+    {n:'Pizza Point',a:'Рубинштейна',p:2,e:'🍕'},
+    {n:'Burger Lab',a:'Гороховая',p:2,e:'🍔'},
+    {n:'Хинкальная',a:'Владимирский',p:2,e:'🥟'}
+  ],
+  nice:[
+    {n:'Birch',a:'Крестовский',p:3,e:'🍽️'},
+    {n:'Pasta Bar',a:'Столярный',p:3,e:'🍝'},
+    {n:'Сад',a:'Васильевский',p:3,e:'🥗'}
+  ],
+  talk:[
+    {n:'Civil',a:'Петроградка',p:2,e:'☕'},
+    {n:'Булочная Вольчека',a:'Литейный',p:1,e:'🍰'},
+    {n:'Skuratov',a:'Центр',p:2,e:'☕'}
+  ],
+  night:[
+    {n:'El Copitas',a:'Невский',p:3,e:'🍸'},
+    {n:'Винный шкаф',a:'Пестеля',p:2,e:'🍷'},
+    {n:'Тайга',a:'Дворцовая',p:2,e:'🍹'}
+  ],
+  walk:[
+    {n:'Новая Голландия',a:'Адмиралтейская',p:1,e:'🌳'},
+    {n:'Стрелка В.О.',a:'Васильевский',p:1,e:'🌅',tag:'закат'},
+    {n:'Набережная Фонтанки',a:'Центр',p:1,e:'🌉'}
+  ],
+  picnic:[
+    {n:'Летний сад',a:'Центр',p:1,e:'🧺'},
+    {n:'Парк 300-летия',a:'Приморский',p:1,e:'🌲'},
+    {n:'Елагин остров',a:'Крестовский',p:1,e:'🦢'}
+  ],
+  home:[
+    {n:'Готовим вместе',a:'паста или пицца',p:1,e:'👨‍🍳'},
+    {n:'Доставка + фильм',a:'выберите кино',p:2,e:'🎬'},
+    {n:'Настолки',a:'с вином',p:1,e:'🎲'}
+  ]
+};
+const venTitles={cheap:'Куда за едой?',simple:'Куда пойдём?',nice:'Куда пойдём?',talk:'Где посидим?',night:'Куда вечером?',walk:'Куда погуляем?',picnic:'Где расстелем плед?',home:'Чем займёмся?'};
+
+const timeGroups=[
+  {label:'Утро',slots:['10:00','10:30','11:00','11:30']},
+  {label:'День',slots:['12:00','13:00','14:00','15:00']},
+  {label:'Вечер',slots:['18:00','18:30','19:00','19:30','20:00','20:30','21:00']}
+];
+const MONTHS=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+
+let w={vibe:null,ven:null,venA:null,venP:null,day:null,time:null,step:1,custom:null};
+let calDate=new Date();
+let selectedDate=null;
+
+function renderVibes(){
+  document.getElementById('vibeGrid').innerHTML=vibes.map(v=>`<button class="vibe ${w.vibe===v.id?'sel':''}" onclick="pickVibe('${v.id}')"><i>${v.e}</i><b>${v.t}</b><span>${v.d}</span></button>`).join('');
+}
+function pickVibe(id){
+  w.vibe=id;w.custom=null;renderVibes();
+  setTimeout(()=>{w.step=2;showW();renderVen();},150);
+}
+function pickRandom(){
+  const v=vibes[Math.floor(Math.random()*vibes.length)];
+  w.vibe=v.id;w.custom=null;renderVibes();
+  setTimeout(()=>{w.step=2;showW();renderVen();},250);
+}
+function showCustom(){
+  const box=document.getElementById('customBox');
+  box.style.display=box.style.display==='block'?'none':'block';
+  if(box.style.display==='block')document.getElementById('customInput').focus();
+}
+function applyCustom(){
+  const t=document.getElementById('customInput').value.trim();
+  if(!t)return;
+  w.custom=t;w.vibe='custom';
+  setTimeout(()=>{w.step=2;showW();renderVen();},150);
+}
+function getVenues(){
+  if(w.vibe==='custom')return [...vibeVenues.cheap,...vibeVenues.simple,...vibeVenues.nice,...vibeVenues.talk];
+  return vibeVenues[w.vibe]||[];
+}
+function renderVen(){
+  const list=getVenues();
+  const title=document.getElementById('venTitle');
+  title.textContent=w.custom?('Куда? «'+w.custom+'»'):(venTitles[w.vibe]||'Куда пойдём?');
+  document.getElementById('venList').innerHTML=list.map(v=>`
+    <div class="ven ${w.ven===v.n?'sel':''}" onclick="pickVen(this,'${v.n.replace(/'/g,"\\'")}','${v.a}',${v.p})">
+      <div class="ven-ic">${v.e}</div>
+      <div class="ven-t"><b>${v.n}</b><span>${v.a}${v.tag?`<span class="ven-tag">${v.tag}</span>`:''}</span></div>
+      <span class="price">${'₽'.repeat(v.p)}</span>
+    </div>`).join('');
+}
+function pickVen(el,n,a,p){
+  w.ven=n;w.venA=a;w.venP=p;
+  document.querySelectorAll('.ven').forEach(v=>v.classList.remove('sel'));
+  el.classList.add('sel');
+  setTimeout(()=>{w.step=3;showW();initStep3();},150);
+}
+
+// ===== Step 3: Date & Time =====
+function initStep3(){
+  renderDayStrip();
+  renderCal();
+  renderTimeGroups();
+  updateSelInfo();
+}
+function renderDayStrip(){
+  const strip=document.getElementById('dayStrip');if(!strip)return;
+  const today=new Date();today.setHours(0,0,0,0);
+  let html='';
+  for(let i=0;i<14;i++){
+    const d=new Date(today);d.setDate(d.getDate()+i);
+    const isSel=selectedDate&&d.getTime()===selectedDate.getTime();
+    const wd=['вс','пн','вт','ср','чт','пт','сб'][d.getDay()];
+    html+=`<div class="day-card ${isSel?'sel':''} ${i===0?'today':''}" onclick="pickStripDate(${d.getFullYear()},${d.getMonth()},${d.getDate()})">
+      <div class="dw">${i===0?'сег':wd}</div>
+      <div class="dn">${d.getDate()}</div>
+    </div>`;
+  }
+  strip.innerHTML=html;
+}
+function pickStripDate(y,m,d){
+  selectedDate=new Date(y,m,d);
+  w.day=selectedDate;
+  if(w.time&&isBusy(selectedDate,w.time))w.time=null;
+  renderDayStrip();renderCal();renderTimeGroups();updateSelInfo();checkStep3();
+}
+function renderCal(){
+  const el=document.getElementById('calGrid');if(!el)return;
+  const y=calDate.getFullYear(),m=calDate.getMonth();
+  document.getElementById('calTitle').textContent=MONTHS[m]+' '+y;
+  const now=new Date();now.setHours(0,0,0,0);
+  const curMonth=new Date(now.getFullYear(),now.getMonth(),1);
+  const calMonth=new Date(y,m,1);
+  document.getElementById('calPrev').disabled=calMonth<=curMonth;
+  let start=new Date(y,m,1).getDay();if(start===0)start=7;start--;
+  const daysIn=new Date(y,m+1,0).getDate();
+  let html='';
+  for(let i=0;i<start;i++)html+='<div class="cal-empty"></div>';
+  for(let d=1;d<=daysIn;d++){
+    const dt=new Date(y,m,d);
+    const isPast=dt<now,isToday=dt.getTime()===now.getTime(),isSel=selectedDate&&dt.getTime()===selectedDate.getTime();
+    let cls='cal-day';if(isPast)cls+=' past';if(isToday)cls+=' today';if(isSel)cls+=' sel';
+    html+=`<div class="${cls}" ${isPast?'':`onclick="pickCalDate(${y},${m},${d})"`}>${d}</div>`;
+  }
+  el.innerHTML=html;
+}
+function pickCalDate(y,m,d){
+  selectedDate=new Date(y,m,d);
+  w.day=selectedDate;
+  if(w.time&&isBusy(selectedDate,w.time))w.time=null;
+  renderCal();renderDayStrip();renderTimeGroups();updateSelInfo();checkStep3();
+}
+function calMove(dir){calDate.setMonth(calDate.getMonth()+dir);renderCal()}
+function toggleCal(){
+  const cw=document.getElementById('calWrap');
+  cw.style.display=cw.style.display==='block'?'none':'block';
+  if(cw.style.display==='block')renderCal();
+}
+function isBusy(date,t){
+  const h=parseInt(t.split(':')[0]);
+  const m=parseInt(t.split(':')[1]);
+  const seed=date.getDate()+h*2+Math.floor(m/10);
+  return seed%5===0;
+}
+function renderTimeGroups(){
+  const el=document.getElementById('timeGroups');if(!el)return;
+  el.innerHTML=timeGroups.map(g=>`
+    <div class="time-group">
+      <div class="tg-label">${g.label}</div>
+      <div class="tg-slots">${g.slots.map(t=>{
+        const busy=selectedDate?isBusy(selectedDate,t):false;
+        const sel=w.time===t;
+        return `<button class="slot ${sel?'sel':''}" ${busy?'disabled':''} onclick="pickSlot(this,'${t}')">${t}</button>`;
+      }).join('')}</div>
+    </div>`).join('');
+}
+function pickSlot(el,t){
+  w.time=t;
+  document.querySelectorAll('.slot').forEach(s=>s.classList.remove('sel'));
+  el.classList.add('sel');
+  updateSelInfo();checkStep3();
+}
+function updateSelInfo(){
+  const el=document.getElementById('selInfo');if(!el)return;
+  if(w.day&&w.time){
+    el.className='sel-info ready';
+    el.innerHTML='✓ '+fmtDate(w.day)+' · '+w.time;
+  } else if(w.day){
+    el.className='sel-info';
+    el.innerHTML=fmtDate(w.day)+' · <span style="color:var(--mute)">выбери время</span>';
+  } else {
+    el.className='sel-info';
+    el.innerHTML='Выбери дату и время';
+  }
+}
+function checkStep3(){
+  if(w.day&&w.time)setTimeout(()=>{w.step=4;showW();renderSum();},450);
+}
+function fmtDate(d){
+  const wd=['вс','пн','вт','ср','чт','пт','сб'][d.getDay()];
+  const mo=['янв','фев','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'];
+  return `${wd}, ${d.getDate()} ${mo[d.getMonth()]}`;
+}
+function renderSum(){
+  document.getElementById('sumVen').textContent=w.ven+' · '+w.venA;
+  document.getElementById('sumWhen').textContent=fmtDate(w.day)+' · '+w.time;
+}
+function showW(){
+  for(let i=1;i<=4;i++){
+    document.getElementById('w'+i).style.display=w.step===i?'block':'none';
+    const dot=document.getElementById('wd'+i);
+    dot.classList.toggle('on',w.step===i);
+    dot.classList.toggle('done',w.step>i);
+  }
+}
+function confirmDate(){
+  document.getElementById('planTitle').textContent=w.ven;
+  document.getElementById('planSub').textContent=w.venA+' · '+'₽'.repeat(w.venP);
+  document.getElementById('planAddr').textContent=w.vibe==='home'?'У вас дома':w.venA;
+  document.getElementById('planWhen').textContent=fmtDate(w.day)+' · '+w.time;
+  setView('d');
+  document.getElementById('dIdle').style.display='none';
+  document.getElementById('dWait').style.display='none';
+  document.getElementById('dPlan').style.display='block';
+}
+function sendInvite(){
+  document.getElementById('dIdle').style.display='none';
+  document.getElementById('dWait').style.display='block';
+}
+function setView(v){
+  document.getElementById('viewD').classList.toggle('on',v==='d');
+  document.getElementById('viewA').classList.toggle('on',v==='a');
+  document.getElementById('dView').style.display=v==='d'?'block':'none';
+  document.getElementById('aView').style.display=v==='a'?'block':'none';
+  if(v==='a'){renderVibes();showW();}
+}
+
+// ===== Chat =====
+const msgs=document.getElementById('msgs'),cin=document.getElementById('cin');
+const reps=['Расскажи подробнее. Что чувствуешь?','Что в этом самое сложное?','Что бы ты хотел, чтобы Аня поняла?','Как давно это замечаешь?','Связь — ваша сила. Что её держит?','Это про деньги? У вас там 62% — зона роста.'];
+function add(t,who){const m=document.createElement('div');m.className='m '+who;m.innerHTML=who==='ai'?`<div class="who">🦉 Сова</div>${t}`:t;msgs.appendChild(m);msgs.scrollTop=msgs.scrollHeight}
+function send(){const v=cin.value.trim();if(!v)return;add(v,'you');cin.value='';const t=document.createElement('div');t.className='typing';t.innerHTML='<i></i><i></i><i></i>';msgs.appendChild(t);msgs.scrollTop=msgs.scrollHeight;setTimeout(()=>{t.remove();add(reps[Math.floor(Math.random()*reps.length)],'ai')},1100+Math.random()*700)}
+cin.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}});
+
+document.addEventListener('DOMContentLoaded',()=>{renderVibes();renderFeed();renderWeek();radar();});
+</script>
+</body>
+</html>

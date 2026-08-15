@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0F172A">
+<title>Together — AI для пар</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0F172A;--bg-alt:#1E293B;
+  --surface:rgba(255,255,255,.04);--surface-hover:rgba(255,255,255,.06);
+  --border:rgba(255,255,255,.08);--border-hover:rgba(139,92,246,.3);
+  --text:#F1F5F9;--text-dim:#94A3B8;
+  --primary:#8B5CF6;--accent:#EC4899;
+  --success:#10B981;--warning:#F59E0B;--danger:#EF4444;
+  --grad:linear-gradient(135deg,#8B5CF6 0%,#EC4899 100%);
+  --grad-soft:linear-gradient(135deg,rgba(139,92,246,.15),rgba(236,72,153,.15));
+  --safe-b:env(safe-area-inset-bottom,0px);
+  --safe-t:env(safe-area-inset-top,0px);
+  --h:64px;
+}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased}
+.app{display:flex;flex-direction:column;height:100vh;height:100dvh;overflow:hidden;position:relative}
+
+/* Фоновые блобы */
+.blob{position:fixed;border-radius:50%;filter:blur(120px);opacity:.2;pointer-events:none;z-index:0}
+.blob-1{top:-200px;right:-200px;width:600px;height:600px;background:var(--primary)}
+.blob-2{bottom:-200px;left:-200px;width:500px;height:500px;background:var(--accent)}
+
+/* Header (desktop) */
+.header{display:none;position:fixed;top:0;left:0;right:0;height:var(--h);background:rgba(15,23,42,.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);z-index:100;padding:0 24px}
+.header-in{max-width:1200px;margin:0 auto;height:100%;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;cursor:pointer;flex-shrink:0}
+.logo-i{width:34px;height:34px;border-radius:10px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 8px 20px rgba(139,92,246,.4)}
+.header-tabs{display:flex;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:4px;overflow-x:auto;scrollbar-width:none;max-width:calc(100% - 180px)}
+.header-tabs::-webkit-scrollbar{display:none}
+.htab{padding:8px 16px;border-radius:100px;font-size:13px;font-weight:500;color:var(--text-dim);cursor:pointer;border:none;background:transparent;font-family:inherit;white-space:nowrap;transition:all .2s}
+.htab:hover{color:var(--text)}
+.htab.active{background:var(--grad);color:#fff}
+.header-user{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.avatar{width:34px;height:34px;border-radius:50%;background:var(--grad-soft);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:14px}
+.avatar.partner{background:linear-gradient(135deg,#3B82F6,#8B5CF6)}
+
+/* Tab bar (mobile) */
+.tab-bar{display:flex;background:rgba(15,23,42,.95);backdrop-filter:blur(20px);border-top:1px solid var(--border);padding:6px 8px calc(6px + var(--safe-b));position:fixed;bottom:0;left:0;right:0;z-index:100;gap:2px;overflow-x:auto;scrollbar-width:none}
+.tab-bar::-webkit-scrollbar{display:none}
+.tab{flex:1;min-width:60px;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 4px;cursor:pointer;border:none;background:transparent;font-family:inherit;color:var(--text-dim);position:relative;transition:color .2s}
+.tab.active{color:var(--primary)}
+.tab.active::before{content:'';position:absolute;top:-6px;left:50%;transform:translateX(-50%);width:24px;height:3px;background:var(--grad);border-radius:0 0 3px 3px}
+.tab-i{font-size:18px}
+.tab-l{font-size:10px;font-weight:500;white-space:nowrap}
+
+/* Screens */
+.screen{display:none;flex:1;overflow-y:auto;overflow-x:hidden;padding:calc(16px + var(--safe-t)) 16px calc(90px + var(--safe-b));-webkit-overflow-scrolling:touch;overscroll-behavior:contain;position:relative;z-index:1}
+.screen.active{display:block;animation:sIn .4s cubic-bezier(.22,1,.36,1)}
+@keyframes sIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+.container{max-width:1200px;margin:0 auto}
+
+/* Typography */
+h1{font-size:clamp(24px,5vw,40px);font-weight:800;line-height:1.1;letter-spacing:-.03em;margin-bottom:12px}
+h2{font-size:clamp(20px,3.5vw,28px);font-weight:700;letter-spacing:-.02em;margin-bottom:16px}
+h3{font-size:clamp(16px,2.5vw,18px);font-weight:600;letter-spacing:-.01em;margin-bottom:8px}
+.grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.eyebrow{display:inline-block;padding:6px 12px;background:var(--grad-soft);border:1px solid rgba(139,92,246,.2);border-radius:100px;font-size:12px;font-weight:500;color:var(--primary);margin-bottom:16px}
+.stitle{font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);margin:24px 0 12px}
+
+/* Cards */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:12px;transition:all .2s;cursor:pointer}
+.card:hover{border-color:var(--border-hover);background:var(--surface-hover)}
+.card:active{transform:scale(.98)}
+.card-h{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.card-ic{width:42px;height:42px;border-radius:12px;background:var(--grad-soft);border:1px solid rgba(139,92,246,.2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.card p{font-size:14px;color:var(--text-dim);line-height:1.5}
+.card-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.chip{padding:4px 10px;background:var(--surface);border:1px solid var(--border);border-radius:100px;font-size:11px;color:var(--text-dim);font-weight:500}
+.chip.pri{background:var(--grad-soft);border-color:rgba(139,92,246,.3);color:var(--primary)}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;border-radius:14px;font-weight:600;font-size:14px;border:none;cursor:pointer;font-family:inherit;transition:all .2s;width:100%;text-decoration:none;color:var(--text)}
+.btn:active{transform:scale(.97)}
+.btn-p{background:var(--grad);color:#fff;box-shadow:0 8px 24px rgba(139,92,246,.3)}
+.btn-s{background:var(--surface);border:1px solid var(--border)}
+.btn-s:hover{border-color:var(--border-hover)}
+.btn-g{background:transparent;color:var(--text-dim)}
+.btn-row{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+.btn-row .btn{flex:1;min-width:140px}
+
+/* Dashboard welcome */
+.welcome{background:var(--grad-soft);border:1px solid rgba(139,92,246,.2);border-radius:24px;padding:24px;margin-bottom:20px}
+.welcome-h{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.avatars{display:flex}
+.avatars .avatar{margin-left:-8px}
+.avatars .avatar:first-child{margin-left:0}
+.welcome h1{font-size:clamp(22px,4vw,32px);margin-bottom:8px}
+.welcome p{color:var(--text-dim);font-size:14px}
+
+/* Quick stats */
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px}
+.stat-v{font-size:24px;font-weight:800;letter-spacing:-.02em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat-l{font-size:12px;color:var(--text-dim);margin-top:2px}
+
+/* Progress */
+.prog{height:6px;background:var(--surface);border-radius:3px;overflow:hidden;margin:8px 0}
+.prog-f{height:100%;background:var(--grad);border-radius:3px;transition:width .5s}
+
+/* Assessments */
+.assess-grid{display:grid;gap:10px}
+.assess-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:16px;cursor:pointer;transition:all .2s}
+.assess-card:hover{border-color:var(--border-hover);transform:translateY(-2px)}
+.assess-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px}
+.assess-top h3{margin-bottom:4px}
+.assess-score{font-size:12px;font-weight:600;padding:4px 10px;border-radius:100px;background:var(--grad-soft);color:var(--primary)}
+.assess-score.done{background:rgba(16,185,129,.15);color:var(--success)}
+
+/* Radar */
+.radar-wrap{background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:24px;margin-bottom:16px;display:flex;flex-direction:column;align-items:center}
+.radar-wrap svg{max-width:100%;height:auto}
+
+/* Pulse */
+.pulse-slider{display:flex;align-items:center;gap:12px;margin:12px 0}
+.pulse-slider label{font-size:14px;color:var(--text-dim);flex:1;min-width:100px}
+.pulse-slider input[type=range]{flex:2;-webkit-appearance:none;height:6px;background:var(--surface);border-radius:3px;outline:none}
+.pulse-slider input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--grad);cursor:pointer;box-shadow:0 4px 12px rgba(139,92,246,.4)}
+.pulse-slider .val{font-weight:700;min-width:30px;text-align:center}
+.pulse-history{display:flex;gap:6px;margin-top:12px;align-items:flex-end;height:60px}
+.pulse-bar{flex:1;background:var(--grad-soft);border-radius:4px;min-height:8px;position:relative;cursor:pointer;transition:all .2s}
+.pulse-bar:hover{opacity:.8}
+.pulse-bar .pulse-bar-fill{position:absolute;bottom:0;left:0;right:0;background:var(--grad);border-radius:4px}
+.pulse-bar span{position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);font-size:10px;color:var(--text-dim)}
+
+/* Challenges */
+.chal-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:16px;margin-bottom:12px}
+.chal-status{display:inline-block;padding:4px 10px;border-radius:100px;font-size:11px;font-weight:600;margin-bottom:8px}
+.chal-status.active{background:rgba(139,92,246,.15);color:var(--primary)}
+.chal-status.done{background:rgba(16,185,129,.15);color:var(--success)}
+.chal-partners{display:flex;gap:8px;margin-top:12px}
+.chal-partner{flex:1;padding:10px;background:var(--surface);border:1px solid var(--border);border-radius:12px;display:flex;align-items:center;gap:8px;font-size:13px}
+.chal-partner.done{background:rgba(16,185,129,.08);border-color:rgba(16,185,129,.3)}
+.chal-check{width:20px;height:20px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;cursor:pointer;flex-shrink:0}
+.chal-partner.done .chal-check{background:var(--success);border-color:var(--success);color:#fff}
+
+/* Partner knowledge */
+.know-section{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:16px;margin-bottom:12px}
+.know-title{display:flex;align-items:center;gap:10px;margin-bottom:12px;font-weight:600}
+.flowers{display:flex;gap:8px;flex-wrap:wrap}
+.flower{width:52px;height:52px;border-radius:14px;background:var(--grad-soft);border:1px solid rgba(139,92,246,.2);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:22px;cursor:pointer;transition:all .2s;position:relative}
+.flower:hover{transform:scale(1.08)}
+.flower span{font-size:9px;color:var(--text-dim);margin-top:2px}
+.craving{display:flex;align-items:center;gap:10px;padding:10px;background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:8px}
+.craving.done{opacity:.5}
+.craving.done .c-text{text-decoration:line-through}
+.c-text{flex:1;font-size:14px}
+.c-btn{padding:6px 12px;border-radius:100px;font-size:12px;font-weight:600;border:none;cursor:pointer;background:var(--grad);color:#fff}
+.c-btn.done{background:rgba(16,185,129,.15);color:var(--success)}
+.wish{display:flex;gap:12px;padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:8px;align-items:center}
+.wish-ic{width:44px;height:44px;border-radius:10px;background:var(--grad-soft);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.wish-info{flex:1;min-width:0}
+.wish-info h4{font-size:14px;margin-bottom:2px}
+.wish-info p{font-size:12px;color:var(--text-dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* Venues */
+.city-tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-bottom:16px;padding-bottom:4px}
+.city-tabs::-webkit-scrollbar{display:none}
+.city-tab{padding:8px 14px;border-radius:100px;background:var(--surface);border:1px solid var(--border);font-size:13px;font-weight:500;color:var(--text-dim);cursor:pointer;white-space:nowrap;transition:all .2s;font-family:inherit}
+.city-tab.active{background:var(--grad);color:#fff;border-color:transparent}
+.venue{display:flex;gap:12px;padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:8px;align-items:center;cursor:pointer;transition:all .2s}
+.venue:hover{border-color:var(--border-hover)}
+.venue-ic{width:44px;height:44px;border-radius:10px;background:var(--grad-soft);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.venue-info{flex:1;min-width:0}
+.venue-info h4{font-size:14px;margin-bottom:2px}
+.venue-info p{font-size:12px;color:var(--text-dim)}
+.venue-meta{display:flex;gap:6px;margin-top:4px}
+.price{color:var(--warning);font-weight:600}
+.romantic-tag{font-size:10px;padding:2px 6px;background:rgba(236,72,153,.15);color:var(--accent);border-radius:100px;font-weight:600}
+
+/* Chat */
+.chat-layout{display:flex;flex-direction:column;height:calc(100vh - 140px - var(--safe-b));max-width:800px;margin:0 auto}
+.chat-win{flex:1;background:#0B1120;border:1px solid var(--border);border-radius:20px;display:flex;flex-direction:column;overflow:hidden}
+.chat-h{padding:14px 16px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.chat-title{font-size:13px;color:var(--text-dim);font-weight:500}
+.chat-status{margin-left:auto;font-size:11px;color:var(--success);display:flex;align-items:center;gap:6px}
+.chat-status::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--success);box-shadow:0 0 8px var(--success)}
+.chat-msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;-webkit-overflow-scrolling:touch}
+.msg{max-width:85%;padding:12px 14px;border-radius:16px;font-size:14px;line-height:1.4;animation:mIn .3s cubic-bezier(.22,1,.36,1) both;word-wrap:break-word}
+@keyframes mIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.msg.you{align-self:flex-end;background:var(--grad);color:#fff;border-bottom-right-radius:4px}
+.msg.ai{align-self:flex-start;background:var(--surface);border:1px solid var(--border);border-bottom-left-radius:4px}
+.msg .ai-l{font-size:11px;color:var(--primary);font-weight:600;margin-bottom:4px;display:flex;align-items:center;gap:4px}
+.msg-t{font-size:10px;margin-top:4px;opacity:.6}
+.typing{display:flex;gap:4px;padding:12px 14px;background:var(--surface);border:1px solid var(--border);border-radius:16px;border-bottom-left-radius:4px;align-self:flex-start}
+.typing span{width:6px;height:6px;border-radius:50%;background:var(--text-dim);animation:td 1.2s infinite}
+.typing span:nth-child(2){animation-delay:.2s}
+.typing span:nth-child(3){animation-delay:.4s}
+@keyframes td{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
+.chat-input{padding:12px;border-top:1px solid var(--border);background:rgba(255,255,255,.02)}
+.chat-box{display:flex;align-items:flex-end;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:4px 4px 4px 16px}
+.chat-box:focus-within{border-color:var(--border-hover)}
+.chat-box textarea{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-family:inherit;font-size:15px;resize:none;max-height:100px;padding:10px 0}
+.chat-box textarea::placeholder{color:var(--text-dim)}
+.send{width:38px;height:38px;border-radius:50%;background:var(--grad);border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.send:disabled{opacity:.4}
+
+/* Settings */
+.set-row{display:flex;align-items:center;gap:12px;padding:14px;background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:8px}
+.set-row-i{width:36px;height:36px;border-radius:10px;background:var(--grad-soft);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.set-row-info{flex:1;min-width:0}
+.set-row-info h4{font-size:14px;margin-bottom:2px}
+.set-row-info p{font-size:12px;color:var(--text-dim)}
+.toggle{position:relative;width:42px;height:24px;background:var(--border);border-radius:100px;cursor:pointer;transition:background .2s;flex-shrink:0}
+.toggle.on{background:var(--grad)}
+.toggle::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .2s}
+.toggle.on::after{transform:translateX(18px)}
+
+/* Astro */
+.astro-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+.planet{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px;text-align:center}
+.planet-ic{font-size:18px;margin-bottom:4px}
+.planet-name{font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.05em}
+.planet-sign{font-size:14px;font-weight:600;margin-top:2px}
+.synastry{background:var(--grad-soft);border:1px solid rgba(139,92,246,.2);border-radius:18px;padding:20px;text-align:center}
+.syn-score{font-size:48px;font-weight:800;letter-spacing:-.03em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;margin:8px 0}
+
+/* Modal */
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(10px);z-index:200;align-items:flex-end}
+.modal.active{display:flex}
+.modal-c{background:var(--bg-alt);border-radius:24px 24px 0 0;padding:24px;width:100%;max-width:480px;margin:0 auto;max-height:80vh;overflow-y:auto;animation:sUp .3s ease-out}
+@keyframes sUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-c h3{font-size:20px;margin-bottom:12px}
+.modal-c p{color:var(--text-dim);font-size:14px;margin-bottom:16px}
+
+/* Floating buttons */
+.fab{position:fixed;bottom:calc(80px + var(--safe-b));right:16px;width:48px;height:48px;border-radius:50%;background:var(--warning);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 10px 30px rgba(245,158,11,.4);z-index:90}
+
+/* Empty state */
+.empty{text-align:center;padding:40px 20px;color:var(--text-dim)}
+.empty-ic{font-size:48px;margin-bottom:12px;opacity:.4}
+
+/* Grid */
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+
+/* Media queries */
+@media(min-width:768px){
+  .screen{padding:calc(20px + var(--safe-t)) 24px calc(100px + var(--safe-b))}
+  .stats{grid-template-columns:repeat(4,1fr)}
+  .assess-grid{grid-template-columns:repeat(2,1fr)}
+  .astro-grid{grid-template-columns:repeat(5,1fr)}
+}
+@media(min-width:1024px){
+  .tab-bar{display:none}
+  .header{display:block}
+  .screen{padding:calc(var(--h) + 24px) 32px 40px}
+  .chat-layout{height:calc(100vh - var(--h) - 100px)}
+  .assess-grid{grid-template-columns:repeat(3,1fr)}
+  .astro-grid{grid-template-columns:repeat(9,1fr)}
+  .grid-2{grid-template-columns:repeat(2,1fr)}
+}
+@media(hover:hover){
+  .card:hover,.assess-card:hover{transform:translateY(-3px)}
+}
+</style>
+</head>
+<body>
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+
+<div class="app">
+
+<!-- DESKTOP HEADER -->
+<header class="header">
+  <div class="header-in">
+    <div class="logo" onclick="show('home')"><div class="logo-i">💜</div><span>Together</span></div>
+    <nav class="header-tabs" id="htabs">
+      <button class="htab active" data-s="home" onclick="show('home')">Дашборд</button>
+      <button class="htab" data-s="assess" onclick="show('assess')">Опросники</button>
+      <button class="htab" data-s="report" onclick="show('report')">Отчёт</button>
+      <button class="htab" data-s="pulse" onclick="show('pulse')">Пульс</button>
+      <button class="htab" data-s="chal" onclick="show('chal')">Челленджи</button>
+      <button class="htab" data-s="partner" onclick="show('partner')">Партнёр</button>
+      <button class="htab" data-s="venues" onclick="show('venues')">Места</button>
+      <button class="htab" data-s="astro" onclick="show('astro')">Астрология</button>
+      <button class="htab" data-s="ai" onclick="show('ai')">ИИ</button>
+      <button class="htab" data-s="set" onclick="show('set')">Настройки</button>
+    </nav>
+    <div class="header-user">
+      <div class="avatar">Д</div>
+      <div class="avatar partner">А</div>
+    </div>
+  </div>
+</header>
+
+<!-- HOME -->
+<div id="s-home" class="screen active">
+<div class="container">
+  <div class="welcome">
+    <div class="welcome-h">
+      <div class="avatars">
+        <div class="avatar">Д</div>
+        <div class="avatar partner">А</div>
+      </div>
+      <div>
+        <div class="eyebrow">Пара · 4 месяца</div>
+        <h1>Привет, <span class="grad-text">Дмитрий и Анна</span> 👋</h1>
+        <p>Ваша совместимость выросла на 8% за последний месяц</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-v">78%</div><div class="stat-l">Совместимость</div></div>
+    <div class="stat"><div class="stat-v">4/5</div><div class="stat-l">Опросников</div></div>
+    <div class="stat"><div class="stat-v">8.2</div><div class="stat-l">Пульс недели</div></div>
+    <div class="stat"><div class="stat-v">12</div><div class="stat-l">Челленджей</div></div>
+  </div>
+
+  <div class="stitle">Быстрые действия</div>
+  <div class="grid-2">
+    <div class="card" onclick="show('pulse')">
+      <div class="card-h"><div class="card-ic">🫀</div><div><h3>Пульс недели</h3><p>Оцените близость</p></div></div>
+    </div>
+    <div class="card" onclick="show('chal')">
+      <div class="card-h"><div class="card-ic">🎯</div><div><h3>Челлендж</h3><p>Новое задание</p></div></div>
+    </div>
+    <div class="card" onclick="show('partner')">
+      <div class="card-h"><div class="card-ic">💐</div><div><h3>Хотелки</h3><p>3 новых</p></div></div>
+    </div>
+    <div class="card" onclick="show('ai')">
+      <div class="card-h"><div class="card-ic">🦉</div><div><h3>ИИ-психолог</h3><p>Спросить сову</p></div></div>
+    </div>
+  </div>
+
+  <div class="stitle">На этой неделе</div>
+  <div class="card">
+    <div class="card-h"><div class="card-ic">🌟</div><div><h3>Челлендж: Вечер без телефонов</h3><p>Проведите 2 часа вместе без гаджетов</p></div></div>
+    <div class="prog"><div class="prog-f" style="width:50%"></div></div>
+    <div class="card-meta"><span class="chip pri">Выполнено 1/2</span><span class="chip">До воскресенья</span></div>
+  </div>
+</div>
+</div>
+
+<!-- ASSESSMENTS -->
+<div id="s-assess" class="screen">
+<div class="container">
+  <span class="eyebrow">Психологические опросники</span>
+  <h1>Узнайте себя <span class="grad-text">глубже</span></h1>
+  <p style="color:var(--text-dim);margin-bottom:24px">Пройдите 5 научных тестов — каждый отдельно. После прохождения обоих партнёров откроется совместный отчёт.</p>
+
+  <div class="stitle">Пройдено 4 из 5</div>
+  <div class="prog"><div class="prog-f" style="width:80%"></div></div>
+
+  <div class="assess-grid" style="margin-top:20px">
+    <div class="assess-card">
+      <div class="assess-top"><div><h3>💞 Стиль привязанности</h3><p style="font-size:12px;color:var(--text-dim)">ECR · 12 вопросов · 5 мин</p></div><span class="assess-score done">✓ 85%</span></div>
+      <p style="font-size:13px">Надёжный тип. Вы умеете создавать безопасную близость.</p>
+    </div>
+    <div class="assess-card">
+      <div class="assess-top"><div><h3>💝 5 языков любви</h3><p style="font-size:12px;color:var(--text-dim)">Чепмен · 15 вопросов · 7 мин</p></div><span class="assess-score done">✓ Words</span></div>
+      <p style="font-size:13px">Ваш язык — слова поддержки. У Анны — качественные моменты.</p>
+    </div>
+    <div class="assess-card">
+      <div class="assess-top"><div><h3>⚡ Четыре всадника</h3><p style="font-size:12px;color:var(--text-dim)">Готтман · 16 вопросов · 8 мин</p></div><span class="assess-score done">✓ Low risk</span></div>
+      <p style="font-size:13px">Низкий риск деструктивных паттернов в конфликтах.</p>
+    </div>
+    <div class="assess-card">
+      <div class="assess-top"><div><h3>💎 Ценности</h3><p style="font-size:12px;color:var(--text-dim)">Шварц · 10 вопросов · 5 мин</p></div><span class="assess-score done">✓ 72%</span></div>
+      <p style="font-size:13px">Совпадение по ключевым ценностям: семья, рост, свобода.</p>
+    </div>
+    <div class="assess-card" style="border-color:var(--primary);border-style:dashed">
+      <div class="assess-top"><div><h3>🌈 Big Five</h3><p style="font-size:12px;color:var(--text-dim)">Не пройден · 20 вопросов · 10 мин</p></div><span class="assess-score">Новый</span></div>
+      <p style="font-size:13px">Измеряет открытость, добросовестность, экстраверсию, доброжелательность, нейротизм.</p>
+      <button class="btn btn-p" style="margin-top:12px">Пройти тест</button>
+    </div>
+  </div>
+
+  <div class="stitle" style="margin-top:32px">Расширенная библиотека</div>
+  <div class="grid-2">
+    <div class="card"><div class="card-h"><div class="card-ic">🔮</div><div><h3>Финансовые сценарии</h3><p>Глубинные установки о деньгах</p></div></div></div>
+    <div class="card"><div class="card-h"><div class="card-ic">🪞</div><div><h3>Семейные паттерны</h3><p>Что принесли из детства</p></div></div></div>
+    <div class="card"><div class="card-h"><div class="card-ic">🌡️</div><div><h3>Доверие и ревность</h3><p>Триггеры и границы</p></div></div></div>
+    <div class="card"><div class="card-h"><div class="card-ic">🎵</div><div><h3>Музыка пары</h3><p>Плейлист ваших чувств</p></div></div></div>
+  </div>
+</div>
+</div>
+
+<!-- REPORT -->
+<div id="s-report" class="screen">
+<div class="container">
+  <span class="eyebrow">Совместный отчёт</span>
+  <h1>Карта <span class="grad-text">вашей пары</span></h1>
+
+  <div class="radar-wrap">
+    <h3 style="margin-bottom:16px">Профиль совместимости</h3>
+    <svg id="radar" width="320" height="320" viewBox="0 0 320 320"></svg>
+    <div style="margin-top:16px;display:flex;gap:12px;font-size:13px">
+      <div style="display:flex;align-items:center;gap:6px"><div style="width:12px;height:12px;border-radius:50%;background:#8B5CF6"></div>Дмитрий</div>
+      <div style="display:flex;align-items:center;gap:6px"><div style="width:12px;height:12px;border-radius:50%;background:#3B82F6"></div>Анна</div>
+    </div>
+  </div>
+
+  <div class="stitle">💪 Сильные стороны</div>
+  <div class="card" style="border-left:3px solid var(--success)">
+    <div class="card-h"><div class="card-ic">💬</div><div><h3>Коммуникация · 88%</h3><p>Вы умеете говорить открыто и слышать друг друга. Это редкий навык — берегите его.</p></div></div>
+  </div>
+  <div class="card" style="border-left:3px solid var(--success)">
+    <div class="card-h"><div class="card-ic">💞</div><div><h3>Эмоциональная связь · 82%</h3><p>Вы чувствуете друг друга даже на расстоянии. Делитесь мелочами — это ваша сила.</p></div></div>
+  </div>
+
+  <div class="stitle">🌱 Зоны роста</div>
+  <div class="card" style="border-left:3px solid var(--warning)">
+    <div class="card-h"><div class="card-ic">⚡</div><div><h3>Конфликты · 58%</h3><p>Разные темпы восстановления после спора. Попробуйте правило 20 минут паузы.</p></div></div>
+  </div>
+  <div class="card" style="border-left:3px solid var(--warning)">
+    <div class="card-h"><div class="card-ic">💰</div><div><h3>Финансы · 62%</h3><p>Разные подходы к тратам. Система «три конверта» поможет найти баланс.</p></div></div>
+  </div>
+
+  <div class="stitle">💡 Рекомендации от Совы</div>
+  <div class="card" style="background:var(--grad-soft);border-color:rgba(139,92,246,.3)">
+    <ul style="list-style:none;display:flex;flex-direction:column;gap:10px">
+      <li style="display:flex;gap:10px;font-size:14px"><span>📅</span><span>Раз в неделю — «сверка часов»: 15 минут без телефонов, обсуждение недели.</span></li>
+      <li style="display:flex;gap:10px;font-size:14px"><span>💬</span><span>Говорите на языке любви партнёра: для Анны — совместные активности.</span></li>
+      <li style="display:flex;gap:10px;font-size:14px"><span>🎯</span><span>Поставьте общую финансовую цель на 3 месяца — это сблизит.</span></li>
+    </ul>
+    <button class="btn btn-p" style="margin-top:16px" onclick="show('ai')">Обсудить с Совой</button>
+  </div>
+</div>
+</div>
+
+<!-- PULSE -->
+<div id="s-pulse" class="screen">
+<div class="container">
+  <span class="eyebrow">Пульс недели</span>
+  <h1>Как ваши <span class="grad-text">отношения</span>?</h1>
+  <p style="color:var(--text-dim);margin-bottom:24px">Оцените неделю по двум шкалам. Это помогает замечать тренды.</p>
+
+  <div class="card">
+    <div class="pulse-slider">
+      <label>💞 Близость</label>
+      <input type="range" min="1" max="10" value="8" oninput="this.nextElementSibling.textContent=this.value">
+      <div class="val">8</div>
+    </div>
+    <div class="pulse-slider">
+      <label>🤝 Конструктивность</label>
+      <input type="range" min="1" max="10" value="7" oninput="this.nextElementSibling.textContent=this.value">
+      <div class="val">7</div>
+    </div>
+    <textarea placeholder="Что было важным на этой неделе?" style="width:100%;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px;color:var(--text);font-family:inherit;resize:none;margin-top:12px;min-height:60px"></textarea>
+    <button class="btn btn-p" style="margin-top:12px">Сохранить пульс</button>
+  </div>
+
+  <div class="stitle">Динамика за 8 недель</div>
+  <div class="card">
+    <div class="pulse-history" id="pulseHist"></div>
+    <div style="display:flex;justify-content:space-between;margin-top:24px;font-size:11px;color:var(--text-dim)">
+      <span>Неделя 25</span><span>Сейчас</span>
+    </div>
+    <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="color:var(--text-dim);font-size:13px">Средняя близость</span><strong>7.8</strong></div>
+      <div style="display:flex;justify-content:space-between"><span style="color:var(--text-dim);font-size:13px">Тренд</span><strong style="color:var(--success)">↑ +1.2</strong></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- CHALLENGES -->
+<div id="s-chal" class="screen">
+<div class="container">
+  <span class="eyebrow">Челленджи недели</span>
+  <h1>Растите <span class="grad-text">вместе</span></h1>
+
+  <div class="chal-card">
+    <div class="chal-status active">Активный · до воскресенья</div>
+    <h3>🌙 Вечер без телефонов</h3>
+    <p style="color:var(--text-dim);font-size:14px;margin:8px 0">Проведите 2 часа вместе без гаджетов: готовьте ужин, гуляйте, играйте в настолки.</p>
+    <div class="chal-partners">
+      <div class="chal-partner done" onclick="this.classList.toggle('done')">
+        <div class="chal-check">✓</div>
+        <div class="avatar" style="width:28px;height:28px;font-size:12px">Д</div>
+        <span>Дмитрий</span>
+      </div>
+      <div class="chal-partner" onclick="this.classList.toggle('done')">
+        <div class="chal-check"></div>
+        <div class="avatar partner" style="width:28px;height:28px;font-size:12px">А</div>
+        <span>Анна</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="stitle">Прошлые челленджи</div>
+  <div class="chal-card">
+    <div class="chal-status done">Выполнено · 12 авг</div>
+    <h3>☕ Утренний ритуал</h3>
+    <p style="color:var(--text-dim);font-size:14px">5 минут совместного кофе без разговоров о работе</p>
+    <div style="font-size:12px;color:var(--success);margin-top:8px">✓ Выполнено обоими</div>
+  </div>
+  <div class="chal-card">
+    <div class="chal-status done">Выполнено · 5 авг</div>
+    <h3>💌 Благодарность дня</h3>
+    <p style="color:var(--text-dim);font-size:14px">Каждый вечер говорить одно спасибо</p>
+    <div style="font-size:12px;color:var(--success);margin-top:8px">✓ 7 дней подряд</div>
+  </div>
+</div>
+</div>
+
+<!-- PARTNER -->
+<div id="s-partner" class="screen">
+<div class="container">
+  <span class="eyebrow">База знаний</span>
+  <h1>Всё о <span class="grad-text">Анне</span></h1>
+
+  <div class="know-section">
+    <div class="know-title">🌡️ Настроение сейчас</div>
+    <div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--grad-soft);border-radius:12px">
+      <div style="font-size:36px">😊</div>
+      <div style="flex:1">
+        <div style="font-weight:600">Хорошее</div>
+        <div style="font-size:13px;color:var(--text-dim)">«Успешно закрыла проект» · 2 часа назад</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="know-section">
+    <div class="know-title">💐 Любимые цветы</div>
+    <div class="flowers">
+      <div class="flower" title="Пионы">🌸<span>Пион</span></div>
+      <div class="flower" title="Розы">🌹<span>Роза</span></div>
+      <div class="flower" title="Тюльпаны">🌷<span>Тюльп</span></div>
+      <div class="flower" title="Ромашки">🌼<span>Ромаш</span></div>
+      <div class="flower" title="Лаванда">💜<span>Лаван</span></div>
+    </div>
+    <button class="btn btn-s" style="margin-top:12px">🎁 Собрать букет</button>
+  </div>
+
+  <div class="know-section">
+    <div class="know-title">🍫 Хочет сейчас (мелочи)</div>
+    <div class="craving">
+      <span style="font-size:20px">🍦</span>
+      <div class="c-text">Мороженое с карамелью</div>
+      <button class="c-btn">Взял</button>
+    </div>
+    <div class="craving">
+      <span style="font-size:20px">☕</span>
+      <div class="c-text">Лавандовый раф</div>
+      <button class="c-btn">Взял</button>
+    </div>
+    <div class="craving done">
+      <span style="font-size:20px">🍫</span>
+      <div class="c-text">Горький шоколад 85%</div>
+      <button class="c-btn done">✓ Взял</button>
+    </div>
+  </div>
+
+  <div class="know-section">
+    <div class="know-title">🎁 Виш-лист</div>
+    <div class="wish">
+      <div class="wish-ic">📚</div>
+      <div class="wish-info"><h4>Книга «Атомные привычки»</h4><p>1200 ₽ · срочно</p></div>
+      <button class="c-btn">Подарил</button>
+    </div>
+    <div class="wish">
+      <div class="wish-ic">🎧</div>
+      <div class="wish-info"><h4>Беспроводные наушники</h4><p>6500 ₽</p></div>
+      <button class="c-btn">Подарил</button>
+    </div>
+    <div class="wish">
+      <div class="wish-ic">🎨</div>
+      <div class="wish-info"><h4>Картина по номерам</h4><p>800 ₽</p></div>
+      <button class="c-btn">Подарил</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- VENUES -->
+<div id="s-venues" class="screen">
+<div class="container">
+  <span class="eyebrow">Места для свиданий</span>
+  <h1>Куда <span class="grad-text">пойти</span>?</h1>
+
+  <div class="city-tabs" id="cityTabs"></div>
+
+  <div class="stitle">Все типы</div>
+  <div class="city-tabs" id="typeTabs">
+    <button class="city-tab active" onclick="filterVen('all',this)">Все</button>
+    <button class="city-tab" onclick="filterVen('RESTAURANT',this)">🍽️ Рестораны</button>
+    <button class="city-tab" onclick="filterVen('CAFE',this)">☕ Кафе</button>
+    <button class="city-tab" onclick="filterVen('PARK',this)">🌳 Парки</button>
+    <button class="city-tab" onclick="filterVen('MUSEUM',this)">🎨 Музеи</button>
+    <button class="city-tab" onclick="filterVen('SPA',this)">💆 Спа</button>
+  </div>
+
+  <div id="venueList"></div>
+</div>
+</div>
+
+<!-- ASTRO -->
+<div id="s-astro" class="screen">
+<div class="container">
+  <span class="eyebrow">Астрология пары</span>
+  <h1>Звёздная <span class="grad-text">синастрия</span></h1>
+  <p style="color:var(--text-dim);margin-bottom:24px">Положение планет в ваших натальных картах и их взаимодействие.</p>
+
+  <div class="synastry">
+    <div style="font-size:12px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.1em">Совместимость по звёздам</div>
+    <div class="syn-score">82%</div>
+    <div style="color:var(--text-dim);font-size:14px">Гармоничное сочетание Солнца и Луны</div>
+  </div>
+
+  <div class="stitle">Дмитрий · ♌ Лев</div>
+  <div class="astro-grid">
+    <div class="planet"><div class="planet-ic">☀️</div><div class="planet-name">Солнце</div><div class="planet-sign">♌</div></div>
+    <div class="planet"><div class="planet-ic">🌙</div><div class="planet-name">Луна</div><div class="planet-sign">♓</div></div>
+    <div class="planet"><div class="planet-ic">☿</div><div class="planet-name">Меркурий</div><div class="planet-sign">♌</div></div>
+    <div class="planet"><div class="planet-ic">♀</div><div class="planet-name">Венера</div><div class="planet-sign">♎</div></div>
+    <div class="planet"><div class="planet-ic">♂</div><div class="planet-name">Марс</div><div class="planet-sign">♈</div></div>
+    <div class="planet"><div class="planet-ic">♃</div><div class="planet-name">Юпитер</div><div class="planet-sign">♐</div></div>
+    <div class="planet"><div class="planet-ic">♄</div><div class="planet-name">Сатурн</div><div class="planet-sign">♑</div></div>
+    <div class="planet"><div class="planet-ic">🐉</div><div class="planet-name">Восток</div><div class="planet-sign">🐲</div></div>
+    <div class="planet"><div class="planet-ic">🔥</div><div class="planet-name">Стихия</div><div class="planet-sign">Дерево</div></div>
+  </div>
+
+  <div class="stitle">Анна · ♒ Водолей</div>
+  <div class="astro-grid">
+    <div class="planet"><div class="planet-ic">☀️</div><div class="planet-name">Солнце</div><div class="planet-sign">♒</div></div>
+    <div class="planet"><div class="planet-ic">🌙</div><div class="planet-name">Луна</div><div class="planet-sign">♋</div></div>
+    <div class="planet"><div class="planet-ic">☿</div><div class="planet-name">Меркурий</div><div class="planet-sign">♒</div></div>
+    <div class="planet"><div class="planet-ic">♀</div><div class="planet-name">Венера</div><div class="planet-sign">♓</div></div>
+    <div class="planet"><div class="planet-ic">♂</div><div class="planet-name">Марс</div><div class="planet-sign">♏</div></div>
+    <div class="planet"><div class="planet-ic">♃</div><div class="planet-name">Юпитер</div><div class="planet-sign">♈</div></div>
+    <div class="planet"><div class="planet-ic">♄</div><div class="planet-name">Сатурн</div><div class="planet-sign">♎</div></div>
+    <div class="planet"><div class="planet-ic">🐉</div><div class="planet-name">Восток</div><div class="planet-sign">🐇</div></div>
+    <div class="planet"><div class="planet-ic">💧</div><div class="planet-name">Стихия</div><div class="planet-sign">Вода</div></div>
+  </div>
+
+  <div class="stitle">Ключевые аспекты</div>
+  <div class="card">
+    <div class="card-h"><div class="card-ic">✨</div><div><h3>Солнце ▵ Луна</h3><p>Гармония между вашим «я» и её эмоциональным миром. Вы дополняете друг друга естественно.</p></div></div>
+  </div>
+  <div class="card">
+    <div class="card-h"><div class="card-ic">💫</div><div><h3>Венера ☍ Марс</h3><p>Сильное притяжение и страсть. Важно находить баланс между близостью и свободой.</p></div></div>
+  </div>
+  <div class="card">
+    <div class="card-h"><div class="card-ic">🌱</div><div><h3>Юпитер △ Юпитер</h3><p>Общие ценности роста и оптимизма. Вы растёте в одном направлении.</p></div></div>
+  </div>
+</div>
+</div>
+
+<!-- AI -->
+<div id="s-ai" class="screen">
+<div class="container">
+<div class="chat-layout">
+  <div class="chat-win">
+    <div class="chat-h">
+      <div class="avatars">
+        <div class="avatar" style="width:28px;height:28px;font-size:12px">Д</div>
+        <div class="avatar" style="width:28px;height:28px;font-size:12px;background:var(--grad-soft);border:1px solid rgba(139,92,246,.3)">🦉</div>
+      </div>
+      <div class="chat-title">Сова · ИИ-психолог</div>
+      <div class="chat-status">онлайн</div>
+    </div>
+    <div class="chat-msgs" id="chatMsgs">
+      <div class="msg ai">
+        <div class="ai-l">🦉 Сова</div>
+        Привет! Я помню контекст вашей пары: вы вместе 4 месяца, сильная коммуникация, зона роста — финансы. Что на сердце?
+      </div>
+    </div>
+    <div class="chat-input">
+      <div class="chat-box">
+        <textarea id="chatIn" placeholder="Поделитесь мыслями..." rows="1"></textarea>
+        <button class="send" onclick="sendMsg()">→</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- SETTINGS -->
+<div id="s-set" class="screen">
+<div class="container">
+  <span class="eyebrow">Настройки</span>
+  <h1>Ваш <span class="grad-text">профиль</span></h1>
+
+  <div class="card" style="text-align:center;padding:24px">
+    <div style="display:flex;justify-content:center;gap:-8px;margin-bottom:12px">
+      <div class="avatar" style="width:56px;height:56px;font-size:24px">Д</div>
+    </div>
+    <h3>Дмитрий Вяткин</h3>
+    <p style="color:var(--text-dim);font-size:13px">@dmitry · dmitry@example.com</p>
+    <button class="btn btn-s" style="margin-top:12px">Редактировать профиль</button>
+  </div>
+
+  <div class="stitle">Пара</div>
+  <div class="set-row">
+    <div class="set-row-i">💞</div>
+    <div class="set-row-info"><h4>Связь с Анной</h4><p>Пара активна · 4 месяца</p></div>
+  </div>
+  <div class="set-row">
+    <div class="set-row-i">📍</div>
+    <div class="set-row-info"><h4>Город</h4><p>Санкт-Петербург</p></div>
+  </div>
+
+  <div class="stitle">Уведомления</div>
+  <div class="set-row">
+    <div class="set-row-i">🔔</div>
+    <div class="set-row-info"><h4>Push-уведомления</h4><p>Челленджи, пульс, сообщения</p></div>
+    <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+  </div>
+  <div class="set-row">
+    <div class="set-row-i">📧</div>
+    <div class="set-row-info"><h4>Email</h4><p>Еженедельные отчёты</p></div>
+    <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+  </div>
+  <div class="set-row">
+    <div class="set-row-i">🫀</div>
+    <div class="set-row-info"><h4>Напоминание о пульсе</h4><p>Каждое воскресенье в 19:00</p></div>
+    <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+  </div>
+
+  <div class="stitle">Данные</div>
+  <div class="set-row" onclick="alert('Экспорт данных запущен. Ссылка придёт на email.')">
+    <div class="set-row-i">📥</div>
+    <div class="set-row-info"><h4>Экспорт данных</h4><p>Скачать всё в JSON (GDPR / 152-ФЗ)</p></div>
+  </div>
+  <div class="set-row" style="border-color:rgba(239,68,68,.2)">
+    <div class="set-row-i" style="background:rgba(239,68,68,.1)">🗑️</div>
+    <div class="set-row-info"><h4 style="color:var(--danger)">Удалить аккаунт</h4><p>Безвозвратно удалить все данные</p></div>
+  </div>
+</div>
+</div>
+
+<!-- TAB BAR (mobile) -->
+<nav class="tab-bar" id="tbar">
+  <button class="tab active" data-s="home" onclick="show('home')"><span class="tab-i">🏠</span><span class="tab-l">Дом</span></button>
+  <button class="tab" data-s="assess" onclick="show('assess')"><span class="tab-i">🧪</span><span class="tab-l">Тесты</span></button>
+  <button class="tab" data-s="report" onclick="show('report')"><span class="tab-i">📊</span><span class="tab-l">Отчёт</span></button>
+  <button class="tab" data-s="pulse" onclick="show('pulse')"><span class="tab-i">🫀</span><span class="tab-l">Пульс</span></button>
+  <button class="tab" data-s="chal" onclick="show('chal')"><span class="tab-i">🎯</span><span class="tab-l">Челл</span></button>
+  <button class="tab" data-s="partner" onclick="show('partner')"><span class="tab-i">💞</span><span class="tab-l">Партн</span></button>
+  <button class="tab" data-s="venues" onclick="show('venues')"><span class="tab-i">📍</span><span class="tab-l">Места</span></button>
+  <button class="tab" data-s="astro" onclick="show('astro')"><span class="tab-i">🔮</span><span class="tab-l">Астро</span></button>
+  <button class="tab" data-s="ai" onclick="show('ai')"><span class="tab-i">🦉</span><span class="tab-l">ИИ</span></button>
+  <button class="tab" data-s="set" onclick="show('set')"><span class="tab-i">⚙️</span><span class="tab-l">Ещё</span></button>
+</nav>
+
+</div>
+
+<!-- FAB -->
+<button class="fab" onclick="alert('🕊️ Техника деэскалации:\n\n1. Когда ты...\n2. Я чувствую...\n3. Мне важно...\n4. Давай...')">🕊️</button>
+
+<script>
+// === Navigation ===
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('s-'+id).classList.add('active');
+  document.querySelectorAll('.htab,.tab').forEach(t=>{
+    t.classList.toggle('active',t.dataset.s===id);
+  });
+  window.scrollTo(0,0);
+  document.getElementById('s-'+id).scrollTo(0,0);
+  if(id==='report') drawRadar();
+  if(id==='ai') setTimeout(()=>document.getElementById('chatIn').focus(),300);
+}
+
+// === Radar ===
+function drawRadar(){
+  const svg=document.getElementById('radar');
+  if(!svg) return;
+  const S=320,cx=S/2,cy=S/2,R=S/2-60;
+  const cats=['Близость','Конфликты','Ценности','Коммуникация','Финансы','Будущее'];
+  const u1=[82,58,72,88,62,75];
+  const u2=[78,65,70,82,68,80];
+  const n=cats.length;
+  let s=`<defs>
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8B5CF6" stop-opacity=".35"/>
+      <stop offset="1" stop-color="#EC4899" stop-opacity=".35"/>
+    </linearGradient>
+    <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3B82F6" stop-opacity=".3"/>
+      <stop offset="1" stop-color="#8B5CF6" stop-opacity=".3"/>
+    </linearGradient>
+  </defs>`;
+  for(let l=1;l<=4;l++){
+    const r=R*l/4;let p='';
+    for(let i=0;i<n;i++){const a=i/n*2*Math.PI-Math.PI/2;p+=`${cx+r*Math.cos(a)},${cy+r*Math.sin(a)} `}
+    s+=`<polygon points="${p}" fill="none" stroke="rgba(255,255,255,.08)"/>`;
+  }
+  for(let i=0;i<n;i++){
+    const a=i/n*2*Math.PI-Math.PI/2;
+    s+=`<line x1="${cx}" y1="${cy}" x2="${cx+R*Math.cos(a)}" y2="${cy+R*Math.sin(a)}" stroke="rgba(255,255,255,.08)"/>`;
+  }
+  function poly(d,fill,stroke){
+    let p='';for(let i=0;i<n;i++){const a=i/n*2*Math.PI-Math.PI/2,r=d[i]/100*R;p+=`${cx+r*Math.cos(a)},${cy+r*Math.sin(a)} `}
+    s+=`<polygon points="${p}" fill="${fill}" stroke="${stroke}" stroke-width="2"/>`;
+  }
+  poly(u1,'url(#g1)','#8B5CF6');
+  poly(u2,'url(#g2)','#3B82F6');
+  for(let i=0;i<n;i++){
+    const a=i/n*2*Math.PI-Math.PI/2;
+    s+=`<circle cx="${cx+u1[i]/100*R*Math.cos(a)}" cy="${cy+u1[i]/100*R*Math.sin(a)}" r="3" fill="#8B5CF6" stroke="#fff" stroke-width="1.5"/>`;
+    s+=`<circle cx="${cx+u2[i]/100*R*Math.cos(a)}" cy="${cy+u2[i]/100*R*Math.sin(a)}" r="3" fill="#3B82F6" stroke="#fff" stroke-width="1.5"/>`;
+    const tx=cx+(R+28)*Math.cos(a),ty=cy+(R+28)*Math.sin(a);
+    const anc=Math.abs(Math.cos(a))<.3?'middle':Math.cos(a)>0?'start':'end';
+    s+=`<text x="${tx}" y="${ty}" text-anchor="${anc}" fill="#94A3B8" font-size="11" font-weight="500">${cats[i]}</text>`;
+  }
+  svg.innerHTML=s;
+}
+
+// === Pulse history ===
+function initPulse(){
+  const hist=document.getElementById('pulseHist');
+  if(!hist) return;
+  hist.innerHTML='';
+  const data=[6,7,8,7,8,9,7,8];
+  const labels=['25','26','27','28','29','30','31','32'];
+  data.forEach((v,i)=>{
+    const b=document.createElement('div');
+    b.className='pulse-bar';
+    b.innerHTML=`<div class="pulse-bar-fill" style="height:${v*10}%"></div><span>${labels[i]}</span>`;
+    hist.appendChild(b);
+  });
+}
+
+// === Venues data (from seed) ===
+const cities=[
+  {slug:'spb',name:'СПб',emoji:'🌉'},
+  {slug:'msk',name:'Москва',emoji:'🏛️'},
+  {slug:'kzn',name:'Казань',emoji:'🕌'},
+  {slug:'sochi',name:'Сочи',emoji:'🏖️'},
+  {slug:'ekb',name:'Екб',emoji:'🏭'},
+  {slug:'nsk',name:'Новосиб',emoji:'❄️'},
+  {slug:'vl',name:'Владивосток',emoji:'🌊'},
+  {slug:'kaliningrad',name:'Калининград',emoji:'🏰'}
+];
+const venues=[
+  {city:'spb',type:'RESTAURANT',name:'Birch',emoji:'🍽️',area:'Крестовский',price:3,romantic:true,rec:'Северная кухня с видом на парк'},
+  {city:'spb',type:'CAFE',name:'Civil',emoji:'☕',area:'Петроградка',price:2,romantic:false,rec:'Лучший фильтр-кофе в городе'},
+  {city:'spb',type:'PARK',name:'Новая Голландия',emoji:'🌳',area:'Адмиралтейская',price:1,romantic:true,rec:'Остров с парком и фестивалями'},
+  {city:'spb',type:'MUSEUM',name:'Эрарта',emoji:'🎨',area:'Васильевский',price:2,romantic:false,rec:'Современное искусство'},
+  {city:'spb',type:'SPA',name:'Terme di Bormio',emoji:'💆',area:'Центр',price:3,romantic:true,rec:'Парные программы массажа'},
+  {city:'spb',type:'BAR',name:'El Copitas',emoji:'🍸',area:'Невский',price:3,romantic:true,rec:'Топ-50 баров мира'},
+  {city:'spb',type:'WALK',name:'Стрелка В.О.',emoji:'🌅',area:'Васильевский',price:1,romantic:true,rec:'Закат над Невой'},
+  {city:'spb',type:'RESTAURANT',name:'Pyshechka',emoji:'🥐',area:'Невский',price:1,romantic:false,rec:'Легендарные пышки'},
+  {city:'msk',type:'RESTAURANT',name:'White Rabbit',emoji:'🍽️',area:'Смоленская',price:3,romantic:true,rec:'Панорама на 16 этаже'},
+  {city:'msk',type:'PARK',name:'Зарядье',emoji:'🌳',area:'Кремль',price:1,romantic:true,rec:'Парящий мост и Кремль'},
+  {city:'msk',type:'MUSEUM',name:'Гараж',emoji:'🎨',area:'Парк Горького',price:2,romantic:false,rec:'Совр. искусство в парке'},
+  {city:'msk',type:'CAFE',name:'Skuratov',emoji:'☕',area:'Патриаршие',price:2,romantic:false,rec:'Specialty coffee'},
+  {city:'msk',type:'SPA',name:'Barvikha SPA',emoji:'💆',area:'Рублёвка',price:3,romantic:true,rec:'Премиум-спа для двоих'},
+  {city:'kzn',type:'RESTAURANT',name:'Приют Холостяка',emoji:'🍽️',area:'Кремль',price:2,romantic:true,rec:'Татарская высокая кухня'},
+  {city:'kzn',type:'WALK',name:'Кремль',emoji:'🕌',area:'Центр',price:1,romantic:true,rec:'Мечеть и вид на Казанку'},
+  {city:'sochi',type:'PARK',name:'Дендрарий',emoji:'🌳',area:'Центр',price:1,romantic:true,rec:'Субтропики и канатка'},
+  {city:'sochi',type:'RESTAURANT',name:'Dacha',emoji:'🍽️',area:'У моря',price:3,romantic:true,rec:'Рыба на гриле у воды'}
+];
+let curCity='spb',curType='all';
+
+function renderCityTabs(){
+  const ct=document.getElementById('cityTabs');
+  if(!ct) return;
+  ct.innerHTML=cities.map(c=>`<button class="city-tab ${c.slug===curCity?'active':''}" onclick="setCity('${c.slug}',this)">${c.emoji} ${c.name}</button>`).join('');
+}
+function setCity(slug,el){
+  curCity=slug;
+  document.querySelectorAll('#cityTabs .city-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  renderVenues();
+}
+function filterVen(type,el){
+  curType=type;
+  document.querySelectorAll('#typeTabs .city-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  renderVenues();
+}
+function renderVenues(){
+  const list=document.getElementById('venueList');
+  if(!list) return;
+  const f=venues.filter(v=>v.city===curCity && (curType==='all'||v.type===curType));
+  if(!f.length){list.innerHTML='<div class="empty"><div class="empty-ic">🗺️</div><p>В этом городе пока нет рекомендаций</p></div>';return}
+  list.innerHTML=f.map(v=>`
+    <div class="venue">
+      <div class="venue-ic">${v.emoji}</div>
+      <div class="venue-info">
+        <h4>${v.name} ${v.romantic?'<span class="romantic-tag">💕 Романтично</span>':''}</h4>
+        <p>${v.area} · ${v.rec}</p>
+        <div class="venue-meta"><span class="price">${'₽'.repeat(v.price)}</span></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// === Chat ===
+const chatMsgs=document.getElementById('chatMsgs');
+const chatIn=document.getElementById('chatIn');
+const responses=[
+  'Расскажите подробнее. Что вы чувствуете?',
+  'Это важная тема. Что для вас самое сложное?',
+  'Я слышу вас. Что бы вы хотели, чтобы Анна поняла?',
+  'Как давно вы это заметили в ваших отношениях?',
+  'По вашему отчёту близость — сильная сторона (88%). Что поддерживает эту связь?',
+  'Ваш пульс недели вырос. Что изменилось к лучшему?'
+];
+function addMsg(text,type){
+  const m=document.createElement('div');
+  m.className='msg '+type;
+  const t=new Date().toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'});
+  m.innerHTML=type==='ai'?`<div class="ai-l">🦉 Сова</div>${text}<div class="msg-t">${t}</div>`:`${text}<div class="msg-t">${t}</div>`;
+  chatMsgs.appendChild(m);chatMsgs.scrollTop=chatMsgs.scrollHeight;
+}
+function addTyping(){
+  const t=document.createElement('div');
+  t.className='typing';t.id='typing';
+  t.innerHTML='<span></span><span></span><span></span>';
+  chatMsgs.appendChild(t);chatMsgs.scrollTop=chatMsgs.scrollHeight;
+}
+function rmTyping(){const t=document.getElementById('typing');if(t)t.remove()}
+function sendMsg(){
+  const v=chatIn.value.trim();if(!v)return;
+  addMsg(v,'you');chatIn.value='';chatIn.style.height='auto';
+  addTyping();
+  setTimeout(()=>{rmTyping();addMsg(responses[Math.floor(Math.random()*responses.length)],'ai')},1200+Math.random()*800);
+}
+chatIn.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg()}});
+chatIn.addEventListener('input',()=>{chatIn.style.height='auto';chatIn.style.height=Math.min(chatIn.scrollHeight,100)+'px'});
+
+// Init
+document.addEventListener('DOMContentLoaded',()=>{
+  initPulse();
+  renderCityTabs();
+  renderVenues();
+  drawRadar();
+});
+</script>
+</body>
+</html>
