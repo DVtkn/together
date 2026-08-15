@@ -45,6 +45,7 @@ skills-lock.json
 
 # typescript
 *.tsbuildinfo
-next-env.d.ts
 
+# Prisma 7 generated client is part of the source (imported by src/lib/prisma.ts)
 /src/generated/prisma
+!/src/generated/prisma/**
