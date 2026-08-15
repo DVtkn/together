@@ -1,0 +1,168 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  DRIVER
+  PASSENGER
+}
+
+model User {
+  id                String       @id @default(cuid())
+  email             String       @unique
+  name              String?
+  avatarUrl         String?
+  googleId          String?      @unique
+  username          String?      @unique
+  role              UserRole     @default(PASSENGER)
+  reputationScore   Float        @default(0) // avg rating × 5, rounded
+  totalRides        Int          @default(0)
+  completedRides    Int          @default(0)
+  averageRating     Float        @default(0) // 1-5 stars
+  emailVerified     Boolean      @default(false)
+  verificationCode  String?
+
+  // Authentication
+  passwordHash      String?      // for email/password auth
+
+  // Carpooling preferences
+  preferredGender   String?      // "male" | "female" | "any"
+  petFriendly       Boolean      @default(false)
+  smokeFree         Boolean      @default(true)
+  conversationLevel String?      // "quiet" | "chatty" | "any"
+  musicPreference   String?      // "any" | "playlist" | "podcast" | "no-music"
+
+  // Timestamps
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+  lastRideAt        DateTime?
+
+// Relations
+  createdRides      Ride[] @relation("Driver")
+  requestedRides    RideRequest[] @relation("Passenger")
+
+  @@index([role])
+  @@index([emailVerified])
+}
+
+model Ride {
+  id                String       @id @default(cuid())
+  driverId          String
+  driver            User         @relation("Driver", fields: [driverId], references: [id], onDelete: Cascade)
+
+  // Route details
+  origin            String       // city/area name
+  destination       String       // city/area name
+  originCoords      Json?        // {lat, lon} optional
+  destinationCoords Json?       // {lat, lon} optional
+
+  // Schedule
+  departureDate     DateTime     // ISO date + time
+  seatCount         Int          // total seats in car
+  availableSeats    Int          // seats still available
+  pricePerSeat      Int          // price in cents (or null for free)
+  currency          String       @default("RUB") // RUB/USD/KZT
+
+  // Preferences
+  preferences       Json?        // {gender, pets, smoke, music, conversation}
+  carType           String       // "sedan" | "suv" | "hatchback" | "van" | "other"
+  carModel          String?      // e.g., "Toyota Camry 2020"
+  luggageSpace      Int          // 0-5 scale
+
+  // Status
+  status            RideStatus   @default(PENDING) // PENDING, IN_PROGRESS, COMPLETED, CANCELLED
+  isRoundTrip       Boolean      @default(false)
+
+  // Payment
+  platformFee       Int          @default(0) // in cents, 10% of price
+  driverEarnings    Int          // in cents after fee
+
+  // Metadata
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+  cancelledAt       DateTime?
+  cancelledReason   String?
+
+  @@index([driverId])
+  @@index([status])
+  @@index([departureDate])
+  rideRequests      RideRequest[]
+}
+
+enum RideStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+model RideRequest {
+  id                String       @id @default(cuid())
+  rideId            String
+  ride              Ride          @relation(fields: [rideId], references: [id], onDelete: Cascade)
+  passengerId       String
+  passenger         User          @relation("Passenger", fields: [passengerId], references: [id], onDelete: Cascade)
+
+  // Request flow
+  status            RideRequestStatus @default(PENDING) // PENDING, ACCEPTED, DECLINED, COMPLETED, CANCELLED
+  requestedAt       DateTime       @default(now())
+  respondedAt       DateTime?      // when driver responded
+
+  // Meeting point
+  meetingPoint      String?      // optional: "city center", "train station"
+  meetingNotes      String?      // optional
+
+  // Payment (mock for MVP)
+  amountPaid        Int?         // in cents, null if not paid yet
+  paymentStatus     String?      // "pending" | "paid" | "refunded"
+
+  @@index([rideId, status])
+  @@index([passengerId, status])
+}
+
+enum RideRequestStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  COMPLETED
+  CANCELLED
+}
+
+model Review {
+  id                String       @id @default(cuid())
+  raterId           String       // user who gave rating
+  ratedId           String       // user who received rating
+  rideId            String
+
+  // Rating
+  rating            Int          // 1-5 stars
+  title             String?      // optional title
+  comment           String?      // optional review text
+
+  // Timestamps
+  createdAt         DateTime     @default(now())
+
+  @@unique([rideId, raterId]) // one review per ride per user
+  @@index([ratedId])
+  @@index([createdAt])
+}
+
+model CrisisResource {
+  id              String   @id @default(cuid())
+  type            String   // "emergency" | "safety" | "legal"
+  title           String
+  description     String
+  phone           String   // hotline number
+  url             String?  // resource link
+  country         String   // "RU" | "BY" | "KZ" | "UA" | "KG" | etc.
+  icon            String   // emoji or icon name
+  order           Int      @default(0)
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
