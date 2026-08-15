@@ -1,8 +1,8 @@
 // AI provider for OpenRouter API
 // Uses fetch directly to avoid openai npm package type issues
 
-export const OPENROUTER_API_BASE = process.env.OPENROUTER_API_BASE || 'https://openrouter.ai/api/v1'
-export const OPENROUTER_MODEL = process.env.OPENROUTER_MODEL || 'openai/gpt-oss-20b:free'
+export const OPENROUTER_API_BASE = process.env.AI_API_BASE || process.env.OPENROUTER_API_BASE || 'https://openrouter.ai/api/v1'
+export const OPENROUTER_MODEL = process.env.AI_MODEL || process.env.OPENROUTER_MODEL || 'openai/gpt-oss-20b:free'
 
 export interface AIResponse {
   content: string
@@ -10,7 +10,7 @@ export interface AIResponse {
 }
 
 export async function getAIResponse(messages: Array<{role: string; content: string}>): Promise<AIResponse> {
-  const apiKey = process.env.OPENROUTER_API_KEY
+  const apiKey = process.env.AI_API_KEY || process.env.GROQ_API_KEY || process.env.OPENROUTER_API_KEY
   if (!apiKey) {
     return { content: 'AI API key not configured. Set OPENROUTER_API_KEY in .env.local', usage: { input: 0, output: 0 } }
   }

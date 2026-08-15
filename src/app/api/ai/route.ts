@@ -5,16 +5,19 @@ import { prisma } from "@/lib/prisma"
 import { buildMessages, safeParseResponse, isValidContent, handleAIError } from "@/lib/ai/provider"
 import { SYSTEM_PROMPT } from "@/lib/ai/prompt"
 
-const OPENROUTER_API_BASE = process.env.OPENROUTER_API_BASE || "https://openrouter.ai/api/v1"
-const apiKey = process.env.OPENROUTER_API_KEY || process.env.OPENAI_API_KEY
+// Провайдер ИИ настраивается через env. Поддерживаются Groq и OpenRouter
+// (оба — OpenAI-совместимый /chat/completions endpoint).
+const API_BASE = process.env.AI_API_BASE || process.env.OPENROUTER_API_BASE || "https://openrouter.ai/api/v1"
+const apiKey = process.env.AI_API_KEY || process.env.GROQ_API_KEY || process.env.OPENROUTER_API_KEY || process.env.OPENAI_API_KEY
+const isGroq = process.env.AI_PROVIDER === "groq" || !!process.env.GROQ_API_KEY
 
 if (!apiKey) {
-  throw new Error("AI API key not configured. Set OPENROUTER_API_KEY in .env.local")
+  throw new Error("AI API key not configured. Set AI_API_KEY / GROQ_API_KEY / OPENROUTER_API_KEY in .env.local")
 }
 
-// Основная модель + резервная на случай rate-limit (429) на free-модели.
-const PRIMARY_MODEL = process.env.OPENROUTER_MODEL || "openai/gpt-oss-20b:free"
-const FALLBACK_MODEL = process.env.OPENROUTER_FALLBACK_MODEL || "nvidia/nemotron-3-nano-30b-a3b:free"
+// Основная модель + резервная на случай rate-limit (429).
+const PRIMARY_MODEL = process.env.AI_MODEL || process.env.OPENROUTER_MODEL || (isGroq ? "openai/gpt-oss-20b" : "openai/gpt-oss-20b:free")
+const FALLBACK_MODEL = process.env.AI_FALLBACK_MODEL || process.env.OPENROUTER_FALLBACK_MODEL || (isGroq ? "llama-3.3-70b-versatile" : "nvidia/nemotron-3-nano-30b-a3b:free")
 
 interface AIProviderResult {
   ok: boolean
@@ -28,7 +31,7 @@ async function callProvider(model: string, messages: unknown[]): Promise<AIProvi
   const timeout = setTimeout(() => controller.abort(), 60000)
 
   try {
-    const response = await fetch(OPENROUTER_API_BASE + "/chat/completions", {
+    const response = await fetch(API_BASE + "/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -190,7 +193,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           error: isRateLimit
-            ? "Бесплатный лимит ИИ исчерпан (50 запросов/день). Попробуйте завтра или пополните баланс на openrouter.ai, чтобы получить 1000 запросов/день."
+            ? isGroq
+              ? "Превышен лимит запросов к ИИ. Подождите немного и попробуйте ещё раз."
+              : "Бесплатный лимит ИИ исчерпан (50 запросов/день). Попробуйте завтра или пополните баланс на openrouter.ai, чтобы получить 1000 запросов/день."
             : result.status === 0
               ? "Нет ответа от ИИ. Проверьте соединение."
               : "ИИ не смог сформировать ответ. Попробуйте ещё раз.",
