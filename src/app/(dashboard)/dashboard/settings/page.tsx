@@ -66,10 +66,10 @@ export default function SettingsPage() {
       fetch('/api/user/profile').then((res) => res.json()),
     ])
       .then(([settingsRes, citiesRes, profileRes]) => {
-        setSettings(settingsRes.settings)
-        setCouple(settingsRes.couple)
-        setCities(citiesRes.cities || [])
-        setCityId(profileRes.user?.city?.id || null)
+        if (settingsRes?.settings) setSettings(settingsRes.settings)
+        setCouple(settingsRes?.couple ?? null)
+        setCities(citiesRes?.cities || [])
+        setCityId(profileRes?.user?.city?.id || null)
         setLoading(false)
       })
       .catch(() => setLoading(false))

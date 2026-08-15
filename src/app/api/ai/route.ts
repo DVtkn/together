@@ -116,7 +116,7 @@ export async function POST(request: NextRequest) {
         "Authorization": "Bearer " + process.env.OPENROUTER_API_KEY,
       },
       body: JSON.stringify({
-        model: process.env.OPENROUTER_MODEL || "liquid/lfm-2.5-2.6b:free",
+        model: process.env.OPENROUTER_MODEL || "google/gemma-4-26b-a4b-it:free",
         messages,
         temperature: 0.7,
         max_tokens: 2000,
@@ -154,7 +154,7 @@ export async function POST(request: NextRequest) {
           userId: ctx.user.id,
           role: "USER",
           content: message,
-          model: process.env.OPENROUTER_MODEL || "liquid/lfm-2.5-2.6b:free",
+          model: process.env.OPENROUTER_MODEL || "google/gemma-4-26b-a4b-it:free",
         },
       }),
       prisma.aIMessage.create({
@@ -165,7 +165,7 @@ export async function POST(request: NextRequest) {
           content: parsed.content,
           tokensInput: parsed.usage.input,
           tokensOutput: parsed.usage.output,
-          model: process.env.OPENROUTER_MODEL || "liquid/lfm-2.5-2.6b:free",
+          model: process.env.OPENROUTER_MODEL || "google/gemma-4-26b-a4b-it:free",
         },
       }),
       prisma.aIConversation.update({

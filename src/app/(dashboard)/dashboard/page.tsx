@@ -83,7 +83,7 @@ function DashboardContent() {
     )
   }
 
-  const currentUserName = data.user.name || data.user.email.split('@')[0]
+  const currentUserName = data.user.name || data.user.email?.split('@')[0] || 'Пользователь'
   const partner = data.couple
     ? data.couple.partnerA.name !== currentUserName
       ? data.couple.partnerA
