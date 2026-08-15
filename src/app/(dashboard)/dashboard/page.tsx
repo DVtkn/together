@@ -3,11 +3,8 @@
 import { Suspense, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
-import { Heart, BarChart2, Target, Loader2, CheckCircle2, AlertCircle, HeartPulse, Sparkles } from 'lucide-react'
 
 interface AssessmentEntry {
   key: string
@@ -68,8 +65,13 @@ function DashboardContent() {
   if (loading) {
     return (
       <DashboardLayout user={{ name: null, email: '', image: null }} couple={null}>
-        <div className="flex items-center justify-center py-24">
-          <Loader2 className="h-8 w-8 animate-spin text-rose-500" aria-hidden="true" />
+        <div className="loading-screen">
+          <div className="loading-icon">💜</div>
+          <div className="loading-text">Загружаем ваш дашборд</div>
+          <div className="loading-step">Собираем данные о вашей паре…</div>
+          <div className="loading-bar">
+            <div className="loading-bar-fill" style={{ width: '100%', animation: 'typing-bounce 1.4s infinite' }} />
+          </div>
         </div>
       </DashboardLayout>
     )
@@ -78,7 +80,7 @@ function DashboardContent() {
   if (!data) {
     return (
       <DashboardLayout user={{ name: null, email: '', image: null }} couple={null}>
-        <p className="text-slate-500">Не удалось загрузить данные.</p>
+        <div className="notice notice-rose">⚠️ Не удалось загрузить данные. Попробуйте обновить страницу.</div>
       </DashboardLayout>
     )
   }
@@ -98,191 +100,187 @@ function DashboardContent() {
       user={{ name: data.user.name, email: data.user.email, image: null }}
       couple={data.couple ? { id: data.couple.id, partnerA: data.couple.partnerA, partnerB: data.couple.partnerB, status: data.couple.status } : null}
     >
-      <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold text-slate-950 dark:text-slate-50">
+      <div className="container space-y-6">
+        {/* HERO */}
+        <section className="hero">
+          <div className="hero-icon" aria-hidden="true">💜</div>
+          <span className="eyebrow">Ваш личный навигатор в отношениях</span>
+          <h1 className="gradient-text">
             Привет, {currentUserName}
-            {partner?.name ? ` и ${partner.name}` : ''}! ❤️
+            {partner?.name ? ` и ${partner.name}` : ''}!
           </h1>
-          <p className="text-slate-600 dark:text-slate-400 mt-1">
-            Коротко о том, как дела у вашей пары.
+          <p>
+            Коротко о том, как дела у вашей пары: опросники, совместный отчёт,
+            пульс недели и челленджи — всё в одном месте.
           </p>
-        </div>
+          <div className="hero-buttons">
+            <Link href="/dashboard/assessments" className="btn btn-primary btn-large">
+              📝 Пройти тест
+            </Link>
+            <Link href="/dashboard/report" className="btn btn-secondary btn-large">
+              📊 Смотреть отчёт
+            </Link>
+          </div>
+        </section>
 
         {justLeft && (
-          <div className="p-4 rounded-lg bg-amber-50 text-amber-700 dark:bg-amber-950/30 dark:text-amber-300 text-sm">
-            Вы покинули пару. Найдите партнёра, чтобы совместный отчёт снова стал доступен.
-          </div>
+          <div className="notice notice-amber">👋 Вы покинули пару. Найдите партнёра, чтобы совместный отчёт снова стал доступен.</div>
         )}
 
         {!data.couple && (
-          <Card className="border-rose-200 bg-rose-50/50 dark:border-rose-900 dark:bg-rose-950/20">
-            <CardContent className="pt-6 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-              <div className="flex-1">
-                <p className="font-semibold text-slate-950 dark:text-slate-50 flex items-center gap-2">
-                  <AlertCircle className="h-5 w-5 text-rose-500" aria-hidden="true" />
-                  Вы пока не в паре
-                </p>
-                <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                  Найдите партнёра по логину, чтобы вместе пройти опросники и получить совместный отчёт.
-                </p>
+          <div className="card card-link" style={{ cursor: 'default' }}>
+            <div className="card-header-row">
+              <div className="card-icon" aria-hidden="true">💞</div>
+              <div>
+                <h3>Вы пока не в паре</h3>
+                <p>Найдите партнёра по логину, чтобы вместе пройти опросники и получить совместный отчёт.</p>
               </div>
-              <Button asChild className="bg-rose-500 hover:bg-rose-600 text-white">
-                <Link href="/dashboard/settings#couple">Привязать партнёра</Link>
-              </Button>
-            </CardContent>
-          </Card>
+            </div>
+            <Link href="/dashboard/settings#couple" className="btn btn-primary" style={{ width: 'auto', display: 'inline-flex', padding: '12px 24px' }}>
+              Привязать партнёра
+            </Link>
+          </div>
         )}
 
-        {/* Progress */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <CheckCircle2 className="h-5 w-5 text-emerald-500" aria-hidden="true" />
-                Опросники
-              </CardTitle>
-              <CardDescription>Мой прогресс: {myCompleted}/{data.assessments.length} · вместе: {completedCount}/{data.assessments.length}</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-2">
+        {/* ЧЕЛЛЕНДЖ НЕДЕЛИ */}
+        {data.activeChallenge && (
+          <div className="card card-link" style={{ cursor: 'default' }}>
+            <div className="card-header-row">
+              <div className="card-icon" aria-hidden="true">🎯</div>
+              <div>
+                <h3>Челлендж недели: {data.activeChallenge.title}</h3>
+                <p>{data.activeChallenge.description}</p>
+              </div>
+            </div>
+            <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', alignItems: 'center', marginTop: 12 }}>
+              <span style={{ fontSize: 14, color: data.activeChallenge.completedByCurrent ? 'var(--success)' : 'var(--text-dim)' }}>
+                {data.activeChallenge.completedByCurrent ? '✅ Я выполнил(а)' : '⬜ Мне нужно выполнить'}
+              </span>
+              <span style={{ fontSize: 14, color: data.activeChallenge.completedByPartner ? 'var(--success)' : 'var(--text-dim)' }}>
+                {data.activeChallenge.completedByPartner ? '✅ Партнёр выполнил(а)' : '⬜ Ждём партнёра'}
+              </span>
+              <Link href="/dashboard/challenges" className="btn btn-primary" style={{ width: 'auto', display: 'inline-flex', padding: '10px 20px', marginLeft: 'auto', marginBottom: 0 }}>
+                Подробнее
+              </Link>
+            </div>
+          </div>
+        )}
+
+        {/* FEATURES */}
+        <h2 className="section-title">Обзор</h2>
+        <div className="features-grid">
+          {/* Опросники */}
+          <Link href="/dashboard/assessments" className="card card-link">
+            <div className="card-header-row">
+              <div className="card-icon" aria-hidden="true">📝</div>
+              <div>
+                <h3>Опросники</h3>
+                <p>Мой прогресс: {myCompleted}/{data.assessments.length} · вместе: {completedCount}/{data.assessments.length}</p>
+              </div>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {data.assessments.map((a) => (
-                <div key={a.key} className="flex items-center gap-2 text-sm">
-                  <span className={a.bothCompleted ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-500 dark:text-slate-400'}>
+                <div key={a.key} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 14 }}>
+                  <span style={{ flexShrink: 0 }}>
                     {a.bothCompleted ? '✅' : a.completedByCurrent ? '⏳' : '⬜'}
                   </span>
-                  <Link href={`/dashboard/assessments/${a.key}`} className="flex-1 text-slate-700 hover:text-rose-600 dark:text-slate-300 dark:hover:text-rose-400">
-                    {a.title}
-                  </Link>
-                  {a.bothCompleted && <CheckCircle2 className="h-4 w-4 text-emerald-500" aria-hidden="true" />}
+                  <span style={{ color: 'var(--text)' }}>{a.title}</span>
+                  {a.bothCompleted && <span style={{ marginLeft: 'auto', color: 'var(--success)' }}>готово</span>}
                 </div>
               ))}
-              {data.assessments.length === 0 && <p className="text-sm text-slate-500">Не найдено опросников.</p>}
-            </CardContent>
-          </Card>
+              {data.assessments.length === 0 && <p>Не найдено опросников.</p>}
+            </div>
+          </Link>
 
-          {/* Report */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <BarChart2 className="h-5 w-5 text-rose-500" aria-hidden="true" />
-                Совместный отчёт
-              </CardTitle>
-              <CardDescription>Радар по 6 осям совместимости</CardDescription>
-            </CardHeader>
-            <CardContent>
-              {data.latestReport ? (
+          {/* Отчёт */}
+          <Link href="/dashboard/report" className="card card-link">
+            <div className="card-header-row">
+              <div className="card-icon" aria-hidden="true">📊</div>
+              <div>
+                <h3>Совместный отчёт</h3>
+                <p>Радар по 6 осям совместимости</p>
+              </div>
+            </div>
+            {data.latestReport ? (
+              <p style={{ marginTop: 8 }}>Отчёт готов — посмотрите сильные стороны и зоны роста вашей пары.</p>
+            ) : (
+              <p style={{ marginTop: 8 }}>Оба пройдите все опросники — отчёт появится здесь автоматически.</p>
+            )}
+          </Link>
+
+          {/* Пульс */}
+          <Link href="/dashboard/pulse" className="card card-link">
+            <div className="card-header-row">
+              <div className="card-icon" aria-hidden="true">🌡️</div>
+              <div>
+                <h3>Пульс недели</h3>
+                <p>Близость и разрешение конфликтов</p>
+              </div>
+            </div>
+            {data.currentPulse ? (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 8 }}>
                 <div>
-                  <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
-                    Отчёт готов. Посмотрите сильные стороны и зоны роста вашей пары.
-                  </p>
-                  <Button asChild size="sm" className="bg-rose-500 hover:bg-rose-600 text-white">
-                    <Link href="/dashboard/report">Открыть отчёт</Link>
-                  </Button>
-                </div>
-              ) : (
-                <p className="text-sm text-slate-500">
-                  Оба пройдите все опросники — отчёт появится здесь автоматически.
-                </p>
-              )}
-            </CardContent>
-          </Card>
-
-          {/* Pulse */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <HeartPulse className="h-5 w-5 text-emerald-500" aria-hidden="true" />
-                Пульс недели
-              </CardTitle>
-              <CardDescription>Близость и разрешение конфликтов</CardDescription>
-            </CardHeader>
-            <CardContent>
-              {data.currentPulse ? (
-                <div className="space-y-2">
-                  <div>
-                    <div className="flex justify-between text-xs text-slate-500 mb-1">
-                      <span>Моя близость</span>
-                      <span>{data.currentPulse.userCloseness}/10</span>
-                    </div>
-                    <Progress value={data.currentPulse.userCloseness * 10} className="h-2" />
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: 'var(--text-dim)', marginBottom: 4 }}>
+                    <span>Моя близость</span>
+                    <span>{data.currentPulse.userCloseness}/10</span>
                   </div>
-                  {data.currentPulse.partnerCloseness !== null && (
-                    <div>
-                      <div className="flex justify-between text-xs text-slate-500 mb-1">
-                        <span>Близость партнёра</span>
-                        <span>{data.currentPulse.partnerCloseness}/10</span>
-                      </div>
-                      <Progress value={data.currentPulse.partnerCloseness * 10} className="h-2 bg-rose-100 dark:bg-rose-950" />
-                    </div>
-                  )}
+                  <Progress value={data.currentPulse.userCloseness * 10} className="h-2" />
                 </div>
-              ) : (
-                <p className="text-sm text-slate-500">
-                  Заполните еженедельный чек-ин, чтобы увидеть динамику.
-                </p>
-              )}
-              <Button asChild variant="outline" size="sm" className="mt-4">
-                <Link href="/dashboard/pulse">К пульсу</Link>
-              </Button>
-            </CardContent>
-          </Card>
+                {data.currentPulse.partnerCloseness !== null && (
+                  <div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: 'var(--text-dim)', marginBottom: 4 }}>
+                      <span>Близость партнёра</span>
+                      <span>{data.currentPulse.partnerCloseness}/10</span>
+                    </div>
+                    <Progress value={data.currentPulse.partnerCloseness * 10} className="h-2" />
+                  </div>
+                )}
+              </div>
+            ) : (
+              <p style={{ marginTop: 8 }}>Заполните еженедельный чек-ин, чтобы увидеть динамику.</p>
+            )}
+          </Link>
         </div>
 
-        {/* Challenge */}
-        {data.activeChallenge && (
-          <Card className="border-amber-200 dark:border-amber-800 bg-gradient-to-r from-amber-50 to-rose-50 dark:from-amber-950/20 dark:to-rose-950/20">
-            <CardContent className="pt-6">
-              <div className="flex flex-col sm:flex-row items-start gap-4">
-                <div className="text-4xl" aria-hidden="true"><Target /></div>
-                <div className="flex-1">
-                  <p className="font-semibold text-slate-950 dark:text-slate-50 flex items-center gap-2">
-                    <Sparkles className="h-5 w-5 text-amber-500" aria-hidden="true" />
-                    Челлендж недели: {data.activeChallenge.title}
-                  </p>
-                  <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">{data.activeChallenge.description}</p>
-                  <div className="flex items-center gap-4 mt-3 text-sm">
-                    <span className={data.activeChallenge.completedByCurrent ? 'text-emerald-600' : 'text-slate-500'}>
-                      {data.activeChallenge.completedByCurrent ? '✅ Я выполнил(а)' : '⬜ Мне нужно выполнить'}
-                    </span>
-                    <span className={data.activeChallenge.completedByPartner ? 'text-emerald-600' : 'text-slate-500'}>
-                      {data.activeChallenge.completedByPartner ? '✅ Партнёр выполнил(а)' : '⬜ Ждём партнёра'}
-                    </span>
-                  </div>
-                </div>
-                <Button asChild size="sm" className="bg-amber-500 hover:bg-amber-600 text-white">
-                  <Link href="/dashboard/challenges">Подробнее</Link>
-                </Button>
+        {/* БЫСТРЫЕ ДЕЙСТВИЯ */}
+        <h2 className="section-title">Быстрые действия</h2>
+        <div className="features-grid" style={{ gridTemplateColumns: 'repeat(2, 1fr)' }}>
+          <Link href="/dashboard/partner" className="card card-link">
+            <div className="card-header-row" style={{ marginBottom: 0 }}>
+              <div className="card-icon" aria-hidden="true">💞</div>
+              <div>
+                <h3>База знаний</h3>
+                <p>Психология, деньги, близость</p>
               </div>
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Quick actions */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <Button asChild variant="outline" className="h-auto py-4 flex-col gap-2">
-            <Link href="/dashboard/partner">
-              <Heart className="h-6 w-6 text-rose-500" aria-hidden="true" />
-              <span className="text-sm">База знаний</span>
-            </Link>
-          </Button>
-          <Button asChild variant="outline" className="h-auto py-4 flex-col gap-2">
-            <Link href="/dashboard/venues">
-              <Sparkles className="h-6 w-6 text-rose-500" aria-hidden="true" />
-              <span className="text-sm">Куда пойти</span>
-            </Link>
-          </Button>
-          <Button asChild variant="outline" className="h-auto py-4 flex-col gap-2">
-            <Link href="/dashboard/challenges">
-              <Target className="h-6 w-6 text-rose-500" aria-hidden="true" />
-              <span className="text-sm">Челленджи</span>
-            </Link>
-          </Button>
-          <Button asChild variant="outline" className="h-auto py-4 flex-col gap-2">
-            <Link href="/dashboard/ai">
-              <Sparkles className="h-6 w-6 text-rose-500" aria-hidden="true" />
-              <span className="text-sm">ИИ-ассистент</span>
-            </Link>
-          </Button>
+            </div>
+          </Link>
+          <Link href="/dashboard/venues" className="card card-link">
+            <div className="card-header-row" style={{ marginBottom: 0 }}>
+              <div className="card-icon" aria-hidden="true">📍</div>
+              <div>
+                <h3>Куда пойти</h3>
+                <p>Идеи для свиданий в вашем городе</p>
+              </div>
+            </div>
+          </Link>
+          <Link href="/dashboard/challenges" className="card card-link">
+            <div className="card-header-row" style={{ marginBottom: 0 }}>
+              <div className="card-icon" aria-hidden="true">🎯</div>
+              <div>
+                <h3>Челленджи</h3>
+                <p>Задания на неделю для пары</p>
+              </div>
+            </div>
+          </Link>
+          <Link href="/dashboard/ai" className="card card-link">
+            <div className="card-header-row" style={{ marginBottom: 0 }}>
+              <div className="card-icon" aria-hidden="true">💬</div>
+              <div>
+                <h3>ИИ-ассистент</h3>
+                <p>Помощь в любой ситуации</p>
+              </div>
+            </div>
+          </Link>
         </div>
       </div>
     </DashboardLayout>

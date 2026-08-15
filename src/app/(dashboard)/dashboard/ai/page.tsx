@@ -1,12 +1,8 @@
 "use client"
 
 import { useEffect, useRef, useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { ScrollArea } from '@/components/ui/scroll-area'
-
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
-import { Send, Bot, User, Sparkles, Trash2 } from 'lucide-react'
+import { Send, Plus, Trash2 } from 'lucide-react'
 import { cn } from '@/lib/utils/cn'
 import { format } from 'date-fns'
 import { ru } from 'date-fns/locale'
@@ -25,12 +21,22 @@ interface Conversation {
   lastMessage: string
 }
 
+const MOODS = [
+  { emoji: '😊', label: 'Хорошо' },
+  { emoji: '😢', label: 'Грустно' },
+  { emoji: '😠', label: 'Злюсь' },
+  { emoji: '😴', label: 'Устал(а)' },
+  { emoji: '😍', label: 'Влюблён(а)' },
+]
+
 export default function AIChatPage() {
   const [conversations, setConversations] = useState<Conversation[]>([])
   const [currentConversationId, setCurrentConversationId] = useState<string | null>(null)
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [mood, setMood] = useState<string | null>(null)
+  const [mode, setMode] = useState<'solo' | 'together'>('solo')
   const scrollRef = useRef<HTMLDivElement>(null)
 
   const fetchConversations = async () => {
@@ -56,10 +62,19 @@ export default function AIChatPage() {
     }
   }
 
+  useEffect(() => {
+    fetchConversations()
+  }, [])
 
   useEffect(() => {
-    const viewport = scrollRef.current?.querySelector('[data-radix-scroll-area-viewport]')
-    viewport?.scrollTo({ top: viewport.scrollHeight, behavior: 'smooth' })
+    if (currentConversationId) {
+      fetchMessages(currentConversationId)
+    }
+  }, [currentConversationId])
+
+  useEffect(() => {
+    const el = scrollRef.current
+    el?.scrollTo({ top: el.scrollHeight, behavior: 'smooth' })
   }, [messages, isLoading])
 
   const handleSend = async () => {
@@ -74,13 +89,11 @@ export default function AIChatPage() {
       const res = await fetch('/api/ai', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: msg, conversationId: currentConversationId }),
+        body: JSON.stringify({ message: msg, conversationId: currentConversationId, mood, mode }),
       })
       const data = await res.json()
 
       if (!res.ok) {
-        // ИИ не ответил (rate-limit и т.п.) — сообщение пользователя уже сохранено на сервере,
-        // показываем ошибку, а не подменяем текст
         setMessages((prev) =>
           prev.map((m) =>
             m.id.startsWith('u')
@@ -122,12 +135,8 @@ export default function AIChatPage() {
     setMessages([])
   }
 
-  const handleConversationClick = (id: string) => {
-    setCurrentConversationId(id)
-  }
-
   const handleDeleteConversation = async (id: string) => {
-    if (!confirm('Удалить?')) return
+    if (!confirm('Удалить этот диалог?')) return
     try {
       await fetch('/api/ai/conversations/' + id, { method: 'DELETE' })
       fetchConversations()
@@ -142,121 +151,163 @@ export default function AIChatPage() {
 
   const formatTime = (d: string) => format(new Date(d), 'HH:mm', { locale: ru })
 
-  const currentConversation = conversations.find((c) => c.id === currentConversationId)
-
   return (
     <DashboardLayout user={{ name: null, email: '', image: null }} couple={null}>
-      <div className='h-[calc(100vh-120px)] flex flex-col max-w-5xl mx-auto w-full'>
-        <div className='flex items-center justify-between mb-4 flex-shrink-0'>
-          <div className='flex items-center gap-3'>
-            <Bot className='h-8 w-8 text-rose-500' aria-hidden='true' />
-            <div>
-              <h1 className='text-2xl font-bold text-slate-950 dark:text-slate-50'>ИИ-ассистент</h1>
-              <p className='text-sm text-slate-500 dark:text-slate-400'>
-                Помнит ваш контекст: отчёты, пульс, челленджи.
-              </p>
-            </div>
+      <div className="chat-layout">
+        {/* Тревога настроения */}
+        <div className="mood-checkin">
+          <span className="mood-checkin-label">Как себя чувствуете?</span>
+          <div className="mood-options">
+            {MOODS.map((m) => (
+              <button
+                key={m.label}
+                type="button"
+                title={m.label}
+                aria-label={m.label}
+                className={cn('mood-btn', mood === m.emoji && 'selected')}
+                onClick={() => setMood(mood === m.emoji ? null : m.emoji)}
+              >
+                {m.emoji}
+              </button>
+            ))}
           </div>
-          <Button variant='outline' size='sm' onClick={handleNewChat}>
-            <Sparkles className='mr-2 h-4 w-4' /> Новый чат
-          </Button>
         </div>
 
-        <div className='flex-1 flex flex-col overflow-hidden'>
-          <div className='flex-1 flex overflow-hidden'>
-            <Card className='w-64 mr-4 hidden md:block flex-shrink-0 overflow-hidden'>
-              <CardHeader className='py-3'>
-                <CardTitle className='text-sm'>Диалоги</CardTitle>
-                <CardDescription className='text-xs'>Выберите беседу</CardDescription>
-              </CardHeader>
-              <div className='px-3 pb-3 space-y-1 max-h-[calc(100vh-260px)] overflow-y-auto'>
-                {conversations.map((conv) => (
-                  <div
-                    key={conv.id}
-                    role='button'
-                    tabIndex={0}
-                    onClick={() => setCurrentConversationId(conv.id)}
-                    className={cn(
-                      'group flex items-center justify-between gap-2 px-3 py-2 rounded-lg cursor-pointer text-sm transition-colors',
-                      conv.id === currentConversationId ? 'bg-rose-50 text-rose-700 dark:bg-rose-950/40 dark:text-rose-300' : 'text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800'
-                    )}
-                  >
-                    <div className='flex-1 min-w-0'>
-                      <p className='truncate font-medium'>{conv.title}</p>
-                      <p className='truncate text-xs opacity-70'>
-                        {currentConversation?.id === conv.id ? 'Открыт' : conv.lastMessage}
-                      </p>
-                    </div>
-                    <button
-                      type='button'
-                      aria-label='Удалить'
-                      onClick={(e) => handleDeleteConversation(conv.id)}
-                      className='opacity-0 group-hover:opacity-100 text-slate-400 hover:text-red-500 transition-opacity'
-                    >
-                      <Trash2 className='h-4 w-4' aria-hidden='true' />
-                    </button>
-                  </div>
-                ))}
+        {/* Диалоги */}
+        {conversations.length > 0 && (
+          <div style={{ display: 'flex', gap: 8, overflowX: 'auto', paddingBottom: 12, marginBottom: 4, scrollbarWidth: 'none' }}>
+            <button type="button" className="btn btn-primary" style={{ width: 'auto', padding: '10px 16px', fontSize: 14, marginBottom: 0, flexShrink: 0, display: 'inline-flex', gap: 6 }} onClick={handleNewChat}>
+              <Plus className="h-4 w-4" aria-hidden="true" /> Новый
+            </button>
+            {conversations.map((conv) => (
+              <div
+                key={conv.id}
+                role="button"
+                tabIndex={0}
+                onClick={() => setCurrentConversationId(conv.id)}
+                className={cn(
+                  'inline-flex items-center gap-2 px-4 py-2 rounded-[100px] cursor-pointer text-sm font-medium transition-all flex-shrink-0',
+                  conv.id === currentConversationId
+                    ? 'bg-[linear-gradient(135deg,#8B5CF6,#EC4899)] text-white'
+                    : 'bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.08)] text-[#94A3B8] hover:text-[#F1F5F9]'
+                )}
+              >
+                <span className="max-w-[140px] truncate">{conv.title}</span>
+                <button
+                  type="button"
+                  aria-label="Удалить"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    handleDeleteConversation(conv.id)
+                  }}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'inherit', opacity: 0.7, padding: 0, display: 'flex' }}
+                >
+                  <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
+                </button>
               </div>
-            </Card>
-
-            <div className='flex-1 flex flex-col min-w-0'>
-              <ScrollArea ref={scrollRef} className='flex-1 pr-4'>
-                <div className='space-y-4 pb-4'>
-                  {messages.length === 0 && (
-                    <p className='text-center text-slate-500 dark:text-slate-400'>Начните разговор</p>
-                  )}
-
-                  {messages.map((msg) => (
-                    <div key={msg.id} className={cn('flex gap-3', msg.role === 'USER' ? 'flex-row-reverse' : 'flex-row')}>
-                      <div className={cn('w-8 h-8 rounded-flex items-center justify-center flex-shrink-0', msg.role === 'USER' ? 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400' : 'bg-rose-100 dark:bg-rose-950/50 text-rose-600 dark:text-rose-400')}>
-                        {msg.role === 'USER' ? <User className='h-4 w-4' /> : <Bot className='h-4 w-4' />}
-                      </div>
-                      <div className={cn('max-w-[70%] rounded-2xl px-4 py-2', msg.role === 'USER' ? 'bg-rose-500 text-white rounded-tr-none' : 'bg-slate-100 dark:bg-slate-800 text-slate-950 dark:text-slate-50 rounded-tl-none')}>
-                        <div className='prose prose-sm dark:prose-invert max-w-none'>{msg.content}</div>
-                        <div className='flex items-center justify-end gap-2 mt-1 text-xs opacity-60'>
-                          <span>{formatTime(msg.createdAt)}</span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-
-                  {isLoading && (
-                    <div className='flex gap-3'>
-                      <div className='w-8 h-8 rounded-flex items-center justify-center flex-shrink-0 bg-rose-100 dark:bg-rose-950/50 text-rose-600 dark:text-rose-400'>
-                        <Bot className='h-4 w-4' />
-                      </div>
-                      <div className='max-w-[70%] rounded-2xl rounded-tl-none bg-slate-100 dark:bg-slate-800 px-4 py-3'>
-                        <div className='flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400'>
-                          <span className='typing-dot' />
-                          <span className='typing-dot' />
-                          <span className='typing-dot' />
-                          <span className='ml-1'>Психолог готовит ответ...</span>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  <div />
-                </div>
-              </ScrollArea>
-            </div>
+            ))}
           </div>
+        )}
+
+        {/* Режим */}
+        <div className="chat-mode-switch">
+          <button
+            type="button"
+            className={cn('mode-btn', mode === 'solo' && 'active')}
+            onClick={() => setMode('solo')}
+          >
+            👤 Один на один
+          </button>
+          <button
+            type="button"
+            className={cn('mode-btn', mode === 'together' && 'active')}
+            onClick={() => setMode('together')}
+          >
+            👥 Вместе
+          </button>
         </div>
 
-        <div className='p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-950 dark:bg-slate-900'>
-          <form onSubmit={(e) => { e.preventDefault(); handleSend() }}>
-            <input
-              type="text"
-              placeholder='Введите сообщение...'
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              className='flex-1 rounded-b-lg border border-slate-500 dark:border-slate-400 bg-transparent px-3 py-2 text-slate-200 dark:text-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 focus-visible:ring-offset-2'
-            />
-            <Button type='submit' disabled={!input.trim()} className='bg-rose-500 text-white px-4 py-2 rounded-lg hover:bg-rose-600 transition-colors'>
-              <Send className='mr-2 h-4 w-4' /> Отправить
-            </Button>
-          </form>
+        {/* Окно чата */}
+        <div className="chat-window">
+          <div className="chat-header">
+            <div className="chat-participants">
+              <span className="chat-participant ai" aria-hidden="true">💜</span>
+              <span className="chat-participant you" aria-hidden="true">🙂</span>
+            </div>
+            <span className="chat-title">Психолог Together · {mode === 'solo' ? 'один на один' : 'вместе с партнёром'}</span>
+            <span className="chat-status">онлайн</span>
+          </div>
+
+          <div className="chat-messages" ref={scrollRef}>
+            {messages.length === 0 && (
+              <p style={{ textAlign: 'center', color: 'var(--text-dim)', fontSize: 14, margin: 'auto', padding: '20px 0' }}>
+                Начните разговор — ИИ помнит ваш контекст: отчёты, пульс, челленджи.
+              </p>
+            )}
+
+            {messages.map((msg) => {
+              if (msg.role === 'USER') {
+                return (
+                  <div key={msg.id} className="msg you">
+                    {msg.content}
+                    <div className="msg-time">{formatTime(msg.createdAt)}</div>
+                  </div>
+                )
+              }
+              if (msg.role === 'SYSTEM') {
+                return (
+                  <div key={msg.id} className="msg ai">
+                    <div className="ai-label">⚠️ Уведомление</div>
+                    {msg.content}
+                  </div>
+                )
+              }
+              return (
+                <div key={msg.id} className="msg ai">
+                  <div className="ai-label">💜 Together</div>
+                  {msg.content}
+                  <div className="msg-time">{formatTime(msg.createdAt)}</div>
+                </div>
+              )
+            })}
+
+            {isLoading && (
+              <div className="typing" role="status" aria-label="ИИ печатает">
+                <span />
+                <span />
+                <span />
+              </div>
+            )}
+          </div>
+
+          {/* Ввод */}
+          <div className="chat-input-wrap">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault()
+                handleSend()
+              }}
+            >
+              <div className="chat-input-box">
+                <textarea
+                  rows={1}
+                  placeholder="Напишите сообщение..."
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault()
+                      handleSend()
+                    }
+                  }}
+                  aria-label="Сообщение"
+                />
+                <button type="submit" className="send-btn" disabled={!input.trim() || isLoading} aria-label="Отправить">
+                  <Send className="h-5 w-5" aria-hidden="true" />
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </DashboardLayout>

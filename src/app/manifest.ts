@@ -7,8 +7,8 @@ export default function manifest(): MetadataRoute.Manifest {
     description: 'Научные опросники, совместный отчёт, ИИ-ассистент для пар.',
     start_url: '/dashboard',
     display: 'standalone',
-    background_color: '#ffffff',
-    theme_color: '#e11d48',
+    background_color: '#0F172A',
+    theme_color: '#0F172A',
     icons: [
       {
         src: '/icons/icon-192.png',

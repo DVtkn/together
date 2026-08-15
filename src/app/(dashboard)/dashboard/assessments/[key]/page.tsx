@@ -2,13 +2,8 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react'
 import { useRouter, useParams } from 'next/navigation'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Progress } from '@/components/ui/progress'
-import { RadioGroup } from '@radix-ui/react-radio-group'
-import { Textarea } from '@/components/ui/textarea'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
-import { ArrowLeft, CheckCircle, AlertCircle, Loader2 } from 'lucide-react'
+import { Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils/cn'
 
 interface Question {
@@ -135,8 +130,9 @@ export default function AssessmentPage() {
   if (!data) {
     return (
       <DashboardLayout user={{ name: null, email: '', image: null }} couple={null}>
-        <div className="flex items-center justify-center h-64">
-          <Loader2 className="h-8 w-8 animate-spin text-rose-500" aria-hidden="true" />
+        <div className="loading-screen">
+          <div className="loading-icon">📝</div>
+          <div className="loading-text">Загружаем опросник</div>
         </div>
       </DashboardLayout>
     )
@@ -144,190 +140,219 @@ export default function AssessmentPage() {
 
   return (
     <DashboardLayout user={{ name: null, email: '', image: null }} couple={null}>
-      <div className="max-w-3xl mx-auto">
-        {/* Header */}
-        <div className="mb-6 flex items-center gap-4">
-          <Button variant="ghost" size="icon" onClick={() => router.back()}>
-            <ArrowLeft className="h-5 w-5" aria-hidden="true" />
-          </Button>
-          <div className="flex-1">
-            <h1 className="text-2xl font-bold text-slate-950 dark:text-slate-50">{data.assessment.title}</h1>
-            <p className="text-sm text-slate-500 dark:text-slate-400">{data.assessment.description}</p>
+      <div className="test-container">
+        {/* Прогресс */}
+        <div className="test-progress">
+          <div className="progress-bar">
+            <div className="progress-fill" style={{ width: `${progress}%` }} />
+          </div>
+          <div className="progress-label">
+            Вопрос {currentQuestion?.order || 0} из {questions.length} · {answeredCount} ответов
           </div>
         </div>
 
-        {/* Progress */}
-        <div className="mb-6">
-          <div className="flex items-center justify-between text-sm mb-2">
-            <span className="text-slate-500 dark:text-slate-400">Прогресс</span>
-            <span className="font-medium text-slate-950 dark:text-slate-50">
-              {answeredCount} / {questions.length} ({progress}%)
-            </span>
-          </div>
-          <Progress value={progress} className="h-2" />
-        </div>
+        {/* Кнопка назад */}
+        <button
+          className="btn btn-secondary"
+          style={{ width: 'auto', padding: '10px 18px', fontSize: 14, alignSelf: 'flex-start', marginBottom: 8 }}
+          onClick={() => router.back()}
+        >
+          ← Назад к списку
+        </button>
 
-        {/* Question Card */}
         {currentQuestion && (
-          <Card className="mb-6">
-            <CardHeader>
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-slate-500 dark:text-slate-400">
-                  Вопрос {currentQuestion.order} из {questions.length}
+          <>
+            {/* Категория */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+              <span className="test-category">{data.assessment.title}</span>
+              {!currentQuestion.visibleToPartner && (
+                <span className="test-category" style={{ background: 'rgba(245,158,11,0.1)', borderColor: 'rgba(245,158,11,0.3)', color: '#FCD34D' }}>
+                  🔒 Приватный вопрос
                 </span>
-                {currentQuestion.isRiskMarker && (
-                  <AlertCircle className="h-4 w-4 text-amber-500" aria-label="Приватный вопрос — ответ не показывается партнёру" />
-                )}
-                {!currentQuestion.visibleToPartner && (
-                  <span className="text-xs px-2 py-0.5 rounded bg-amber-100 text-amber-700 dark:bg-amber-950/30 dark:text-amber-300">
-                    Приватно
-                  </span>
-                )}
-              </div>
-              <CardTitle className="text-lg">{currentQuestion.text}</CardTitle>
-            </CardHeader>
-            <CardContent>
+              )}
+              {currentQuestion.isRiskMarker && (
+                <span className="test-category" style={{ background: 'rgba(16,185,129,0.1)', borderColor: 'rgba(16,185,129,0.3)', color: '#34D399' }}>
+                  🚩 Сигнальная метка
+                </span>
+              )}
+            </div>
+
+            {/* Вопрос */}
+            <h2 className="test-question">{currentQuestion.text}</h2>
+
+            {/* Варианты */}
+            <div className="test-options">
               {currentQuestion.type === 'LIKERT_1_5' && (
-                <RadioGroup
-                  value={answers[currentQuestion.id] as string}
-                  onValueChange={(value) => handleAnswerChange(currentQuestion.id, Number(value))}
-                  className="grid grid-cols-5 gap-2 md:gap-4"
-                >
-                  {LIKERT_LABELS.map((label, index) => (
-                    <label key={index} className={cn(
-                      'relative cursor-pointer py-3 px-2 text-center text-sm font-medium rounded-lg transition-all',
-                      answers[currentQuestion.id] === index + 1
-                        ? 'bg-rose-500 text-white border-rose-500'
-                        : 'bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700'
-                    )}>
-                      <input
-                        type="radio"
-                        value={String(index + 1)}
-                        className="sr-only peer"
-                      />
-                      <span className="block">{index + 1}</span>
-                      <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 text-xs opacity-0 peer-checked:opacity-100 transition-opacity white-space-nowrap">
-                        {label}
-                      </span>
-                    </label>
-                  ))}
-                </RadioGroup>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 8 }}>
+                  {LIKERT_LABELS.map((label, index) => {
+                    const value = index + 1
+                    const selected = answers[currentQuestion.id] === value
+                    return (
+                      <button
+                        key={index}
+                        type="button"
+                        className={cn('test-option', selected && 'selected')}
+                        style={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 96, padding: 12, textAlign: 'center' }}
+                        onClick={() => handleAnswerChange(currentQuestion.id, value)}
+                      >
+                        <span style={{ fontSize: 22, fontWeight: 700 }}>{value}</span>
+                        <span style={{ fontSize: 12, marginTop: 6, color: selected ? 'var(--primary)' : 'var(--text-dim)' }}>
+                          {label}
+                        </span>
+                      </button>
+                    )
+                  })}
+                </div>
               )}
 
               {currentQuestion.type === 'SINGLE_CHOICE' && currentQuestion.options && (
-                <RadioGroup
-                  value={answers[currentQuestion.id] as string}
-                  onValueChange={(value) => handleAnswerChange(currentQuestion.id, value)}
-                  className="space-y-2"
-                >
-                  {currentQuestion.options.map((option, index) => (
-                    <label key={index} className={cn(
-                      'flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all border',
-                      answers[currentQuestion.id] === option
-                        ? 'bg-rose-50 border-rose-500 dark:bg-rose-950/20'
-                        : 'bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700'
-                    )}>
-                      <input
-                        type="radio"
-                        value={option}
-                        className="h-4 w-4 text-rose-500 focus:ring-rose-500"
-                      />
-                      <span className="text-slate-950 dark:text-slate-50">{option}</span>
-                    </label>
-                  ))}
-                </RadioGroup>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                  {currentQuestion.options.map((option, index) => {
+                    const selected = answers[currentQuestion.id] === option
+                    return (
+                      <button
+                        key={index}
+                        type="button"
+                        className={cn('test-option', selected && 'selected')}
+                        onClick={() => handleAnswerChange(currentQuestion.id, option)}
+                      >
+                        {option}
+                      </button>
+                    )
+                  })}
+                </div>
               )}
 
               {currentQuestion.type === 'MULTIPLE_CHOICE' && currentQuestion.options && (
-                <div className="space-y-2">
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                   {currentQuestion.options.map((option, index) => {
                     const selected = (answers[currentQuestion.id] as string[])?.includes(option) || false
                     return (
-                      <label key={index} className={cn(
-                        'flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all border',
-                        selected
-                          ? 'bg-rose-50 border-rose-500 dark:bg-rose-950/20'
-                          : 'bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700'
-                      )}>
-                        <input
-                          type="checkbox"
-                          checked={selected}
-                          onChange={(e) => {
-                            const current = (answers[currentQuestion.id] as string[]) || []
-                            const updated = e.target.checked
-                              ? [...current, option]
-                              : current.filter((o) => o !== option)
-                            handleAnswerChange(currentQuestion.id, updated)
+                      <button
+                        key={index}
+                        type="button"
+                        className={cn('test-option', selected && 'selected')}
+                        onClick={() => {
+                          const current = (answers[currentQuestion.id] as string[]) || []
+                          const updated = selected ? current.filter((o) => o !== option) : [...current, option]
+                          handleAnswerChange(currentQuestion.id, updated)
+                        }}
+                      >
+                        <span
+                          style={{
+                            width: 24,
+                            height: 24,
+                            borderRadius: 8,
+                            border: '2px solid var(--border-hover)',
+                            marginRight: 12,
+                            flexShrink: 0,
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            background: selected ? 'var(--gradient)' : 'transparent',
+                            color: '#fff',
+                            fontSize: 14,
                           }}
-                          className="h-4 w-4 text-rose-500 rounded focus:ring-rose-500"
-                        />
-                        <span className="text-slate-950 dark:text-slate-50">{option}</span>
-                      </label>
+                        >
+                          {selected ? '✓' : ''}
+                        </span>
+                        {option}
+                      </button>
                     )
                   })}
                 </div>
               )}
 
               {currentQuestion.type === 'TEXT' && (
-                <Textarea
+                <textarea
                   value={(answers[currentQuestion.id] as string) || ''}
                   onChange={(e) => handleAnswerChange(currentQuestion.id, e.target.value)}
                   placeholder="Ваш ответ..."
-                  className="min-h-[120px]"
-                  rows={5}
+                  rows={6}
+                  style={{
+                    width: '100%',
+                    background: 'var(--surface)',
+                    border: '2px solid var(--border)',
+                    borderRadius: 16,
+                    padding: 20,
+                    color: 'var(--text)',
+                    fontSize: 16,
+                    fontFamily: 'inherit',
+                    outline: 'none',
+                  }}
+                  onFocus={(e) => (e.target.style.borderColor = 'var(--primary)')}
+                  onBlur={(e) => (e.target.style.borderColor = 'var(--border)')}
                 />
               )}
+            </div>
 
-              {/* Dimension hint */}
-              <p className="mt-4 text-xs text-slate-400 dark:text-slate-500">
-                Измерение: <span className="font-medium capitalize">{currentQuestion.dimension}</span>
-                {currentQuestion.reverseScored && ' (инвертированная шкала)'}
-              </p>
-            </CardContent>
-          </Card>
+            {/* Подсказка */}
+            <p style={{ marginTop: 16, fontSize: 12, color: 'var(--text-dim)' }}>
+              Измерение: <span style={{ fontWeight: 600, textTransform: 'capitalize' }}>{currentQuestion.dimension}</span>
+              {currentQuestion.reverseScored && ' (инвертированная шкала)'}
+            </p>
+          </>
         )}
 
-        {/* Navigation */}
-        <div className="flex items-center justify-between">
-          <Button variant="outline" onClick={handlePrev} disabled={currentIndex === 0}>
-            Назад
-          </Button>
-          <div className="flex items-center gap-2">
-            {currentIndex < questions.length - 1 ? (
-              <Button onClick={handleNext} disabled={!answers[currentQuestion?.id]}>
-                Далее
-              </Button>
-            ) : canSubmit ? (
-              <Button onClick={handleSubmit} disabled={submitting}>
-                {submitting ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
-                    Завершить
-                  </>
-                ) : (
-                  <>
-                    Завершить опросник
-                    <CheckCircle className="ml-2 h-4 w-4" aria-hidden="true" />
-                  </>
-                )}
-              </Button>
-            ) : (
-              <Button variant="outline" disabled>
-                Ответьте на вопрос
-              </Button>
-            )}
-          </div>
+        {/* Навигация */}
+        <div style={{ display: 'flex', gap: 12, marginTop: 32 }}>
+          <button
+            type="button"
+            className="btn btn-secondary"
+            style={{ width: 'auto', padding: '14px 28px' }}
+            onClick={handlePrev}
+            disabled={currentIndex === 0}
+          >
+            ← Назад
+          </button>
+          {currentIndex < questions.length - 1 ? (
+            <button
+              type="button"
+              className="btn btn-primary"
+              style={{ flex: 1 }}
+              disabled={!answers[currentQuestion?.id]}
+              onClick={handleNext}
+            >
+              Далее →
+            </button>
+          ) : canSubmit ? (
+            <button
+              type="button"
+              className="btn btn-primary"
+              style={{ flex: 1 }}
+              disabled={submitting}
+              onClick={handleSubmit}
+            >
+              {submitting ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                  Завершаем...
+                </>
+              ) : (
+                '✅ Завершить опросник'
+              )}
+            </button>
+          ) : (
+            <button
+              type="button"
+              className="btn btn-secondary"
+              style={{ flex: 1 }}
+              disabled
+            >
+              Ответьте на вопрос
+            </button>
+          )}
         </div>
 
-        {/* Save indicator */}
-        <div className="mt-4 text-center text-xs text-slate-400 dark:text-slate-500">
+        {/* Индикатор сохранения */}
+        <div style={{ marginTop: 12, textAlign: 'center', fontSize: 12, color: 'var(--text-dim)' }}>
           {saving ? (
-            <span className="flex items-center justify-center gap-1">
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
               <Loader2 className="h-3 w-3 animate-spin" aria-hidden="true" />
               Сохранение...
             </span>
           ) : (
-            'Ответы сохраняются автоматически'
+            '💾 Ответы сохраняются автоматически'
           )}
         </div>
       </div>
