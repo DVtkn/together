@@ -1,13 +1,12 @@
 "use client"
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Textarea } from '@/components/ui/textarea'
 
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
-import { Send, Loader2, Bot, User, AlertTriangle, Sparkles, Trash2 } from 'lucide-react'
+import { Send, Bot, User, Sparkles, Trash2 } from 'lucide-react'
 import { cn } from '@/lib/utils/cn'
 import { format } from 'date-fns'
 import { ru } from 'date-fns/locale'
@@ -31,6 +30,8 @@ export default function AIChatPage() {
   const [currentConversationId, setCurrentConversationId] = useState<string | null>(null)
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const scrollRef = useRef<HTMLDivElement>(null)
 
   const fetchConversations = async () => {
     try {
@@ -56,13 +57,17 @@ export default function AIChatPage() {
   }
 
 
-  
+  useEffect(() => {
+    const viewport = scrollRef.current?.querySelector('[data-radix-scroll-area-viewport]')
+    viewport?.scrollTo({ top: viewport.scrollHeight, behavior: 'smooth' })
+  }, [messages, isLoading])
 
   const handleSend = async () => {
-    if (!input.trim()) return
+    if (!input.trim() || isLoading) return
 
     const msg = input
     setInput('')
+    setIsLoading(true)
     setMessages((prev) => [...prev, { id: 'u' + Date.now(), role: 'USER', content: msg, createdAt: new Date().toISOString() }])
 
     try {
@@ -89,6 +94,8 @@ export default function AIChatPage() {
             : m
         )
       )
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -176,7 +183,7 @@ export default function AIChatPage() {
             </Card>
 
             <div className='flex-1 flex flex-col min-w-0'>
-              <ScrollArea className='flex-1 pr-4'>
+              <ScrollArea ref={scrollRef} className='flex-1 pr-4'>
                 <div className='space-y-4 pb-4'>
                   {messages.length === 0 && (
                     <p className='text-center text-slate-500 dark:text-slate-400'>Начните разговор</p>
@@ -195,6 +202,22 @@ export default function AIChatPage() {
                       </div>
                     </div>
                   ))}
+
+                  {isLoading && (
+                    <div className='flex gap-3'>
+                      <div className='w-8 h-8 rounded-flex items-center justify-center flex-shrink-0 bg-rose-100 dark:bg-rose-950/50 text-rose-600 dark:text-rose-400'>
+                        <Bot className='h-4 w-4' />
+                      </div>
+                      <div className='max-w-[70%] rounded-2xl rounded-tl-none bg-slate-100 dark:bg-slate-800 px-4 py-3'>
+                        <div className='flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400'>
+                          <span className='typing-dot' />
+                          <span className='typing-dot' />
+                          <span className='typing-dot' />
+                          <span className='ml-1'>Психолог готовит ответ...</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
 
                   <div />
                 </div>
