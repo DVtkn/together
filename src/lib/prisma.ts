@@ -8,9 +8,12 @@ const globalForPrisma = globalThis as unknown as {
 
 function createPrismaClient() {
   const connectionString = process.env.DATABASE_URL
-
+  
+  // For build time, return a mock client if DATABASE_URL is not set
   if (!connectionString) {
-    throw new Error('DATABASE_URL is not set')
+    // Return null to indicate that the client is not available during build
+    // This is used for static generation only - runtime will have DATABASE_URL
+    return null as any
   }
 
   const pool = new Pool({

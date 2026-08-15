@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { z } from 'zod'
 import { rateLimit } from '@/lib/rate-limit'
+import { getCurrentUserSession } from '@/lib/auth-session'
 
 // POST /api/ratings - Submit a rating/review after completed ride
 export async function POST(
@@ -34,17 +35,16 @@ export async function POST(
     }
 
     // Get current user (rater)
-    const { auth } = await import('@/lib/auth')
-    const rater = await auth()
-
-    if (!rater) {
+    const session = await getCurrentUserSession()
+    if (!session?.user?.id) {
       return NextResponse.json({ error: 'Не авторизован' }, { status: 401 })
     }
+    const raterId = session.user.id
 
     // Check if ride exists and is completed
     const ride = await prisma.ride.findUnique({
       where: { id: validation.data.rideId },
-      select: { status: true, driverId: true, passengerId: true },
+      select: { status: true, driverId: true },
     })
 
     if (!ride) {
@@ -55,13 +55,11 @@ export async function POST(
     const rideRequest = await prisma.rideRequest.findFirst({
       where: {
         rideId: validation.data.rideId,
-        OR: [
-          { passengerId: rater.id },
-        ],
+        passengerId: raterId,
       },
     })
 
-    if (!rideRequest) {
+    if (!rideRequest && ride.driverId !== raterId) {
       return NextResponse.json(
         { error: 'Вы не участвовали в этой поездке' },
         { status: 403 }
@@ -72,7 +70,7 @@ export async function POST(
     const existingRating = await prisma.review.findFirst({
       where: {
         rideId: validation.data.rideId,
-        raterId: rater.id,
+        raterId: raterId,
       },
     })
 
@@ -87,12 +85,17 @@ export async function POST(
     const review = await prisma.review.create({
       data: {
         rideId: validation.data.rideId,
-        raterId: rater.id,
+        raterId: raterId,
         ratedId: validation.data.ratedId,
         rating: validation.data.rating,
         title: validation.data.title,
         comment: validation.data.comment,
       },
+    })
+
+    // Fetch the review with relations separately
+    const reviewWithRelations = await prisma.review.findUnique({
+      where: { id: review.id },
       include: {
         rater: {
           select: { id: true, name: true, avatarUrl: true },
@@ -115,7 +118,7 @@ export async function POST(
     })
 
     const avgRating = allRatings.length > 0
-      ? allRatings.reduce((sum, r) => sum + r.rating, 0) / allRatings.length
+      ? allRatings.reduce((sum: number, r: { rating: number }) => sum + r.rating, 0) / allRatings.length
       : 0
 
     await prisma.user.update({
@@ -132,11 +135,11 @@ export async function POST(
         rating: review.rating,
         title: review.title,
         comment: review.comment,
-        rater: {
-          id: review.rater.id,
-          name: review.rater.name,
-          avatarUrl: review.rater.avatarUrl,
-        },
+        rater: reviewWithRelations?.rater ? {
+          id: reviewWithRelations.rater.id,
+          name: reviewWithRelations.rater.name,
+          avatarUrl: reviewWithRelations.rater.avatarUrl,
+        } : null,
         createdAt: review.createdAt,
       },
       ratedUser: {
@@ -180,20 +183,20 @@ export async function GET(
     })
 
     const avgRating = ratings.length > 0
-      ? ratings.reduce((sum, r) => sum + r.rating, 0) / ratings.length
+      ? ratings.reduce((sum: number, r: { rating: number }) => sum + r.rating, 0) / ratings.length
       : 0
 
     return NextResponse.json({
-      ratings: ratings.map(r => ({
+      ratings: ratings.map((r: { id: string; rating: number; title: string | null; comment: string | null; rater: { id: string; name: string | null; avatarUrl: string | null } | null; createdAt: Date }) => ({
         id: r.id,
         rating: r.rating,
         title: r.title,
         comment: r.comment,
-        rater: {
+        rater: r.rater ? {
           id: r.rater.id,
           name: r.rater.name,
           avatarUrl: r.rater.avatarUrl,
-        },
+        } : null,
         createdAt: r.createdAt,
       })),
       averageRating: avgRating,

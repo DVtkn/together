@@ -54,6 +54,7 @@ export type UserMinAggregateOutputType = {
   averageRating: number | null
   emailVerified: boolean | null
   verificationCode: string | null
+  passwordHash: string | null
   preferredGender: string | null
   petFriendly: boolean | null
   smokeFree: boolean | null
@@ -78,6 +79,7 @@ export type UserMaxAggregateOutputType = {
   averageRating: number | null
   emailVerified: boolean | null
   verificationCode: string | null
+  passwordHash: string | null
   preferredGender: string | null
   petFriendly: boolean | null
   smokeFree: boolean | null
@@ -102,6 +104,7 @@ export type UserCountAggregateOutputType = {
   averageRating: number
   emailVerified: number
   verificationCode: number
+  passwordHash: number
   preferredGender: number
   petFriendly: number
   smokeFree: number
@@ -142,6 +145,7 @@ export type UserMinAggregateInputType = {
   averageRating?: true
   emailVerified?: true
   verificationCode?: true
+  passwordHash?: true
   preferredGender?: true
   petFriendly?: true
   smokeFree?: true
@@ -166,6 +170,7 @@ export type UserMaxAggregateInputType = {
   averageRating?: true
   emailVerified?: true
   verificationCode?: true
+  passwordHash?: true
   preferredGender?: true
   petFriendly?: true
   smokeFree?: true
@@ -190,6 +195,7 @@ export type UserCountAggregateInputType = {
   averageRating?: true
   emailVerified?: true
   verificationCode?: true
+  passwordHash?: true
   preferredGender?: true
   petFriendly?: true
   smokeFree?: true
@@ -301,6 +307,7 @@ export type UserGroupByOutputType = {
   averageRating: number
   emailVerified: boolean
   verificationCode: string | null
+  passwordHash: string | null
   preferredGender: string | null
   petFriendly: boolean
   smokeFree: boolean
@@ -348,6 +355,7 @@ export type UserWhereInput = {
   averageRating?: Prisma.FloatFilter<"User"> | number
   emailVerified?: Prisma.BoolFilter<"User"> | boolean
   verificationCode?: Prisma.StringNullableFilter<"User"> | string | null
+  passwordHash?: Prisma.StringNullableFilter<"User"> | string | null
   preferredGender?: Prisma.StringNullableFilter<"User"> | string | null
   petFriendly?: Prisma.BoolFilter<"User"> | boolean
   smokeFree?: Prisma.BoolFilter<"User"> | boolean
@@ -358,6 +366,9 @@ export type UserWhereInput = {
   lastRideAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdRides?: Prisma.RideListRelationFilter
   requestedRides?: Prisma.RideRequestListRelationFilter
+  sentMessages?: Prisma.RideChatMessageListRelationFilter
+  givenReviews?: Prisma.ReviewListRelationFilter
+  receivedReviews?: Prisma.ReviewListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -374,6 +385,7 @@ export type UserOrderByWithRelationInput = {
   averageRating?: Prisma.SortOrder
   emailVerified?: Prisma.SortOrder
   verificationCode?: Prisma.SortOrderInput | Prisma.SortOrder
+  passwordHash?: Prisma.SortOrderInput | Prisma.SortOrder
   preferredGender?: Prisma.SortOrderInput | Prisma.SortOrder
   petFriendly?: Prisma.SortOrder
   smokeFree?: Prisma.SortOrder
@@ -384,6 +396,9 @@ export type UserOrderByWithRelationInput = {
   lastRideAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdRides?: Prisma.RideOrderByRelationAggregateInput
   requestedRides?: Prisma.RideRequestOrderByRelationAggregateInput
+  sentMessages?: Prisma.RideChatMessageOrderByRelationAggregateInput
+  givenReviews?: Prisma.ReviewOrderByRelationAggregateInput
+  receivedReviews?: Prisma.ReviewOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -403,6 +418,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   averageRating?: Prisma.FloatFilter<"User"> | number
   emailVerified?: Prisma.BoolFilter<"User"> | boolean
   verificationCode?: Prisma.StringNullableFilter<"User"> | string | null
+  passwordHash?: Prisma.StringNullableFilter<"User"> | string | null
   preferredGender?: Prisma.StringNullableFilter<"User"> | string | null
   petFriendly?: Prisma.BoolFilter<"User"> | boolean
   smokeFree?: Prisma.BoolFilter<"User"> | boolean
@@ -413,6 +429,9 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   lastRideAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdRides?: Prisma.RideListRelationFilter
   requestedRides?: Prisma.RideRequestListRelationFilter
+  sentMessages?: Prisma.RideChatMessageListRelationFilter
+  givenReviews?: Prisma.ReviewListRelationFilter
+  receivedReviews?: Prisma.ReviewListRelationFilter
 }, "id" | "email" | "googleId" | "username">
 
 export type UserOrderByWithAggregationInput = {
@@ -429,6 +448,7 @@ export type UserOrderByWithAggregationInput = {
   averageRating?: Prisma.SortOrder
   emailVerified?: Prisma.SortOrder
   verificationCode?: Prisma.SortOrderInput | Prisma.SortOrder
+  passwordHash?: Prisma.SortOrderInput | Prisma.SortOrder
   preferredGender?: Prisma.SortOrderInput | Prisma.SortOrder
   petFriendly?: Prisma.SortOrder
   smokeFree?: Prisma.SortOrder
@@ -461,6 +481,7 @@ export type UserScalarWhereWithAggregatesInput = {
   averageRating?: Prisma.FloatWithAggregatesFilter<"User"> | number
   emailVerified?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   verificationCode?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  passwordHash?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   preferredGender?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   petFriendly?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   smokeFree?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
@@ -485,6 +506,7 @@ export type UserCreateInput = {
   averageRating?: number
   emailVerified?: boolean
   verificationCode?: string | null
+  passwordHash?: string | null
   preferredGender?: string | null
   petFriendly?: boolean
   smokeFree?: boolean
@@ -495,6 +517,9 @@ export type UserCreateInput = {
   lastRideAt?: Date | string | null
   createdRides?: Prisma.RideCreateNestedManyWithoutDriverInput
   requestedRides?: Prisma.RideRequestCreateNestedManyWithoutPassengerInput
+  sentMessages?: Prisma.RideChatMessageCreateNestedManyWithoutSenderInput
+  givenReviews?: Prisma.ReviewCreateNestedManyWithoutRaterInput
+  receivedReviews?: Prisma.ReviewCreateNestedManyWithoutRatedInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -511,6 +536,7 @@ export type UserUncheckedCreateInput = {
   averageRating?: number
   emailVerified?: boolean
   verificationCode?: string | null
+  passwordHash?: string | null
   preferredGender?: string | null
   petFriendly?: boolean
   smokeFree?: boolean
@@ -521,6 +547,9 @@ export type UserUncheckedCreateInput = {
   lastRideAt?: Date | string | null
   createdRides?: Prisma.RideUncheckedCreateNestedManyWithoutDriverInput
   requestedRides?: Prisma.RideRequestUncheckedCreateNestedManyWithoutPassengerInput
+  sentMessages?: Prisma.RideChatMessageUncheckedCreateNestedManyWithoutSenderInput
+  givenReviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutRaterInput
+  receivedReviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutRatedInput
 }
 
 export type UserUpdateInput = {
@@ -537,6 +566,7 @@ export type UserUpdateInput = {
   averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verificationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preferredGender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   petFriendly?: Prisma.BoolFieldUpdateOperationsInput | boolean
   smokeFree?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -547,6 +577,9 @@ export type UserUpdateInput = {
   lastRideAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdRides?: Prisma.RideUpdateManyWithoutDriverNestedInput
   requestedRides?: Prisma.RideRequestUpdateManyWithoutPassengerNestedInput
+  sentMessages?: Prisma.RideChatMessageUpdateManyWithoutSenderNestedInput
+  givenReviews?: Prisma.ReviewUpdateManyWithoutRaterNestedInput
+  receivedReviews?: Prisma.ReviewUpdateManyWithoutRatedNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -563,6 +596,7 @@ export type UserUncheckedUpdateInput = {
   averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verificationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preferredGender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   petFriendly?: Prisma.BoolFieldUpdateOperationsInput | boolean
   smokeFree?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -573,6 +607,9 @@ export type UserUncheckedUpdateInput = {
   lastRideAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdRides?: Prisma.RideUncheckedUpdateManyWithoutDriverNestedInput
   requestedRides?: Prisma.RideRequestUncheckedUpdateManyWithoutPassengerNestedInput
+  sentMessages?: Prisma.RideChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+  givenReviews?: Prisma.ReviewUncheckedUpdateManyWithoutRaterNestedInput
+  receivedReviews?: Prisma.ReviewUncheckedUpdateManyWithoutRatedNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -589,6 +626,7 @@ export type UserCreateManyInput = {
   averageRating?: number
   emailVerified?: boolean
   verificationCode?: string | null
+  passwordHash?: string | null
   preferredGender?: string | null
   petFriendly?: boolean
   smokeFree?: boolean
@@ -613,6 +651,7 @@ export type UserUpdateManyMutationInput = {
   averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verificationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preferredGender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   petFriendly?: Prisma.BoolFieldUpdateOperationsInput | boolean
   smokeFree?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -637,6 +676,7 @@ export type UserUncheckedUpdateManyInput = {
   averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verificationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preferredGender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   petFriendly?: Prisma.BoolFieldUpdateOperationsInput | boolean
   smokeFree?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -661,6 +701,7 @@ export type UserCountOrderByAggregateInput = {
   averageRating?: Prisma.SortOrder
   emailVerified?: Prisma.SortOrder
   verificationCode?: Prisma.SortOrder
+  passwordHash?: Prisma.SortOrder
   preferredGender?: Prisma.SortOrder
   petFriendly?: Prisma.SortOrder
   smokeFree?: Prisma.SortOrder
@@ -692,6 +733,7 @@ export type UserMaxOrderByAggregateInput = {
   averageRating?: Prisma.SortOrder
   emailVerified?: Prisma.SortOrder
   verificationCode?: Prisma.SortOrder
+  passwordHash?: Prisma.SortOrder
   preferredGender?: Prisma.SortOrder
   petFriendly?: Prisma.SortOrder
   smokeFree?: Prisma.SortOrder
@@ -716,6 +758,7 @@ export type UserMinOrderByAggregateInput = {
   averageRating?: Prisma.SortOrder
   emailVerified?: Prisma.SortOrder
   verificationCode?: Prisma.SortOrder
+  passwordHash?: Prisma.SortOrder
   preferredGender?: Prisma.SortOrder
   petFriendly?: Prisma.SortOrder
   smokeFree?: Prisma.SortOrder
@@ -806,6 +849,48 @@ export type UserUpdateOneRequiredWithoutRequestedRidesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRequestedRidesInput, Prisma.UserUpdateWithoutRequestedRidesInput>, Prisma.UserUncheckedUpdateWithoutRequestedRidesInput>
 }
 
+export type UserCreateNestedOneWithoutGivenReviewsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutGivenReviewsInput, Prisma.UserUncheckedCreateWithoutGivenReviewsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutGivenReviewsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutReceivedReviewsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReceivedReviewsInput, Prisma.UserUncheckedCreateWithoutReceivedReviewsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReceivedReviewsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutGivenReviewsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutGivenReviewsInput, Prisma.UserUncheckedCreateWithoutGivenReviewsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutGivenReviewsInput
+  upsert?: Prisma.UserUpsertWithoutGivenReviewsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutGivenReviewsInput, Prisma.UserUpdateWithoutGivenReviewsInput>, Prisma.UserUncheckedUpdateWithoutGivenReviewsInput>
+}
+
+export type UserUpdateOneRequiredWithoutReceivedReviewsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReceivedReviewsInput, Prisma.UserUncheckedCreateWithoutReceivedReviewsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReceivedReviewsInput
+  upsert?: Prisma.UserUpsertWithoutReceivedReviewsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutReceivedReviewsInput, Prisma.UserUpdateWithoutReceivedReviewsInput>, Prisma.UserUncheckedUpdateWithoutReceivedReviewsInput>
+}
+
+export type UserCreateNestedOneWithoutSentMessagesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSentMessagesInput, Prisma.UserUncheckedCreateWithoutSentMessagesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSentMessagesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutSentMessagesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSentMessagesInput, Prisma.UserUncheckedCreateWithoutSentMessagesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSentMessagesInput
+  upsert?: Prisma.UserUpsertWithoutSentMessagesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSentMessagesInput, Prisma.UserUpdateWithoutSentMessagesInput>, Prisma.UserUncheckedUpdateWithoutSentMessagesInput>
+}
+
 export type UserCreateWithoutCreatedRidesInput = {
   id?: string
   email: string
@@ -820,6 +905,7 @@ export type UserCreateWithoutCreatedRidesInput = {
   averageRating?: number
   emailVerified?: boolean
   verificationCode?: string | null
+  passwordHash?: string | null
   preferredGender?: string | null
   petFriendly?: boolean
   smokeFree?: boolean
@@ -829,6 +915,9 @@ export type UserCreateWithoutCreatedRidesInput = {
   updatedAt?: Date | string
   lastRideAt?: Date | string | null
   requestedRides?: Prisma.RideRequestCreateNestedManyWithoutPassengerInput
+  sentMessages?: Prisma.RideChatMessageCreateNestedManyWithoutSenderInput
+  givenReviews?: Prisma.ReviewCreateNestedManyWithoutRaterInput
+  receivedReviews?: Prisma.ReviewCreateNestedManyWithoutRatedInput
 }
 
 export type UserUncheckedCreateWithoutCreatedRidesInput = {
@@ -845,6 +934,7 @@ export type UserUncheckedCreateWithoutCreatedRidesInput = {
   averageRating?: number
   emailVerified?: boolean
   verificationCode?: string | null
+  passwordHash?: string | null
   preferredGender?: string | null
   petFriendly?: boolean
   smokeFree?: boolean
@@ -854,6 +944,9 @@ export type UserUncheckedCreateWithoutCreatedRidesInput = {
   updatedAt?: Date | string
   lastRideAt?: Date | string | null
   requestedRides?: Prisma.RideRequestUncheckedCreateNestedManyWithoutPassengerInput
+  sentMessages?: Prisma.RideChatMessageUncheckedCreateNestedManyWithoutSenderInput
+  givenReviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutRaterInput
+  receivedReviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutRatedInput
 }
 
 export type UserCreateOrConnectWithoutCreatedRidesInput = {
@@ -886,6 +979,7 @@ export type UserUpdateWithoutCreatedRidesInput = {
   averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verificationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preferredGender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   petFriendly?: Prisma.BoolFieldUpdateOperationsInput | boolean
   smokeFree?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -895,6 +989,9 @@ export type UserUpdateWithoutCreatedRidesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastRideAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   requestedRides?: Prisma.RideRequestUpdateManyWithoutPassengerNestedInput
+  sentMessages?: Prisma.RideChatMessageUpdateManyWithoutSenderNestedInput
+  givenReviews?: Prisma.ReviewUpdateManyWithoutRaterNestedInput
+  receivedReviews?: Prisma.ReviewUpdateManyWithoutRatedNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedRidesInput = {
@@ -911,6 +1008,7 @@ export type UserUncheckedUpdateWithoutCreatedRidesInput = {
   averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verificationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preferredGender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   petFriendly?: Prisma.BoolFieldUpdateOperationsInput | boolean
   smokeFree?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -920,6 +1018,9 @@ export type UserUncheckedUpdateWithoutCreatedRidesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastRideAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   requestedRides?: Prisma.RideRequestUncheckedUpdateManyWithoutPassengerNestedInput
+  sentMessages?: Prisma.RideChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+  givenReviews?: Prisma.ReviewUncheckedUpdateManyWithoutRaterNestedInput
+  receivedReviews?: Prisma.ReviewUncheckedUpdateManyWithoutRatedNestedInput
 }
 
 export type UserCreateWithoutRequestedRidesInput = {
@@ -936,6 +1037,7 @@ export type UserCreateWithoutRequestedRidesInput = {
   averageRating?: number
   emailVerified?: boolean
   verificationCode?: string | null
+  passwordHash?: string | null
   preferredGender?: string | null
   petFriendly?: boolean
   smokeFree?: boolean
@@ -945,6 +1047,9 @@ export type UserCreateWithoutRequestedRidesInput = {
   updatedAt?: Date | string
   lastRideAt?: Date | string | null
   createdRides?: Prisma.RideCreateNestedManyWithoutDriverInput
+  sentMessages?: Prisma.RideChatMessageCreateNestedManyWithoutSenderInput
+  givenReviews?: Prisma.ReviewCreateNestedManyWithoutRaterInput
+  receivedReviews?: Prisma.ReviewCreateNestedManyWithoutRatedInput
 }
 
 export type UserUncheckedCreateWithoutRequestedRidesInput = {
@@ -961,6 +1066,7 @@ export type UserUncheckedCreateWithoutRequestedRidesInput = {
   averageRating?: number
   emailVerified?: boolean
   verificationCode?: string | null
+  passwordHash?: string | null
   preferredGender?: string | null
   petFriendly?: boolean
   smokeFree?: boolean
@@ -970,6 +1076,9 @@ export type UserUncheckedCreateWithoutRequestedRidesInput = {
   updatedAt?: Date | string
   lastRideAt?: Date | string | null
   createdRides?: Prisma.RideUncheckedCreateNestedManyWithoutDriverInput
+  sentMessages?: Prisma.RideChatMessageUncheckedCreateNestedManyWithoutSenderInput
+  givenReviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutRaterInput
+  receivedReviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutRatedInput
 }
 
 export type UserCreateOrConnectWithoutRequestedRidesInput = {
@@ -1002,6 +1111,7 @@ export type UserUpdateWithoutRequestedRidesInput = {
   averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verificationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preferredGender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   petFriendly?: Prisma.BoolFieldUpdateOperationsInput | boolean
   smokeFree?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1011,6 +1121,9 @@ export type UserUpdateWithoutRequestedRidesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastRideAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdRides?: Prisma.RideUpdateManyWithoutDriverNestedInput
+  sentMessages?: Prisma.RideChatMessageUpdateManyWithoutSenderNestedInput
+  givenReviews?: Prisma.ReviewUpdateManyWithoutRaterNestedInput
+  receivedReviews?: Prisma.ReviewUpdateManyWithoutRatedNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRequestedRidesInput = {
@@ -1027,6 +1140,7 @@ export type UserUncheckedUpdateWithoutRequestedRidesInput = {
   averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verificationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preferredGender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   petFriendly?: Prisma.BoolFieldUpdateOperationsInput | boolean
   smokeFree?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1036,6 +1150,405 @@ export type UserUncheckedUpdateWithoutRequestedRidesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastRideAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdRides?: Prisma.RideUncheckedUpdateManyWithoutDriverNestedInput
+  sentMessages?: Prisma.RideChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+  givenReviews?: Prisma.ReviewUncheckedUpdateManyWithoutRaterNestedInput
+  receivedReviews?: Prisma.ReviewUncheckedUpdateManyWithoutRatedNestedInput
+}
+
+export type UserCreateWithoutGivenReviewsInput = {
+  id?: string
+  email: string
+  name?: string | null
+  avatarUrl?: string | null
+  googleId?: string | null
+  username?: string | null
+  role?: $Enums.UserRole
+  reputationScore?: number
+  totalRides?: number
+  completedRides?: number
+  averageRating?: number
+  emailVerified?: boolean
+  verificationCode?: string | null
+  passwordHash?: string | null
+  preferredGender?: string | null
+  petFriendly?: boolean
+  smokeFree?: boolean
+  conversationLevel?: string | null
+  musicPreference?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lastRideAt?: Date | string | null
+  createdRides?: Prisma.RideCreateNestedManyWithoutDriverInput
+  requestedRides?: Prisma.RideRequestCreateNestedManyWithoutPassengerInput
+  sentMessages?: Prisma.RideChatMessageCreateNestedManyWithoutSenderInput
+  receivedReviews?: Prisma.ReviewCreateNestedManyWithoutRatedInput
+}
+
+export type UserUncheckedCreateWithoutGivenReviewsInput = {
+  id?: string
+  email: string
+  name?: string | null
+  avatarUrl?: string | null
+  googleId?: string | null
+  username?: string | null
+  role?: $Enums.UserRole
+  reputationScore?: number
+  totalRides?: number
+  completedRides?: number
+  averageRating?: number
+  emailVerified?: boolean
+  verificationCode?: string | null
+  passwordHash?: string | null
+  preferredGender?: string | null
+  petFriendly?: boolean
+  smokeFree?: boolean
+  conversationLevel?: string | null
+  musicPreference?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lastRideAt?: Date | string | null
+  createdRides?: Prisma.RideUncheckedCreateNestedManyWithoutDriverInput
+  requestedRides?: Prisma.RideRequestUncheckedCreateNestedManyWithoutPassengerInput
+  sentMessages?: Prisma.RideChatMessageUncheckedCreateNestedManyWithoutSenderInput
+  receivedReviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutRatedInput
+}
+
+export type UserCreateOrConnectWithoutGivenReviewsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutGivenReviewsInput, Prisma.UserUncheckedCreateWithoutGivenReviewsInput>
+}
+
+export type UserCreateWithoutReceivedReviewsInput = {
+  id?: string
+  email: string
+  name?: string | null
+  avatarUrl?: string | null
+  googleId?: string | null
+  username?: string | null
+  role?: $Enums.UserRole
+  reputationScore?: number
+  totalRides?: number
+  completedRides?: number
+  averageRating?: number
+  emailVerified?: boolean
+  verificationCode?: string | null
+  passwordHash?: string | null
+  preferredGender?: string | null
+  petFriendly?: boolean
+  smokeFree?: boolean
+  conversationLevel?: string | null
+  musicPreference?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lastRideAt?: Date | string | null
+  createdRides?: Prisma.RideCreateNestedManyWithoutDriverInput
+  requestedRides?: Prisma.RideRequestCreateNestedManyWithoutPassengerInput
+  sentMessages?: Prisma.RideChatMessageCreateNestedManyWithoutSenderInput
+  givenReviews?: Prisma.ReviewCreateNestedManyWithoutRaterInput
+}
+
+export type UserUncheckedCreateWithoutReceivedReviewsInput = {
+  id?: string
+  email: string
+  name?: string | null
+  avatarUrl?: string | null
+  googleId?: string | null
+  username?: string | null
+  role?: $Enums.UserRole
+  reputationScore?: number
+  totalRides?: number
+  completedRides?: number
+  averageRating?: number
+  emailVerified?: boolean
+  verificationCode?: string | null
+  passwordHash?: string | null
+  preferredGender?: string | null
+  petFriendly?: boolean
+  smokeFree?: boolean
+  conversationLevel?: string | null
+  musicPreference?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lastRideAt?: Date | string | null
+  createdRides?: Prisma.RideUncheckedCreateNestedManyWithoutDriverInput
+  requestedRides?: Prisma.RideRequestUncheckedCreateNestedManyWithoutPassengerInput
+  sentMessages?: Prisma.RideChatMessageUncheckedCreateNestedManyWithoutSenderInput
+  givenReviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutRaterInput
+}
+
+export type UserCreateOrConnectWithoutReceivedReviewsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutReceivedReviewsInput, Prisma.UserUncheckedCreateWithoutReceivedReviewsInput>
+}
+
+export type UserUpsertWithoutGivenReviewsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutGivenReviewsInput, Prisma.UserUncheckedUpdateWithoutGivenReviewsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutGivenReviewsInput, Prisma.UserUncheckedCreateWithoutGivenReviewsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutGivenReviewsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutGivenReviewsInput, Prisma.UserUncheckedUpdateWithoutGivenReviewsInput>
+}
+
+export type UserUpdateWithoutGivenReviewsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  reputationScore?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalRides?: Prisma.IntFieldUpdateOperationsInput | number
+  completedRides?: Prisma.IntFieldUpdateOperationsInput | number
+  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  verificationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredGender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  petFriendly?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  smokeFree?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  conversationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  musicPreference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastRideAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdRides?: Prisma.RideUpdateManyWithoutDriverNestedInput
+  requestedRides?: Prisma.RideRequestUpdateManyWithoutPassengerNestedInput
+  sentMessages?: Prisma.RideChatMessageUpdateManyWithoutSenderNestedInput
+  receivedReviews?: Prisma.ReviewUpdateManyWithoutRatedNestedInput
+}
+
+export type UserUncheckedUpdateWithoutGivenReviewsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  reputationScore?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalRides?: Prisma.IntFieldUpdateOperationsInput | number
+  completedRides?: Prisma.IntFieldUpdateOperationsInput | number
+  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  verificationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredGender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  petFriendly?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  smokeFree?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  conversationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  musicPreference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastRideAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdRides?: Prisma.RideUncheckedUpdateManyWithoutDriverNestedInput
+  requestedRides?: Prisma.RideRequestUncheckedUpdateManyWithoutPassengerNestedInput
+  sentMessages?: Prisma.RideChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+  receivedReviews?: Prisma.ReviewUncheckedUpdateManyWithoutRatedNestedInput
+}
+
+export type UserUpsertWithoutReceivedReviewsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutReceivedReviewsInput, Prisma.UserUncheckedUpdateWithoutReceivedReviewsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutReceivedReviewsInput, Prisma.UserUncheckedCreateWithoutReceivedReviewsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutReceivedReviewsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutReceivedReviewsInput, Prisma.UserUncheckedUpdateWithoutReceivedReviewsInput>
+}
+
+export type UserUpdateWithoutReceivedReviewsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  reputationScore?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalRides?: Prisma.IntFieldUpdateOperationsInput | number
+  completedRides?: Prisma.IntFieldUpdateOperationsInput | number
+  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  verificationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredGender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  petFriendly?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  smokeFree?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  conversationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  musicPreference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastRideAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdRides?: Prisma.RideUpdateManyWithoutDriverNestedInput
+  requestedRides?: Prisma.RideRequestUpdateManyWithoutPassengerNestedInput
+  sentMessages?: Prisma.RideChatMessageUpdateManyWithoutSenderNestedInput
+  givenReviews?: Prisma.ReviewUpdateManyWithoutRaterNestedInput
+}
+
+export type UserUncheckedUpdateWithoutReceivedReviewsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  reputationScore?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalRides?: Prisma.IntFieldUpdateOperationsInput | number
+  completedRides?: Prisma.IntFieldUpdateOperationsInput | number
+  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  verificationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredGender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  petFriendly?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  smokeFree?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  conversationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  musicPreference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastRideAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdRides?: Prisma.RideUncheckedUpdateManyWithoutDriverNestedInput
+  requestedRides?: Prisma.RideRequestUncheckedUpdateManyWithoutPassengerNestedInput
+  sentMessages?: Prisma.RideChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+  givenReviews?: Prisma.ReviewUncheckedUpdateManyWithoutRaterNestedInput
+}
+
+export type UserCreateWithoutSentMessagesInput = {
+  id?: string
+  email: string
+  name?: string | null
+  avatarUrl?: string | null
+  googleId?: string | null
+  username?: string | null
+  role?: $Enums.UserRole
+  reputationScore?: number
+  totalRides?: number
+  completedRides?: number
+  averageRating?: number
+  emailVerified?: boolean
+  verificationCode?: string | null
+  passwordHash?: string | null
+  preferredGender?: string | null
+  petFriendly?: boolean
+  smokeFree?: boolean
+  conversationLevel?: string | null
+  musicPreference?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lastRideAt?: Date | string | null
+  createdRides?: Prisma.RideCreateNestedManyWithoutDriverInput
+  requestedRides?: Prisma.RideRequestCreateNestedManyWithoutPassengerInput
+  givenReviews?: Prisma.ReviewCreateNestedManyWithoutRaterInput
+  receivedReviews?: Prisma.ReviewCreateNestedManyWithoutRatedInput
+}
+
+export type UserUncheckedCreateWithoutSentMessagesInput = {
+  id?: string
+  email: string
+  name?: string | null
+  avatarUrl?: string | null
+  googleId?: string | null
+  username?: string | null
+  role?: $Enums.UserRole
+  reputationScore?: number
+  totalRides?: number
+  completedRides?: number
+  averageRating?: number
+  emailVerified?: boolean
+  verificationCode?: string | null
+  passwordHash?: string | null
+  preferredGender?: string | null
+  petFriendly?: boolean
+  smokeFree?: boolean
+  conversationLevel?: string | null
+  musicPreference?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lastRideAt?: Date | string | null
+  createdRides?: Prisma.RideUncheckedCreateNestedManyWithoutDriverInput
+  requestedRides?: Prisma.RideRequestUncheckedCreateNestedManyWithoutPassengerInput
+  givenReviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutRaterInput
+  receivedReviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutRatedInput
+}
+
+export type UserCreateOrConnectWithoutSentMessagesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSentMessagesInput, Prisma.UserUncheckedCreateWithoutSentMessagesInput>
+}
+
+export type UserUpsertWithoutSentMessagesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSentMessagesInput, Prisma.UserUncheckedUpdateWithoutSentMessagesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSentMessagesInput, Prisma.UserUncheckedCreateWithoutSentMessagesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSentMessagesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSentMessagesInput, Prisma.UserUncheckedUpdateWithoutSentMessagesInput>
+}
+
+export type UserUpdateWithoutSentMessagesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  reputationScore?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalRides?: Prisma.IntFieldUpdateOperationsInput | number
+  completedRides?: Prisma.IntFieldUpdateOperationsInput | number
+  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  verificationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredGender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  petFriendly?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  smokeFree?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  conversationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  musicPreference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastRideAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdRides?: Prisma.RideUpdateManyWithoutDriverNestedInput
+  requestedRides?: Prisma.RideRequestUpdateManyWithoutPassengerNestedInput
+  givenReviews?: Prisma.ReviewUpdateManyWithoutRaterNestedInput
+  receivedReviews?: Prisma.ReviewUpdateManyWithoutRatedNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSentMessagesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  reputationScore?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalRides?: Prisma.IntFieldUpdateOperationsInput | number
+  completedRides?: Prisma.IntFieldUpdateOperationsInput | number
+  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  verificationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredGender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  petFriendly?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  smokeFree?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  conversationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  musicPreference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastRideAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdRides?: Prisma.RideUncheckedUpdateManyWithoutDriverNestedInput
+  requestedRides?: Prisma.RideRequestUncheckedUpdateManyWithoutPassengerNestedInput
+  givenReviews?: Prisma.ReviewUncheckedUpdateManyWithoutRaterNestedInput
+  receivedReviews?: Prisma.ReviewUncheckedUpdateManyWithoutRatedNestedInput
 }
 
 
@@ -1046,11 +1559,17 @@ export type UserUncheckedUpdateWithoutRequestedRidesInput = {
 export type UserCountOutputType = {
   createdRides: number
   requestedRides: number
+  sentMessages: number
+  givenReviews: number
+  receivedReviews: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   createdRides?: boolean | UserCountOutputTypeCountCreatedRidesArgs
   requestedRides?: boolean | UserCountOutputTypeCountRequestedRidesArgs
+  sentMessages?: boolean | UserCountOutputTypeCountSentMessagesArgs
+  givenReviews?: boolean | UserCountOutputTypeCountGivenReviewsArgs
+  receivedReviews?: boolean | UserCountOutputTypeCountReceivedReviewsArgs
 }
 
 /**
@@ -1077,6 +1596,27 @@ export type UserCountOutputTypeCountRequestedRidesArgs<ExtArgs extends runtime.T
   where?: Prisma.RideRequestWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSentMessagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RideChatMessageWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountGivenReviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ReviewWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountReceivedReviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ReviewWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1092,6 +1632,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   averageRating?: boolean
   emailVerified?: boolean
   verificationCode?: boolean
+  passwordHash?: boolean
   preferredGender?: boolean
   petFriendly?: boolean
   smokeFree?: boolean
@@ -1102,6 +1643,9 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   lastRideAt?: boolean
   createdRides?: boolean | Prisma.User$createdRidesArgs<ExtArgs>
   requestedRides?: boolean | Prisma.User$requestedRidesArgs<ExtArgs>
+  sentMessages?: boolean | Prisma.User$sentMessagesArgs<ExtArgs>
+  givenReviews?: boolean | Prisma.User$givenReviewsArgs<ExtArgs>
+  receivedReviews?: boolean | Prisma.User$receivedReviewsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1119,6 +1663,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   averageRating?: boolean
   emailVerified?: boolean
   verificationCode?: boolean
+  passwordHash?: boolean
   preferredGender?: boolean
   petFriendly?: boolean
   smokeFree?: boolean
@@ -1143,6 +1688,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   averageRating?: boolean
   emailVerified?: boolean
   verificationCode?: boolean
+  passwordHash?: boolean
   preferredGender?: boolean
   petFriendly?: boolean
   smokeFree?: boolean
@@ -1167,6 +1713,7 @@ export type UserSelectScalar = {
   averageRating?: boolean
   emailVerified?: boolean
   verificationCode?: boolean
+  passwordHash?: boolean
   preferredGender?: boolean
   petFriendly?: boolean
   smokeFree?: boolean
@@ -1177,10 +1724,13 @@ export type UserSelectScalar = {
   lastRideAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "name" | "avatarUrl" | "googleId" | "username" | "role" | "reputationScore" | "totalRides" | "completedRides" | "averageRating" | "emailVerified" | "verificationCode" | "preferredGender" | "petFriendly" | "smokeFree" | "conversationLevel" | "musicPreference" | "createdAt" | "updatedAt" | "lastRideAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "name" | "avatarUrl" | "googleId" | "username" | "role" | "reputationScore" | "totalRides" | "completedRides" | "averageRating" | "emailVerified" | "verificationCode" | "passwordHash" | "preferredGender" | "petFriendly" | "smokeFree" | "conversationLevel" | "musicPreference" | "createdAt" | "updatedAt" | "lastRideAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   createdRides?: boolean | Prisma.User$createdRidesArgs<ExtArgs>
   requestedRides?: boolean | Prisma.User$requestedRidesArgs<ExtArgs>
+  sentMessages?: boolean | Prisma.User$sentMessagesArgs<ExtArgs>
+  givenReviews?: boolean | Prisma.User$givenReviewsArgs<ExtArgs>
+  receivedReviews?: boolean | Prisma.User$receivedReviewsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1191,6 +1741,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   objects: {
     createdRides: Prisma.$RidePayload<ExtArgs>[]
     requestedRides: Prisma.$RideRequestPayload<ExtArgs>[]
+    sentMessages: Prisma.$RideChatMessagePayload<ExtArgs>[]
+    givenReviews: Prisma.$ReviewPayload<ExtArgs>[]
+    receivedReviews: Prisma.$ReviewPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1206,6 +1759,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     averageRating: number
     emailVerified: boolean
     verificationCode: string | null
+    passwordHash: string | null
     preferredGender: string | null
     petFriendly: boolean
     smokeFree: boolean
@@ -1610,6 +2164,9 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   readonly [Symbol.toStringTag]: "PrismaPromise"
   createdRides<T extends Prisma.User$createdRidesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdRidesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RidePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   requestedRides<T extends Prisma.User$requestedRidesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$requestedRidesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RideRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  sentMessages<T extends Prisma.User$sentMessagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sentMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RideChatMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  givenReviews<T extends Prisma.User$givenReviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$givenReviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  receivedReviews<T extends Prisma.User$receivedReviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$receivedReviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1652,6 +2209,7 @@ export interface UserFieldRefs {
   readonly averageRating: Prisma.FieldRef<"User", 'Float'>
   readonly emailVerified: Prisma.FieldRef<"User", 'Boolean'>
   readonly verificationCode: Prisma.FieldRef<"User", 'String'>
+  readonly passwordHash: Prisma.FieldRef<"User", 'String'>
   readonly preferredGender: Prisma.FieldRef<"User", 'String'>
   readonly petFriendly: Prisma.FieldRef<"User", 'Boolean'>
   readonly smokeFree: Prisma.FieldRef<"User", 'Boolean'>
@@ -2098,6 +2656,78 @@ export type User$requestedRidesArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   distinct?: Prisma.RideRequestScalarFieldEnum | Prisma.RideRequestScalarFieldEnum[]
+}
+
+/**
+ * User.sentMessages
+ */
+export type User$sentMessagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RideChatMessage
+   */
+  select?: Prisma.RideChatMessageSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the RideChatMessage
+   */
+  omit?: Prisma.RideChatMessageOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RideChatMessageInclude<ExtArgs> | null
+  where?: Prisma.RideChatMessageWhereInput
+  orderBy?: Prisma.RideChatMessageOrderByWithRelationInput | Prisma.RideChatMessageOrderByWithRelationInput[]
+  cursor?: Prisma.RideChatMessageWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RideChatMessageScalarFieldEnum | Prisma.RideChatMessageScalarFieldEnum[]
+}
+
+/**
+ * User.givenReviews
+ */
+export type User$givenReviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Review
+   */
+  select?: Prisma.ReviewSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Review
+   */
+  omit?: Prisma.ReviewOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ReviewInclude<ExtArgs> | null
+  where?: Prisma.ReviewWhereInput
+  orderBy?: Prisma.ReviewOrderByWithRelationInput | Prisma.ReviewOrderByWithRelationInput[]
+  cursor?: Prisma.ReviewWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ReviewScalarFieldEnum | Prisma.ReviewScalarFieldEnum[]
+}
+
+/**
+ * User.receivedReviews
+ */
+export type User$receivedReviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Review
+   */
+  select?: Prisma.ReviewSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Review
+   */
+  omit?: Prisma.ReviewOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ReviewInclude<ExtArgs> | null
+  where?: Prisma.ReviewWhereInput
+  orderBy?: Prisma.ReviewOrderByWithRelationInput | Prisma.ReviewOrderByWithRelationInput[]
+  cursor?: Prisma.ReviewWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ReviewScalarFieldEnum | Prisma.ReviewScalarFieldEnum[]
 }
 
 /**

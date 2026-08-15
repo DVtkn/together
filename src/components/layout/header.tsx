@@ -10,27 +10,30 @@ interface HeaderProps {
   variant?: 'landing' | 'dashboard'
 }
 
-function MobileMenu({ isOpen, onToggle, variant }: { isOpen: boolean; onToggle: (v: 'landing' | 'dashboard') => void; variant: 'landing' | 'dashboard' }) {
+function MobileMenu({ isOpen, onClose, variant }: { isOpen: boolean; onClose: () => void; variant: 'landing' | 'dashboard' }) {
   return (
-    <div className="fixed inset-0 z-40 bg-slate-950/90 dark:bg-slate-900/90 backdrop-blur-sm transition-all duration-300 ease-in-out transform duration-200" onClick={onToggle} style={{ pointerEvents: isOpen ? 'all' : 'none' }}>
+    <div className={cn(
+      "fixed inset-0 z-40 bg-slate-950/90 dark:bg-slate-900/90 backdrop-blur-sm transition-all duration-300 ease-in-out",
+      !isOpen && "pointer-events-none opacity-0"
+    )}>
       <div className="flex items-center justify-center h-full">
         <nav className="flex flex-col gap-6 py-12 mx-auto w-full max-w-md">
-          <Link href="/" className="text-2xl font-bold text-slate-950 dark:text-slate-50 hover:text-rose-500 transition-colors" aria-label="Together Home">
+          <Link href="/" className="text-2xl font-bold text-slate-950 dark:text-slate-50 hover:text-rose-500 transition-colors" aria-label="Together Home" onClick={onClose}>
             Together
           </Link>
           <div className="flex flex-col gap-4">
             {variant === 'landing' ? (
               <>
-                <Link href="/signin" className="text-lg font-medium text-slate-700 hover:text-slate-950 dark:text-slate-300 dark:hover:text-slate-100">Войти</Link>
-                <Button asChild size="sm" onClick={onToggle}>
+                <Link href="/signin" className="text-lg font-medium text-slate-700 hover:text-slate-950 dark:text-slate-300 dark:hover:text-slate-100" onClick={onClose}>Войти</Link>
+                <Button asChild size="sm" onClick={onClose}>
                   <Link href="/register">Начать</Link>
                 </Button>
               </>
             ) : (
               <>
-                <Link href="/dashboard" className="text-lg font-medium text-slate-700 hover:text-slate-950 dark:text-slate-300 dark:hover:text-slate-100">Дашборд</Link>
-                <Link href="/dashboard/report" className="text-lg font-medium text-slate-700 hover:text-slate-950 dark:text-slate-300 dark:hover:text-slate-100">Отчёт</Link>
-                <Link href="/dashboard/ai" className="text-lg font-medium text-slate-700 hover:text-slate-950 dark:text-slate-300 dark:hover:text-slate-100">ИИ-ассистент</Link>
+                <Link href="/dashboard" className="text-lg font-medium text-slate-700 hover:text-slate-950 dark:text-slate-300 dark:hover:text-slate-100" onClick={onClose}>Дашборд</Link>
+                <Link href="/dashboard/report" className="text-lg font-medium text-slate-700 hover:text-slate-950 dark:text-slate-300 dark:hover:text-slate-100" onClick={onClose}>Отчёт</Link>
+                <Link href="/dashboard/ai" className="text-lg font-medium text-slate-700 hover:text-slate-950 dark:text-slate-300 dark:hover:text-slate-100" onClick={onClose}>ИИ-ассистент</Link>
               </>
             )}
           </div>
@@ -94,7 +97,7 @@ export function Header({ variant = 'landing' }: HeaderProps) {
         </div>
       </nav>
 
-      <MobileMenu isOpen={isOpen} onToggle={() => setIsOpen(false)} variant={variant} />
+      <MobileMenu isOpen={isOpen} onClose={() => setIsOpen(false)} variant={variant} />
     </header>
   )
 }

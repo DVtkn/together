@@ -42,3 +42,18 @@ export type Review = Prisma.ReviewModel
  * 
  */
 export type CrisisResource = Prisma.CrisisResourceModel
+/**
+ * Model RideChat
+ * 
+ */
+export type RideChat = Prisma.RideChatModel
+/**
+ * Model RideChatMessage
+ * 
+ */
+export type RideChatMessage = Prisma.RideChatMessageModel
+/**
+ * Model PushSubscription
+ * 
+ */
+export type PushSubscription = Prisma.PushSubscriptionModel

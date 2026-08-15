@@ -401,7 +401,10 @@ export const ModelName = {
   Ride: 'Ride',
   RideRequest: 'RideRequest',
   Review: 'Review',
-  CrisisResource: 'CrisisResource'
+  CrisisResource: 'CrisisResource',
+  RideChat: 'RideChat',
+  RideChatMessage: 'RideChatMessage',
+  PushSubscription: 'PushSubscription'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -417,7 +420,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "ride" | "rideRequest" | "review" | "crisisResource"
+    modelProps: "user" | "ride" | "rideRequest" | "review" | "crisisResource" | "rideChat" | "rideChatMessage" | "pushSubscription"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -791,6 +794,228 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    RideChat: {
+      payload: Prisma.$RideChatPayload<ExtArgs>
+      fields: Prisma.RideChatFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.RideChatFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RideChatPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.RideChatFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RideChatPayload>
+        }
+        findFirst: {
+          args: Prisma.RideChatFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RideChatPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.RideChatFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RideChatPayload>
+        }
+        findMany: {
+          args: Prisma.RideChatFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RideChatPayload>[]
+        }
+        create: {
+          args: Prisma.RideChatCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RideChatPayload>
+        }
+        createMany: {
+          args: Prisma.RideChatCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.RideChatCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RideChatPayload>[]
+        }
+        delete: {
+          args: Prisma.RideChatDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RideChatPayload>
+        }
+        update: {
+          args: Prisma.RideChatUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RideChatPayload>
+        }
+        deleteMany: {
+          args: Prisma.RideChatDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.RideChatUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.RideChatUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RideChatPayload>[]
+        }
+        upsert: {
+          args: Prisma.RideChatUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RideChatPayload>
+        }
+        aggregate: {
+          args: Prisma.RideChatAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateRideChat>
+        }
+        groupBy: {
+          args: Prisma.RideChatGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RideChatGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.RideChatCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RideChatCountAggregateOutputType> | number
+        }
+      }
+    }
+    RideChatMessage: {
+      payload: Prisma.$RideChatMessagePayload<ExtArgs>
+      fields: Prisma.RideChatMessageFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.RideChatMessageFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RideChatMessagePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.RideChatMessageFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RideChatMessagePayload>
+        }
+        findFirst: {
+          args: Prisma.RideChatMessageFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RideChatMessagePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.RideChatMessageFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RideChatMessagePayload>
+        }
+        findMany: {
+          args: Prisma.RideChatMessageFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RideChatMessagePayload>[]
+        }
+        create: {
+          args: Prisma.RideChatMessageCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RideChatMessagePayload>
+        }
+        createMany: {
+          args: Prisma.RideChatMessageCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.RideChatMessageCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RideChatMessagePayload>[]
+        }
+        delete: {
+          args: Prisma.RideChatMessageDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RideChatMessagePayload>
+        }
+        update: {
+          args: Prisma.RideChatMessageUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RideChatMessagePayload>
+        }
+        deleteMany: {
+          args: Prisma.RideChatMessageDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.RideChatMessageUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.RideChatMessageUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RideChatMessagePayload>[]
+        }
+        upsert: {
+          args: Prisma.RideChatMessageUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RideChatMessagePayload>
+        }
+        aggregate: {
+          args: Prisma.RideChatMessageAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateRideChatMessage>
+        }
+        groupBy: {
+          args: Prisma.RideChatMessageGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RideChatMessageGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.RideChatMessageCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RideChatMessageCountAggregateOutputType> | number
+        }
+      }
+    }
+    PushSubscription: {
+      payload: Prisma.$PushSubscriptionPayload<ExtArgs>
+      fields: Prisma.PushSubscriptionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PushSubscriptionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PushSubscriptionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>
+        }
+        findFirst: {
+          args: Prisma.PushSubscriptionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PushSubscriptionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>
+        }
+        findMany: {
+          args: Prisma.PushSubscriptionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>[]
+        }
+        create: {
+          args: Prisma.PushSubscriptionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>
+        }
+        createMany: {
+          args: Prisma.PushSubscriptionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PushSubscriptionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>[]
+        }
+        delete: {
+          args: Prisma.PushSubscriptionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>
+        }
+        update: {
+          args: Prisma.PushSubscriptionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>
+        }
+        deleteMany: {
+          args: Prisma.PushSubscriptionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PushSubscriptionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PushSubscriptionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>[]
+        }
+        upsert: {
+          args: Prisma.PushSubscriptionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>
+        }
+        aggregate: {
+          args: Prisma.PushSubscriptionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePushSubscription>
+        }
+        groupBy: {
+          args: Prisma.PushSubscriptionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PushSubscriptionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PushSubscriptionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PushSubscriptionCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -844,6 +1069,7 @@ export const UserScalarFieldEnum = {
   averageRating: 'averageRating',
   emailVerified: 'emailVerified',
   verificationCode: 'verificationCode',
+  passwordHash: 'passwordHash',
   preferredGender: 'preferredGender',
   petFriendly: 'petFriendly',
   smokeFree: 'smokeFree',
@@ -933,6 +1159,39 @@ export const CrisisResourceScalarFieldEnum = {
 export type CrisisResourceScalarFieldEnum = (typeof CrisisResourceScalarFieldEnum)[keyof typeof CrisisResourceScalarFieldEnum]
 
 
+export const RideChatScalarFieldEnum = {
+  id: 'id',
+  rideId: 'rideId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RideChatScalarFieldEnum = (typeof RideChatScalarFieldEnum)[keyof typeof RideChatScalarFieldEnum]
+
+
+export const RideChatMessageScalarFieldEnum = {
+  id: 'id',
+  chatId: 'chatId',
+  senderId: 'senderId',
+  text: 'text',
+  createdAt: 'createdAt'
+} as const
+
+export type RideChatMessageScalarFieldEnum = (typeof RideChatMessageScalarFieldEnum)[keyof typeof RideChatMessageScalarFieldEnum]
+
+
+export const PushSubscriptionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  endpoint: 'endpoint',
+  keys: 'keys',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PushSubscriptionScalarFieldEnum = (typeof PushSubscriptionScalarFieldEnum)[keyof typeof PushSubscriptionScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -947,6 +1206,13 @@ export const NullableJsonNullValueInput = {
 } as const
 
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {
@@ -1254,6 +1520,9 @@ export type GlobalOmitConfig = {
   rideRequest?: Prisma.RideRequestOmit
   review?: Prisma.ReviewOmit
   crisisResource?: Prisma.CrisisResourceOmit
+  rideChat?: Prisma.RideChatOmit
+  rideChatMessage?: Prisma.RideChatMessageOmit
+  pushSubscription?: Prisma.PushSubscriptionOmit
 }
 
 /* Types for Logging */

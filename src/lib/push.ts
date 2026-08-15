@@ -41,15 +41,11 @@ export async function sendPushToUser(userId: string, payload: PushPayload) {
   for (const sub of subs) {
     try {
       await webpush.sendNotification(
-        { endpoint: sub.endpoint, keys: { p256dh: sub.keysP256dh, auth: sub.keysAuth } },
+        { endpoint: sub.endpoint, keys: sub.keys as { p256dh: string; auth: string } },
         body,
         { TTL: 86400 }
       )
       sent += 1
-      await prisma.pushSubscription.update({
-        where: { id: sub.id },
-        data: { lastNotifiedAt: new Date() },
-      })
     } catch (err: unknown) {
       failed += 1
       const code = (err as { statusCode?: number }).statusCode

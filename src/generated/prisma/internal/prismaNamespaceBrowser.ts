@@ -55,7 +55,10 @@ export const ModelName = {
   Ride: 'Ride',
   RideRequest: 'RideRequest',
   Review: 'Review',
-  CrisisResource: 'CrisisResource'
+  CrisisResource: 'CrisisResource',
+  RideChat: 'RideChat',
+  RideChatMessage: 'RideChatMessage',
+  PushSubscription: 'PushSubscription'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -88,6 +91,7 @@ export const UserScalarFieldEnum = {
   averageRating: 'averageRating',
   emailVerified: 'emailVerified',
   verificationCode: 'verificationCode',
+  passwordHash: 'passwordHash',
   preferredGender: 'preferredGender',
   petFriendly: 'petFriendly',
   smokeFree: 'smokeFree',
@@ -177,6 +181,39 @@ export const CrisisResourceScalarFieldEnum = {
 export type CrisisResourceScalarFieldEnum = (typeof CrisisResourceScalarFieldEnum)[keyof typeof CrisisResourceScalarFieldEnum]
 
 
+export const RideChatScalarFieldEnum = {
+  id: 'id',
+  rideId: 'rideId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RideChatScalarFieldEnum = (typeof RideChatScalarFieldEnum)[keyof typeof RideChatScalarFieldEnum]
+
+
+export const RideChatMessageScalarFieldEnum = {
+  id: 'id',
+  chatId: 'chatId',
+  senderId: 'senderId',
+  text: 'text',
+  createdAt: 'createdAt'
+} as const
+
+export type RideChatMessageScalarFieldEnum = (typeof RideChatMessageScalarFieldEnum)[keyof typeof RideChatMessageScalarFieldEnum]
+
+
+export const PushSubscriptionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  endpoint: 'endpoint',
+  keys: 'keys',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PushSubscriptionScalarFieldEnum = (typeof PushSubscriptionScalarFieldEnum)[keyof typeof PushSubscriptionScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -191,6 +228,13 @@ export const NullableJsonNullValueInput = {
 } as const
 
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {

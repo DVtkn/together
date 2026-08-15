@@ -54,6 +54,7 @@ export async function POST(request: NextRequest) {
     const user = await prisma.user.create({
       data: {
         username,
+        email: `${username}@placeholder.local`, // placeholder email for username-based auth
         passwordHash,
         name,
         role,

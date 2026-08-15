@@ -37,7 +37,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const valid = await bcrypt.compare(parsed.data.password, user.passwordHash)
         if (!valid) return null
 
-        return { id: user.id, username: user.username, name: user.name, image: user.image }
+        return { id: user.id, username: user.username ?? '', name: user.name, image: user.avatarUrl }
       },
     }),
     ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET

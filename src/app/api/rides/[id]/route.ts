@@ -5,7 +5,7 @@ import { rateLimit } from '@/lib/rate-limit'
 // GET /api/rides/[id] - Get ride detail
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const rl = await rateLimit('rides', request.headers.get('x-forwarded-for') || 'anon')
   if (!rl.ok) {
@@ -16,7 +16,7 @@ export async function GET(
   }
 
   try {
-    const { id } = params
+    const { id } = await params
 
     const ride = await prisma.ride.findUnique({
       where: { id },
@@ -93,7 +93,7 @@ export async function GET(
         cancelledAt: ride.cancelledAt,
         cancelledReason: ride.cancelledReason,
       },
-      requests: rideRequests.map(req => ({
+      requests: rideRequests.map((req: { id: string; passenger: { id: string; name: string | null; avatarUrl: string | null }; status: string; requestedAt: Date; meetingPoint: string | null; meetingNotes: string | null; amountPaid: number | null; paymentStatus: string | null }) => ({
         id: req.id,
         passenger: {
           id: req.passenger.id,

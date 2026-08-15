@@ -2,11 +2,11 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { rateLimit } from '@/lib/rate-limit'
 import { z } from 'zod'
+import { getCurrentUserSession } from '@/lib/auth-session'
 
 // GET /api/users/profile - Get user profile
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
 ) {
   const rl = await rateLimit('users', request.headers.get('x-forwarded-for') || 'anon')
   if (!rl.ok) {
@@ -17,10 +17,15 @@ export async function GET(
   }
 
   try {
-    const { id } = params
+    // Get current user session
+    const session = await getCurrentUserSession()
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'Не авторизован' }, { status: 401 })
+    }
+    const userId = session.user.id
 
     const user = await prisma.user.findUnique({
-      where: { id },
+      where: { id: userId },
       select: {
         id: true,
         email: true,
@@ -48,11 +53,10 @@ export async function GET(
 
     // Get ride statistics
     const rides = await prisma.ride.count({
-      where: { driverId: user.id, status: 'COMPLETED' },
+      where: { driverId: userId },
     })
-
-    const rideRequests = await prisma.rideRequest.count({
-      where: { passengerId: user.id, status: 'ACCEPTED' },
+    const requests = await prisma.rideRequest.count({
+      where: { passengerId: userId },
     })
 
     return NextResponse.json({
@@ -76,9 +80,8 @@ export async function GET(
         lastRideAt: user.lastRideAt,
       },
       stats: {
-        totalRidesDriven: rides,
-        totalRidesAsPassenger: rideRequests,
-        reputationLevel: user.reputationScore >= 4.5 ? 'High' : user.reputationScore >= 3 ? 'Medium' : 'Low',
+        totalRidesAsDriver: rides,
+        totalRidesAsPassenger: requests,
       },
     })
   } catch (error) {
@@ -91,10 +94,7 @@ export async function GET(
 }
 
 // PUT /api/users/profile - Update user profile
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(request: NextRequest) {
   const rl = await rateLimit('users', request.headers.get('x-forwarded-for') || 'anon')
   if (!rl.ok) {
     return NextResponse.json(
@@ -104,16 +104,15 @@ export async function PUT(
   }
 
   try {
-    const { id } = params
     const body = await request.json()
     const updateSchema = z.object({
       name: z.string().min(2).max(50).optional(),
-      avatarUrl: z.string().url().optional(),
-      preferredGender: z.enum(['male', 'female', 'any']).optional(),
+      avatarUrl: z.string().url().optional().or(z.literal('')),
+      preferredGender: z.string().optional(),
       petFriendly: z.boolean().optional(),
       smokeFree: z.boolean().optional(),
-      conversationLevel: z.enum(['quiet', 'chatty', 'any']).optional(),
-      musicPreference: z.enum(['any', 'playlist', 'podcast', 'no-music']).optional(),
+      conversationLevel: z.string().optional(),
+      musicPreference: z.string().optional(),
     })
 
     const validation = updateSchema.safeParse(body)
@@ -125,46 +124,38 @@ export async function PUT(
     }
 
     // Only allow users to update their own profile
-    const currentUser = await prisma.user.findUnique({
-      where: { id: (await import('@/auth')).getCurrentUserSession() },
-    })
-
-    if (!currentUser || currentUser.id !== id) {
-      return NextResponse.json({ error: 'Доступ запрещен' }, { status: 403 })
+    const session = await getCurrentUserSession()
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'Не авторизован' }, { status: 401 })
     }
+    const userId = session.user.id
 
     const updatedUser = await prisma.user.update({
-      where: { id },
+      where: { id: userId },
       data: {
         name: validation.data.name,
-        avatarUrl: validation.data.avatarUrl,
+        avatarUrl: validation.data.avatarUrl || null,
         preferredGender: validation.data.preferredGender,
         petFriendly: validation.data.petFriendly,
         smokeFree: validation.data.smokeFree,
         conversationLevel: validation.data.conversationLevel,
         musicPreference: validation.data.musicPreference,
-        updatedAt: new Date(),
       },
       select: {
         id: true,
         name: true,
         avatarUrl: true,
-        reputationScore: true,
-        totalRides: true,
-        completedRides: true,
-        averageRating: true,
-        role: true,
+        preferredGender: true,
+        petFriendly: true,
+        smokeFree: true,
+        conversationLevel: true,
+        musicPreference: true,
       },
     })
 
     return NextResponse.json({
       success: true,
-      user: {
-        id: updatedUser.id,
-        name: updatedUser.name,
-        avatarUrl: updatedUser.avatarUrl,
-        reputationScore: updatedUser.reputationScore,
-      },
+      user: updatedUser,
     })
   } catch (error) {
     console.error('Update user profile error:', error)

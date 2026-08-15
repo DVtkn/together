@@ -1,23 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { rateLimit } from '@/lib/rate-limit'
+import { getCurrentUserSession } from '@/lib/auth-session'
+import { z } from 'zod'
 
-// GET /api/ride-chats - SSE streaming for ride chat
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+// GET /api/ride-chats?id=rideId - Get chat messages for a ride
+export async function GET(request: NextRequest) {
   const rl = await rateLimit('ride-chats', request.headers.get('x-forwarded-for') || 'anon')
   if (!rl.ok) {
     return new NextResponse('Rate limited', { status: 429 })
   }
-
+  
   try {
-    const { id } = params
+    const { searchParams } = new URL(request.url)
+    const rideId = searchParams.get('id')
+    
+    if (!rideId) {
+      return NextResponse.json({ error: 'Не указан ID поездки' }, { status: 400 })
+    }
 
     // Verify ride exists and user has access
     const ride = await prisma.ride.findUnique({
-      where: { id },
+      where: { id: rideId },
       select: { driverId: true, status: true },
     })
 
@@ -25,87 +29,41 @@ export async function GET(
       return NextResponse.json({ error: 'Поездка не найдена' }, { status: 404 })
     }
 
-    if (ride.status !== 'IN_PROGRESS' && ride.status !== 'COMPLETED') {
-      // For ongoing rides, check if user is driver or passenger with accepted request
-    }
-
-    // Get or create SSE channel for this ride
-    const rideChat = await prisma.rideChat.findFirst({
-      where: { rideId: id },
+    // Get or create chat for this ride
+    let rideChat = await prisma.rideChat.findFirst({
+      where: { rideId: rideId },
     })
 
     if (!rideChat) {
-      await prisma.rideChat.create({
+      rideChat = await prisma.rideChat.create({
         data: {
-          rideId: id,
-          subscribers: 1, // Will be incremented on client connect
+          rideId: rideId,
         },
       })
     }
 
-    // Set up SSE response
-    const encoder = new TextEncoder()
-    const initialMessages = await prisma.rideChatMessage.findMany({
-      where: { rideChatId: id },
+    // Get initial messages
+    const messages = await prisma.rideChatMessage.findMany({
+      where: { chatId: rideChat.id },
       orderBy: { createdAt: 'asc' },
       take: 50,
+      include: {
+        sender: {
+          select: { id: true, name: true, avatarUrl: true },
+        },
+      },
     })
 
-    const headers = new Headers()
-    headers.set('Content-Type', 'text/event-stream')
-    headers.set('Cache-Control', 'no-cache')
-    headers.set('Connection', 'keep-alive')
-    headers.set('Access-Control-Allow-Origin', '*')
-    headers.set('Access-Control-Allow-Headers', 'Cache-Control')
-
-    return new NextStreamingResponse(async (stream) => {
-      // Send initial messages
-      for (const msg of initialMessages) {
-        const data = encoder.encode(`data: ${JSON.stringify({
-          id: msg.id,
-          riderId: msg.riderId,
-          driverId: msg.driverId,
-          content: msg.content,
-          createdAt: msg.createdAt,
-        })}\n\n`)
-        stream.write(data)
-      }
-
-      // Keep connection open for real-time messages
-      const cancelToken = new AbortController()
-
-      // Listen for new messages via webhook or polling
-      // In production, use Upstash Redis pub/sub
-      const interval = setInterval(async () => {
-        const newMessages = await prisma.rideChatMessage.findMany({
-          where: { rideChatId: id, createdAt: { gt: new Date(Date.now() - 60000) } },
-          orderBy: { createdAt: 'asc' },
-          take: 10,
-        })
-
-        if (newMessages.length > 0) {
-          for (const msg of newMessages) {
-            const data = encoder.encode(`data: ${JSON.stringify({
-              id: msg.id,
-              riderId: msg.riderId,
-              driverId: msg.driverId,
-              content: msg.content,
-              createdAt: msg.createdAt,
-            })}\n\n`)
-            stream.write(data)
-          }
-        }
-      }, 3000)
-
-      // Handle message sending
-      request.on('close', () => {
-        cancelToken.abort()
-        clearInterval(interval)
-        stream.close()
-      })
-
-      await stream.ready
-    }, { headers })
+    return NextResponse.json({
+      chatId: rideChat.id,
+      messages: messages.map((msg: { id: string; senderId: string; text: string; createdAt: Date; sender: { id: string; name: string | null; avatarUrl: string | null } | null }) => ({
+        id: msg.id,
+        senderId: msg.senderId,
+        text: msg.text,
+        createdAt: msg.createdAt,
+        sender: msg.sender,
+      })),
+    })
   } catch (error) {
     console.error('Ride chat error:', error)
     return NextResponse.json(
@@ -115,11 +73,8 @@ export async function GET(
   }
 }
 
-// POST /api/ride-chats/message - Send a chat message
-export async function POST(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+// POST /api/ride-chats?id=rideId - Send a chat message
+export async function POST(request: NextRequest) {
   const rl = await rateLimit('ride-chats', request.headers.get('x-forwarded-for') || 'anon')
   if (!rl.ok) {
     return NextResponse.json(
@@ -129,10 +84,16 @@ export async function POST(
   }
 
   try {
-    const { id } = params
+    const { searchParams } = new URL(request.url)
+    const rideId = searchParams.get('id')
+    
+    if (!rideId) {
+      return NextResponse.json({ error: 'Не указан ID поездки' }, { status: 400 })
+    }
+    
     const body = await request.json()
     const messageSchema = z.object({
-      content: z.string().min(1).max(1000),
+      text: z.string().min(1).max(1000),
     })
 
     const validation = messageSchema.safeParse(body)
@@ -143,30 +104,41 @@ export async function POST(
       )
     }
 
-    // Verify user has access to this ride's chat
-    const user = await prisma.user.findUnique({
-      where: { id: (await import('@/auth')).getCurrentUserSession() },
-    })
-
-    if (!user) {
+    // Verify user is authenticated
+    const session = await getCurrentUserSession()
+    if (!session?.user?.id) {
       return NextResponse.json({ error: 'Не авторизован' }, { status: 401 })
     }
+    const userId = session.user.id
 
     const ride = await prisma.ride.findUnique({
-      where: { id },
-      select: { driverId: true, status: true },
+      where: { id: rideId },
+      select: { driverId: true, status: true, rideChat: true },
     })
 
     if (!ride) {
       return NextResponse.json({ error: 'Поездка не найдена' }, { status: 404 })
     }
 
+    // Get or create chat
+    let rideChat = ride.rideChat
+    if (!rideChat) {
+      rideChat = await prisma.rideChat.create({
+        data: { rideId: rideId },
+      })
+    }
+
     // Create message
     const message = await prisma.rideChatMessage.create({
       data: {
-        rideChatId: id,
-        riderId: user.id,
-        content: validation.data.content,
+        chatId: rideChat.id,
+        senderId: userId,
+        text: validation.data.text,
+      },
+      include: {
+        sender: {
+          select: { id: true, name: true, avatarUrl: true },
+        },
       },
     })
 
@@ -174,9 +146,10 @@ export async function POST(
       success: true,
       message: {
         id: message.id,
-        content: message.content,
+        senderId: message.senderId,
+        text: message.text,
         createdAt: message.createdAt,
-        riderId: message.riderId,
+        sender: message.sender,
       },
     })
   } catch (error) {

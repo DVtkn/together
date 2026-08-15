@@ -2,11 +2,12 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { z } from 'zod'
 import { rateLimit } from '@/lib/rate-limit'
+import { getCurrentUserSession } from '@/lib/auth-session'
 
 // POST /api/rides/[id]/request - Request a seat on a ride
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const rl = await rateLimit('rides', request.headers.get('x-forwarded-for') || 'anon')
   if (!rl.ok) {
@@ -17,7 +18,7 @@ export async function POST(
   }
 
   try {
-    const { id } = params
+    const { id } = await params
 
     const body = await request.json()
     const requestSchema = z.object({
@@ -36,7 +37,7 @@ export async function POST(
     // Check if ride exists and has available seats
     const ride = await prisma.ride.findUnique({
       where: { id },
-      select: { availableSeats, seatCount, driverId, status: true },
+      select: { availableSeats: true, seatCount: true, driverId: true, status: true },
     })
 
     if (!ride) {
@@ -61,8 +62,13 @@ export async function POST(
     }
 
     // Get the current user (passenger)
+    const session = await getCurrentUserSession()
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'Не авторизован' }, { status: 401 })
+    }
+
     const user = await prisma.user.findUnique({
-      where: { id: (await import('@/auth')).getCurrentUserSession() },
+      where: { id: session.user.id },
     })
 
     if (!user || user.role !== 'PASSENGER') {

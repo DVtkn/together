@@ -6,13 +6,16 @@ import { SYSTEM_PROMPT } from "@/lib/ai/prompt"
 const OPENROUTER_API_BASE = process.env.OPENROUTER_API_BASE || "https://openrouter.ai/api/v1"
 const apiKey = process.env.OPENROUTER_API_KEY || process.env.OPENAI_API_KEY
 
-if (!apiKey) {
-  throw new Error("AI API key not configured. Set OPENROUTER_API_KEY in .env.local")
-}
+// Don't throw at module evaluation - check at runtime instead
+const isAIDisabled = !apiKey
 
 export async function GET(
   request: NextRequest
 ) {
+  if (isAIDisabled) {
+    return NextResponse.json({ error: "AI API не настроен" }, { status: 503 })
+  }
+  
   const rl = await rateLimit("ai", request.headers.get("x-forwarded-for") || "anon")
   if (!rl.ok) {
     return NextResponse.json(
@@ -27,6 +30,10 @@ export async function GET(
 export async function POST(
   request: NextRequest
 ) {
+  if (isAIDisabled) {
+    return NextResponse.json({ error: "AI API не настроен" }, { status: 503 })
+  }
+  
   let body: unknown
   try {
     const rl = await rateLimit("ai", request.headers.get("x-forwarded-for") || "anon")

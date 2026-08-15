@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { rateLimit } from '@/lib/rate-limit'
+import { getCurrentUserSession } from '@/lib/auth-session'
+import { z } from 'zod'
 
 // POST /api/rides - Create a new ride
 export async function POST(request: NextRequest) {
@@ -53,8 +55,13 @@ export async function POST(request: NextRequest) {
     } = validation.data
 
     // Get the current user from session
+    const session = await getCurrentUserSession()
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'Не авторизован' }, { status: 401 })
+    }
+
     const user = await prisma.user.findUnique({
-      where: { id: (await import('@/auth')).getCurrentUserSession() },
+      where: { id: session.user.id },
     })
 
     if (!user || user.role !== 'DRIVER') {
@@ -76,9 +83,9 @@ export async function POST(request: NextRequest) {
         availableSeats: seatCount,
         pricePerSeat: pricePerSeat || 0,
         currency: 'RUB',
-        carType,
+        carType: carType || 'other',
         carModel,
-        luggageSpace,
+        luggageSpace: luggageSpace || 0,
         preferences,
         platformFee: platformFee,
         driverEarnings: driverEarnings,
@@ -191,7 +198,7 @@ export async function GET(request: NextRequest) {
     })
 
     return NextResponse.json({
-      rides: rides.map(ride => ({
+      rides: rides.map((ride: { id: string; origin: string; destination: string; departureDate: Date; availableSeats: number; seatCount: number; pricePerSeat: number; currency: string; carType: string; carModel: string | null; luggageSpace: number; platformFee: number; driverEarnings: number; driver: { id: string; name: string | null; avatarUrl: string | null; reputationScore: number; averageRating: number }; status: string; createdAt: Date; isRoundTrip: boolean }) => ({
         id: ride.id,
         origin: ride.origin,
         destination: ride.destination,
