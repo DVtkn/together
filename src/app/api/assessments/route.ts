@@ -83,11 +83,14 @@ export async function GET(request: NextRequest) {
       const completedByPartner = partnerId ? partnerCount >= total : false
       return {
         key: assessment.key,
+        title: assessment.title,
+        description: assessment.description,
+        emoji: assessment.emoji,
+        total,
         completedByCurrent,
         completedByPartner,
         bothCompleted: completedByCurrent && completedByPartner,
         progress: Math.min(myCount, total),
-        total,
       }
     })
 
@@ -193,8 +196,10 @@ async function maybeGenerateReport(ctx: NonNullable<Awaited<ReturnType<typeof ge
   })
 
   const radar = await computeRadar(couple.id, user.id, partner.id, assessments)
+  const riskMarkers = await computeRiskMarkers(couple.id, user.id, partner.id, assessments)
   const report = {
     radarData: radar,
+    riskMarkers,
     strongSides: [
       {
         title: 'Вы слышите друг друга',
@@ -214,6 +219,7 @@ async function maybeGenerateReport(ctx: NonNullable<Awaited<ReturnType<typeof ge
       where: { id: existing.id },
       data: {
         radarData: radar as never,
+        riskMarkers: riskMarkers as never,
         strongSides: report.strongSides as never,
         growthAreas: report.growthAreas as never,
         recommendations: report.recommendations as never,
@@ -228,6 +234,7 @@ async function maybeGenerateReport(ctx: NonNullable<Awaited<ReturnType<typeof ge
         id: `rep_${Math.random().toString(36).slice(2, 14)}`,
         coupleId: couple.id,
         radarData: radar as never,
+        riskMarkers: riskMarkers as never,
         strongSides: report.strongSides as never,
         growthAreas: report.growthAreas as never,
         recommendations: report.recommendations as never,
@@ -238,48 +245,101 @@ async function maybeGenerateReport(ctx: NonNullable<Awaited<ReturnType<typeof ge
   }
 }
 
-async function computeRadar(coupleId: string, userId: string, partnerId: string, assessments: Array<{ id: string; Question: Array<{ id: string; text: string; dimension: string | null; reverseScored: boolean }> }>) {
-  const axes: Record<string, number[]> = {
-    communication: [],
-    intimacy: [],
-    values: [],
-    conflict: [],
-    support: [],
-    future: [],
-  }
+async function computeRadar(coupleId: string, userId: string, partnerId: string, assessments: Array<{ id: string; radarAxis: string | null; Question: Array<{ id: string; text: string; dimension: string | null; reverseScored: boolean }> }>) {
+  const axes = new Set(['communication', 'intimacy', 'values', 'conflict', 'support', 'future', 'money', 'trust'])
 
-  const allQuestions = assessments.flatMap((a) => a.Question)
-  const questionAxes = new Map<string, { axis: string; reverseScored: boolean }>()
-  for (const q of allQuestions) {
-    const axis = mapQuestionToAxis(q)
-    questionAxes.set(q.id, { axis, reverseScored: q.reverseScored })
+  const questionMeta = new Map<string, { axis: string; dimension: string; reverseScored: boolean }>()
+  for (const assessment of assessments) {
+    for (const q of assessment.Question) {
+      const axis = assessment.radarAxis || mapQuestionToAxis(q)
+      questionMeta.set(q.id, { axis, dimension: q.dimension || 'main', reverseScored: q.reverseScored })
+    }
   }
 
   const responses = await prisma.assessmentResponse.findMany({
     where: { userId: { in: [userId, partnerId] } },
   })
 
+  const valuesByUser = new Map<string, number[]>()
   for (const r of responses) {
-    const meta = questionAxes.get(r.questionId)
-    if (!meta || !axes[meta.axis]) continue
+    const meta = questionMeta.get(r.questionId)
+    if (!meta || !axes.has(meta.axis)) continue
     let value: number | null = null
     const ans = r.answer
     if (typeof ans === 'number') {
       value = meta.reverseScored ? 6 - ans : ans
       value = Math.max(1, Math.min(5, value))
     }
-    if (value !== null) axes[meta.axis].push(value)
+    if (value === null) continue
+    const userKey = `${r.userId}|${meta.axis}|${meta.dimension}`
+    const list = valuesByUser.get(userKey) ?? []
+    list.push(value)
+    valuesByUser.set(userKey, list)
   }
 
   const radarData: Record<string, number> = {}
-  for (const [axis, values] of Object.entries(axes)) {
-    if (values.length === 0) {
+  for (const axis of axes) {
+    const dims = new Set<string>()
+    for (const key of valuesByUser.keys()) {
+      if (key.startsWith(`${userId}|${axis}|`)) dims.add(key.split('|')[2])
+    }
+
+    const scores: number[] = []
+    for (const dim of dims) {
+      const my = valuesByUser.get(`${userId}|${axis}|${dim}`) || []
+      const partner = valuesByUser.get(`${partnerId}|${axis}|${dim}`) || []
+      if (my.length === 0 || partner.length === 0) continue
+      const myAvg = my.reduce((a, b) => a + b, 0) / my.length
+      const partnerAvg = partner.reduce((a, b) => a + b, 0) / partner.length
+      scores.push(10 - Math.abs(myAvg - partnerAvg))
+    }
+
+    if (scores.length === 0) {
       radarData[axis] = 5
     } else {
-      radarData[axis] = Math.round(((values.reduce((a, b) => a + b, 0) / values.length) * 2) * 10) / 10
+      radarData[axis] = Math.round((scores.reduce((a, b) => a + b, 0) / scores.length) * 10) / 10
     }
   }
   return radarData
+}
+
+async function computeRiskMarkers(coupleId: string, userId: string, partnerId: string, assessments: Array<{ id: string; Question: Array<{ id: string; text: string; isRiskMarker: boolean; reverseScored: boolean }> }>) {
+  const riskQuestionIds = new Set<string>()
+  for (const a of assessments) {
+    for (const q of a.Question) {
+      if (q.isRiskMarker) riskQuestionIds.add(q.id)
+    }
+  }
+
+  const responses = await prisma.assessmentResponse.findMany({
+    where: { userId: { in: [userId, partnerId] }, questionId: { in: [...riskQuestionIds] } },
+  })
+
+  const byQuestion = new Map<string, number[]>()
+  for (const r of responses) {
+    const ans = r.answer
+    if (typeof ans !== 'number') continue
+    const list = byQuestion.get(r.questionId) ?? []
+    list.push(ans)
+    byQuestion.set(r.questionId, list)
+  }
+
+  let triggered = 0
+  const topics: string[] = []
+  for (const a of assessments) {
+    for (const q of a.Question) {
+      if (!q.isRiskMarker) continue
+      const values = byQuestion.get(q.id)
+      if (!values) continue
+      const high = values.some((v) => (q.reverseScored ? 6 - v : v) >= 4)
+      if (high) {
+        triggered += 1
+        topics.push(q.text)
+      }
+    }
+  }
+
+  return { count: triggered, topics }
 }
 
 function mapQuestionToAxis(q: { text: string; dimension: string | null }): string {
@@ -290,6 +350,8 @@ function mapQuestionToAxis(q: { text: string; dimension: string | null }): strin
   if (dim.includes('value') || text.includes('ценност') || text.includes('семь') || text.includes('деньг')) return 'values'
   if (dim.includes('conflict') || text.includes('ссор') || text.includes('конфликт')) return 'conflict'
   if (dim.includes('support') || text.includes('поддержк')) return 'support'
+  if (dim.includes('money') || dim.includes('saving') || dim.includes('goal') || text.includes('деньг') || text.includes('финанс') || text.includes('крупн') || text.includes('трат')) return 'money'
+  if (dim.includes('trust') || dim.includes('space') || dim.includes('digital') || text.includes('довери') || text.includes('ревност') || text.includes('телефон') || text.includes('границ')) return 'trust'
   return 'future'
 }
 

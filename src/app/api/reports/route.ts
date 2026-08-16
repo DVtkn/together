@@ -32,6 +32,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       report: {
         radarData: report.radarData as Record<string, number>,
+        riskMarkers: (report.riskMarkers as { count: number; topics: string[] }) || { count: 0, topics: [] },
         strongSides: (report.strongSides as Array<{ title: string; description: string; evidence: string }>) || [],
         growthAreas: (report.growthAreas as Array<{ title: string; description: string; risk: string; action: string }>) || [],
         recommendations: (report.recommendations as Array<{ title: string; description: string; axis: string; difficulty: number; durationMin: number }>) || [],

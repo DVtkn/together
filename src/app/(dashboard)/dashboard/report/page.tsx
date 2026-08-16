@@ -12,10 +12,13 @@ const RADAR_AXES = [
   { key: 'conflict', label: 'Конфликты', icon: '⚡' },
   { key: 'support', label: 'Поддержка', icon: '🤝' },
   { key: 'future', label: 'Будущее', icon: '🔮' },
+  { key: 'money', label: 'Деньги', icon: '💰' },
+  { key: 'trust', label: 'Доверие', icon: '🔐' },
 ]
 
 interface ReportData {
   radarData: Record<string, number>
+  riskMarkers: { count: number; topics: string[] }
   strongSides: Array<{ title: string; description: string; evidence: string }>
   growthAreas: Array<{ title: string; description: string; risk: string; action: string }>
   recommendations: Array<{ title: string; description: string; axis: string; difficulty: number; durationMin: number }>
@@ -140,6 +143,18 @@ export default function ReportPage() {
           <b style={{ marginLeft: 'auto', fontSize: 26, background: 'var(--grad)', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>{score}%</b>
         </div>
       </div>
+
+      {report.riskMarkers && report.riskMarkers.count >= 2 && (
+        <div className="notice notice-amber mt" style={{ marginTop: 18 }}>
+          <span style={{ fontSize: 20 }} aria-hidden="true">🌱</span>
+          <div>
+            <strong>Темы для бережного разговора.</strong> Похоже, некоторые темы требуют деликатного обсуждения — Сова поможет начать разговор без ссоры.
+          </div>
+          <Link href="/dashboard/ai" className="btn btn-p btn-w" style={{ marginTop: 12 }}>
+            Обсудить с Совой
+          </Link>
+        </div>
+      )}
 
       {report.strongSides.length > 0 && (
         <>

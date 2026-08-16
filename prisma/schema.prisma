@@ -81,6 +81,8 @@ model Assessment {
   key                String               @unique
   title              String
   description        String
+  emoji              String?
+  radarAxis          String?
   version            Int                  @default(1)
   isActive           Boolean              @default(true)
   order              Int                  @default(0)
@@ -278,6 +280,7 @@ model CoupleReport {
   recommendations    Json
   constellationState Json
   astroCompatibility Json?
+  riskMarkers        Json?
   generatedAt        DateTime     @default(now())
   basedOnAssessments String[]
   Couple             Couple       @relation(fields: [coupleId], references: [id], onDelete: Cascade)

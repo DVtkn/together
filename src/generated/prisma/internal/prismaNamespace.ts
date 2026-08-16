@@ -2460,6 +2460,8 @@ export const AssessmentScalarFieldEnum = {
   key: 'key',
   title: 'title',
   description: 'description',
+  emoji: 'emoji',
+  radarAxis: 'radarAxis',
   version: 'version',
   isActive: 'isActive',
   order: 'order'
@@ -2637,6 +2639,7 @@ export const CoupleReportScalarFieldEnum = {
   recommendations: 'recommendations',
   constellationState: 'constellationState',
   astroCompatibility: 'astroCompatibility',
+  riskMarkers: 'riskMarkers',
   generatedAt: 'generatedAt',
   basedOnAssessments: 'basedOnAssessments'
 } as const

@@ -35,6 +35,8 @@ type AssessmentSeed = {
   key: string
   title: string
   description: string
+  emoji?: string
+  radarAxis?: string
   order: number
   questions: QuestionSeed[]
 }
@@ -46,6 +48,7 @@ const ASSESSMENTS: AssessmentSeed[] = [
     title: 'Стиль привязанности',
     description:
       'Оцените, как вы чувствуете себя в близких отношениях. Это поможет понять ваши потребности в близости и автономии.',
+    emoji: '🧷',
     order: 1,
     questions: [
       { order: 1, text: 'Я спокоен(на), когда мой партнёр временно недоступен.', type: QuestionType.LIKERT_1_5, dimension: 'anxiety', reverseScored: true },
@@ -66,6 +69,7 @@ const ASSESSMENTS: AssessmentSeed[] = [
     title: 'Языки любви',
     description:
       'Определите, как вы чаще всего выражаете и воспринимаете любовь: слова, время, подарки, помощь или прикосновения.',
+    emoji: '💝',
     order: 2,
     questions: [
       { order: 1, text: 'Что для вас приятнее всего получить от партнёра?', type: QuestionType.SINGLE_CHOICE, options: ['Комплименты и тёплые слова', 'Совместно проведённое время', 'Подарок или сюрприз', 'Помощь в делах', 'Объятия и прикосновения'], dimension: 'language' },
@@ -84,6 +88,7 @@ const ASSESSMENTS: AssessmentSeed[] = [
     title: 'Конфликты и связь (по Готтману)',
     description:
       'Как вы ведёте себя в ссорах и напряжённых разговорах. Помогает выявить «четырёх всадников» и точки напряжения.',
+    emoji: '⚡',
     order: 3,
     questions: [
       { order: 1, text: 'Во время спора я стараюсь услышать партнёра, а не перебивать.', type: QuestionType.LIKERT_1_5, dimension: 'communication', reverseScored: true },
@@ -105,6 +110,7 @@ const ASSESSMENTS: AssessmentSeed[] = [
     title: 'Ценности пары',
     description:
       'Насколько вы совпадаете по ключевым жизненным ценностям: семья, карьера, финансы, свобода, здоровье и традиции.',
+    emoji: '💎',
     order: 4,
     questions: [
       { order: 1, text: 'Семья для меня — главный приоритет в жизни.', type: QuestionType.LIKERT_1_5, dimension: 'values' },
@@ -126,6 +132,7 @@ const ASSESSMENTS: AssessmentSeed[] = [
     title: 'Большая пятёрка',
     description:
       'Короткий опросник личности. Помогает увидеть, где вы дополняете друг друга, а где можете конфликтовать.',
+    emoji: '🌈',
     order: 5,
     questions: [
       { order: 1, text: 'Я люблю пробовать новое и менять планы.', type: QuestionType.LIKERT_1_5, dimension: 'openness' },
@@ -138,6 +145,101 @@ const ASSESSMENTS: AssessmentSeed[] = [
       { order: 8, text: 'Я устаю от больших шумных компаний.', type: QuestionType.LIKERT_1_5, dimension: 'extraversion', reverseScored: true },
       { order: 9, text: 'Мне трудно отказывать людям.', type: QuestionType.LIKERT_1_5, dimension: 'agreeableness', reverseScored: true },
       { order: 10, text: 'Я спокоен(на) даже в стрессовых ситуациях.', type: QuestionType.LIKERT_1_5, dimension: 'neuroticism', reverseScored: true },
+    ],
+  },
+  {
+    id: 'ass_finance',
+    key: 'finance',
+    title: 'Финансовый стиль',
+    description: 'Как вы распоряжаетесь деньгами, что скрываете и совпадают ли финансовые цели.',
+    emoji: '💰',
+    radarAxis: 'money',
+    order: 6,
+    questions: [
+      { order: 1, text: 'Я спокойно откладываю деньги на будущее.', type: QuestionType.LIKERT_1_5, dimension: 'saving', reverseScored: true },
+      { order: 2, text: 'Мне легко договориться с партнёром о крупной покупке.', type: QuestionType.LIKERT_1_5, dimension: 'saving', reverseScored: true },
+      { order: 3, text: 'Я честно говорю партнёру, сколько потратил(а) на себя.', type: QuestionType.LIKERT_1_5, dimension: 'transparency', reverseScored: true },
+      { order: 4, text: 'Я знаю, сколько мы зарабатываем вместе, и мне это ок.', type: QuestionType.LIKERT_1_5, dimension: 'transparency', reverseScored: true },
+      { order: 5, text: 'Деньги — неловкая тема, мы их не обсуждаем.', type: QuestionType.LIKERT_1_5, dimension: 'transparency', isRiskMarker: true },
+      { order: 6, text: 'У нас похожие цели в деньгах — на год и на десять лет.', type: QuestionType.LIKERT_1_5, dimension: 'goals', reverseScored: true },
+      { order: 7, text: 'Меня задевает, когда партнёр решает финансовые вопросы без меня.', type: QuestionType.LIKERT_1_5, dimension: 'goals', isRiskMarker: true },
+      { order: 8, text: 'Я боюсь, что наши финансовые привычки однажды нас поссорят.', type: QuestionType.LIKERT_1_5, dimension: 'goals', isRiskMarker: true },
+    ],
+  },
+  {
+    id: 'ass_family',
+    key: 'family',
+    title: 'Семейные сценарии',
+    description: 'Как вы решаете быт, конфликты и поддерживаете друг друга в семье.',
+    emoji: '🏠',
+    radarAxis: 'conflict',
+    order: 7,
+    questions: [
+      { order: 1, text: 'Я могу спокойно сказать, что злюсь или расстроен(а).', type: QuestionType.LIKERT_1_5, dimension: 'emotions', reverseScored: true },
+      { order: 2, text: 'В нашей семье принято говорить о чувствах, а не молчать.', type: QuestionType.LIKERT_1_5, dimension: 'emotions', reverseScored: true },
+      { order: 3, text: 'После ссоры я держу обиду дольше, чем хотел(а) бы.', type: QuestionType.LIKERT_1_5, dimension: 'emotions', isRiskMarker: true },
+      { order: 4, text: 'Бытовые споры мы решаем быстро и без войны.', type: QuestionType.LIKERT_1_5, dimension: 'conflicts', reverseScored: true },
+      { order: 5, text: 'Мы умеем ссориться по-человечески: без крика и оскорблений.', type: QuestionType.LIKERT_1_5, dimension: 'conflicts', reverseScored: true },
+      { order: 6, text: 'Один и тот же конфликт возвращается к нам снова и снова.', type: QuestionType.LIKERT_1_5, dimension: 'conflicts', isRiskMarker: true },
+      { order: 7, text: 'Я замечаю, когда партнёру тяжело, и стараюсь поддержать.', type: QuestionType.LIKERT_1_5, dimension: 'care', reverseScored: true },
+      { order: 8, text: 'Мне не хватает заботы, когда я устаю.', type: QuestionType.LIKERT_1_5, dimension: 'care', isRiskMarker: true },
+    ],
+  },
+  {
+    id: 'ass_eq',
+    key: 'eq',
+    title: 'Эмоциональный интеллект',
+    description: 'Как вы понимаете свои чувства, чувства партнёра и справляетесь с эмоциями.',
+    emoji: '🧭',
+    radarAxis: 'communication',
+    order: 8,
+    questions: [
+      { order: 1, text: 'Я понимаю, что именно я чувствую, и могу это назвать.', type: QuestionType.LIKERT_1_5, dimension: 'awareness', reverseScored: true },
+      { order: 2, text: 'Бывает, я не понимаю, почему меня так задело.', type: QuestionType.LIKERT_1_5, dimension: 'awareness', isRiskMarker: true },
+      { order: 3, text: 'Я чувствую настроение партнёра без слов.', type: QuestionType.LIKERT_1_5, dimension: 'empathy', reverseScored: true },
+      { order: 4, text: 'В разговоре я стараюсь услышать, а не отвечать.', type: QuestionType.LIKERT_1_5, dimension: 'empathy', reverseScored: true },
+      { order: 5, text: 'Мне трудно поставить себя на место партнёра.', type: QuestionType.LIKERT_1_5, dimension: 'empathy', isRiskMarker: true },
+      { order: 6, text: 'Когда я злюсь, я могу взять паузу, а не взорваться.', type: QuestionType.LIKERT_1_5, dimension: 'regulation', reverseScored: true },
+      { order: 7, text: 'Я умею успокаивать себя, когда всё раздражает.', type: QuestionType.LIKERT_1_5, dimension: 'regulation', reverseScored: true },
+      { order: 8, text: 'В стрессе я срываюсь на того, кто рядом.', type: QuestionType.LIKERT_1_5, dimension: 'regulation', isRiskMarker: true },
+    ],
+  },
+  {
+    id: 'ass_stress',
+    key: 'stress',
+    title: 'Стресс и поддержка',
+    description: 'Как вы переживаете стресс и чего ждёте от партнёра в тяжёлые дни.',
+    emoji: '🌪️',
+    radarAxis: 'support',
+    order: 9,
+    questions: [
+      { order: 1, text: 'В стрессе я могу сказать, что мне нужно: побыть одному или рядом.', type: QuestionType.LIKERT_1_5, dimension: 'reaction', reverseScored: true },
+      { order: 2, text: 'Когда мне плохо, я честно прошу о помощи.', type: QuestionType.LIKERT_1_5, dimension: 'reaction', reverseScored: true },
+      { order: 3, text: 'Я молчу, когда устал(а), и жду, что партнёр сам догадается.', type: QuestionType.LIKERT_1_5, dimension: 'reaction', isRiskMarker: true },
+      { order: 4, text: 'Я знаю, как партнёр меня поддерживает, и мне это подходит.', type: QuestionType.LIKERT_1_5, dimension: 'support', reverseScored: true },
+      { order: 5, text: 'Мне не хватает поддержки, когда я в стрессе.', type: QuestionType.LIKERT_1_5, dimension: 'support', isRiskMarker: true },
+      { order: 6, text: 'Мы умеем говорить, кто как восстанавливается после тяжёлого дня.', type: QuestionType.LIKERT_1_5, dimension: 'support', reverseScored: true },
+      { order: 7, text: 'Мне нужно больше времени на восстановление, чем партнёру.', type: QuestionType.LIKERT_1_5, dimension: 'recovery' },
+      { order: 8, text: 'После трудного периода мы быстро возвращаемся друг к другу.', type: QuestionType.LIKERT_1_5, dimension: 'recovery', reverseScored: true },
+    ],
+  },
+  {
+    id: 'ass_trust',
+    key: 'trust',
+    title: 'Доверие и границы',
+    description: 'Ревность, личное пространство и цифровые границы.',
+    emoji: '🔐',
+    radarAxis: 'trust',
+    order: 10,
+    questions: [
+      { order: 1, text: 'Я верю партнёру и не проверяю его/её без повода.', type: QuestionType.LIKERT_1_5, dimension: 'trust', reverseScored: true },
+      { order: 2, text: 'Мне становится тревожно, если партнёр долго не отвечает.', type: QuestionType.LIKERT_1_5, dimension: 'trust', isRiskMarker: true },
+      { order: 3, text: 'Я спокойно отпускаю партнёра в поездку без меня.', type: QuestionType.LIKERT_1_5, dimension: 'trust', reverseScored: true },
+      { order: 4, text: 'Личное пространство друг друга — это нормально для нас.', type: QuestionType.LIKERT_1_5, dimension: 'space', reverseScored: true },
+      { order: 5, text: 'Меня задевает, когда партнёр хочет побыть один(на).', type: QuestionType.LIKERT_1_5, dimension: 'space', isRiskMarker: true },
+      { order: 6, text: 'Мы умеем быть близкими, не растворяясь друг в друге.', type: QuestionType.LIKERT_1_5, dimension: 'space', reverseScored: true },
+      { order: 7, text: 'Я спокоен(на) за телефон и соцсети партнёра.', type: QuestionType.LIKERT_1_5, dimension: 'digital', reverseScored: true },
+      { order: 8, text: 'Меня тревожит, когда партнёр много сидит в телефоне при мне.', type: QuestionType.LIKERT_1_5, dimension: 'digital', isRiskMarker: true },
     ],
   },
 ]
@@ -242,6 +344,8 @@ async function main() {
       update: {
         title: assessment.title,
         description: assessment.description,
+        emoji: assessment.emoji ?? null,
+        radarAxis: assessment.radarAxis ?? null,
         order: assessment.order,
         isActive: true,
       },
@@ -250,10 +354,13 @@ async function main() {
         key: assessment.key,
         title: assessment.title,
         description: assessment.description,
+        emoji: assessment.emoji ?? null,
+        radarAxis: assessment.radarAxis ?? null,
         order: assessment.order,
       },
     })
 
+    await prisma.assessmentResponse.deleteMany({ where: { assessmentId: assessment.id } })
     await prisma.question.deleteMany({ where: { assessmentId: assessment.id } })
     await prisma.question.createMany({
       data: assessment.questions.map((q) => ({
