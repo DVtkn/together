@@ -2,6 +2,8 @@
 
 > **Objective**: Приложение для пар: вместе проходить опросники по совместимости, получать совместный отчёт, отслеживать «пульс» отношений неделями, выполнять челленджи, вести базу знаний о партнёре (настроение, хотелки, цветы, виш-лист), находить места для свиданий и общаться с ИИ-психологом, который помнит контекст пары.
 
+> **Статус**: **Beta v0.1.0** — первая бета-версия сайта. Релиз: `v0.1.0-beta` на GitHub. Основной функционал реализован и развёрнут; известны незакрытые пункты (см. раздел 8 — Definition of Done).
+
 ---
 
 ## 1. Проблема и гипотеза
@@ -38,7 +40,8 @@
 - **Челленджи недели**: создаются из пульса, выполняются обоими, история.
 - **База знаний о партнёре**: настроение (emoji + текст), хотелки-мелочи (взял/не взял), любимые цветы, виш-лист (подарено).
 - **Места (свидания)**: выбор города, фильтры по типу/цене/поиску, романтичные места.
-- **ИИ-психолог**: диалоги с историей (сохраняются в БД), помнит контекст пары, кризис → направляет к специалисту.
+- **Инвайт на свидание**: по прототипу — инициатор отправляет инвайт, получатель выбирает вайб/место/дату/время, инициатор получает готовый план с контактами места. Статусы: PENDING → PROPOSED.
+- **ИИ-психолог**: диалоги с историей (сохраняются в БД), помнит контекст пары, кризис → направляет к специалисту. Провайдер: Groq (OpenAI-совместимый), резерв — OpenRouter.
 - **Настройки**: имя, город, уведомления (push/email), удаление аккаунта, экспорт данных (GDPR/152-ФЗ).
 
 ### SHOULD HAVE
@@ -64,10 +67,12 @@
 | FR-6 | Челлендж недели: создание, отметка обоими, статус | `/api/challenges`, `/api/challenges/[id]/complete`, `lib/challenge.ts` |
 | FR-7 | База знаний: настроение, хотелки, цветы, виш-лист | `/api/mood`, `/api/cravings`, `/api/flowers`, `/api/wishlist` |
 | FR-8 | Места: города + заведения, фильтры | `/api/cities`, `/api/venues` |
-| FR-9 | ИИ-чат с историей в БД | `/api/ai`, `/api/ai/conversations/[id]` |
+| FR-9 | ИИ-чат с историей в БД | `/api/ai`, `/api/ai/conversations/[id]`, Groq (OpenAI-совместимый) |
 | FR-10 | Профиль/настройки/удаление/экспорт | `/api/user/*` |
 | FR-11 | Защита всех API авторизацией | `lib/api-auth.ts` |
 | FR-12 | Расширенная библиотека тестов: уровни глубины, достижения, категории карты, ИИ-инсайты по нескольким тестам | Раздел 5, модели Assessment/Question/AssessmentResponse + карта пары |
+| FR-13 | Инвайт на свидание: инициатор → получатель → план | `/api/date-invite`, `/api/date-invite/[id]`, модель `DateInvite` + `InviteStatus` |
+| FR-14 | Настроение: текущее состояние + история за период | `/api/mood`, `/api/mood/history?days=7`, модель `MoodEntry` |
 
 ---
 
@@ -628,7 +633,9 @@ interface InsightGeneration {
 
 ## 6. Данные (Prisma) — парная схема
 
-24 модели: User, Couple, CoupleLinkRequest, Assessment, Question, AssessmentResponse, CoupleReport, PulseCheckin, Challenge, ChallengeCompletion, MoodStatus, SmallCraving, Flower, WishlistItem, Venue, City, AIConversation, AIMessage, AstroProfile, SynastryReport, Bouquet, PlanetPosition, PushSubscription, ConsentLog.
+26 моделей: User, Couple, CoupleLinkRequest, Assessment, Question, AssessmentResponse, CoupleReport, PulseCheckin, Challenge, ChallengeCompletion, MoodStatus, MoodEntry, SmallCraving, Flower, WishlistItem, Venue, City, DateInvite, AIConversation, AIMessage, AstroProfile, SynastryReport, Bouquet, PlanetPosition, PushSubscription, ConsentLog.
+
+Добавлены в бете: **DateInvite** (+ enum `InviteStatus`: PENDING/PROPOSED/CONFIRMED/DECLINED) — инвайты на свидания, **MoodEntry** — история настроения. Venue расширен полями `phone` и `bookingUrl` для кнопок «Позвонить» / «Забронировать».
 
 Схема восстановлена из БД (`prisma db pull`), клиент генерируется в `src/generated/prisma`.
 
@@ -636,7 +643,7 @@ interface InsightGeneration {
 
 ## 7. Стек
 
-Next.js 16 (App Router) · TypeScript · Tailwind 4 · shadcn/ui + Radix · Prisma 7 + Neon PostgreSQL · NextAuth v5 · Zod · bcryptjs · Groq (ИИ, модель `openai/gpt-oss-20b`, запасная `llama-3.3-70b-versatile`; OpenRouter — резервный провайдер) · Upstash Redis (rate limit) · Web Push · date-fns · three/R3F (созвездие в отчёте) · Resend (email) · web-push.
+Next.js 16 (App Router) · TypeScript · Tailwind 4 · shadcn/ui + Radix · Prisma 7 + Neon PostgreSQL · NextAuth v5 · Zod · bcryptjs · **Groq** (ИИ, OpenAI-совместимый API через `openai` SDK; резервный провайдер — OpenRouter) · Upstash Redis (rate limit) · Web Push · date-fns · three/R3F (созвездие в отчёте) · Resend (email) · web-push · astronomy-engine (астро-натальная карта).
 
 ---
 
@@ -649,16 +656,20 @@ Next.js 16 (App Router) · TypeScript · Tailwind 4 · shadcn/ui + Radix · Pris
 - [x] Пульс недели + динамика
 - [x] Челленджи недели
 - [x] База знаний о партнёре (настроение, хотелки, цветы, виш-лист)
-- [x] Места для свиданий
-- [x] ИИ-психолог с историей диалогов
+- [x] Места для свиданий + телефон/ссылка на бронь
+- [x] Инвайт на свидание (инициатор → получатель → план), история настроения с графиком «Неделя»
+- [x] ИИ-психолог с историей диалогов (Groq, резерв OpenRouter)
 - [x] Настройки, экспорт, удаление аккаунта
 - [x] Rate limiting, валидация Zod, безопасность (CSP, bcrypt, никаких секретов в git)
-- [ ] Расширенная библиотека тестов (уровни глубины, достижения, карта категорий, ИИ-инсайты) — см. Раздел 5
-- [ ] Переход на Groq: настройка env на Vercel (AI_PROVIDER, AI_API_BASE, AI_MODEL, AI_FALLBACK_MODEL, AI_API_KEY)
+- [x] Переход на Groq как основной ИИ-провайдер (OpenAI-совместимый, env: AI_PROVIDER/AI_API_BASE/AI_MODEL/AI_API_KEY)
+- [x] Лендинг по макету v3 (тёмная тема, хедер/хиро/фичи/методология/CTA)
+- [ ] Расширенная библиотека тестов (уровни глубины, достижения, карта категорий, ИИ-инсайты) — см. Раздел 5. Спроектирована, реализация запланирована после беты.
+- [ ] Публикация на Vercel (проект `together-app` подключён, прод-деплой в работе)
 
 ---
 
 ## 9. Контакты
 
 **Репозиторий**: `https://github.com/DVtkn/together` (private).
-**Разработка**: `cd ~/Desktop/Projects/together && pnpm install && pnpm db:seed && pnpm dev`.
+**Релизы**: `v0.1.0-beta` — первая бета-версия.
+**Разработка**: `cd ~/Projects/together && pnpm install && pnpm db:seed && pnpm dev`.

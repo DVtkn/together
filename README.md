@@ -1,33 +1,59 @@
-# Together — AI Chat Assistant
+# Together — парное приложение с ИИ-психологом
 
-Чат с ИИ-консультантом на базе NVIDIA Nemotron (Next.js).
+> **Статус**: Beta v0.1.0 — первая бета-версия.
 
-## Проблема
+Приложение для пар: вместе проходить опросники по совместимости, получать совместный отчёт, отслеживать «пульс» отношений, выполнять челленджи, вести базу знаний о партнёре, находить места для свиданий и общаться с ИИ-психологом, который помнит контекст пары.
 
-Чат на странице `/dashboard/ai` возвращает ошибку `Unexpected end of JSON input`.
-Клиент отправляет POST на `/api/ai` с телом `{message, conversationId}`.
-Серверный маршрут проксирует запросы к NVIDIA NIM API.
+## Возможности
+
+- **Пара**: привязка по логину партнёра, статус PENDING/ACTIVE
+- **Опросники** (5): привязанность, языки любви, конфликты (Готтман), ценности, Big Five + автогенерация совместного отчёта
+- **Пульс недели**: близость и конструктивность конфликтов, динамика
+- **Челленджи недели**: создаются из пульса, выполняются обоими
+- **База знаний о партнёре**: настроение (emoji + история), хотелки, цветы, виш-лист
+- **Свидания**: места по городам + инвайт (инициатор отправляет, получатель выбирает вайб/место/дату/время, инициатор получает готовый план с кнопками «Позвонить» / «Забронировать»)
+- **ИИ-психолог**: диалоги с историей в БД, помнит контекст пары, кризис → направляет к специалисту (Groq, резерв — OpenRouter)
+- **Астрология**: натальная карта, синастрия
 
 ## Стек
 
-- Next.js (App Router)
-- TypeScript
-- Prisma + PostgreSQL (Neon)
-- NextAuth (Auth.js v5)
-- NVIDIA NIM API (модель: `nvidia/nemotron-3.5-lightning-30b-a3b`)
-
-## Структура
-
-- `src/app/dashboard/ai/` — страница чата
-- `src/app/api/ai/route.ts` — серверный маршрут (прокси к NVIDIA)
-- `src/app/api/ai/conversations/route.ts` — управление диалогами
-- `src/lib/ai/` — промпты и провайдер ИИ
-- `.env.local` — ключ NVIDIA API (не коммитится)
+Next.js 16 (App Router) · TypeScript · Tailwind 4 · shadcn/ui + Radix · Prisma 7 + Neon PostgreSQL · NextAuth v5 · Zod · bcryptjs · Groq (ИИ) · Upstash Redis · three/R3F · Resend · web-push
 
 ## Запуск
 
 ```bash
 pnpm install
-cp .env.example .env.local  # заполните NVIDIA_API_KEY
-pnpm dev
+cp .env.example .env.local   # заполните переменные (см. ниже)
+pnpm db:seed                 # начальные данные: города, места
+pnpm dev                     # http://localhost:3000
 ```
+
+## Переменные окружения
+
+`.env` — соединение с БД (DATABASE_URL / DIRECT_URL).
+`.env.local` — ИИ и провайдеры:
+
+```
+AI_PROVIDER=groq
+AI_API_BASE=https://api.groq.com/openai/v1
+AI_MODEL=qwen/qwen3.6-27b
+AI_FALLBACK_MODEL=llama-3.3-70b-versatile
+GROQ_API_KEY=...
+```
+
+Без ключа ИИ чат работает в режиме локального заглушечного ответа. Секреты не коммитятся (`.env*` в `.gitignore`, кроме `.env.example`).
+
+## Скрипты
+
+| Команда | Описание |
+|---|---|
+| `pnpm dev` | dev-сервер |
+| `pnpm build` | продакшен-сборка |
+| `pnpm lint` | ESLint |
+| `pnpm db:push` | синхронизация схемы Prisma с БД |
+| `pnpm db:seed` | начальные данные |
+| `pnpm db:studio` | Prisma Studio |
+
+## Репозиторий
+
+`https://github.com/DVtkn/together` (private). Релизы: `v0.1.0-beta`.
