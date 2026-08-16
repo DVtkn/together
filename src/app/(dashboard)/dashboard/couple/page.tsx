@@ -8,7 +8,7 @@ type Status = {
   outgoing: null | { id: string; toUsername: string }
   incoming: null | { id: string; fromUsername: string }
   assessments: Array<{ key: string; title: string; emoji: string; me: boolean; partner: boolean; both: boolean }>
-  report: null | { compatibility: number }
+  report: null | { compatibility: number | null; completedBoth: number; total: number; openedAxes: number }
   synastry: null | { score: number; hasBirthDates: boolean }
 }
 
@@ -34,6 +34,7 @@ export default function CouplePage() {
     if (!r.ok) setErr(j?.error ?? 'Не получилось отправить')
     else { setOk('Инвайт отправлен. Ждём, пока партнёр примет.'); setLogin(''); load() }
     setBusy(false)
+    window.dispatchEvent(new Event('together:refresh'))
   }
 
   async function answer(id: string, accept: boolean) {
@@ -43,6 +44,7 @@ export default function CouplePage() {
       body: JSON.stringify({ accept }),
     })
     setBusy(false); load()
+    window.dispatchEvent(new Event('together:refresh'))
   }
 
   async function cancel(id: string) {
@@ -153,15 +155,17 @@ export default function CouplePage() {
         <Link href="/dashboard/report" className="cd res-card">
           {s.report ? (
             <>
-              <div className="res-num">{s.report.compatibility}%</div>
+              <div className="res-num">{s.report.compatibility !== null ? `${s.report.compatibility}%` : '—'}</div>
               <b>Отчёт пары</b>
-              <span>Где вы сила, где — рост</span>
+              <span>{s.report.compatibility !== null
+                ? `Открыто осей: ${s.report.openedAxes}/8`
+                : `0 тестов · пройдите вместе первый тест`}</span>
             </>
           ) : (
             <>
-              <div className="res-lock">🔒</div>
+              <div className="res-num">—</div>
               <b>Отчёт пары</b>
-              <span>Откроется, когда оба пройдут тесты · {done}/{total}</span>
+              <span>Пройдите тесты вместе — карта откроется</span>
             </>
           )}
         </Link>

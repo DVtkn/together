@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { rateLimit } from '@/lib/rate-limit'
 import { getApiContext, requireCouple, unauthorized } from '@/lib/api-auth'
 import { z } from 'zod'
+import { notify, nameOf } from '@/lib/notify'
 
 const createSchema = z.object({
   vibe: z.string().min(1).max(40).optional(),
@@ -112,6 +113,15 @@ export async function POST(request: NextRequest) {
         time: data.time ?? null,
       },
     })
+
+    if (ctx.partner) {
+      await notify(
+        ctx.partner.id,
+        'date_invited',
+        `${nameOf(ctx.user)} зовёт на свидание — выбери место`,
+        '/dashboard/date'
+      )
+    }
 
     return NextResponse.json({ invite: toDto(invite) }, { status: 201 })
   } catch (error) {

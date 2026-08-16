@@ -106,7 +106,7 @@ export default function PulsePage() {
           </label>
         </div>
         <button className="btn btn-p btn-w" style={{ marginTop: 16 }} onClick={handleSubmit} disabled={submitting}>
-          {submitting ? 'Сохранение…' : userCurrent ? 'Обновить' : 'Сохранить'}
+          'Сохранить'
         </button>
         {userCurrent && (
           <div className="small" style={{ marginTop: 10, textAlign: 'center', color: 'var(--ok)' }}>

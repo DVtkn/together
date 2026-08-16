@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { rateLimit } from '@/lib/rate-limit'
 import { getApiContext, unauthorized } from '@/lib/api-auth'
 import { linkRequestSchema } from '@/lib/utils/validation'
+import { notify } from '@/lib/notify'
 
 // POST /api/couples/link - создать запрос на создание пары (инвайт по логину)
 export async function POST(request: NextRequest) {
@@ -65,6 +66,13 @@ export async function POST(request: NextRequest) {
         updatedAt: new Date(),
       },
     })
+
+    await notify(
+      target.id,
+      'couple_requested',
+      `@${ctx.user.username} приглашает вас стать парой`,
+      '/dashboard/couple'
+    )
 
     return NextResponse.json(
       { ok: true, request: { id: requestRecord.id, toUsername: targetUsername, expiresAt: expiresAt.toISOString() } },

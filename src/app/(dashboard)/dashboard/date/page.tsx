@@ -1,9 +1,25 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import Link from 'next/link'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
 
 type Venue = { n: string; a: string; p: number; e: string; tag?: string }
+
+type Invite = {
+  id: string
+  vibe: string | null
+  vibeEmoji: string | null
+  venueId: string | null
+  venueName: string | null
+  venueArea: string | null
+  venueEmoji: string | null
+  date: string | null
+  time: string | null
+  status: 'PENDING' | 'PROPOSED' | 'CONFIRMED' | 'DECLINED'
+  createdBy: string
+  createdAt: string
+}
 
 const VIBES = [
   { id: 'romantic', e: '🌹', t: 'Романтик', d: 'свечи, вино, разговоры' },
@@ -37,12 +53,23 @@ const WD = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб']
 const MO = ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек']
 
 const fmtDate = (d: Date) => `${WD[d.getDay()]}, ${d.getDate()} ${MO[d.getMonth()]}`
+const fmtISO = (iso: string | null) => {
+  if (!iso) return ''
+  const [y, m, d] = iso.split('-').map(Number)
+  return fmtDate(new Date(y, m - 1, d))
+}
 const isBusy = (d: Date, t: string) => (d.getDate() + parseInt(t) * 2 + Math.floor(parseInt(t.split(':')[1]) / 10)) % 5 === 0
 
 export default function DatePage() {
-  const [partner, setPartner] = useState('Аня')
-  const [view, setView] = useState<'d' | 'a'>('d')          // демо-переключатель ролей
-  const [dState, setDState] = useState<'idle' | 'wait' | 'plan'>('idle')
+  const [loading, setLoading] = useState(true)
+  const [me, setMe] = useState<{ id: string; name: string | null } | null>(null)
+  const [partnerName, setPartnerName] = useState('партнёр')
+  const [hasCouple, setHasCouple] = useState(false)
+  const [invites, setInvites] = useState<Invite[]>([])
+  const [busy, setBusy] = useState(false)
+  const [err, setErr] = useState<string | null>(null)
+
+  const [wizOpen, setWizOpen] = useState(false)
   const [step, setStep] = useState(1)
   const [vibe, setVibe] = useState<string | null>(null)
   const [custom, setCustom] = useState('')
@@ -53,20 +80,77 @@ export default function DatePage() {
   const [calOpen, setCalOpen] = useState(false)
   const [cal, setCal] = useState(() => { const n = new Date(); return { y: n.getFullYear(), m: n.getMonth() } })
 
-  useEffect(() => {
-    fetch('/api/dashboard').then(r => r.json()).then(d => {
-      const me = d?.user?.name
-      const a = d?.couple?.partnerA?.name, b = d?.couple?.partnerB?.name
-      if (a && b) setPartner(a !== me ? a : b)
+  const load = useCallback(() => {
+    fetch('/api/user/profile').then(r => r.json()).then(d => {
+      setMe({ id: d.user.id, name: d.user.name })
+      setPartnerName(d.couple?.partnerName ?? 'партнёр')
+      setHasCouple(Boolean(d.couple?.partnerName))
     }).catch(() => {})
+
+    fetch('/api/date-invite').then(r => r.json()).then(d => {
+      setInvites(d.invites ?? [])
+    }).catch(() => {}).finally(() => setLoading(false))
   }, [])
+
+  useEffect(() => { load() }, [load])
+
+  const active = invites.find(i => i.status !== 'DECLINED') ?? null
+  const isMine = active ? active.createdBy === me?.id : null
+
+  const sendInvite = async () => {
+    setBusy(true); setErr(null)
+    try {
+      const r = await fetch('/api/date-invite', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({}),
+      })
+      const j = await r.json()
+      if (!r.ok) { setErr(j?.error ?? 'Не получилось отправить'); return }
+      setInvites(prev => [j.invite, ...prev])
+      window.dispatchEvent(new Event('together:refresh'))
+    } catch { setErr('Сеть недоступна. Попробуйте позже.') }
+    finally { setBusy(false) }
+  }
+
+  const patchInvite = async (id: string, payload: Record<string, unknown>) => {
+    setBusy(true); setErr(null)
+    try {
+      const r = await fetch(`/api/date-invite/${id}`, {
+        method: 'PATCH', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+      const j = await r.json()
+      if (!r.ok) { setErr(j?.error ?? 'Не получилось обновить'); return }
+      setInvites(prev => prev.map(i => i.id === id ? { ...i, ...j.invite } : i))
+      window.dispatchEvent(new Event('together:refresh'))
+    } catch { setErr('Сеть недоступна. Попробуйте позже.') }
+    finally { setBusy(false) }
+  }
+
+  const cancelInvite = () => { if (active) patchInvite(active.id, { status: 'DECLINED' }) }
+  const confirmInvite = () => { if (active) patchInvite(active.id, { status: 'CONFIRMED' }) }
 
   const pickVibe = (id: string) => { setVibe(id); setVenue(null); setTimeout(() => setStep(2), 150) }
   const pickRandom = () => pickVibe(VIBES[Math.floor(Math.random() * VIBES.length)].id)
   const applyCustom = () => { if (!custom.trim()) return; setVibe('custom'); setVenue(null); setStep(2) }
   const pickVenue = (v: Venue) => { setVenue(v); setTimeout(() => setStep(3), 150) }
   const pickDay = (d: Date) => { setDay(d); if (time && isBusy(d, time)) setTime(null) }
-  const confirm = () => { setDState('plan'); setView('d') }
+
+  const submitChoice = async () => {
+    if (!active || !venue || !day || !time) return
+    const vibeObj = VIBES.find(v => v.id === vibe)
+    await patchInvite(active.id, {
+      vibe: vibe === 'custom' ? 'custom' : (vibe ?? null),
+      vibeEmoji: vibe === 'custom' ? '💡' : (vibeObj?.e ?? null),
+      venueName: venue.n,
+      venueArea: venue.a,
+      venueEmoji: venue.e,
+      date: `${day.getFullYear()}-${String(day.getMonth() + 1).padStart(2, '0')}-${String(day.getDate()).padStart(2, '0')}`,
+      time,
+      status: 'PROPOSED',
+    })
+    setWizOpen(false); setStep(1)
+  }
 
   const venues = vibe === 'custom'
     ? [...VENUES.gastro, ...VENUES.cozy, ...VENUES.romantic]
@@ -79,59 +163,117 @@ export default function DatePage() {
   let lead = first.getDay(); if (lead === 0) lead = 7; lead--
   const daysIn = new Date(cal.y, cal.m + 1, 0).getDate()
 
+  if (loading) return (
+    <DashboardLayout>
+      <div className="loading-screen"><div className="loading-icon">📍</div><div className="loading-text">Загружаем</div></div>
+    </DashboardLayout>
+  )
+
+  if (!hasCouple) return (
+    <DashboardLayout>
+      <div className="h1">Свидание</div>
+      <div className="dim">Ты зовёшь. Она выбирает. Ты бронируешь.</div>
+      <div className="cd static pair-hero">
+        <div className="pair-emoji">💞</div>
+        <div className="h2" style={{ marginBottom: 6 }}>Сначала создайте пару</div>
+        <span className="dim">Инвайты на свидание появятся, когда вы соединитесь с партнёром.</span>
+        <Link className="btn btn-p btn-w mt" href="/dashboard/couple">Создать пару</Link>
+      </div>
+    </DashboardLayout>
+  )
+
+  const planCard = (inv: Invite, title: string, statusLine: string) => (
+    <div className="cd" style={{ border: '1px solid rgba(16,185,129,.3)' }}>
+      <span className="badge ok">{title}</span>
+      <div className="h2" style={{ margin: '12px 0 4px' }}>{inv.vibeEmoji} {inv.venueName}</div>
+      <div className="dim">{inv.venueArea}</div>
+      <div className="sum" style={{ marginTop: 14 }}>
+        <div className="sum-r"><span>Когда</span><b>{fmtISO(inv.date)} · {inv.time}</b></div>
+        <div className="sum-r"><span>Адрес</span><b>{inv.vibe === 'nothing' ? 'У вас дома' : inv.venueArea}</b></div>
+        <div className="sum-r"><span>Телефон</span><b>+7 812 000-00-00</b></div>
+      </div>
+      <div className="dim" style={{ marginTop: 12 }}>{statusLine}</div>
+    </div>
+  )
+
   return (
     <DashboardLayout>
       <div className="h1">Свидание</div>
       <div className="dim">Ты зовёшь. Она выбирает. Ты бронируешь.</div>
 
-      <div className="seg">
-        <button className={view === 'd' ? 'on' : ''} onClick={() => setView('d')}>Ты — Дима</button>
-        <button className={view === 'a' ? 'on' : ''} onClick={() => setView('a')}>Она — {partner}</button>
-      </div>
+      {err && <div className="notice notice-amber" style={{ marginTop: 12 }}>{err}</div>}
 
-      {/* ===== ВИД ПАРНЯ: только инвайт и план ===== */}
-      {view === 'd' && dState === 'idle' && (
+      {/* ===== НЕТ АКТИВНОГО ИНВАЙТА ===== */}
+      {!active && (
         <div className="cd" style={{ textAlign: 'center', padding: '32px 20px' }}>
           <div style={{ fontSize: 40, marginBottom: 12 }}>💌</div>
-          <div className="h2" style={{ marginBottom: 6 }}>Позови {partner}</div>
+          <div className="h2" style={{ marginBottom: 6 }}>Позови {partnerName}</div>
           <div className="dim" style={{ marginBottom: 18 }}>
             Она выберет вайб, место и время.<br />Тебе останется забронировать.
           </div>
-          <button className="btn btn-p btn-w" onClick={() => setDState('wait')}>Отправить инвайт</button>
-        </div>
-      )}
-
-      {view === 'd' && dState === 'wait' && (
-        <div className="cd" style={{ textAlign: 'center', padding: '28px 20px' }}>
-          <div style={{ fontSize: 36, marginBottom: 10 }}>⏳</div>
-          <div className="h2" style={{ marginBottom: 4 }}>Ждём {partner}</div>
-          <div className="dim">Инвайт отправлен. Она выбирает.</div>
-          <button className="btn btn-s btn-w" style={{ marginTop: 16 }} onClick={() => setView('a')}>
-            Посмотреть глазами {partner} →
+          <button className="btn btn-p btn-w" disabled={busy} onClick={sendInvite}>
+            {busy ? 'Отправляем…' : 'Отправить инвайт'}
           </button>
         </div>
       )}
 
-      {view === 'd' && dState === 'plan' && venue && (
-        <div className="cd" style={{ border: '1px solid rgba(16,185,129,.3)' }}>
-          <span className="badge ok">{partner} выбрала</span>
-          <div className="h2" style={{ margin: '12px 0 4px' }}>{venue.n}</div>
-          <div className="dim">{venue.a} · {'₽'.repeat(venue.p)}</div>
-          <div className="sum" style={{ marginTop: 14 }}>
-            <div className="sum-r"><span>Когда</span><b>{day ? fmtDate(day) : ''} · {time}</b></div>
-            <div className="sum-r"><span>Адрес</span><b>{vibe === 'nothing' ? 'У вас дома' : venue.a}</b></div>
-            <div className="sum-r"><span>Телефон</span><b>+7 812 000-00-00</b></div>
+      {/* ===== ИНВАЙТ ОТПРАВЛЕН (мой), ждём выбора ===== */}
+      {active && isMine && active.status === 'PENDING' && (
+        <div className="cd" style={{ textAlign: 'center', padding: '28px 20px' }}>
+          <div style={{ fontSize: 36, marginBottom: 10 }}>⏳</div>
+          <div className="h2" style={{ marginBottom: 4 }}>Ждём {partnerName}</div>
+          <div className="dim">Инвайт отправлен. Она выбирает.</div>
+          <button className="btn btn-s btn-w" style={{ marginTop: 16 }} disabled={busy} onClick={cancelInvite}>Отменить инвайт</button>
+        </div>
+      )}
+
+      {/* ===== ВХОДЯЩИЙ ИНВАЙТ (от партнёра), ждёт выбора ===== */}
+      {active && !isMine && active.status === 'PENDING' && !wizOpen && (
+        <div className="cd static" style={{ border: '1px solid rgba(139,92,246,.35)' }}>
+          <div className="cd-r">
+            <div className="cd-ic">💌</div>
+            <div className="cd-t">
+              <b>{partnerName} зовёт тебя на свидание</b>
+              <span>Выбери вайб, место и время.</span>
+            </div>
           </div>
-          <div style={{ display: 'flex', gap: 8, marginTop: 14 }}>
-            <a className="btn btn-p" style={{ flex: 1 }} href="tel:+78120000000">📞 Позвонить</a>
-            <button className="btn btn-s" style={{ flex: 1 }}>Забронировать</button>
+          <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
+            <button className="btn btn-p" style={{ flex: 1 }} disabled={busy} onClick={() => { setWizOpen(true); setStep(1) }}>Выбрать</button>
+            <button className="btn btn-s" style={{ flex: 1 }} disabled={busy} onClick={cancelInvite}>Отклонить</button>
           </div>
         </div>
       )}
 
-      {/* ===== ВИД ДЕВУШКИ: wizard выбора ===== */}
-      {view === 'a' && (
+      {/* ===== ВЫБРАН (PROPOSED), я создатель — подтвердить ===== */}
+      {active && isMine && active.status === 'PROPOSED' && (
         <>
+          {planCard(active, `${partnerName} выбрала`, 'Подтверди или отклони, чтобы завершить.')}
+          <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
+            <button className="btn btn-p" style={{ flex: 1 }} disabled={busy} onClick={confirmInvite}>Подтвердить</button>
+            <button className="btn btn-s" style={{ flex: 1 }} disabled={busy} onClick={cancelInvite}>Отклонить</button>
+          </div>
+        </>
+      )}
+
+      {/* ===== ВЫБРАН (PROPOSED), я отвечающий — жду подтверждения ===== */}
+      {active && !isMine && active.status === 'PROPOSED' && (
+        planCard(active, 'Твой выбор отправлен', 'Ждём подтверждения.')
+      )}
+
+      {/* ===== ПОДТВЕРЖДЁН ===== */}
+      {active && active.status === 'CONFIRMED' && (
+        <>
+          {planCard(active, 'Свидание подтверждено', 'Не забудь забронировать и позвонить.')}
+          <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
+            <a className="btn btn-p" style={{ flex: 1 }} href="tel:+78120000000">📞 Позвонить</a>
+          </div>
+        </>
+      )}
+
+      {/* ===== WIZARD ВЫБОРА (для партнёра) ===== */}
+      {wizOpen && active && !isMine && active.status === 'PENDING' && (
+        <>
+          <button className="link-btn" style={{ marginBottom: 4 }} onClick={() => setWizOpen(false)}>← Назад</button>
           <div className="wiz-dots">
             {[1, 2, 3, 4].map(i => (
               <div key={i} className={`wd ${step === i ? 'on' : ''} ${step > i ? 'done' : ''}`} />
@@ -244,9 +386,29 @@ export default function DatePage() {
                 <div className="sum-r"><span>Место</span><b>{venue.n} · {venue.a}</b></div>
                 <div className="sum-r"><span>Когда</span><b>{day ? fmtDate(day) : ''} · {time}</b></div>
               </div>
-              <button className="btn btn-p btn-w" style={{ marginTop: 14 }} onClick={confirm}>Отправить Диме</button>
+              <button className="btn btn-p btn-w" style={{ marginTop: 14 }} disabled={busy} onClick={submitChoice}>
+                {busy ? 'Отправляем…' : `Отправить ${partnerName === 'партнёр' ? '' : partnerName}`}
+              </button>
             </>
           )}
+        </>
+      )}
+
+      {/* ===== ИСТОРИЯ ===== */}
+      {invites.some(i => i.status === 'DECLINED' || i.status === 'CONFIRMED') && (
+        <>
+          <div className="k" style={{ marginTop: 24 }}>История</div>
+          {invites.filter(i => i.status === 'DECLINED' || i.status === 'CONFIRMED').slice(0, 3).map(inv => (
+            <div className="cd static" key={inv.id}>
+              <div className="cd-r">
+                <div className="cd-ic">{inv.status === 'CONFIRMED' ? '✅' : '✖️'}</div>
+                <div className="cd-t">
+                  <b>{inv.venueName ?? 'Инвайт'}</b>
+                  <span>{inv.status === 'CONFIRMED' ? 'Подтверждено' : 'Отклонено'} · {fmtISO(inv.date)} {inv.time ? `· ${inv.time}` : ''}</span>
+                </div>
+              </div>
+            </div>
+          ))}
         </>
       )}
     </DashboardLayout>

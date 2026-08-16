@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { rateLimit } from '@/lib/rate-limit'
 import { getApiContext, unauthorized } from '@/lib/api-auth'
 import { linkAnswerSchema } from '@/lib/utils/validation'
+import { notify, nameOf } from '@/lib/notify'
 
 // PATCH /api/couples/link/[id] - принять или отклонить входящий запрос
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -76,10 +77,23 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 
       await prisma.coupleLinkRequest.update({ where: { id }, data: { status: 'ACCEPTED', updatedAt: new Date() } })
 
+      await notify(
+        requestRecord.fromUserId,
+        'couple_accepted',
+        `${nameOf(ctx.user)} принял(а) инвайт — вы пара! 🎉`,
+        '/dashboard/couple'
+      )
+
       return NextResponse.json({ ok: true, couple: { id: couple.id, status: couple.status } })
     }
 
     await prisma.coupleLinkRequest.update({ where: { id }, data: { status: 'REJECTED', updatedAt: new Date() } })
+    await notify(
+      requestRecord.fromUserId,
+      'couple_rejected',
+      `${nameOf(ctx.user)} отклонил(а) инвайт`,
+      '/dashboard/couple'
+    )
     return NextResponse.json({ ok: true })
   } catch (error) {
     console.error('Answer link request error:', error)

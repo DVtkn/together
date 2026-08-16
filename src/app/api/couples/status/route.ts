@@ -5,6 +5,7 @@ import { getApiContext, unauthorized } from '@/lib/api-auth'
 import { computeZodiac } from '@/lib/astro/zodiac'
 import { computeNatalChart } from '@/lib/astro/ephemeris'
 import { computeSynastry } from '@/lib/astro/synastry'
+import { buildProgressiveReport } from '@/lib/report/progressive'
 
 export async function GET(request: NextRequest) {
   const rl = await rateLimit('default', request.headers.get('x-forwarded-for') || 'anon')
@@ -23,24 +24,22 @@ export async function GET(request: NextRequest) {
   let outgoing = null
   let incoming = null
 
-  if (couple) {
-    const pendingOutgoing = await prisma.coupleLinkRequest.findFirst({
-      where: { fromUserId: user.id, status: 'PENDING', expiresAt: { gt: new Date() } },
-      include: { User_CoupleLinkRequest_toUserIdToUser: { select: { username: true } } },
-      orderBy: { createdAt: 'desc' },
-    })
-    if (pendingOutgoing) {
-      outgoing = { id: pendingOutgoing.id, toUsername: pendingOutgoing.User_CoupleLinkRequest_toUserIdToUser.username }
-    }
+  const pendingOutgoing = await prisma.coupleLinkRequest.findFirst({
+    where: { fromUserId: user.id, status: 'PENDING', expiresAt: { gt: new Date() } },
+    include: { User_CoupleLinkRequest_toUserIdToUser: { select: { username: true } } },
+    orderBy: { createdAt: 'desc' },
+  })
+  if (pendingOutgoing) {
+    outgoing = { id: pendingOutgoing.id, toUsername: pendingOutgoing.User_CoupleLinkRequest_toUserIdToUser.username }
+  }
 
-    const pendingIncoming = await prisma.coupleLinkRequest.findFirst({
-      where: { toUserId: user.id, status: 'PENDING', expiresAt: { gt: new Date() } },
-      include: { User_CoupleLinkRequest_fromUserIdToUser: { select: { username: true } } },
-      orderBy: { createdAt: 'desc' },
-    })
-    if (pendingIncoming) {
-      incoming = { id: pendingIncoming.id, fromUsername: pendingIncoming.User_CoupleLinkRequest_fromUserIdToUser.username }
-    }
+  const pendingIncoming = await prisma.coupleLinkRequest.findFirst({
+    where: { toUserId: user.id, status: 'PENDING', expiresAt: { gt: new Date() } },
+    include: { User_CoupleLinkRequest_fromUserIdToUser: { select: { username: true } } },
+    orderBy: { createdAt: 'desc' },
+  })
+  if (pendingIncoming) {
+    incoming = { id: pendingIncoming.id, fromUsername: pendingIncoming.User_CoupleLinkRequest_fromUserIdToUser.username }
   }
 
   const assessments = await prisma.assessment.findMany({
@@ -78,17 +77,12 @@ export async function GET(request: NextRequest) {
   let synastry = null
 
   if (couple) {
-    const latestReport = await prisma.coupleReport.findFirst({
-      where: { coupleId: couple.id },
-      orderBy: { generatedAt: 'desc' },
-    })
-    if (latestReport) {
-      const radar = latestReport.radarData as Record<string, number>
-      const values = Object.values(radar)
-      const compatibility = values.length
-        ? Math.round((values.reduce((s, v) => s + v, 0) / values.length / 10) * 100)
-        : 0
-      report = { compatibility }
+    const progressive = await buildProgressiveReport(ctx)
+    report = {
+      compatibility: progressive.compatibility,
+      completedBoth: progressive.completedBoth,
+      total: progressive.total,
+      openedAxes: progressive.axes.filter((a) => a.value !== null).length,
     }
 
     if (partner) {

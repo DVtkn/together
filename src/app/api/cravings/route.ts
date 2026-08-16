@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { rateLimit } from '@/lib/rate-limit'
 import { getApiContext, unauthorized } from '@/lib/api-auth'
 import { z } from 'zod'
+import { notify, nameOf } from '@/lib/notify'
 
 const cravingSchema = z.object({
   item: z.string().min(1).max(200),
@@ -61,6 +62,15 @@ export async function POST(request: NextRequest) {
         updatedAt: new Date(),
       },
     })
+
+    if (ctx.partner) {
+      await notify(
+        ctx.partner.id,
+        'craving_added',
+        `У ${nameOf(ctx.user)} новая хотелка: ${craving.item}`,
+        '/dashboard/partner'
+      )
+    }
 
     return NextResponse.json({ craving: { id: craving.id, item: craving.item, status: craving.status } }, { status: 201 })
   } catch (error) {

@@ -1,8 +1,20 @@
-// AI provider for OpenRouter API
+// AI provider for Groq - text only
 // Uses fetch directly to avoid openai npm package type issues
 
-export const OPENROUTER_API_BASE = process.env.AI_API_BASE || process.env.OPENROUTER_API_BASE || 'https://openrouter.ai/api/v1'
-export const OPENROUTER_MODEL = process.env.AI_MODEL || process.env.OPENROUTER_MODEL || 'openai/gpt-oss-20b:free'
+export const GROQ_API_BASE = "https://api.groq.com/openai/v1"
+export const API_BASE = GROQ_API_BASE
+const apiKey = process.env.GROQ_API_KEY
+
+if (!apiKey) {
+  throw new Error("Groq API key not configured. Set GROQ_API_KEY in .env.local")
+}
+
+// Model chain: primary → fallback → OpenRouter free
+const CHAIN = [
+  process.env.AI_MODEL || "openai/gpt-oss-120b",
+  process.env.AI_FALLBACK_MODEL || "openai/gpt-oss-20b",
+  "qwen/qwen3.6-27b",
+]
 
 export interface AIResponse {
   content: string
@@ -10,103 +22,92 @@ export interface AIResponse {
 }
 
 export async function getAIResponse(messages: Array<{role: string; content: string}>): Promise<AIResponse> {
-  const apiKey = process.env.AI_API_KEY || process.env.GROQ_API_KEY || process.env.OPENROUTER_API_KEY
-  if (!apiKey) {
-    return { content: 'AI API key not configured. Set OPENROUTER_API_KEY in .env.local', usage: { input: 0, output: 0 } }
-  }
+  // Ensure only plain text messages - strip any non-ASCII that could cause issues
+  const safeMessages = messages.map((m) => ({
+    role: String(m.role),
+    content: String(m.content).replace(/[^\x20-\x7E\n\r]/g, " ").trim(),
+  }))
 
-  try {
-    const response = await fetch(OPENROUTER_API_BASE + '/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + apiKey,
-      },
-      body: JSON.stringify({
-        model: OPENROUTER_MODEL,
-        messages: messages,
-        temperature: 0.7,
-        max_tokens: 700,
-      }),
-    })
+  // Try each model in the chain until one works
+  for (let i = 0; i < CHAIN.length; i++) {
+    const model = CHAIN[i]
+    try {
+      const response = await fetch(API_BASE + "/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + apiKey,
+        },
+        body: JSON.stringify({
+          model,
+          messages: safeMessages,
+          temperature: 0.7,
+          max_tokens: 500,
+        }),
+      })
 
-    if (!response.ok) {
-      const err = await response.text()
-      return { content: 'Ошибка ИИ: ' + err.slice(0, 200), usage: { input: 0, output: 0 } }
-    }
-
-    const json: {
-      choices?: Array<{ message?: { content?: string | null; reasoning?: string } }>
-      usage?: { input?: number; output?: number }
-    } = await response.json()
-    const choices = json.choices || []
-    let content = ''
-    let usage: { input: number; output: number } = { input: 0, output: 0 }
-    if (choices.length > 0 && json.usage) {
-      const firstChoice = choices[0]
-      const msg = firstChoice.message
-      content = msg?.content ?? msg?.reasoning ?? ''
-      const usageData = json.usage
-      if (usageData.input !== undefined && usageData.output !== undefined) {
-        usage = { input: usageData.input, output: usageData.output }
+      if (!response.ok) {
+        const errText = await response.text()
+        console.error(`[groq] model=${model} → ${response.status} err=${errText.substring(0, 100)}`)
+        continue // try next model
       }
+
+      const data = await response.json()
+      const choices = data.choices || []
+      
+      if (choices.length === 0) {
+        console.error(`[groq] model=${model} no choices`)
+        continue // try next model
+      }
+
+      const msg = choices[0]?.message || {}
+      const rawContent = msg?.content || msg?.reasoning || ""
+      
+      // Strip any non-text characters that could cause issues
+      const cleanContent = rawContent.replace(/[^\x20-\x7E\n\r\.,;:!?'\"\-()\[\]]/g, " ").trim()
+      
+      const usage = data.usage || { input: 0, output: 0 }
+      return { content: cleanContent, usage }
+    } catch (e) {
+      console.error(`[groq] model=${model} exception`, e)
+      continue // try next model
     }
-    return { content, usage }
-  } catch {
-    return { content: 'Ошибка соединения с ИИ', usage: { input: 0, output: 0 } }
   }
+
+  // All models failed - return offline fallback
+  return { content: "Сова не может подключиться к ИИ в данный момент. Пожалуйста, попробуйте позже.", usage: { input: 0, output: 0 } }
 }
 
 export function buildMessages(systemPrompt: string, messages: Array<{role: string; content: string}>) {
   return [
-    { role: 'system' as const, content: systemPrompt },
-    ...messages,
+    { role: 'system' as const, content: String(systemPrompt) },
+    ...messages.map((m) => ({
+      role: String(m.role),
+      content: String(m.content).replace(/[^\x20-\x7E\n\r]/g, " ").trim(),
+    })),
   ]
 }
 
-export function extractContent(response: {choices?: Array<{ message?: { content?: string | null; reasoning?: string } }>; usage?: { input?: number; output?: number }}): string {
+export function safeParseResponse(response: {choices?: Array<{ message?: { content?: string | null; reasoning?: string } }>; usage?: { input?: number; output?: number }}): string {
   try {
     const choices = response.choices || []
-    if (choices.length === 0) return ''
-    const firstChoice = choices[0]
-    const msg = firstChoice.message
-    if (!msg) return ''
-    return stripReasoning(msg.content ?? msg.reasoning ?? '')
+    if (choices.length === 0) return "ИИ не ответил."
+    const msg = choices[0]?.message || {}
+    return (msg?.content || msg?.reasoning || "").replace(/[^\x20-\x7E\n\r\.,;:!?'\"\-()\[\]]/g, " ").trim()
   } catch {
-    return ''
-  }
-}
-
-export function stripReasoning(content: string): string {
-  return content
-    .replace(/<think>[\s\S]*?<\/think>/gi, '')
-    .replace(/<thinking>[\s\S]*?<\/thinking>/gi, '')
-    .replace(/^### Thinking Process:[\s\S]*?(?=###|$)/i, '')
-    .trim()
-}
-
-export function safeParseResponse(response: {choices?: Array<{ message?: { content?: string | null; reasoning?: string } }>; usage?: { input?: number; output?: number }}): AIResponse {
-  try {
-    const content = extractContent(response)
-    const rawUsage = response.usage || { input: 0, output: 0 }; const usage: { input: number; output: number } = { input: rawUsage.input ?? 0, output: rawUsage.output ?? 0 }
-    return { content, usage }
-  } catch {
-    return { content: '', usage: { input: 0, output: 0 } }
+    return "ИИ не смог сформировать ответ."
   }
 }
 
 export function isValidContent(content: string): boolean {
-  return content !== '' && content.length > 0 && content.length < 10000
+  return content !== "" && content.length > 0 && content.length < 2000
 }
 
 export function handleAIError(error: unknown): string {
   if (error instanceof Error) {
-    const msg = error.message.toLowerCase()
-    if (msg.includes('rate limit')) return 'Слишком много запросов'
-    if (msg.includes('quota')) return 'Превышен лимит'
-    if (msg.includes('authentication')) return 'Ошибка авторизации'
-    if (msg.includes('timeout')) return 'Время ответа истекло'
     return error.message
   }
-  return 'Произошла неизвестная ошибка'
+  return "Неизвестная ошибка"
 }
+
+export const SYSTEM_PROMPT = "Ты — психолог-консультант для пар. Отвечай очень кратко (до 80 слов), по-русски, поддерживающе и эмпатично. Твоя задача — помогать парам понимать друг друга, разрешать конфликты и укреплять близость. Давай практический совет или вопрос, а не длинный текст."

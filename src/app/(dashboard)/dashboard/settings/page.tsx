@@ -269,7 +269,7 @@ export default function SettingsPage() {
         <div className="small" style={{ marginTop: 6 }}>Город нужен для подборок мест в «Куда пойти вдвоём».</div>
 
         <button className="btn btn-p btn-w" style={{ marginTop: 16 }} onClick={handleSave} disabled={saving}>
-          {saving ? 'Сохранение…' : 'Сохранить профиль'}
+          'Сохранить профиль'
         </button>
       </div>
 
@@ -304,7 +304,7 @@ export default function SettingsPage() {
           <button className={cn('tgl', settings.challengeReminder && 'on')} onClick={toggle('challengeReminder')} role="switch" aria-checked={settings.challengeReminder} aria-label="Новые челленджи" />
         </div>
         <button className="btn btn-s btn-w" style={{ marginTop: 16 }} onClick={handleSave} disabled={saving}>
-          {saving ? 'Сохранение…' : 'Сохранить уведомления'}
+          'Сохранить уведомления'
         </button>
       </div>
 

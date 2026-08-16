@@ -2,74 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { rateLimit } from "@/lib/rate-limit"
 import { getApiContext, unauthorized } from "@/lib/api-auth"
 import { prisma } from "@/lib/prisma"
-import { buildMessages, safeParseResponse, isValidContent, handleAIError } from "@/lib/ai/provider"
-import { SYSTEM_PROMPT } from "@/lib/ai/prompt"
-
-// Провайдер ИИ настраивается через env. Поддерживаются Groq и OpenRouter
-// (оба — OpenAI-совместимый /chat/completions endpoint).
-const API_BASE = process.env.AI_API_BASE || process.env.OPENROUTER_API_BASE || "https://openrouter.ai/api/v1"
-const apiKey = process.env.AI_API_KEY || process.env.GROQ_API_KEY || process.env.OPENROUTER_API_KEY || process.env.OPENAI_API_KEY
-const isGroq = process.env.AI_PROVIDER === "groq" || !!process.env.GROQ_API_KEY
-
-if (!apiKey) {
-  throw new Error("AI API key not configured. Set AI_API_KEY / GROQ_API_KEY / OPENROUTER_API_KEY in .env.local")
-}
-
-// Основная модель + резервная на случай rate-limit (429).
-const PRIMARY_MODEL = process.env.AI_MODEL || process.env.OPENROUTER_MODEL || (isGroq ? "openai/gpt-oss-20b" : "openai/gpt-oss-20b:free")
-const FALLBACK_MODEL = process.env.AI_FALLBACK_MODEL || process.env.OPENROUTER_FALLBACK_MODEL || (isGroq ? "llama-3.3-70b-versatile" : "nvidia/nemotron-3-nano-30b-a3b:free")
-
-interface AIProviderResult {
-  ok: boolean
-  status: number
-  content?: string
-  usage?: { input: number; output: number }
-}
-
-async function callProvider(model: string, messages: unknown[]): Promise<AIProviderResult> {
-  const controller = new AbortController()
-  const timeout = setTimeout(() => controller.abort(), 60000)
-
-  try {
-    const response = await fetch(API_BASE + "/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + apiKey,
-      },
-      body: JSON.stringify({
-        model,
-        messages,
-        temperature: 0.7,
-        max_tokens: 700,
-      }),
-      signal: controller.signal,
-    })
-
-    const text = await response.text()
-    let data: unknown
-    try {
-      data = JSON.parse(text)
-    } catch {
-      return { ok: false, status: response.status }
-    }
-
-    if (!response.ok) {
-      return { ok: false, status: response.status }
-    }
-
-    const parsed = safeParseResponse(data as never)
-    if (!isValidContent(parsed.content)) {
-      return { ok: false, status: 500 }
-    }
-
-    return { ok: true, status: response.status, content: parsed.content, usage: parsed.usage }
-  } catch {
-    return { ok: false, status: 0 }
-  } finally {
-    clearTimeout(timeout)
-  }
-}
+import { buildMessages, safeParseResponse, getAIResponse, SYSTEM_PROMPT } from "@/lib/ai/provider"
 
 export async function GET(request: NextRequest) {
   const rl = await rateLimit("ai", request.headers.get("x-forwarded-for") || "anon")
@@ -154,8 +87,7 @@ export async function POST(request: NextRequest) {
       conversationId = created.id
     }
 
-    // Сразу сохраняем сообщение пользователя — переписка не потеряется,
-    // даже если ИИ не ответит (rate-limit, сеть и т.п.)
+    // Сохраняем сообщение пользователя
     await prisma.aIMessage.create({
       data: {
         id: `msg_${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`,
@@ -163,11 +95,11 @@ export async function POST(request: NextRequest) {
         userId: ctx.user.id,
         role: "USER",
         content: message,
-        model: PRIMARY_MODEL,
+        model: "openai/gpt-oss-120b",
       },
     })
 
-    // История беседы (до 20 сообщений); уже включает только что сохранённое
+    // История беседы (до 20 сообщений)
     const history = await prisma.aIMessage.findMany({
       where: { conversationId },
       orderBy: { createdAt: "asc" },
@@ -181,56 +113,36 @@ export async function POST(request: NextRequest) {
 
     const messages = buildMessages(SYSTEM_PROMPT, chatMessages)
 
-    // Пробуем основную модель, при 429 (rate-limit free-пула) — резервную
-    let result = await callProvider(PRIMARY_MODEL, messages)
-    if (!result.ok && result.status === 429) {
-      console.log("Primary model rate-limited, falling back to", FALLBACK_MODEL)
-      result = await callProvider(FALLBACK_MODEL, messages)
-    }
+    // Получаем ответ от ИИ
+    const aiResponse = await getAIResponse(messages)
 
-    if (!result.ok || !result.content) {
-      const isRateLimit = result.status === 429
-      return NextResponse.json(
-        {
-          error: isRateLimit
-            ? isGroq
-              ? "Превышен лимит запросов к ИИ. Подождите немного и попробуйте ещё раз."
-              : "Бесплатный лимит ИИ исчерпан (50 запросов/день). Попробуйте завтра или пополните баланс на openrouter.ai, чтобы получить 1000 запросов/день."
-            : result.status === 0
-              ? "Нет ответа от ИИ. Проверьте соединение."
-              : "ИИ не смог сформировать ответ. Попробуйте ещё раз.",
-          conversationId,
-        },
-        { status: isRateLimit ? 429 : 502 }
-      )
-    }
+    // Сохраняем ответ ИИ
+    await prisma.aIMessage.create({
+      data: {
+        id: `msg_${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`,
+        conversationId,
+        role: "ASSISTANT",
+        content: aiResponse.content,
+        tokensInput: aiResponse.usage?.input,
+        tokensOutput: aiResponse.usage?.output,
+        model: "openai/gpt-oss-120b",
+      },
+    })
 
-    await prisma.$transaction([
-      prisma.aIMessage.create({
-        data: {
-          id: `msg_${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`,
-          conversationId,
-          role: "ASSISTANT",
-          content: result.content,
-          tokensInput: result.usage?.input,
-          tokensOutput: result.usage?.output,
-          model: PRIMARY_MODEL,
-        },
-      }),
-      prisma.aIConversation.update({
-        where: { id: conversationId },
-        data: { updatedAt: new Date() },
-      }),
-    ])
+    // Обновляем дату беседы
+    await prisma.aIConversation.update({
+      where: { id: conversationId },
+      data: { updatedAt: new Date() },
+    })
 
     return NextResponse.json({
       conversationId,
-      choices: [{ index: 0, message: { role: "assistant", content: result.content }, finish_reason: "stop" }],
-      usage: { prompt_tokens: result.usage?.input || 0, completion_tokens: result.usage?.output || 0, total_tokens: (result.usage?.input || 0) + (result.usage?.output || 0) },
+      choices: [{ index: 0, message: { role: "assistant", content: aiResponse.content }, finish_reason: "stop" }],
+      usage: { prompt_tokens: aiResponse.usage?.input || 0, completion_tokens: aiResponse.usage?.output || 0, total_tokens: (aiResponse.usage?.input || 0) + (aiResponse.usage?.output || 0) },
     })
   } catch (error: unknown) {
     console.error("AI API error:", error)
-    return NextResponse.json({ error: handleAIError(error as Error), conversationId: (body as { conversationId?: string }).conversationId || "temp-" + Date.now() }, { status: 500 })
+    return NextResponse.json({ error: "Ошибка при общении с ИИ. Попробуйте ещё раз." }, { status: 500 })
   }
 }
 

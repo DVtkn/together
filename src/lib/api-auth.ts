@@ -24,6 +24,7 @@ export async function getApiContext(): Promise<ApiContext | null> {
   const couple = await prisma.couple.findFirst({
     where: {
       OR: [{ partnerAId: user.id }, { partnerBId: user.id }],
+      status: { notIn: ['ARCHIVED', 'DELETED'] },
     },
   })
   let partner: User | null = null

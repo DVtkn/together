@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { rateLimit } from '@/lib/rate-limit'
 import { getApiContext, unauthorized } from '@/lib/api-auth'
 import { z } from 'zod'
+import { notify, nameOf } from '@/lib/notify'
 
 const actionSchema = z.object({
   action: z.enum(['pick', 'unpick']),
@@ -43,6 +44,15 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
       where: { id },
       data: { status, pickedUpByUserId, pickedUpAt },
     })
+
+    if (action === 'pick') {
+      await notify(
+        craving.userId,
+        'craving_picked',
+        `${nameOf(ctx.user)} принёс: ${craving.item} 🎁`,
+        '/dashboard/partner'
+      )
+    }
 
     return NextResponse.json({ craving: { id: updated.id, item: updated.item, status: updated.status } })
   } catch (error) {

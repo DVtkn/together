@@ -1,10 +1,14 @@
 import { getToken } from 'next-auth/jwt'
-import { NextResponse } from 'next/server'
+import { NextResponse, type NextRequest } from 'next/server'
 
-export default async function proxy(req: Request) {
-  const token = await getToken({ req, secret: process.env.AUTH_SECRET })
-  const isLoggedIn = !!token
+export default async function proxy(req: NextRequest) {
   const url = new URL(req.url)
+  const token = await getToken({
+    req,
+    secret: process.env.AUTH_SECRET,
+    secureCookie: url.protocol === 'https:',
+  })
+  const isLoggedIn = !!token
   const isOnDashboard = url.pathname.startsWith('/dashboard')
   const isOnAuth = url.pathname === '/signin' || url.pathname === '/register'
 

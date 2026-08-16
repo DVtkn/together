@@ -6,7 +6,7 @@ import { rateLimit } from '@/lib/rate-limit'
 
 export const registerSchema = z.object({
   username: z.string().min(3, 'Логин минимум 3 символа').max(20, 'Логин максимум 20 символов').regex(/^[a-zA-Z0-9_]+$/, 'Только буквы, цифры и подчёркивание'),
-  password: z.string().min(8, 'Пароль минимум 8 символов'),
+  password: z.string().min(4, 'Пароль минимум 4 символа'),
   name: z.string().min(2, 'Имя минимум 2 символа').max(50, 'Имя максимум 50 символов').optional(),
   dateOfBirth: z.string().optional(),
 })

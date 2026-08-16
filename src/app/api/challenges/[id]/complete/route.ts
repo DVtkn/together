@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { rateLimit } from '@/lib/rate-limit'
 import { getApiContext, unauthorized } from '@/lib/api-auth'
+import { notify, nameOf } from '@/lib/notify'
 
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const rl = await rateLimit('default', request.headers.get('x-forwarded-for') || 'anon')
@@ -47,6 +48,15 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
         where: { id },
         data: { status: 'COMPLETED', completedAt: new Date() },
       })
+    }
+
+    if (ctx.partner) {
+      await notify(
+        ctx.partner.id,
+        'challenge_completed',
+        `${nameOf(ctx.user)} выполнил(а) челлендж «${challenge.title}»`,
+        '/dashboard/challenges'
+      )
     }
 
     return NextResponse.json({ ok: true, completedByCurrent, completedByPartner })

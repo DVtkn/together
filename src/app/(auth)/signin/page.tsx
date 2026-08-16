@@ -48,10 +48,6 @@ function SignInForm() {
     }
   }
 
-  const handleOAuthSignIn = (provider: string) => {
-    signIn(provider, { callbackUrl })
-  }
-
   const shownError = formError || (error === 'CredentialsSignin' ? 'Неверный логин или пароль' : error ? 'Ошибка входа. Попробуйте снова.' : '')
 
   return (
@@ -71,13 +67,6 @@ function SignInForm() {
             {isLoading ? 'Входим…' : 'Войти'}
           </button>
         </form>
-
-        <div className="auth-divider">или</div>
-
-        <div className="auth-oauth">
-          <button className="btn btn-s" onClick={() => handleOAuthSignIn('google')} disabled={isLoading} type="button">Google</button>
-          <button className="btn btn-s" onClick={() => handleOAuthSignIn('apple')} disabled={isLoading} type="button">Apple</button>
-        </div>
 
         <Link className="auth-link" href="/register">Нет пары? Создать аккаунт</Link>
       </div>

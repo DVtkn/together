@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { rateLimit } from '@/lib/rate-limit'
 import { getApiContext, unauthorized } from '@/lib/api-auth'
 import { z } from 'zod'
+import { notify, nameOf } from '@/lib/notify'
 
 const moodSchema = z.object({
   emoji: z.string().min(1).max(10),
@@ -79,6 +80,15 @@ export async function POST(request: NextRequest) {
         text: text ?? null,
       },
     })
+
+    if (ctx.partner) {
+      await notify(
+        ctx.partner.id,
+        'mood_changed',
+        `Настроение ${nameOf(ctx.user)}: ${emoji}`,
+        '/dashboard/daily'
+      )
+    }
 
     return NextResponse.json({ mood: { emoji: mood.emoji, text: mood.text } })
   } catch (error) {

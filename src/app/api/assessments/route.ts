@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { rateLimit } from '@/lib/rate-limit'
 import { getApiContext, unauthorized } from '@/lib/api-auth'
 import { assessmentSubmitSchema } from '@/lib/utils/validation'
+import { notify, nameOf } from '@/lib/notify'
 
 export async function GET(request: NextRequest) {
   const rl = await rateLimit('assessments', request.headers.get('x-forwarded-for') || 'anon')
@@ -160,6 +161,20 @@ export async function POST(request: NextRequest) {
     const answered = await prisma.assessmentResponse.count({
       where: { userId: ctx.user.id, assessmentId },
     })
+
+    if (ctx.partner && answered >= assessment.Question.length) {
+      const partnerCount = await prisma.assessmentResponse.count({
+        where: { userId: ctx.partner.id, assessmentId },
+      })
+      if (partnerCount >= assessment.Question.length) {
+        await notify(
+          ctx.partner.id,
+          'assessment_completed',
+          `${nameOf(ctx.user)} прошёл(ла) «${assessment.title}» — карта обновлена`,
+          '/dashboard/report'
+        )
+      }
+    }
 
     // Генерация совместного отчёта, если оба партнёра завершили все опросники
     await maybeGenerateReport(ctx)

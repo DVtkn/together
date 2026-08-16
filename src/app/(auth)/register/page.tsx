@@ -93,8 +93,8 @@ export default function RegisterPage() {
           <div className="small" style={{ marginTop: 4 }}>По ней посчитаем знак зодиака и синастрию. Позже можно поменять.</div>
 
           <label className="auth-label" htmlFor="password">Пароль</label>
-          <input className="auth-input" id="password" name="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} minLength={8} autoComplete="new-password" required disabled={isLoading} />
-          <div className="small" style={{ marginTop: 4 }}>Минимум 8 символов</div>
+          <input className="auth-input" id="password" name="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} minLength={4} autoComplete="new-password" required disabled={isLoading} />
+          <div className="small" style={{ marginTop: 4 }}>Минимум 4 символа</div>
 
           <label className="auth-label" htmlFor="confirmPassword">Подтвердите пароль</label>
           <input className="auth-input" id="confirmPassword" name="confirmPassword" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} autoComplete="new-password" required disabled={isLoading} />
@@ -117,13 +117,6 @@ export default function RegisterPage() {
             {isLoading ? 'Создание аккаунта…' : 'Создать аккаунт и пару'}
           </button>
         </form>
-
-        <div className="auth-divider">или</div>
-
-        <div className="auth-oauth">
-          <button className="btn btn-s" onClick={() => signIn('google', { callbackUrl: '/dashboard?welcome=true' })} disabled={isLoading} type="button">Google</button>
-          <button className="btn btn-s" onClick={() => signIn('apple', { callbackUrl: '/dashboard?welcome=true' })} disabled={isLoading} type="button">Apple</button>
-        </div>
 
         <Link className="auth-link" href="/signin">Уже есть аккаунт? Войти</Link>
       </div>
