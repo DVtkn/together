@@ -22,10 +22,10 @@ export interface AIResponse {
 }
 
 export async function getAIResponse(messages: Array<{role: string; content: string}>): Promise<AIResponse> {
-  // Ensure only plain text messages - strip any non-ASCII that could cause issues
+  // Keep Unicode (Cyrillic) — only strip control characters and trim
   const safeMessages = messages.map((m) => ({
     role: String(m.role),
-    content: String(m.content).replace(/[^\x20-\x7E\n\r]/g, " ").trim(),
+    content: String(m.content).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, " ").trim(),
   }))
 
   // Try each model in the chain until one works
@@ -63,8 +63,8 @@ export async function getAIResponse(messages: Array<{role: string; content: stri
       const msg = choices[0]?.message || {}
       const rawContent = msg?.content || msg?.reasoning || ""
       
-      // Strip any non-text characters that could cause issues
-      const cleanContent = rawContent.replace(/[^\x20-\x7E\n\r\.,;:!?'\"\-()\[\]]/g, " ").trim()
+      // Preserve Cyrillic — only strip control characters and trim
+      const cleanContent = rawContent.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, " ").trim()
       
       const usage = data.usage || { input: 0, output: 0 }
       return { content: cleanContent, usage }
@@ -83,7 +83,7 @@ export function buildMessages(systemPrompt: string, messages: Array<{role: strin
     { role: 'system' as const, content: String(systemPrompt) },
     ...messages.map((m) => ({
       role: String(m.role),
-      content: String(m.content).replace(/[^\x20-\x7E\n\r]/g, " ").trim(),
+      content: String(m.content).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, " ").trim(),
     })),
   ]
 }
@@ -93,7 +93,7 @@ export function safeParseResponse(response: {choices?: Array<{ message?: { conte
     const choices = response.choices || []
     if (choices.length === 0) return "ИИ не ответил."
     const msg = choices[0]?.message || {}
-    return (msg?.content || msg?.reasoning || "").replace(/[^\x20-\x7E\n\r\.,;:!?'\"\-()\[\]]/g, " ").trim()
+    return (msg?.content || msg?.reasoning || "").replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, " ").trim()
   } catch {
     return "ИИ не смог сформировать ответ."
   }
