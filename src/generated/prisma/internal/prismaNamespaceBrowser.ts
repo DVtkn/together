@@ -60,6 +60,8 @@ export const ModelName = {
   Bouquet: 'Bouquet',
   Challenge: 'Challenge',
   ChallengeCompletion: 'ChallengeCompletion',
+  DateInvite: 'DateInvite',
+  MoodEntry: 'MoodEntry',
   City: 'City',
   ConsentLog: 'ConsentLog',
   Couple: 'Couple',
@@ -228,6 +230,38 @@ export const ChallengeCompletionScalarFieldEnum = {
 } as const
 
 export type ChallengeCompletionScalarFieldEnum = (typeof ChallengeCompletionScalarFieldEnum)[keyof typeof ChallengeCompletionScalarFieldEnum]
+
+
+export const DateInviteScalarFieldEnum = {
+  id: 'id',
+  coupleId: 'coupleId',
+  createdBy: 'createdBy',
+  vibe: 'vibe',
+  vibeEmoji: 'vibeEmoji',
+  venueId: 'venueId',
+  venueName: 'venueName',
+  venueArea: 'venueArea',
+  venueEmoji: 'venueEmoji',
+  date: 'date',
+  time: 'time',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DateInviteScalarFieldEnum = (typeof DateInviteScalarFieldEnum)[keyof typeof DateInviteScalarFieldEnum]
+
+
+export const MoodEntryScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  coupleId: 'coupleId',
+  emoji: 'emoji',
+  text: 'text',
+  createdAt: 'createdAt'
+} as const
+
+export type MoodEntryScalarFieldEnum = (typeof MoodEntryScalarFieldEnum)[keyof typeof MoodEntryScalarFieldEnum]
 
 
 export const CityScalarFieldEnum = {
@@ -433,6 +467,8 @@ export const VenueScalarFieldEnum = {
   priceLevel: 'priceLevel',
   romantic: 'romantic',
   recommendation: 'recommendation',
+  phone: 'phone',
+  bookingUrl: 'bookingUrl',
   lat: 'lat',
   lon: 'lon',
   order: 'order',

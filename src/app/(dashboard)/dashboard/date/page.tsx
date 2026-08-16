@@ -30,6 +30,8 @@ interface Venue {
   priceLevel: number
   romantic: boolean
   recommendation: string | null
+  phone: string | null
+  bookingUrl: string | null
 }
 
 export default function DatePage() {
@@ -44,6 +46,7 @@ export default function DatePage() {
   const [venuesLoading, setVenuesLoading] = useState(false)
   const [sending, setSending] = useState(false)
   const [sent, setSent] = useState(false)
+  const [error, setError] = useState('')
 
   const days = useMemo(() => {
     const out: Array<{ key: string; dw: string; dn: string; today: boolean }> = []
@@ -104,12 +107,31 @@ export default function DatePage() {
     setStep((s) => Math.min(4, s + 1))
   }
 
-  const handleSend = () => {
+  const handleSend = async () => {
     setSending(true)
-    setTimeout(() => {
-      setSending(false)
+    try {
+      const res = await fetch('/api/date-invite', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          vibe: selectedVibe?.label,
+          vibeEmoji: selectedVibe?.emoji,
+          venueId: selectedVenue?.id,
+          venueName: selectedVenue?.name,
+          venueArea: selectedVenue?.area,
+          venueEmoji: selectedVenue?.emoji,
+          date: day,
+          time,
+        }),
+      })
+      if (!res.ok) throw new Error('Ошибка отправки')
       setSent(true)
-    }, 700)
+    } catch (e) {
+      console.error('Send invite failed:', e)
+      setError('Не удалось отправить приглашение. Попробуйте ещё раз.')
+    } finally {
+      setSending(false)
+    }
   }
 
   if (sent) {
@@ -256,9 +278,31 @@ export default function DatePage() {
             <div className="sum-r"><span>Когда</span><b>{day} · {time}</b></div>
             {selectedVenue?.area && <div className="sum-r"><span>Район</span><b>{selectedVenue.area}</b></div>}
           </div>
+
+          {(selectedVenue?.phone || selectedVenue?.bookingUrl) && (
+            <div style={{ display: 'flex', gap: 10, marginTop: 14, flexWrap: 'wrap' }}>
+              {selectedVenue.phone && (
+                <a href={`tel:${selectedVenue.phone.replace(/[^+\d]/g, '')}`} className="btn btn-s" style={{ flex: 1 }}>
+                  📞 Позвонить
+                </a>
+              )}
+              {selectedVenue.bookingUrl && (
+                <a href={selectedVenue.bookingUrl} target="_blank" rel="noopener noreferrer" className="btn btn-s" style={{ flex: 1 }}>
+                  🗓️ Забронировать
+                </a>
+              )}
+            </div>
+          )}
+
           <button className="btn btn-p btn-w mt" onClick={handleSend} disabled={sending}>
             {sending ? 'Отправляем…' : 'Зову на свидание'}
           </button>
+          {error && (
+            <div className="notice notice-rose" style={{ marginTop: 12 }}>
+              <span style={{ fontSize: 16 }} aria-hidden="true">⚠️</span>
+              <div>{error}</div>
+            </div>
+          )}
         </>
       )}
 

@@ -297,6 +297,7 @@ export type UserWhereInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestListRelationFilter
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestListRelationFilter
   MoodStatus?: Prisma.XOR<Prisma.MoodStatusNullableScalarRelationFilter, Prisma.MoodStatusWhereInput> | null
+  MoodEntry?: Prisma.MoodEntryListRelationFilter
   PulseCheckin?: Prisma.PulseCheckinListRelationFilter
   PushSubscription?: Prisma.PushSubscriptionListRelationFilter
   SmallCraving?: Prisma.SmallCravingListRelationFilter
@@ -336,6 +337,7 @@ export type UserOrderByWithRelationInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestOrderByRelationAggregateInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestOrderByRelationAggregateInput
   MoodStatus?: Prisma.MoodStatusOrderByWithRelationInput
+  MoodEntry?: Prisma.MoodEntryOrderByRelationAggregateInput
   PulseCheckin?: Prisma.PulseCheckinOrderByRelationAggregateInput
   PushSubscription?: Prisma.PushSubscriptionOrderByRelationAggregateInput
   SmallCraving?: Prisma.SmallCravingOrderByRelationAggregateInput
@@ -378,6 +380,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestListRelationFilter
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestListRelationFilter
   MoodStatus?: Prisma.XOR<Prisma.MoodStatusNullableScalarRelationFilter, Prisma.MoodStatusWhereInput> | null
+  MoodEntry?: Prisma.MoodEntryListRelationFilter
   PulseCheckin?: Prisma.PulseCheckinListRelationFilter
   PushSubscription?: Prisma.PushSubscriptionListRelationFilter
   SmallCraving?: Prisma.SmallCravingListRelationFilter
@@ -463,6 +466,7 @@ export type UserCreateInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
   MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryCreateNestedManyWithoutUserInput
   PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
   PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
   SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
@@ -502,6 +506,7 @@ export type UserUncheckedCreateInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
   MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryUncheckedCreateNestedManyWithoutUserInput
   PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
   PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
@@ -537,6 +542,7 @@ export type UserUpdateInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
   MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUpdateManyWithoutUserNestedInput
   PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
   PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
   SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
@@ -576,6 +582,7 @@ export type UserUncheckedUpdateInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
   MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUncheckedUpdateManyWithoutUserNestedInput
   PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
   PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
@@ -817,6 +824,20 @@ export type UserUpdateOneRequiredWithoutChallengeCompletionNestedInput = {
   upsert?: Prisma.UserUpsertWithoutChallengeCompletionInput
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutChallengeCompletionInput, Prisma.UserUpdateWithoutChallengeCompletionInput>, Prisma.UserUncheckedUpdateWithoutChallengeCompletionInput>
+}
+
+export type UserCreateNestedOneWithoutMoodEntryInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMoodEntryInput, Prisma.UserUncheckedCreateWithoutMoodEntryInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMoodEntryInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutMoodEntryNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMoodEntryInput, Prisma.UserUncheckedCreateWithoutMoodEntryInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMoodEntryInput
+  upsert?: Prisma.UserUpsertWithoutMoodEntryInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutMoodEntryInput, Prisma.UserUpdateWithoutMoodEntryInput>, Prisma.UserUncheckedUpdateWithoutMoodEntryInput>
 }
 
 export type UserCreateNestedManyWithoutCityInput = {
@@ -1108,6 +1129,7 @@ export type UserCreateWithoutAIMessageInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
   MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryCreateNestedManyWithoutUserInput
   PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
   PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
   SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
@@ -1146,6 +1168,7 @@ export type UserUncheckedCreateWithoutAIMessageInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
   MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryUncheckedCreateNestedManyWithoutUserInput
   PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
   PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
@@ -1196,6 +1219,7 @@ export type UserUpdateWithoutAIMessageInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
   MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUpdateManyWithoutUserNestedInput
   PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
   PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
   SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
@@ -1234,6 +1258,7 @@ export type UserUncheckedUpdateWithoutAIMessageInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
   MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUncheckedUpdateManyWithoutUserNestedInput
   PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
   PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
@@ -1268,6 +1293,7 @@ export type UserCreateWithoutAssessmentResponseInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
   MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryCreateNestedManyWithoutUserInput
   PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
   PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
   SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
@@ -1306,6 +1332,7 @@ export type UserUncheckedCreateWithoutAssessmentResponseInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
   MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryUncheckedCreateNestedManyWithoutUserInput
   PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
   PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
@@ -1356,6 +1383,7 @@ export type UserUpdateWithoutAssessmentResponseInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
   MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUpdateManyWithoutUserNestedInput
   PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
   PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
   SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
@@ -1394,6 +1422,7 @@ export type UserUncheckedUpdateWithoutAssessmentResponseInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
   MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUncheckedUpdateManyWithoutUserNestedInput
   PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
   PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
@@ -1428,6 +1457,7 @@ export type UserCreateWithoutAstroProfileInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
   MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryCreateNestedManyWithoutUserInput
   PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
   PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
   SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
@@ -1466,6 +1496,7 @@ export type UserUncheckedCreateWithoutAstroProfileInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
   MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryUncheckedCreateNestedManyWithoutUserInput
   PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
   PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
@@ -1516,6 +1547,7 @@ export type UserUpdateWithoutAstroProfileInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
   MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUpdateManyWithoutUserNestedInput
   PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
   PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
   SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
@@ -1554,6 +1586,7 @@ export type UserUncheckedUpdateWithoutAstroProfileInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
   MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUncheckedUpdateManyWithoutUserNestedInput
   PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
   PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
@@ -1588,6 +1621,7 @@ export type UserCreateWithoutBouquetInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
   MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryCreateNestedManyWithoutUserInput
   PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
   PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
   SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
@@ -1626,6 +1660,7 @@ export type UserUncheckedCreateWithoutBouquetInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
   MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryUncheckedCreateNestedManyWithoutUserInput
   PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
   PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
@@ -1676,6 +1711,7 @@ export type UserUpdateWithoutBouquetInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
   MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUpdateManyWithoutUserNestedInput
   PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
   PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
   SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
@@ -1714,6 +1750,7 @@ export type UserUncheckedUpdateWithoutBouquetInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
   MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUncheckedUpdateManyWithoutUserNestedInput
   PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
   PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
@@ -1748,6 +1785,7 @@ export type UserCreateWithoutChallengeCompletionInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
   MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryCreateNestedManyWithoutUserInput
   PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
   PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
   SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
@@ -1786,6 +1824,7 @@ export type UserUncheckedCreateWithoutChallengeCompletionInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
   MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryUncheckedCreateNestedManyWithoutUserInput
   PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
   PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
@@ -1836,6 +1875,7 @@ export type UserUpdateWithoutChallengeCompletionInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
   MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUpdateManyWithoutUserNestedInput
   PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
   PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
   SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
@@ -1868,6 +1908,171 @@ export type UserUncheckedUpdateWithoutChallengeCompletionInput = {
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
   Bouquet?: Prisma.BouquetUncheckedUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUncheckedUpdateManyWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
+  WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutMoodEntryInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
+  City?: Prisma.CityCreateNestedOneWithoutUserInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
+  WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutMoodEntryInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  coupleId?: string | null
+  cityId?: string | null
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetUncheckedCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
+  WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutMoodEntryInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutMoodEntryInput, Prisma.UserUncheckedCreateWithoutMoodEntryInput>
+}
+
+export type UserUpsertWithoutMoodEntryInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutMoodEntryInput, Prisma.UserUncheckedUpdateWithoutMoodEntryInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutMoodEntryInput, Prisma.UserUncheckedCreateWithoutMoodEntryInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutMoodEntryInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutMoodEntryInput, Prisma.UserUncheckedUpdateWithoutMoodEntryInput>
+}
+
+export type UserUpdateWithoutMoodEntryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
+  City?: Prisma.CityUpdateOneWithoutUserNestedInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
+  WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutMoodEntryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  coupleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUncheckedUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedUpdateManyWithoutUserNestedInput
   ConsentLog?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
   Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
   Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
@@ -1909,6 +2114,7 @@ export type UserCreateWithoutCityInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
   MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryCreateNestedManyWithoutUserInput
   PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
   PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
   SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
@@ -1946,6 +2152,7 @@ export type UserUncheckedCreateWithoutCityInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
   MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryUncheckedCreateNestedManyWithoutUserInput
   PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
   PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
@@ -2030,6 +2237,7 @@ export type UserCreateWithoutConsentLogInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
   MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryCreateNestedManyWithoutUserInput
   PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
   PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
   SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
@@ -2068,6 +2276,7 @@ export type UserUncheckedCreateWithoutConsentLogInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
   MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryUncheckedCreateNestedManyWithoutUserInput
   PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
   PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
@@ -2118,6 +2327,7 @@ export type UserUpdateWithoutConsentLogInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
   MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUpdateManyWithoutUserNestedInput
   PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
   PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
   SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
@@ -2156,6 +2366,7 @@ export type UserUncheckedUpdateWithoutConsentLogInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
   MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUncheckedUpdateManyWithoutUserNestedInput
   PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
   PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
@@ -2190,6 +2401,7 @@ export type UserCreateWithoutCouple_Couple_partnerAIdToUserInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
   MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryCreateNestedManyWithoutUserInput
   PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
   PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
   SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
@@ -2228,6 +2440,7 @@ export type UserUncheckedCreateWithoutCouple_Couple_partnerAIdToUserInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
   MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryUncheckedCreateNestedManyWithoutUserInput
   PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
   PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
@@ -2267,6 +2480,7 @@ export type UserCreateWithoutCouple_Couple_partnerBIdToUserInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
   MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryCreateNestedManyWithoutUserInput
   PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
   PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
   SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
@@ -2305,6 +2519,7 @@ export type UserUncheckedCreateWithoutCouple_Couple_partnerBIdToUserInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
   MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryUncheckedCreateNestedManyWithoutUserInput
   PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
   PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
@@ -2345,6 +2560,7 @@ export type UserCreateWithoutCouple_User_coupleIdToCoupleInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
   MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryCreateNestedManyWithoutUserInput
   PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
   PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
   SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
@@ -2382,6 +2598,7 @@ export type UserUncheckedCreateWithoutCouple_User_coupleIdToCoupleInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
   MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryUncheckedCreateNestedManyWithoutUserInput
   PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
   PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
@@ -2437,6 +2654,7 @@ export type UserUpdateWithoutCouple_Couple_partnerAIdToUserInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
   MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUpdateManyWithoutUserNestedInput
   PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
   PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
   SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
@@ -2475,6 +2693,7 @@ export type UserUncheckedUpdateWithoutCouple_Couple_partnerAIdToUserInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
   MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUncheckedUpdateManyWithoutUserNestedInput
   PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
   PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
@@ -2520,6 +2739,7 @@ export type UserUpdateWithoutCouple_Couple_partnerBIdToUserInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
   MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUpdateManyWithoutUserNestedInput
   PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
   PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
   SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
@@ -2558,6 +2778,7 @@ export type UserUncheckedUpdateWithoutCouple_Couple_partnerBIdToUserInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
   MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUncheckedUpdateManyWithoutUserNestedInput
   PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
   PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
@@ -2608,6 +2829,7 @@ export type UserCreateWithoutCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUse
   Couple_Couple_partnerBIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
   MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryCreateNestedManyWithoutUserInput
   PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
   PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
   SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
@@ -2646,6 +2868,7 @@ export type UserUncheckedCreateWithoutCoupleLinkRequest_CoupleLinkRequest_fromUs
   Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
   MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryUncheckedCreateNestedManyWithoutUserInput
   PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
   PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
@@ -2685,6 +2908,7 @@ export type UserCreateWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserI
   Couple_Couple_partnerBIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
   MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryCreateNestedManyWithoutUserInput
   PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
   PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
   SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
@@ -2723,6 +2947,7 @@ export type UserUncheckedCreateWithoutCoupleLinkRequest_CoupleLinkRequest_toUser
   Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
   MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryUncheckedCreateNestedManyWithoutUserInput
   PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
   PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
@@ -2773,6 +2998,7 @@ export type UserUpdateWithoutCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUse
   Couple_Couple_partnerBIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
   MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUpdateManyWithoutUserNestedInput
   PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
   PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
   SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
@@ -2811,6 +3037,7 @@ export type UserUncheckedUpdateWithoutCoupleLinkRequest_CoupleLinkRequest_fromUs
   Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
   MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUncheckedUpdateManyWithoutUserNestedInput
   PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
   PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
@@ -2856,6 +3083,7 @@ export type UserUpdateWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserI
   Couple_Couple_partnerBIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
   MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUpdateManyWithoutUserNestedInput
   PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
   PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
   SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
@@ -2894,6 +3122,7 @@ export type UserUncheckedUpdateWithoutCoupleLinkRequest_CoupleLinkRequest_toUser
   Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
   MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUncheckedUpdateManyWithoutUserNestedInput
   PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
   PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
@@ -2929,6 +3158,7 @@ export type UserCreateWithoutFlowerInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
   MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryCreateNestedManyWithoutUserInput
   PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
   PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
   SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
@@ -2967,6 +3197,7 @@ export type UserUncheckedCreateWithoutFlowerInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
   MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryUncheckedCreateNestedManyWithoutUserInput
   PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
   PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
@@ -3021,6 +3252,7 @@ export type UserCreateWithoutMoodStatusInput = {
   Couple_Couple_partnerBIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodEntry?: Prisma.MoodEntryCreateNestedManyWithoutUserInput
   PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
   PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
   SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
@@ -3059,6 +3291,7 @@ export type UserUncheckedCreateWithoutMoodStatusInput = {
   Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodEntry?: Prisma.MoodEntryUncheckedCreateNestedManyWithoutUserInput
   PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
   PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
@@ -3109,6 +3342,7 @@ export type UserUpdateWithoutMoodStatusInput = {
   Couple_Couple_partnerBIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUpdateManyWithoutUserNestedInput
   PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
   PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
   SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
@@ -3147,6 +3381,7 @@ export type UserUncheckedUpdateWithoutMoodStatusInput = {
   Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUncheckedUpdateManyWithoutUserNestedInput
   PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
   PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
@@ -3182,6 +3417,7 @@ export type UserCreateWithoutPulseCheckinInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
   MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryCreateNestedManyWithoutUserInput
   PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
   SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
   City?: Prisma.CityCreateNestedOneWithoutUserInput
@@ -3220,6 +3456,7 @@ export type UserUncheckedCreateWithoutPulseCheckinInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
   MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryUncheckedCreateNestedManyWithoutUserInput
   PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
   WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
@@ -3270,6 +3507,7 @@ export type UserUpdateWithoutPulseCheckinInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
   MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUpdateManyWithoutUserNestedInput
   PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
   SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
   City?: Prisma.CityUpdateOneWithoutUserNestedInput
@@ -3308,6 +3546,7 @@ export type UserUncheckedUpdateWithoutPulseCheckinInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
   MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUncheckedUpdateManyWithoutUserNestedInput
   PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
   WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
@@ -3342,6 +3581,7 @@ export type UserCreateWithoutPushSubscriptionInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
   MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryCreateNestedManyWithoutUserInput
   PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
   SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
   City?: Prisma.CityCreateNestedOneWithoutUserInput
@@ -3380,6 +3620,7 @@ export type UserUncheckedCreateWithoutPushSubscriptionInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
   MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryUncheckedCreateNestedManyWithoutUserInput
   PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
   SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
   WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
@@ -3430,6 +3671,7 @@ export type UserUpdateWithoutPushSubscriptionInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
   MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUpdateManyWithoutUserNestedInput
   PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
   SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
   City?: Prisma.CityUpdateOneWithoutUserNestedInput
@@ -3468,6 +3710,7 @@ export type UserUncheckedUpdateWithoutPushSubscriptionInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
   MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUncheckedUpdateManyWithoutUserNestedInput
   PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
   SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
   WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
@@ -3502,6 +3745,7 @@ export type UserCreateWithoutSmallCravingInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
   MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryCreateNestedManyWithoutUserInput
   PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
   PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
   City?: Prisma.CityCreateNestedOneWithoutUserInput
@@ -3540,6 +3784,7 @@ export type UserUncheckedCreateWithoutSmallCravingInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
   MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryUncheckedCreateNestedManyWithoutUserInput
   PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
   PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
@@ -3590,6 +3835,7 @@ export type UserUpdateWithoutSmallCravingInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
   MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUpdateManyWithoutUserNestedInput
   PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
   PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
   City?: Prisma.CityUpdateOneWithoutUserNestedInput
@@ -3628,6 +3874,7 @@ export type UserUncheckedUpdateWithoutSmallCravingInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
   MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUncheckedUpdateManyWithoutUserNestedInput
   PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
   PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
@@ -3662,6 +3909,7 @@ export type UserCreateWithoutWishlistItemInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
   MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryCreateNestedManyWithoutUserInput
   PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
   PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
   SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
@@ -3700,6 +3948,7 @@ export type UserUncheckedCreateWithoutWishlistItemInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
   MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryUncheckedCreateNestedManyWithoutUserInput
   PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
   PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
@@ -3750,6 +3999,7 @@ export type UserUpdateWithoutWishlistItemInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
   MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUpdateManyWithoutUserNestedInput
   PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
   PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
   SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
@@ -3788,6 +4038,7 @@ export type UserUncheckedUpdateWithoutWishlistItemInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
   MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUncheckedUpdateManyWithoutUserNestedInput
   PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
   PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
@@ -3842,6 +4093,7 @@ export type UserUpdateWithoutCityInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
   MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUpdateManyWithoutUserNestedInput
   PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
   PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
   SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
@@ -3879,6 +4131,7 @@ export type UserUncheckedUpdateWithoutCityInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
   MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUncheckedUpdateManyWithoutUserNestedInput
   PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
   PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
@@ -3954,6 +4207,7 @@ export type UserUpdateWithoutCouple_User_coupleIdToCoupleInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
   MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUpdateManyWithoutUserNestedInput
   PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
   PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
   SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
@@ -3991,6 +4245,7 @@ export type UserUncheckedUpdateWithoutCouple_User_coupleIdToCoupleInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
   MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUncheckedUpdateManyWithoutUserNestedInput
   PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
   PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
@@ -4046,6 +4301,7 @@ export type UserUpdateWithoutFlowerInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
   MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUpdateManyWithoutUserNestedInput
   PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
   PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
   SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
@@ -4084,6 +4340,7 @@ export type UserUncheckedUpdateWithoutFlowerInput = {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
   MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUncheckedUpdateManyWithoutUserNestedInput
   PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
   PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
@@ -4124,6 +4381,7 @@ export type UserCountOutputType = {
   ConsentLog: number
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser: number
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser: number
+  MoodEntry: number
   PulseCheckin: number
   PushSubscription: number
   SmallCraving: number
@@ -4139,6 +4397,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   ConsentLog?: boolean | UserCountOutputTypeCountConsentLogArgs
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: boolean | UserCountOutputTypeCountCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserArgs
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: boolean | UserCountOutputTypeCountCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserArgs
+  MoodEntry?: boolean | UserCountOutputTypeCountMoodEntryArgs
   PulseCheckin?: boolean | UserCountOutputTypeCountPulseCheckinArgs
   PushSubscription?: boolean | UserCountOutputTypeCountPushSubscriptionArgs
   SmallCraving?: boolean | UserCountOutputTypeCountSmallCravingArgs
@@ -4208,6 +4467,13 @@ export type UserCountOutputTypeCountCoupleLinkRequest_CoupleLinkRequest_toUserId
 /**
  * UserCountOutputType without action
  */
+export type UserCountOutputTypeCountMoodEntryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MoodEntryWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
 export type UserCountOutputTypeCountPulseCheckinArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.PulseCheckinWhereInput
 }
@@ -4271,6 +4537,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: boolean | Prisma.User$CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserArgs<ExtArgs>
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: boolean | Prisma.User$CoupleLinkRequest_CoupleLinkRequest_toUserIdToUserArgs<ExtArgs>
   MoodStatus?: boolean | Prisma.User$MoodStatusArgs<ExtArgs>
+  MoodEntry?: boolean | Prisma.User$MoodEntryArgs<ExtArgs>
   PulseCheckin?: boolean | Prisma.User$PulseCheckinArgs<ExtArgs>
   PushSubscription?: boolean | Prisma.User$PushSubscriptionArgs<ExtArgs>
   SmallCraving?: boolean | Prisma.User$SmallCravingArgs<ExtArgs>
@@ -4361,6 +4628,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: boolean | Prisma.User$CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserArgs<ExtArgs>
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: boolean | Prisma.User$CoupleLinkRequest_CoupleLinkRequest_toUserIdToUserArgs<ExtArgs>
   MoodStatus?: boolean | Prisma.User$MoodStatusArgs<ExtArgs>
+  MoodEntry?: boolean | Prisma.User$MoodEntryArgs<ExtArgs>
   PulseCheckin?: boolean | Prisma.User$PulseCheckinArgs<ExtArgs>
   PushSubscription?: boolean | Prisma.User$PushSubscriptionArgs<ExtArgs>
   SmallCraving?: boolean | Prisma.User$SmallCravingArgs<ExtArgs>
@@ -4393,6 +4661,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser: Prisma.$CoupleLinkRequestPayload<ExtArgs>[]
     CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser: Prisma.$CoupleLinkRequestPayload<ExtArgs>[]
     MoodStatus: Prisma.$MoodStatusPayload<ExtArgs> | null
+    MoodEntry: Prisma.$MoodEntryPayload<ExtArgs>[]
     PulseCheckin: Prisma.$PulseCheckinPayload<ExtArgs>[]
     PushSubscription: Prisma.$PushSubscriptionPayload<ExtArgs>[]
     SmallCraving: Prisma.$SmallCravingPayload<ExtArgs>[]
@@ -4825,6 +5094,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser<T extends Prisma.User$CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CoupleLinkRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser<T extends Prisma.User$CoupleLinkRequest_CoupleLinkRequest_toUserIdToUserArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$CoupleLinkRequest_CoupleLinkRequest_toUserIdToUserArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CoupleLinkRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   MoodStatus<T extends Prisma.User$MoodStatusArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$MoodStatusArgs<ExtArgs>>): Prisma.Prisma__MoodStatusClient<runtime.Types.Result.GetResult<Prisma.$MoodStatusPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  MoodEntry<T extends Prisma.User$MoodEntryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$MoodEntryArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MoodEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   PulseCheckin<T extends Prisma.User$PulseCheckinArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$PulseCheckinArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PulseCheckinPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   PushSubscription<T extends Prisma.User$PushSubscriptionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$PushSubscriptionArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PushSubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   SmallCraving<T extends Prisma.User$SmallCravingArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$SmallCravingArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SmallCravingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -5521,6 +5791,30 @@ export type User$MoodStatusArgs<ExtArgs extends runtime.Types.Extensions.Interna
    */
   include?: Prisma.MoodStatusInclude<ExtArgs> | null
   where?: Prisma.MoodStatusWhereInput
+}
+
+/**
+ * User.MoodEntry
+ */
+export type User$MoodEntryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MoodEntry
+   */
+  select?: Prisma.MoodEntrySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MoodEntry
+   */
+  omit?: Prisma.MoodEntryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MoodEntryInclude<ExtArgs> | null
+  where?: Prisma.MoodEntryWhereInput
+  orderBy?: Prisma.MoodEntryOrderByWithRelationInput | Prisma.MoodEntryOrderByWithRelationInput[]
+  cursor?: Prisma.MoodEntryWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MoodEntryScalarFieldEnum | Prisma.MoodEntryScalarFieldEnum[]
 }
 
 /**

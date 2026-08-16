@@ -63,6 +63,16 @@ export type Challenge = Prisma.ChallengeModel
  */
 export type ChallengeCompletion = Prisma.ChallengeCompletionModel
 /**
+ * Model DateInvite
+ * 
+ */
+export type DateInvite = Prisma.DateInviteModel
+/**
+ * Model MoodEntry
+ * 
+ */
+export type MoodEntry = Prisma.MoodEntryModel
+/**
  * Model City
  * 
  */

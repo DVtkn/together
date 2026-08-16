@@ -70,6 +70,16 @@ export async function POST(request: NextRequest) {
       },
     })
 
+    await prisma.moodEntry.create({
+      data: {
+        id: `me_${Math.random().toString(36).slice(2, 14)}`,
+        userId: ctx.user.id,
+        coupleId: ctx.couple?.id ?? null,
+        emoji,
+        text: text ?? null,
+      },
+    })
+
     return NextResponse.json({ mood: { emoji: mood.emoji, text: mood.text } })
   } catch (error) {
     console.error('Set mood error:', error)

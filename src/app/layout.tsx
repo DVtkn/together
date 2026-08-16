@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import '../globals.css'
 
 const inter = Inter({
   subsets: ['latin', 'cyrillic'],
@@ -58,7 +57,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
-      <body className={`${inter.variable} min-h-full flex flex-col bg-[#0F172A] text-[#F1F5F9] antialiased`}>
+      <body className={`${inter.variable} min-h-full flex flex-col antialiased`}>
         {children}
       </body>
     </html>

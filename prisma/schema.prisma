@@ -37,6 +37,7 @@ model User {
   CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser CoupleLinkRequest[]   @relation("CoupleLinkRequest_fromUserIdToUser")
   CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser   CoupleLinkRequest[]   @relation("CoupleLinkRequest_toUserIdToUser")
   MoodStatus                                           MoodStatus?
+  MoodEntry                                            MoodEntry[]
   PulseCheckin                                         PulseCheckin[]
   PushSubscription                                     PushSubscription[]
   SmallCraving                                         SmallCraving[]
@@ -168,6 +169,41 @@ model ChallengeCompletion {
   @@unique([challengeId, userId])
 }
 
+model DateInvite {
+  id          String          @id
+  coupleId    String
+  createdBy   String
+  vibe        String?
+  vibeEmoji   String?
+  venueId     String?
+  venueName   String?
+  venueArea   String?
+  venueEmoji  String?
+  date        String?
+  time        String?
+  status      InviteStatus    @default(PENDING)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  Couple      Couple          @relation(fields: [coupleId], references: [id], onDelete: Cascade)
+
+  @@index([coupleId])
+  @@index([status])
+}
+
+model MoodEntry {
+  id        String   @id
+  userId    String
+  coupleId  String?
+  emoji     String
+  text      String?
+  createdAt DateTime @default(now())
+  User      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([coupleId])
+  @@index([createdAt])
+}
+
 model City {
   id       String  @id
   slug     String  @unique
@@ -206,6 +242,7 @@ model Couple {
   updatedAt                    DateTime
   AIConversation               AIConversation[]
   Challenge                    Challenge[]
+  DateInvite                   DateInvite[]
   User_Couple_partnerAIdToUser User             @relation("Couple_partnerAIdToUser", fields: [partnerAId], references: [id])
   User_Couple_partnerBIdToUser User             @relation("Couple_partnerBIdToUser", fields: [partnerBId], references: [id])
   CoupleReport                 CoupleReport[]
@@ -374,6 +411,8 @@ model Venue {
   priceLevel     Int       @default(2)
   romantic       Boolean   @default(false)
   recommendation String?
+  phone          String?
+  bookingUrl     String?
   lat            Float?
   lon            Float?
   order          Int       @default(0)
@@ -418,6 +457,13 @@ enum CoupleStatus {
 enum CravingStatus {
   PENDING
   PICKED_UP
+}
+
+enum InviteStatus {
+  PENDING
+  PROPOSED
+  CONFIRMED
+  DECLINED
 }
 
 enum LinkRequestStatus {

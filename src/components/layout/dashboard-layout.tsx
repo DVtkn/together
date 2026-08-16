@@ -2,17 +2,22 @@
 
 import { ReactNode, useState, useEffect } from 'react'
 import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils/cn'
 import { registerServiceWorker } from '@/lib/push-client'
 
 const NAV_ITEMS = [
   { key: 'home', href: '/dashboard', label: 'Дом', icon: '🏠' },
   { key: 'couple', href: '/dashboard/couple', label: 'Мы', icon: '💞' },
-  { key: 'date', href: '/dashboard/date', label: 'Свидание', icon: '📍', fab: true },
+  { key: 'date', href: '/dashboard/date', label: 'Свидание', icon: '📍' },
   { key: 'daily', href: '/dashboard/daily', label: 'Будни', icon: '⚡' },
   { key: 'ai', href: '/dashboard/ai', label: 'Сова', icon: '🦉' },
 ]
+
+const GROUPS: Record<string, string[]> = {
+  '/dashboard/couple': ['/dashboard/couple', '/dashboard/assessments', '/dashboard/report', '/dashboard/astro'],
+  '/dashboard/daily': ['/dashboard/daily', '/dashboard/pulse', '/dashboard/challenges', '/dashboard/partner'],
+}
 
 interface DashboardLayoutProps {
   children: ReactNode
@@ -38,7 +43,6 @@ function initials(name: string | null | undefined): string {
 
 export function DashboardLayout({ children, user, couple }: DashboardLayoutProps) {
   const pathname = usePathname()
-  const router = useRouter()
   const [emergencyOpen, setEmergencyOpen] = useState(false)
   const [me, setMe] = useState<{ name: string | null; email: string }>({
     name: user?.name ?? null,
@@ -66,7 +70,11 @@ export function DashboardLayout({ children, user, couple }: DashboardLayoutProps
       .catch(() => {})
   }, [user, me.email])
 
-  const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/')
+  const isActive = (href: string) => {
+    if (pathname === href || pathname.startsWith(href + '/')) return true
+    const group = GROUPS[href]
+    return !!group && group.includes(pathname)
+  }
   const partnerName = myCouple
     ? myCouple.partnerA.name !== me.name
       ? myCouple.partnerA.name
@@ -82,7 +90,7 @@ export function DashboardLayout({ children, user, couple }: DashboardLayoutProps
             <i></i>Together
           </Link>
           <nav className="nav" aria-label="Основная навигация">
-            {NAV_ITEMS.filter((i) => !i.fab).map((item) => (
+            {NAV_ITEMS.map((item) => (
               <Link
                 key={item.key}
                 href={item.href}
@@ -112,7 +120,7 @@ export function DashboardLayout({ children, user, couple }: DashboardLayoutProps
 
       {/* МОБИЛЬНЫЙ ТАБ-БАР */}
       <nav className="tb" aria-label="Основная навигация">
-        {NAV_ITEMS.filter((i) => !i.fab).map((item) => (
+        {NAV_ITEMS.slice(0, 2).map((item) => (
           <Link
             key={item.key}
             href={item.href}
@@ -123,14 +131,26 @@ export function DashboardLayout({ children, user, couple }: DashboardLayoutProps
             <b>{item.label}</b>
           </Link>
         ))}
-        <button
-          className="tbi fab-m"
+        <Link
+          href="/dashboard/date"
+          className={cn('tbi fab-m', isActive('/dashboard/date') && 'on')}
+          aria-current={isActive('/dashboard/date') ? 'page' : undefined}
           aria-label="Свидание"
-          onClick={() => router.push('/dashboard/date')}
         >
           <i>📍</i>
           <b>Свидание</b>
-        </button>
+        </Link>
+        {NAV_ITEMS.slice(3).map((item) => (
+          <Link
+            key={item.key}
+            href={item.href}
+            className={cn('tbi', isActive(item.href) && 'on')}
+            aria-current={isActive(item.href) ? 'page' : undefined}
+          >
+            <i>{item.icon}</i>
+            <b>{item.label}</b>
+          </Link>
+        ))}
       </nav>
 
       {/* ТРЕВОЖНАЯ КНОПКА */}

@@ -26,6 +26,8 @@ export async function GET(request: NextRequest) {
     ? await prisma.city.findUnique({ where: { id: ctx.user.cityId } })
     : null
 
+  const partnerName = ctx.partner?.name ?? ctx.partner?.username ?? null
+
   return NextResponse.json({
     user: {
       id: ctx.user.id,
@@ -37,6 +39,7 @@ export async function GET(request: NextRequest) {
         ? { id: city.id, slug: city.slug, name: city.name, emoji: city.emoji }
         : null,
     },
+    couple: { partnerName },
   })
 }
 

@@ -406,6 +406,8 @@ export const ModelName = {
   Bouquet: 'Bouquet',
   Challenge: 'Challenge',
   ChallengeCompletion: 'ChallengeCompletion',
+  DateInvite: 'DateInvite',
+  MoodEntry: 'MoodEntry',
   City: 'City',
   ConsentLog: 'ConsentLog',
   Couple: 'Couple',
@@ -436,7 +438,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "aIConversation" | "aIMessage" | "assessment" | "assessmentResponse" | "astroProfile" | "bouquet" | "challenge" | "challengeCompletion" | "city" | "consentLog" | "couple" | "coupleLinkRequest" | "coupleReport" | "flower" | "moodStatus" | "planetPosition" | "pulseCheckin" | "pushSubscription" | "question" | "smallCraving" | "synastryReport" | "venue" | "wishlistItem"
+    modelProps: "user" | "aIConversation" | "aIMessage" | "assessment" | "assessmentResponse" | "astroProfile" | "bouquet" | "challenge" | "challengeCompletion" | "dateInvite" | "moodEntry" | "city" | "consentLog" | "couple" | "coupleLinkRequest" | "coupleReport" | "flower" | "moodStatus" | "planetPosition" | "pulseCheckin" | "pushSubscription" | "question" | "smallCraving" | "synastryReport" | "venue" | "wishlistItem"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1103,6 +1105,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.ChallengeCompletionCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.ChallengeCompletionCountAggregateOutputType> | number
+        }
+      }
+    }
+    DateInvite: {
+      payload: Prisma.$DateInvitePayload<ExtArgs>
+      fields: Prisma.DateInviteFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DateInviteFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DateInvitePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DateInviteFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DateInvitePayload>
+        }
+        findFirst: {
+          args: Prisma.DateInviteFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DateInvitePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DateInviteFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DateInvitePayload>
+        }
+        findMany: {
+          args: Prisma.DateInviteFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DateInvitePayload>[]
+        }
+        create: {
+          args: Prisma.DateInviteCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DateInvitePayload>
+        }
+        createMany: {
+          args: Prisma.DateInviteCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DateInviteCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DateInvitePayload>[]
+        }
+        delete: {
+          args: Prisma.DateInviteDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DateInvitePayload>
+        }
+        update: {
+          args: Prisma.DateInviteUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DateInvitePayload>
+        }
+        deleteMany: {
+          args: Prisma.DateInviteDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DateInviteUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DateInviteUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DateInvitePayload>[]
+        }
+        upsert: {
+          args: Prisma.DateInviteUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DateInvitePayload>
+        }
+        aggregate: {
+          args: Prisma.DateInviteAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDateInvite>
+        }
+        groupBy: {
+          args: Prisma.DateInviteGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DateInviteGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DateInviteCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DateInviteCountAggregateOutputType> | number
+        }
+      }
+    }
+    MoodEntry: {
+      payload: Prisma.$MoodEntryPayload<ExtArgs>
+      fields: Prisma.MoodEntryFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MoodEntryFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MoodEntryPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MoodEntryFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MoodEntryPayload>
+        }
+        findFirst: {
+          args: Prisma.MoodEntryFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MoodEntryPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MoodEntryFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MoodEntryPayload>
+        }
+        findMany: {
+          args: Prisma.MoodEntryFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MoodEntryPayload>[]
+        }
+        create: {
+          args: Prisma.MoodEntryCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MoodEntryPayload>
+        }
+        createMany: {
+          args: Prisma.MoodEntryCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MoodEntryCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MoodEntryPayload>[]
+        }
+        delete: {
+          args: Prisma.MoodEntryDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MoodEntryPayload>
+        }
+        update: {
+          args: Prisma.MoodEntryUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MoodEntryPayload>
+        }
+        deleteMany: {
+          args: Prisma.MoodEntryDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MoodEntryUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MoodEntryUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MoodEntryPayload>[]
+        }
+        upsert: {
+          args: Prisma.MoodEntryUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MoodEntryPayload>
+        }
+        aggregate: {
+          args: Prisma.MoodEntryAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMoodEntry>
+        }
+        groupBy: {
+          args: Prisma.MoodEntryGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MoodEntryGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MoodEntryCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MoodEntryCountAggregateOutputType> | number
         }
       }
     }
@@ -2392,6 +2542,38 @@ export const ChallengeCompletionScalarFieldEnum = {
 export type ChallengeCompletionScalarFieldEnum = (typeof ChallengeCompletionScalarFieldEnum)[keyof typeof ChallengeCompletionScalarFieldEnum]
 
 
+export const DateInviteScalarFieldEnum = {
+  id: 'id',
+  coupleId: 'coupleId',
+  createdBy: 'createdBy',
+  vibe: 'vibe',
+  vibeEmoji: 'vibeEmoji',
+  venueId: 'venueId',
+  venueName: 'venueName',
+  venueArea: 'venueArea',
+  venueEmoji: 'venueEmoji',
+  date: 'date',
+  time: 'time',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DateInviteScalarFieldEnum = (typeof DateInviteScalarFieldEnum)[keyof typeof DateInviteScalarFieldEnum]
+
+
+export const MoodEntryScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  coupleId: 'coupleId',
+  emoji: 'emoji',
+  text: 'text',
+  createdAt: 'createdAt'
+} as const
+
+export type MoodEntryScalarFieldEnum = (typeof MoodEntryScalarFieldEnum)[keyof typeof MoodEntryScalarFieldEnum]
+
+
 export const CityScalarFieldEnum = {
   id: 'id',
   slug: 'slug',
@@ -2595,6 +2777,8 @@ export const VenueScalarFieldEnum = {
   priceLevel: 'priceLevel',
   romantic: 'romantic',
   recommendation: 'recommendation',
+  phone: 'phone',
+  bookingUrl: 'bookingUrl',
   lat: 'lat',
   lon: 'lon',
   order: 'order',
@@ -2763,6 +2947,20 @@ export type EnumChallengeStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$
  * Reference to a field of type 'ChallengeStatus[]'
  */
 export type ListEnumChallengeStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ChallengeStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'InviteStatus'
+ */
+export type EnumInviteStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InviteStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'InviteStatus[]'
+ */
+export type ListEnumInviteStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InviteStatus[]'>
     
 
 
@@ -3023,6 +3221,8 @@ export type GlobalOmitConfig = {
   bouquet?: Prisma.BouquetOmit
   challenge?: Prisma.ChallengeOmit
   challengeCompletion?: Prisma.ChallengeCompletionOmit
+  dateInvite?: Prisma.DateInviteOmit
+  moodEntry?: Prisma.MoodEntryOmit
   city?: Prisma.CityOmit
   consentLog?: Prisma.ConsentLogOmit
   couple?: Prisma.CoupleOmit

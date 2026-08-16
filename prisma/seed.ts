@@ -191,10 +191,12 @@ const VENUES: Array<{
   priceLevel: number
   romantic: boolean
   recommendation?: string
+  phone?: string
+  bookingUrl?: string
   order: number
 }> = [
   // Москва
-  { cityId: 'city_moscow', type: VenueType.RESTAURANT, name: 'Мари Vanna', description: 'Домашняя русская кухня с уютным залом и десертами по рецептам бабушки хозяйки.', emoji: '🍽️', area: 'Пресня', address: 'ул. Спиридоновка, 24', priceLevel: 3, romantic: true, recommendation: 'Идеально для спокойного ужина вдвоём с фирменной шарлоткой.', order: 1 },
+  { cityId: 'city_moscow', type: VenueType.RESTAURANT, name: 'Мари Vanna', description: 'Домашняя русская кухня с уютным залом и десертами по рецептам бабушки хозяйки.', emoji: '🍽️', area: 'Пресня', address: 'ул. Спиридоновка, 24', priceLevel: 3, romantic: true, recommendation: 'Идеально для спокойного ужина вдвоём с фирменной шарлоткой.', phone: '+7 (495) 650-58-38', bookingUrl: 'https://www.marivanna.ru', order: 1 },
   { cityId: 'city_moscow', type: VenueType.PARK, name: 'Парк Горького', description: 'Лучшее место для неспешной прогулки, пикника на набережной и вечерней подсветки.', emoji: '🌳', area: 'Якиманка', address: 'Крымский Вал, 9', priceLevel: 1, romantic: true, recommendation: 'Приходите на закате — самый романтичный свет.', order: 2 },
   { cityId: 'city_moscow', type: VenueType.BAR, name: 'Delicatessen', description: 'Бар с авторскими коктейлями и виниловыми пластинками.', emoji: '🍸', area: 'Пресненский', address: 'Садовая-Кудринская, 24а', priceLevel: 3, romantic: false, recommendation: 'Попробуйте их фирменный джин с розмарином.', order: 3 },
   { cityId: 'city_moscow', type: VenueType.WALK, name: 'Набережная Москвы-реки', description: 'Пешеходный маршрут от «Красного Октября» до Патриаршего моста с видами на Кремль.', emoji: '🚶', area: 'Болотный остров', address: 'Болотная набережная', priceLevel: 1, romantic: true, recommendation: 'Самый красивый вид — с Патриаршего моста.', order: 4 },
@@ -203,7 +205,7 @@ const VENUES: Array<{
   { cityId: 'city_moscow', type: VenueType.CAFE, name: 'Пинч', description: 'Кофейня с идеальным эспрессо и десертами для лёгкого утреннего свидания.', emoji: '☕', area: 'Патриаршие', address: 'М. Бронная, 18', priceLevel: 2, romantic: true, recommendation: 'Приходите на рассвете — город просыпается.', order: 7 },
   { cityId: 'city_moscow', type: VenueType.SPA, name: 'The Saigon Spa', description: 'Спа-комплекс с парными процедурами и хаммамом для пар.', emoji: '💆', area: 'Цветной бульвар', address: 'Цветной б-р, 25', priceLevel: 4, romantic: true, recommendation: 'Забронируйте кабинет с ванной для двоих.', order: 8 },
   // Санкт-Петербург
-  { cityId: 'city_spb', type: VenueType.RESTAURANT, name: 'Палкинъ', description: 'Классический петербургский ресторан русской кухни с живой музыкой.', emoji: '🍽️', area: 'Центр', address: 'Невский пр., 47', priceLevel: 3, romantic: true, recommendation: 'Ужин под скрипку в историческом интерьере.', order: 1 },
+  { cityId: 'city_spb', type: VenueType.RESTAURANT, name: 'Палкинъ', description: 'Классический петербургский ресторан русской кухни с живой музыкой.', emoji: '🍽️', area: 'Центр', address: 'Невский пр., 47', priceLevel: 3, romantic: true, recommendation: 'Ужин под скрипку в историческом интерьере.', phone: '+7 (812) 312-40-80', bookingUrl: 'https://www.palkin.ru', order: 1 },
   { cityId: 'city_spb', type: VenueType.PARK, name: 'Летний сад', description: 'Старейший парк города с фонтанами и тенистыми аллеями.', emoji: '🌳', area: 'Центральный', address: 'Летний сад', priceLevel: 1, romantic: true, recommendation: 'Лучшее место для утренней прогулки и кофе с собой.', order: 2 },
   { cityId: 'city_spb', type: VenueType.WALK, name: 'Крыша «Кузнечный»', description: 'Смотровая площадка с панорамой города и закатными видами.', emoji: '🌇', area: 'Лиговский', address: 'Кузнечный пер., 3', priceLevel: 2, romantic: true, recommendation: 'Лучший закат в городе без толп туристов.', order: 3 },
   { cityId: 'city_spb', type: VenueType.BAR, name: 'Хаски Бар', description: 'Уютный бар с разливными крафтами и живой музыкой.', emoji: '🍺', area: 'Петроградская', address: 'Каменноостровский пр., 32', priceLevel: 2, romantic: false, recommendation: 'По пятницам играют живьём — приходите пораньше.', order: 4 },

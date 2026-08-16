@@ -37,6 +37,16 @@ export const CravingStatus = {
 export type CravingStatus = (typeof CravingStatus)[keyof typeof CravingStatus]
 
 
+export const InviteStatus = {
+  PENDING: 'PENDING',
+  PROPOSED: 'PROPOSED',
+  CONFIRMED: 'CONFIRMED',
+  DECLINED: 'DECLINED'
+} as const
+
+export type InviteStatus = (typeof InviteStatus)[keyof typeof InviteStatus]
+
+
 export const LinkRequestStatus = {
   PENDING: 'PENDING',
   ACCEPTED: 'ACCEPTED',
