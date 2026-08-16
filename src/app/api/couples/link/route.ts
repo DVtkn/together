@@ -4,7 +4,7 @@ import { rateLimit } from '@/lib/rate-limit'
 import { getApiContext, unauthorized } from '@/lib/api-auth'
 import { linkRequestSchema } from '@/lib/utils/validation'
 
-// POST /api/couples/link - привязать партнёра по логину (создаёт пару сразу, если оба без пары)
+// POST /api/couples/link - создать запрос на создание пары (инвайт по логину)
 export async function POST(request: NextRequest) {
   const rl = await rateLimit('couples', request.headers.get('x-forwarded-for') || 'anon')
   if (!rl.ok) {
@@ -23,12 +23,13 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json()
-    const validation = linkRequestSchema.safeParse(body)
+    const username = String(body.username ?? body.targetUsername ?? '')
+    const validation = linkRequestSchema.safeParse({ username })
     if (!validation.success) {
       return NextResponse.json({ error: 'Укажите логин партнёра' }, { status: 400 })
     }
 
-    const targetUsername = validation.data.targetUsername.trim()
+    const targetUsername = validation.data.username.trim()
     if (targetUsername === ctx.user.username) {
       return NextResponse.json({ error: 'Нельзя привязать самого себя' }, { status: 400 })
     }
@@ -41,23 +42,34 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Этот пользователь уже в паре' }, { status: 400 })
     }
 
-    const couple = await prisma.couple.create({
+    const duplicate = await prisma.coupleLinkRequest.findFirst({
+      where: {
+        fromUserId: ctx.user.id,
+        toUserId: target.id,
+        status: 'PENDING',
+        expiresAt: { gt: new Date() },
+      },
+    })
+    if (duplicate) {
+      return NextResponse.json({ error: 'Запрос уже отправлен' }, { status: 400 })
+    }
+
+    const expiresAt = new Date(Date.now() + 72 * 60 * 60 * 1000)
+    const requestRecord = await prisma.coupleLinkRequest.create({
       data: {
-        id: `cp_${Math.random().toString(36).slice(2, 14)}`,
-        partnerAId: ctx.user.id,
-        partnerBId: target.id,
-        status: 'ACTIVE',
-        startedAt: new Date(),
+        id: `lr_${Math.random().toString(36).slice(2, 14)}`,
+        fromUserId: ctx.user.id,
+        toUserId: target.id,
+        status: 'PENDING',
+        expiresAt,
         updatedAt: new Date(),
       },
     })
 
-    await prisma.user.updateMany({
-      where: { id: { in: [ctx.user.id, target.id] } },
-      data: { coupleId: couple.id },
-    })
-
-    return NextResponse.json({ ok: true, couple: { id: couple.id, status: couple.status } })
+    return NextResponse.json(
+      { ok: true, request: { id: requestRecord.id, toUsername: targetUsername, expiresAt: expiresAt.toISOString() } },
+      { status: 201 }
+    )
   } catch (error) {
     console.error('Link couple error:', error)
     return NextResponse.json({ error: 'Внутренняя ошибка сервера' }, { status: 500 })

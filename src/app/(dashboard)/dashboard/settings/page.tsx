@@ -185,7 +185,7 @@ export default function SettingsPage() {
         body: JSON.stringify({ targetUsername: username }),
       })
       if (res.ok) {
-        setMessage({ type: 'success', text: 'Пара создана! Пригласите партнёра войти в аккаунт — общие данные станут доступны сразу.' })
+        setMessage({ type: 'success', text: 'Инвайт отправлен. Партнёр примет его в разделе «Мы», и пары станет общей.' })
         setLinkUsername('')
         await mutateSettings()
         router.refresh()
@@ -329,7 +329,7 @@ export default function SettingsPage() {
               Связать
             </button>
           </div>
-          <div className="small" style={{ marginTop: 6 }}>У партнёра должен быть аккаунт, и он не должен состоять в другой паре.</div>
+          <div className="small" style={{ marginTop: 6 }}>У партнёра должен быть аккаунт, и он не должен состоять в другой паре. Инвайт действует 72 часа.</div>
         </div>
       ) : (
         <div className="cd static">

@@ -707,3 +707,35 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 .cd.ai.risk{border-left:3px solid var(--red)}
 .ai-action{margin-top:8px;font-size:13px;font-weight:600;color:var(--text);
   background:var(--grad-soft);border-radius:10px;padding:8px 12px}
+
+/* ==== Пара: герой-блок поиска партнёра ==== */
+.pair-hero{text-align:center;padding:28px 20px}
+.pair-emoji{font-size:40px;margin-bottom:8px}
+.pair-form{display:flex;gap:8px;max-width:440px;margin:16px auto 0}
+.pair-form .auth-input{flex:1}
+.pair-steps{display:flex;gap:10px;justify-content:center;margin-top:18px;flex-wrap:wrap}
+.pair-steps div{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--dim)}
+.pair-steps i{width:20px;height:20px;border-radius:50%;background:var(--grad-soft);color:var(--pri);font-style:normal;font-weight:700;font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.notice-ok{background:rgba(16,185,129,.12);color:var(--ok);border-radius:12px;padding:10px 14px;font-size:13px}
+
+/* Прогресс опросников */
+.prog-line{height:6px;background:var(--card2);border-radius:3px;overflow:hidden;margin:10px 0 16px}
+.prog-fill{height:100%;background:var(--grad);border-radius:3px;transition:width .6s cubic-bezier(.22,1,.36,1)}
+
+/* Сетка тестов со статусами */
+.assess-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.a-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;text-decoration:none;color:var(--text);display:flex;flex-direction:column;gap:6px;transition:.15s}
+.a-card:hover{background:var(--card2);transform:translateY(-2px)}
+.a-card i{font-style:normal;font-size:24px}
+.a-card b{font-size:13px;font-weight:600;line-height:1.3}
+.a-status{font-size:11px;color:var(--mute)}
+.a-card.done{border-color:rgba(16,185,129,.35)}
+.a-card.done .a-status{color:var(--ok)}
+@media(min-width:900px){.assess-grid{grid-template-columns:repeat(5,1fr)}}
+
+/* Карточки результатов */
+.grid-2res{display:grid;grid-template-columns:1fr;gap:10px}
+@media(min-width:768px){.grid-2res{grid-template-columns:1fr 1fr}}
+.res-card{text-align:center;padding:22px;text-decoration:none;color:var(--text)}
+.res-num{font-size:32px;font-weight:800;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:4px}
+.res-lock{font-size:28px;margin-bottom:6px;opacity:.6}

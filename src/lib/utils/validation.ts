@@ -13,7 +13,11 @@ export const signinSchema = z.object({
 })
 
 export const linkRequestSchema = z.object({
-  targetUsername: z.string().min(3).max(20).regex(/^[a-zA-Z0-9_]+$/),
+  username: z.string().min(3).max(20).regex(/^[a-zA-Z0-9_]+$/),
+})
+
+export const linkAnswerSchema = z.object({
+  accept: z.boolean(),
 })
 
 export const profileUpdateSchema = z.object({
