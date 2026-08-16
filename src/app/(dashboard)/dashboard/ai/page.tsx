@@ -2,9 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
-import { cn } from '@/lib/utils/cn'
-import { format } from 'date-fns'
-import { ru } from 'date-fns/locale'
 
 interface Message {
   id: string
@@ -53,9 +50,7 @@ export default function AIChatPage() {
         }
       })
       .catch(() => {})
-    return () => {
-      cancelled = true
-    }
+    return () => { cancelled = true }
   }, [])
 
   useEffect(() => {
@@ -67,9 +62,7 @@ export default function AIChatPage() {
         if (!cancelled) setMessages(data.messages || [])
       })
       .catch(() => {})
-    return () => {
-      cancelled = true
-    }
+    return () => { cancelled = true }
   }, [currentConversationId])
 
   useEffect(() => {
@@ -108,7 +101,7 @@ export default function AIChatPage() {
       setMessages((prev) =>
         prev.map((m) =>
           m.id.startsWith('u')
-            ? { ...m, role: 'ASSISTANT', content: content }
+            ? { ...m, role: 'ASSISTANT', content }
             : m
         )
       )
@@ -135,7 +128,7 @@ export default function AIChatPage() {
     setMessages([])
   }
 
-  const formatTime = (d: string) => format(new Date(d), 'HH:mm', { locale: ru })
+  const formatTime = (d: string) => new Date(d).toLocaleTimeString('ru-RU')
 
   return (
     <DashboardLayout user={{ name: null, email: '' }} couple={null}>
@@ -158,7 +151,7 @@ export default function AIChatPage() {
                   <button
                     key={conv.id}
                     type="button"
-                    className={cn('chip', conv.id === currentConversationId && 'sel')}
+                    className="chip"
                     onClick={() => setCurrentConversationId(conv.id)}
                     title={conv.title}
                   >
@@ -169,9 +162,15 @@ export default function AIChatPage() {
             )}
 
             {messages.length === 0 && !isLoading && (
-              <div className="empty" style={{ margin: 'auto' }}>
-                <i>🦉</i>
-                <div className="dim">Начните разговор — Сова помнит ваш контекст: отчёты, пульс, челленджи.</div>
+              <div className="sova-empty">
+                <div style={{ fontSize: 40 }}>🦉</div>
+                <b>Привет, я Сова.</b>
+                <span className="dim">Помню вашу пару: отчёты, пульс, челленджи. Чем помочь?</span>
+                <div className="chips" style={{ justifyContent: 'center', marginTop: 12 }}>
+                  {['Что ты умеешь?', 'Помоги сформулировать мысль', 'Разбери наш спор', 'Идея свидания'].map(q => (
+                    <button key={q} className="chip" onClick={() => handleSend()}>{q}</button>
+                  ))}
+                </div>
               </div>
             )}
 
@@ -179,7 +178,7 @@ export default function AIChatPage() {
               if (msg.role === 'USER') {
                 return (
                   <div key={msg.id} className="m you">
-                    {msg.content}
+                    <div dangerouslySetInnerHTML={{ __html: msg.content }} />
                     <div className="msg-t">{formatTime(msg.createdAt)}</div>
                   </div>
                 )
@@ -188,14 +187,14 @@ export default function AIChatPage() {
                 return (
                   <div key={msg.id} className="m ai">
                     <div className="who">⚠️ Уведомление</div>
-                    {msg.content}
+                    <div dangerouslySetInnerHTML={{ __html: msg.content }} />
                   </div>
                 )
               }
               return (
                 <div key={msg.id} className="m ai">
                   <div className="who">🦉 Сова</div>
-                  {msg.content}
+                  <div dangerouslySetInnerHTML={{ __html: msg.content }} />
                   <div className="msg-t">{formatTime(msg.createdAt)}</div>
                 </div>
               )

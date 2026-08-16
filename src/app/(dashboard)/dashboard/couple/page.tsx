@@ -60,6 +60,7 @@ export default function CouplePage() {
 
   const done = s.assessments.filter(a => a.both).length
   const total = s.assessments.length || 10
+  const nextTest = s.assessments.find(a => !a.both && !a.me && !a.partner)
 
   return (
     <DashboardLayout>
@@ -68,7 +69,6 @@ export default function CouplePage() {
 
       {/* ==== ПАРА ==== */}
       <div className="k">Пара</div>
-
       {!s.couple && !s.outgoing && !s.incoming && (
         <div className="cd static pair-hero">
           <div className="pair-emoji">💞</div>
@@ -138,15 +138,31 @@ export default function CouplePage() {
       <div className="k">Опросники · {done} из {total}</div>
       <div className="prog-line"><div className="prog-fill" style={{ width: `${(done / total) * 100}%` }} /></div>
       <div className="assess-grid">
-        {s.assessments.map(a => (
-          <Link key={a.key} href={`/dashboard/assessments/${a.key}`} className={`a-card ${a.both ? 'done' : ''}`}>
-            <i>{a.emoji}</i>
-            <b>{a.title}</b>
-            <span className="a-status">
-              {a.both ? 'оба ✓' : a.me ? 'вы ✓ · партнёр —' : a.partner ? 'партнёр ✓ · вы —' : 'не начат'}
-            </span>
-          </Link>
-        ))}
+        {s.assessments.map(a => {
+          const statusMap: Record<string, string> = {
+            both: 'оба ✓',
+            me: 'вы ✓ · партнёр —',
+            partner: 'партнёр ✓ · вы —',
+            neither: 'не начат',
+          }
+          const statusKey = a.both ? 'both' : a.me ? 'me' : a.partner ? 'partner' : 'neither'
+          const statusText = statusMap[statusKey] || 'не начат'
+          const minutes = '~7 мин'
+          const statusBadge = a.both ? (
+            <span className="a-status">оба ✓</span>
+          ) : statusText === 'не начат' ? (
+            <span className="a-status">не начат · {minutes}</span>
+          ) : (
+            <span className="a-status">продолжить</span>
+          )
+          return (
+            <Link key={a.key} href={`/dashboard/assessments/${a.key}`} className={`a-card ${a.both ? 'done' : ''}`}>
+              <i>{a.emoji}</i>
+              <b>{a.title}</b>
+              <span className="a-status">{statusText}</span>
+            </Link>
+          )
+        })}
       </div>
 
       {/* ==== РЕЗУЛЬТАТЫ ==== */}
@@ -157,9 +173,10 @@ export default function CouplePage() {
             <>
               <div className="res-num">{s.report.compatibility !== null ? `${s.report.compatibility}%` : '—'}</div>
               <b>Отчёт пары</b>
-              <span>{s.report.compatibility !== null
-                ? `Открыто осей: ${s.report.openedAxes}/8`
-                : `0 тестов · пройдите вместе первый тест`}</span>
+              <span>Открыто осей: {s.report.openedAxes}/8</span>
+              {s.report.openedAxes < 8 && s.report.total > 0 && (
+                <div className="ai-action" style={{ marginTop: 10 }}>→ Пройдите «{nextTest?.title}», чтобы открыть ось</div>
+              )}
             </>
           ) : (
             <>

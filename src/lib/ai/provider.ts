@@ -43,6 +43,7 @@ export async function getAIResponse(messages: Array<{role: string; content: stri
           messages: safeMessages,
           temperature: 0.7,
           max_tokens: 500,
+          reasoning_format: "hidden",
         }),
       })
 
