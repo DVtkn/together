@@ -103,8 +103,8 @@ export function DashboardLayout({ children, user, couple }: DashboardLayoutProps
           </nav>
           <div className="hd-r">
             <div className="avs">
-              <div className="av" title={me.name ?? undefined}>{initials(me.name)}</div>
-              {myCouple && <div className="av p" title={partnerName ?? undefined}>{initials(partnerName)}</div>}
+              <div className="av" title={me.name ?? undefined} aria-label={`Мой профиль: ${me.name ?? 'без имени'}`}>{initials(me.name)}</div>
+              {myCouple && <div className="av p" title={partnerName ?? undefined} aria-label={`Профиль партнёра: ${partnerName ?? ''}`}>{initials(partnerName)}</div>}
             </div>
             <Link href="/dashboard/settings" aria-label="Настройки" className="icon-btn">
               ⚙
