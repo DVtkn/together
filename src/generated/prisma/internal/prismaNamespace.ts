@@ -413,6 +413,7 @@ export const ModelName = {
   Couple: 'Couple',
   CoupleLinkRequest: 'CoupleLinkRequest',
   CoupleReport: 'CoupleReport',
+  CoupleAnalysis: 'CoupleAnalysis',
   Flower: 'Flower',
   MoodStatus: 'MoodStatus',
   PlanetPosition: 'PlanetPosition',
@@ -438,7 +439,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "aIConversation" | "aIMessage" | "assessment" | "assessmentResponse" | "astroProfile" | "bouquet" | "challenge" | "challengeCompletion" | "dateInvite" | "moodEntry" | "city" | "consentLog" | "couple" | "coupleLinkRequest" | "coupleReport" | "flower" | "moodStatus" | "planetPosition" | "pulseCheckin" | "pushSubscription" | "question" | "smallCraving" | "synastryReport" | "venue" | "wishlistItem"
+    modelProps: "user" | "aIConversation" | "aIMessage" | "assessment" | "assessmentResponse" | "astroProfile" | "bouquet" | "challenge" | "challengeCompletion" | "dateInvite" | "moodEntry" | "city" | "consentLog" | "couple" | "coupleLinkRequest" | "coupleReport" | "coupleAnalysis" | "flower" | "moodStatus" | "planetPosition" | "pulseCheckin" | "pushSubscription" | "question" | "smallCraving" | "synastryReport" | "venue" | "wishlistItem"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1626,6 +1627,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    CoupleAnalysis: {
+      payload: Prisma.$CoupleAnalysisPayload<ExtArgs>
+      fields: Prisma.CoupleAnalysisFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CoupleAnalysisFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoupleAnalysisPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CoupleAnalysisFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoupleAnalysisPayload>
+        }
+        findFirst: {
+          args: Prisma.CoupleAnalysisFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoupleAnalysisPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CoupleAnalysisFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoupleAnalysisPayload>
+        }
+        findMany: {
+          args: Prisma.CoupleAnalysisFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoupleAnalysisPayload>[]
+        }
+        create: {
+          args: Prisma.CoupleAnalysisCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoupleAnalysisPayload>
+        }
+        createMany: {
+          args: Prisma.CoupleAnalysisCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CoupleAnalysisCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoupleAnalysisPayload>[]
+        }
+        delete: {
+          args: Prisma.CoupleAnalysisDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoupleAnalysisPayload>
+        }
+        update: {
+          args: Prisma.CoupleAnalysisUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoupleAnalysisPayload>
+        }
+        deleteMany: {
+          args: Prisma.CoupleAnalysisDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CoupleAnalysisUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CoupleAnalysisUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoupleAnalysisPayload>[]
+        }
+        upsert: {
+          args: Prisma.CoupleAnalysisUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoupleAnalysisPayload>
+        }
+        aggregate: {
+          args: Prisma.CoupleAnalysisAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCoupleAnalysis>
+        }
+        groupBy: {
+          args: Prisma.CoupleAnalysisGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CoupleAnalysisGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CoupleAnalysisCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CoupleAnalysisCountAggregateOutputType> | number
+        }
+      }
+    }
     Flower: {
       payload: Prisma.$FlowerPayload<ExtArgs>
       fields: Prisma.FlowerFieldRefs
@@ -2647,6 +2722,24 @@ export const CoupleReportScalarFieldEnum = {
 export type CoupleReportScalarFieldEnum = (typeof CoupleReportScalarFieldEnum)[keyof typeof CoupleReportScalarFieldEnum]
 
 
+export const CoupleAnalysisScalarFieldEnum = {
+  id: 'id',
+  coupleId: 'coupleId',
+  version: 'version',
+  summary: 'summary',
+  strengths: 'strengths',
+  weaknesses: 'weaknesses',
+  growthPoints: 'growthPoints',
+  perspectives: 'perspectives',
+  breakupRisks: 'breakupRisks',
+  basedOnHash: 'basedOnHash',
+  basedOn: 'basedOn',
+  createdAt: 'createdAt'
+} as const
+
+export type CoupleAnalysisScalarFieldEnum = (typeof CoupleAnalysisScalarFieldEnum)[keyof typeof CoupleAnalysisScalarFieldEnum]
+
+
 export const FlowerScalarFieldEnum = {
   id: 'id',
   slug: 'slug',
@@ -3231,6 +3324,7 @@ export type GlobalOmitConfig = {
   couple?: Prisma.CoupleOmit
   coupleLinkRequest?: Prisma.CoupleLinkRequestOmit
   coupleReport?: Prisma.CoupleReportOmit
+  coupleAnalysis?: Prisma.CoupleAnalysisOmit
   flower?: Prisma.FlowerOmit
   moodStatus?: Prisma.MoodStatusOmit
   planetPosition?: Prisma.PlanetPositionOmit

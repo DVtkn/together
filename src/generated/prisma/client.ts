@@ -122,6 +122,11 @@ export type CoupleLinkRequest = Prisma.CoupleLinkRequestModel
  */
 export type CoupleReport = Prisma.CoupleReportModel
 /**
+ * Model CoupleAnalysis
+ * 
+ */
+export type CoupleAnalysis = Prisma.CoupleAnalysisModel
+/**
  * Model Flower
  * 
  */

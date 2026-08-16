@@ -26,6 +26,15 @@ interface ReportData {
   generatedAt: string
 }
 
+interface AnalysisData {
+  summary: string
+  strengths: Array<{ title: string; text: string }>
+  weaknesses: Array<{ title: string; text: string }>
+  growthPoints: Array<{ title: string; text: string; action: string }>
+  perspectives: string
+  breakupRisks: Array<{ risk: string; cause: string; prevention: string }>
+}
+
 const RadarChart = ({ data }: { data: Record<string, number> }) => {
   const size = 340
   const cx = size / 2
@@ -84,17 +93,58 @@ const RadarChart = ({ data }: { data: Record<string, number> }) => {
 
 export default function ReportPage() {
   const [report, setReport] = useState<ReportData | null>(null)
+  const [analysis, setAnalysis] = useState<AnalysisData | null>(null)
+  const [testsReady, setTestsReady] = useState(false)
+  const [busy, setBusy] = useState(false)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch('/api/reports')
-      .then((res) => res.json())
-      .then((data) => {
-        setReport(data.report)
+    Promise.all([
+      fetch('/api/reports').then((r) => r.json()),
+      fetch('/api/assessments').then((r) => r.json()),
+      fetch('/api/report/analysis').then((r) => r.json()),
+    ])
+      .then(([reportData, assessmentsData, analysisData]) => {
+        setReport(reportData.report)
+        const all = (assessmentsData.assessments || []) as Array<{ bothCompleted: boolean }>
+        setTestsReady(all.length > 0 && all.every((a) => a.bothCompleted))
+        if (analysisData.analysis) {
+          setAnalysis({
+            summary: analysisData.analysis.summary,
+            strengths: analysisData.analysis.strengths || [],
+            weaknesses: analysisData.analysis.weaknesses || [],
+            growthPoints: analysisData.analysis.growthPoints || [],
+            perspectives: analysisData.analysis.perspectives,
+            breakupRisks: analysisData.analysis.breakupRisks || [],
+          })
+        }
         setLoading(false)
       })
       .catch(() => setLoading(false))
   }, [])
+
+  const analyze = async () => {
+    if (busy) return
+    setBusy(true)
+    try {
+      const res = await fetch('/api/report/analyze', { method: 'POST' })
+      const data = await res.json()
+      if (data.analysis) {
+        setAnalysis({
+          summary: data.analysis.summary,
+          strengths: data.analysis.strengths || [],
+          weaknesses: data.analysis.weaknesses || [],
+          growthPoints: data.analysis.growthPoints || [],
+          perspectives: data.analysis.perspectives,
+          breakupRisks: data.analysis.breakupRisks || [],
+        })
+      }
+    } catch {
+      // пользователь может попробовать ещё раз
+    } finally {
+      setBusy(false)
+    }
+  }
 
   if (loading) {
     return (
@@ -154,6 +204,83 @@ export default function ReportPage() {
             Обсудить с Совой
           </Link>
         </div>
+      )}
+
+      <div className="k">ИИ-анализ пары</div>
+      {!analysis ? (
+        <div className="cd static" style={{ textAlign: 'center', padding: 24 }}>
+          <div className="dim" style={{ marginBottom: 14 }}>
+            ИИ разберёт ваши ответы, когда оба пройдут тесты.
+          </div>
+          <button className="btn btn-p" onClick={analyze} disabled={busy || !testsReady}>
+            {busy ? 'Сова изучает ответы…' : 'Получить ИИ-анализ'}
+          </button>
+          {!testsReady && (
+            <div className="autosave-hint" style={{ marginTop: 10 }}>
+              Дождитесь, пока партнёр пройдёт все опросники.
+            </div>
+          )}
+        </div>
+      ) : (
+        <>
+          <div className="cd static">
+            <div className="cd-r">
+              <div className="cd-ic">🧠</div>
+              <div className="cd-t"><b>Ваш портрет</b><span>{analysis.summary}</span></div>
+            </div>
+          </div>
+
+          {analysis.strengths.length > 0 && (
+            <>
+              <div className="k">💪 Сильные стороны</div>
+              {analysis.strengths.map((s, i) => (
+                <div key={i} className="cd static ai ok"><b>{s.title}</b><span>{s.text}</span></div>
+              ))}
+            </>
+          )}
+
+          {analysis.weaknesses.length > 0 && (
+            <>
+              <div className="k">⚠️ Слабые стороны</div>
+              {analysis.weaknesses.map((s, i) => (
+                <div key={i} className="cd static ai warn"><b>{s.title}</b><span>{s.text}</span></div>
+              ))}
+            </>
+          )}
+
+          {analysis.growthPoints.length > 0 && (
+            <>
+              <div className="k">🌱 Точки роста</div>
+              {analysis.growthPoints.map((s, i) => (
+                <div key={i} className="cd static ai grow">
+                  <b>{s.title}</b><span>{s.text}</span>
+                  <div className="ai-action">→ {s.action}</div>
+                </div>
+              ))}
+            </>
+          )}
+
+          {analysis.perspectives && (
+            <>
+              <div className="k">🔮 Перспективы</div>
+              <div className="cd static"><span>{analysis.perspectives}</span></div>
+            </>
+          )}
+
+          {analysis.breakupRisks.length > 0 && (
+            <>
+              <div className="k">🚨 На что обратить внимание</div>
+              {analysis.breakupRisks.map((s, i) => (
+                <div key={i} className="cd static ai risk">
+                  <b>{s.risk}</b>
+                  <span>Причина: {s.cause}</span>
+                  <div className="ai-action">🛡 {s.prevention}</div>
+                </div>
+              ))}
+              <div className="autosave-hint">Анализ — не приговор и не медицинская услуга. Это повод для разговора.</div>
+            </>
+          )}
+        </>
       )}
 
       {report.strongSides.length > 0 && (

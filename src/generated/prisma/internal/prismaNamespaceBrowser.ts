@@ -67,6 +67,7 @@ export const ModelName = {
   Couple: 'Couple',
   CoupleLinkRequest: 'CoupleLinkRequest',
   CoupleReport: 'CoupleReport',
+  CoupleAnalysis: 'CoupleAnalysis',
   Flower: 'Flower',
   MoodStatus: 'MoodStatus',
   PlanetPosition: 'PlanetPosition',
@@ -335,6 +336,24 @@ export const CoupleReportScalarFieldEnum = {
 } as const
 
 export type CoupleReportScalarFieldEnum = (typeof CoupleReportScalarFieldEnum)[keyof typeof CoupleReportScalarFieldEnum]
+
+
+export const CoupleAnalysisScalarFieldEnum = {
+  id: 'id',
+  coupleId: 'coupleId',
+  version: 'version',
+  summary: 'summary',
+  strengths: 'strengths',
+  weaknesses: 'weaknesses',
+  growthPoints: 'growthPoints',
+  perspectives: 'perspectives',
+  breakupRisks: 'breakupRisks',
+  basedOnHash: 'basedOnHash',
+  basedOn: 'basedOn',
+  createdAt: 'createdAt'
+} as const
+
+export type CoupleAnalysisScalarFieldEnum = (typeof CoupleAnalysisScalarFieldEnum)[keyof typeof CoupleAnalysisScalarFieldEnum]
 
 
 export const FlowerScalarFieldEnum = {

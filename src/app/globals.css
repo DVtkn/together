@@ -691,3 +691,19 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 .auth-check input{margin-top:3px;accent-color:var(--pri)}
 .auth-check a{color:var(--pri);text-decoration:none}
 .auth-check a:hover{text-decoration:underline}
+
+/* ==== FIX: спокойный автосейв тестов ==== */
+.autosave-hint{margin-top:16px;text-align:center;font-size:12px;color:var(--mute)}
+.save-dot{opacity:0;transition:opacity .3s;color:var(--ok);font-size:12px;margin-left:6px}
+.save-dot.on{opacity:1}
+
+/* ==== FEAT: ИИ-анализ пары ==== */
+.cd.ai{cursor:default}
+.cd.ai b{display:block;font-size:15px;font-weight:600;margin-bottom:4px}
+.cd.ai span{display:block;font-size:13px;color:var(--dim);line-height:1.5}
+.cd.ai.ok{border-left:3px solid var(--ok)}
+.cd.ai.warn{border-left:3px solid var(--warn)}
+.cd.ai.grow{border-left:3px solid var(--pri)}
+.cd.ai.risk{border-left:3px solid var(--red)}
+.ai-action{margin-top:8px;font-size:13px;font-weight:600;color:var(--text);
+  background:var(--grad-soft);border-radius:10px;padding:8px 12px}

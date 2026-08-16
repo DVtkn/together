@@ -248,6 +248,7 @@ model Couple {
   User_Couple_partnerAIdToUser User             @relation("Couple_partnerAIdToUser", fields: [partnerAId], references: [id])
   User_Couple_partnerBIdToUser User             @relation("Couple_partnerBIdToUser", fields: [partnerBId], references: [id])
   CoupleReport                 CoupleReport[]
+  CoupleAnalysis               CoupleAnalysis[]
   SynastryReport               SynastryReport?
   User_User_coupleIdToCouple   User[]           @relation("User_coupleIdToCouple")
 
@@ -285,6 +286,24 @@ model CoupleReport {
   basedOnAssessments String[]
   Couple             Couple       @relation(fields: [coupleId], references: [id], onDelete: Cascade)
   Assessment         Assessment[] @relation("ReportAssessments")
+
+  @@index([coupleId])
+}
+
+model CoupleAnalysis {
+  id           String   @id
+  coupleId     String
+  version      Int      @default(1)
+  summary      String
+  strengths    Json
+  weaknesses   Json
+  growthPoints Json
+  perspectives String
+  breakupRisks Json
+  basedOnHash  String
+  basedOn      String[]
+  createdAt    DateTime @default(now())
+  Couple       Couple   @relation(fields: [coupleId], references: [id], onDelete: Cascade)
 
   @@index([coupleId])
 }

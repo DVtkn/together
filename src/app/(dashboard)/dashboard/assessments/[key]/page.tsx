@@ -41,8 +41,10 @@ export default function AssessmentPage() {
   const [answers, setAnswers] = useState<Record<string, unknown>>({})
   const [currentIndex, setCurrentIndex] = useState(0)
   const [saving, setSaving] = useState(false)
+  const [saved, setSaved] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const autoSaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const saveFlashRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
     fetch(`/api/assessments?key=${key}`)
@@ -71,6 +73,9 @@ export default function AssessmentPage() {
           answers: Object.entries(answers).map(([questionId, answer]) => ({ questionId, answer })),
         }),
       })
+      setSaved(true)
+      if (saveFlashRef.current) clearTimeout(saveFlashRef.current)
+      saveFlashRef.current = setTimeout(() => setSaved(false), 1000)
     } catch (e) {
       console.error('Auto-save failed:', e)
     } finally {
@@ -112,6 +117,7 @@ export default function AssessmentPage() {
       })
       router.push('/dashboard/assessments?saved=true')
       router.refresh()
+      fetch('/api/report/analyze', { method: 'POST' }).catch(() => {})
     } catch (e) {
       console.error('Submit failed:', e)
     } finally {
@@ -141,6 +147,7 @@ export default function AssessmentPage() {
         </div>
         <div className="progress-label">
           Вопрос {currentQuestion?.order || 0} из {questions.length} · {answeredCount} ответов
+          <span className={`save-dot ${saved ? 'on' : ''}`}>✓</span>
         </div>
       </div>
 
@@ -300,9 +307,7 @@ export default function AssessmentPage() {
         )}
       </div>
 
-      <div style={{ marginTop: 14, textAlign: 'center', fontSize: 12, color: 'var(--mute)' }}>
-        {saving ? 'Сохранение...' : '💾 Ответы сохраняются автоматически'}
-      </div>
+      <div className="autosave-hint">💾 Ответы сохраняются автоматически</div>
     </DashboardLayout>
   )
 }
