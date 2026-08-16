@@ -27,8 +27,8 @@ export async function GET(request: NextRequest) {
     ? await prisma.moodStatus.findUnique({ where: { userId: ctx.partner.id } })
     : null
 
-  const toDto = (m: { emoji: string; text: string | null } | null) =>
-    m ? { emoji: m.emoji, text: m.text } : null
+  const toDto = (m: { emoji: string; text: string | null; setAt: Date } | null) =>
+    m ? { emoji: m.emoji, text: m.text, at: m.setAt.toISOString() } : null
 
   return NextResponse.json({ mine: toDto(mine), partner: toDto(partnerMood) })
 }
