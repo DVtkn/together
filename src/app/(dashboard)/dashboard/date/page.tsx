@@ -13,6 +13,8 @@ const VIBES: Array<{ id: string; emoji: string; label: string; hint: string; typ
   { id: 'nature', emoji: '🌿', label: 'Природа', hint: 'парк, прогулка, воздух', type: 'WALK' },
   { id: 'food', emoji: '🍜', label: 'Гастро', hint: 'азия, паста, десерты', type: 'CAFE' },
   { id: 'chill', emoji: '🛋️', label: 'Ничего не делать', hint: 'спа, фильм, кокон', type: 'SPA' },
+  { id: 'surprise', emoji: '✨', label: 'Удиви меня', hint: 'не говорите заранее', type: null },
+  { id: 'custom', emoji: '✏️', label: 'Своё', hint: 'придумайте вместе', type: null },
 ]
 
 const TIME_SLOTS = ['16:00', '17:00', '18:00', '19:00', '19:30', '20:00', '20:30', '21:00']
@@ -74,6 +76,17 @@ export default function DatePage() {
 
   const selectedVibe = VIBES.find((v) => v.id === vibeId) || null
 
+  const pickRandom = () => {
+    const regular = VIBES.filter((v) => v.id !== 'surprise' && v.id !== 'custom')
+    const pick = regular[Math.floor(Math.random() * regular.length)]
+    setVibeId(pick.id)
+    setVenuesLoading(true)
+  }
+
+  const toggleCustom = () => {
+    setVibeId((cur) => (cur === 'custom' ? null : 'custom'))
+  }
+
   useEffect(() => {
     if (!selectedVibe || !myCity) return
     let cancelled = false
@@ -99,11 +112,15 @@ export default function DatePage() {
 
   const canGoNext =
     (step === 1 && !!vibeId) ||
-    (step === 2 && !!venueId) ||
+    (step === 2 && (!!venueId || !!selectedVibe?.type === false)) ||
     (step === 3 && !!day && !!time)
 
   const handleNext = () => {
     if (!canGoNext) return
+    if (step === 1 && selectedVibe && selectedVibe.type === null) {
+      setStep(3)
+      return
+    }
     setStep((s) => Math.min(4, s + 1))
   }
 
@@ -164,7 +181,7 @@ export default function DatePage() {
         <>
           <div className="k">Какой вайб?</div>
           <div className="vibe-grid">
-            {VIBES.map((v) => (
+            {VIBES.filter((v) => v.id !== 'surprise' && v.id !== 'custom').map((v) => (
               <button
                 key={v.id}
                 className={cn('vibe', vibeId === v.id && 'sel')}
@@ -179,6 +196,14 @@ export default function DatePage() {
                 <span>{v.hint}</span>
               </button>
             ))}
+          </div>
+          <div className="vibe-extra">
+            <button className={cn('vibe-btn', vibeId === 'surprise' && 'sel')} onClick={pickRandom}>
+              ✨ Удиви меня
+            </button>
+            <button className={cn('vibe-btn', vibeId === 'custom' && 'sel')} onClick={toggleCustom}>
+              ✏️ Своё
+            </button>
           </div>
         </>
       )}

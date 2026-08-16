@@ -344,6 +344,7 @@ body{font-family:var(--font-inter),'Inter',-apple-system,sans-serif;background:v
 .vibe-extra{display:flex;gap:10px;margin-top:12px}
 .vibe-btn{flex:1;padding:14px;border-radius:12px;background:var(--card);border:1px solid var(--line);color:var(--text);font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:.15s}
 .vibe-btn:hover{border-color:var(--pri);background:var(--card2)}
+.vibe-btn.sel{border-color:var(--pri);background:var(--card2);color:var(--text)}
 #customBox{margin-top:12px;display:none}
 .custom-input{width:100%;background:var(--card2);border:none;border-radius:12px;padding:14px;color:var(--text);font-family:inherit;resize:none;min-height:52px;font-size:15px;margin-bottom:10px}
 .custom-input::placeholder{color:var(--mute)}
@@ -561,7 +562,6 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 
 /* ============ VENUE GRID ============ */
 .ven-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-top:24px}
-.ven-grid .cd{height:100%}
 
 
 /* ============ TABS ============ */
@@ -639,3 +639,20 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
   .chat{height:calc(100dvh - 60px - 100px)}
   .fab{bottom:32px;right:32px}
 }
+
+/* ==== FIX CARDS — финальный блок, не перемещать ==== */
+.sc .cd{display:block;width:auto;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:10px}
+.sc .cd .cd-r{display:flex;align-items:center;gap:14px;width:100%}
+.sc .cd .cd-ic{width:40px;height:40px;flex:0 0 40px;align-self:center;border-radius:12px;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:19px}
+.sc .cd .cd-t{flex:1 1 auto;min-width:0}
+.sc .cd .cd-t b{display:block;font-size:15px;font-weight:600;color:var(--text)}
+.sc .cd .cd-t span{display:block;font-size:13px;color:var(--dim)}
+.sc .cd .arr{flex:0 0 auto;margin-left:auto;color:var(--mute)}
+
+/* ==== FIX-2 disabled-кнопки ==== */
+.btn:disabled,.btn[disabled]{opacity:.35;cursor:not-allowed;box-shadow:none}
+.btn:disabled:active{transform:none}
+
+/* ==== FIX-3 график недели без данных ==== */
+.wc-bar{min-height:6px;opacity:.35}
+.wc-bar:not(:empty){opacity:1}

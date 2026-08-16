@@ -97,7 +97,7 @@ function DashboardContent() {
       <div className="stats">
         <div className="st">
           <b>{compatibility !== null ? `${compatibility}%` : '—'}</b>
-          <span>совместимость</span>
+          <span>{compatibility !== null ? 'совместимость' : 'пройдите тесты'}</span>
         </div>
         <div className="st">
           <b>{pulse ? ((pulse.userCloseness + pulse.userConflict) / 2).toFixed(1) : '—'}</b>

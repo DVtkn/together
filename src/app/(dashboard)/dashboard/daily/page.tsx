@@ -135,14 +135,22 @@ export default function DailyPage() {
       </div>
 
       <div className="k">Сейчас</div>
-      <div className="feed">
-        <div className="feed-item">
-          <b>Моё настроение</b>
-          <span>{mood.mine ? `${mood.mine.emoji} ${mood.mine.text ?? ''}` : '— ещё не отметил(а)'}</span>
+      <div className="cd static">
+        <div className="cd-r">
+          <div className="cd-ic">{mood.mine?.emoji ?? '😶'}</div>
+          <div className="cd-t">
+            <b>Моё настроение</b>
+            <span>{mood.mine ? (mood.mine.text ?? 'Отмечено') : '— ещё не отметил(а)'}</span>
+          </div>
         </div>
-        <div className="feed-item">
-          <b>Настроение партнёра</b>
-          <span>{mood.partner ? `${mood.partner.emoji} ${mood.partner.text ?? ''}` : '— партнёр не отметил(а)'}</span>
+      </div>
+      <div className="cd static">
+        <div className="cd-r">
+          <div className="cd-ic">{mood.partner?.emoji ?? '💙'}</div>
+          <div className="cd-t">
+            <b>Настроение партнёра</b>
+            <span>{mood.partner ? (mood.partner.text ?? 'Отмечено') : '— партнёр не отметил(а)'}</span>
+          </div>
         </div>
       </div>
 
@@ -150,7 +158,11 @@ export default function DailyPage() {
         <>
           <div className="k">Неделя · настроение</div>
           <div className="cd static">
-            <div className="week-chart">
+            {history.history.mine.length === 0 && history.history.partner.length === 0 ? (
+              <div className="dim" style={{ textAlign: 'center', padding: '24px 0' }}>Пока нет данных — отметьте настроение</div>
+            ) : (
+              <>
+                <div className="week-chart">
               {weekChart.map((d, i) => (
                 <div key={i} className="wc-day">
                   <div className="wc-bars">
@@ -173,6 +185,8 @@ export default function DailyPage() {
               <span className="dima"><i style={{ background: 'var(--grad)' }} />я</span>
               <span className="anya"><i style={{ background: 'var(--blue)' }} />{partnerName ?? 'партнёр'}</span>
             </div>
+              </>
+            )}
           </div>
 
           <div className="k">За последние 7 дней</div>
