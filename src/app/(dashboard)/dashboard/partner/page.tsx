@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
 import { cn } from '@/lib/utils/cn'
+import { SkeletonCard } from '@/components/skeleton-card'
 
 const MOODS = [
   { emoji: '😄', label: 'Отлично' },
@@ -193,10 +194,7 @@ export default function PartnerPage() {
       <div className="dim">Расскажите о себе — партнёр перестанет угадывать, что вам дарить.</div>
 
       {loading ? (
-        <div className="loading-screen">
-          <div className="loading-icon">💐</div>
-          <div className="loading-text">Загружаем данные партнёра</div>
-        </div>
+        <SkeletonCard count={3} />
       ) : (
         <>
           <div className="cd static mt">

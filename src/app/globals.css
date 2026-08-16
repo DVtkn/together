@@ -509,6 +509,17 @@ body{font-family:var(--font-inter),'Inter',-apple-system,sans-serif;background:v
 .loading-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;text-align:center}
 .loading-icon{font-size:44px;margin-bottom:14px}
 .loading-text{font-size:17px;font-weight:700;margin-bottom:6px}
+
+/* ==== SKELETON LOADERS ==== */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.sk{display:block;background:linear-gradient(100deg,var(--card) 40%,var(--card2) 50%,var(--card) 60%);background-size:200% 100%;animation:sk-shimmer 1.4s infinite;border-radius:8px}
+@keyframes sk-shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.sk-ico{width:40px;height:40px;border-radius:12px;flex:0 0 40px}
+.sk-line{height:12px;width:100%}
+.sk-line.sm{width:60%}
+.sk-line.xs{width:35%}
+.sk-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:10px;display:flex;align-items:center;gap:14px}
+.sk-block{width:100%;display:flex;flex-direction:column;gap:8px;min-width:0}
 .loading-step{font-size:13px;color:var(--dim);margin-bottom:18px}
 .loading-bar{width:min(280px,70%);height:6px;border-radius:100px;background:var(--card2);overflow:hidden}
 .loading-bar-fill{height:100%;border-radius:100px;background:var(--grad)}

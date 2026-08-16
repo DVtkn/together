@@ -4,6 +4,7 @@ import { ReactNode, useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils/cn'
+import { useCouple, useProfile } from '@/lib/hooks'
 import { registerServiceWorker } from '@/lib/push-client'
 
 const NAV_ITEMS = [
@@ -44,31 +45,18 @@ function initials(name: string | null | undefined): string {
 export function DashboardLayout({ children, user, couple }: DashboardLayoutProps) {
   const pathname = usePathname()
   const [emergencyOpen, setEmergencyOpen] = useState(false)
-  const [me, setMe] = useState<{ name: string | null; email: string }>({
-    name: user?.name ?? null,
-    email: user?.email ?? '',
-  })
-  const [myCouple, setMyCouple] = useState<{ id: string; partnerA: { name: string | null }; partnerB: { name: string | null }; status: string } | null>(couple ?? null)
+  const { data: profileData } = useProfile()
+  const swrCouple = useCouple()
 
   useEffect(() => {
     registerServiceWorker()
   }, [])
 
-  // Подгружаем профиль и пару, если страница не передала свои данные
-  useEffect(() => {
-    if (user?.email && me.email) return
-    Promise.all([
-      fetch('/api/user/profile').then((r) => r.json()),
-      fetch('/api/user/settings').then((r) => r.json()),
-    ])
-      .then(([profile, settings]) => {
-        if (profile?.user) {
-          setMe({ name: profile.user.name ?? null, email: profile.user.email ?? '' })
-        }
-        if (settings?.couple) setMyCouple(settings.couple)
-      })
-      .catch(() => {})
-  }, [user, me.email])
+  const me = {
+    name: user?.name ?? profileData?.user?.name ?? null,
+    email: user?.email ?? profileData?.user?.email ?? '',
+  }
+  const myCouple = swrCouple ?? couple ?? null
 
   const isActive = (href: string) => {
     if (pathname === href || pathname.startsWith(href + '/')) return true

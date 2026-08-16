@@ -2,9 +2,11 @@
 
 import { useEffect, useState } from 'react'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
+import { SkeletonCard } from '@/components/skeleton-card'
 import { computeZodiac } from '@/lib/astro/zodiac'
 import { computeNatalChart } from '@/lib/astro/ephemeris'
 import { computeSynastry } from '@/lib/astro/synastry'
+import { useProfile } from '@/lib/hooks'
 
 export default function AstroPage() {
   const [myDob, setMyDob] = useState<string>('')
@@ -18,18 +20,17 @@ export default function AstroPage() {
   const [partnerZodiac, setPartnerZodiac] = useState<ReturnType<typeof computeZodiac> | null>(null)
   const [error, setError] = useState<string | null>(null)
 
+  const { data: profileData } = useProfile()
+
   useEffect(() => {
-    fetch('/api/user/profile')
-      .then((r) => r.json())
-      .then((p) => {
-        if (p.user?.dateOfBirth) {
-          const d = new Date(p.user.dateOfBirth)
-          setMyDob(d.toISOString().slice(0, 10))
-        }
-        setLoading(false)
-      })
-      .catch(() => setLoading(false))
-  }, [])
+    // hydrate DOB field once profile data arrives (form init, not derived state)
+    if (profileData?.user?.dateOfBirth) {
+      const d = new Date(profileData.user.dateOfBirth)
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setMyDob(d.toISOString().slice(0, 10))
+    }
+    if (profileData) setLoading(false)
+  }, [profileData])
 
   const handleCalculate = () => {
     setError(null)
@@ -62,10 +63,8 @@ export default function AstroPage() {
   if (loading) {
     return (
       <DashboardLayout user={{ name: null, email: '' }} couple={null}>
-        <div className="loading-screen">
-          <div className="loading-icon">🔮</div>
-          <div className="loading-text">Загружаем</div>
-        </div>
+        <div className="h1">Совместимость по звёздам</div>
+        <SkeletonCard count={2} />
       </DashboardLayout>
     )
   }

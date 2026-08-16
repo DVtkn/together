@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
+import { SkeletonCard } from '@/components/skeleton-card'
 
 interface CoupleData {
   user: { name: string | null; email: string }
@@ -28,10 +29,8 @@ export default function CouplePage() {
   if (loading || !data) {
     return (
       <DashboardLayout user={{ name: null, email: '' }} couple={null}>
-        <div className="loading-screen">
-          <div className="loading-icon">💞</div>
-          <div className="loading-text">Загружаем</div>
-        </div>
+        <div className="h1">Мы</div>
+        <SkeletonCard count={3} />
       </DashboardLayout>
     )
   }

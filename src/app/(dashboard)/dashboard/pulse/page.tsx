@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
+import { SkeletonCard } from '@/components/skeleton-card'
 
 interface PulseData {
   checkins: Array<{
@@ -56,10 +57,8 @@ export default function PulsePage() {
   if (loading) {
     return (
       <DashboardLayout user={{ name: null, email: '' }} couple={null}>
-        <div className="loading-screen">
-          <div className="loading-icon">🫀</div>
-          <div className="loading-text">Загружаем пульс</div>
-        </div>
+        <div className="h1">Пульс</div>
+        <SkeletonCard count={2} />
       </DashboardLayout>
     )
   }

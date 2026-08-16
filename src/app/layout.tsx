@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import { SWRProvider } from '@/components/providers/swr-provider'
 import './globals.css'
 
 const inter = Inter({
@@ -58,7 +59,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body className={`${inter.variable} min-h-full flex flex-col antialiased`}>
-        {children}
+        <SWRProvider>{children}</SWRProvider>
       </body>
     </html>
   )

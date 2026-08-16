@@ -1,8 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
 import { cn } from '@/lib/utils/cn'
+import { useCities, useProfile } from '@/lib/hooks'
+import useSWR from 'swr'
 
 const VENUE_TYPE_LABELS: Record<string, string> = {
   RESTAURANT: '🍽 Рестораны',
@@ -22,13 +24,6 @@ const PRICE_LABELS: Record<number, string> = {
   4: '💵💵💵💵 премиум',
 }
 
-interface City {
-  id: string
-  slug: string
-  name: string
-  emoji: string
-}
-
 interface Venue {
   id: string
   type: string
@@ -43,74 +38,46 @@ interface Venue {
 }
 
 export default function VenuesPage() {
-  const [cities, setCities] = useState<City[]>([])
-  const [myCity, setMyCity] = useState<City | null>(null)
-  const [venues, setVenues] = useState<Venue[]>([])
-  const [needsCity, setNeedsCity] = useState(false)
   const [selectedCityId, setSelectedCityId] = useState<string | null>(null)
   const [type, setType] = useState<string | null>(null)
   const [maxPrice, setMaxPrice] = useState<string | null>(null)
   const [query, setQuery] = useState('')
-  const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
 
-  const loadVenues = async (cityId: string, t: string | null, p: string | null, q: string) => {
-    setLoading(true)
-    try {
-      const params = new URLSearchParams({ cityId })
-      if (t) params.set('type', t)
-      if (p) params.set('price', p)
-      if (q.trim()) params.set('query', q.trim())
-      const res = await fetch(`/api/venues?${params}`)
-      const data = await res.json()
-      setVenues(data.venues || [])
-      setNeedsCity(!!data.needsCity)
-    } catch (e) {
-      console.error('load venues failed', e)
-    } finally {
-      setLoading(false)
-    }
+  const { data: citiesData } = useCities()
+  const { data: profileData } = useProfile()
+
+  const cities = citiesData?.cities || []
+  const userCity = profileData?.user?.city || null
+
+  // Инициализация выбранного города из профиля (adjust-state-during-render)
+  if (userCity?.id && selectedCityId === null) {
+    setSelectedCityId(userCity.id)
   }
 
-  useEffect(() => {
-    ;(async () => {
-      try {
-        const [c, p] = await Promise.all([
-          fetch('/api/cities').then((r) => r.json()),
-          fetch('/api/user/profile').then((r) => r.json()),
-        ])
-        const list = c.cities || []
-        setCities(list)
-        const userCity = p.user?.city || null
-        setMyCity(userCity)
-        setSelectedCityId(userCity?.id || null)
-        if (userCity?.id) loadVenues(userCity.id, null, null, '')
-      } catch (e) {
-        console.error('load cities failed', e)
-      } finally {
-        setLoading(false)
-      }
-    })()
-  }, [])
+  const params = new URLSearchParams()
+  if (selectedCityId) params.set('cityId', selectedCityId)
+  if (type) params.set('type', type)
+  if (maxPrice) params.set('price', maxPrice)
+  if (query.trim()) params.set('query', query.trim())
 
-  useEffect(() => {
-    if (selectedCityId) {
-      const timer = setTimeout(() => loadVenues(selectedCityId, type, maxPrice, query), 300)
-      return () => clearTimeout(timer)
-    }
-  }, [selectedCityId, type, maxPrice, query])
+  const { data: venuesData, isLoading: loading } = useSWR<{ venues: Venue[]; needsCity?: boolean }>(
+    selectedCityId ? `/api/venues?${params.toString()}` : null
+  )
+
+  const venues = venuesData?.venues || []
+  const needsCity = venuesData?.needsCity ?? false
+  const myCity = selectedCityId ? (cities.find((c) => c.id === selectedCityId) ?? userCity) : userCity
 
   const saveCity = async (cityId: string) => {
     setSaving(true)
     try {
-      await fetch('/api/user/profile', {
+      const res = await fetch('/api/user/profile', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ cityId }),
       })
-      const city = cities.find((c) => c.id === cityId) || null
-      setMyCity(city)
-      setSelectedCityId(cityId)
+      if (res.ok) setSelectedCityId(cityId || null)
     } catch (e) {
       console.error('save city failed', e)
     } finally {

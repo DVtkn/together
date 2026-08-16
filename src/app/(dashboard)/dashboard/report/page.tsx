@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
+import { SkeletonCard } from '@/components/skeleton-card'
 
 const RADAR_AXES = [
   { key: 'communication', label: 'Коммуникация', icon: '💬' },
@@ -95,14 +96,10 @@ export default function ReportPage() {
   if (loading) {
     return (
       <DashboardLayout user={{ name: null, email: '' }} couple={null}>
-        <div className="loading-screen">
-          <div className="loading-icon">📊</div>
-          <div className="loading-text">Строим ваш отчёт</div>
-          <div className="loading-step">Анализируем ответы обоих партнёров…</div>
-          <div className="loading-bar">
-            <div className="loading-bar-fill" style={{ width: '100%', animation: 'typing-bounce 1.4s infinite' }} />
-          </div>
-        </div>
+        <div className="h1">Наш отчёт</div>
+        <div className="sk sk-line" style={{ height: 20, width: '60%', marginBottom: 18 }} />
+        <SkeletonCard count={3} />
+        <div className="sk sk-line" style={{ height: 220, borderRadius: 16, marginTop: 4 }} />
       </DashboardLayout>
     )
   }

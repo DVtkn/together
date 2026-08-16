@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
 import { cn } from '@/lib/utils/cn'
+import { SkeletonCard } from '@/components/skeleton-card'
 
 interface Challenge {
   id: string
@@ -55,10 +56,8 @@ export default function ChallengesPage() {
   if (loading) {
     return (
       <DashboardLayout user={{ name: null, email: '' }} couple={null}>
-        <div className="loading-screen">
-          <div className="loading-icon">🌙</div>
-          <div className="loading-text">Загружаем челленджи</div>
-        </div>
+        <div className="h1">Челленджи</div>
+        <SkeletonCard count={2} />
       </DashboardLayout>
     )
   }

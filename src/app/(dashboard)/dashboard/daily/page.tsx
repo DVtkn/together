@@ -3,6 +3,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
+import { useProfile } from '@/lib/hooks'
+import { SkeletonCard } from '@/components/skeleton-card'
 
 const MOODS = [
   { emoji: '😄', text: 'Всё супер', tone: 'ok' },
@@ -45,24 +47,24 @@ const DAY_NAMES = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб']
 export default function DailyPage() {
   const [mood, setMood] = useState<MoodData>({ mine: null, partner: null })
   const [history, setHistory] = useState<HistoryData | null>(null)
-  const [partnerName, setPartnerName] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
+  const { data: profileData } = useProfile()
 
   useEffect(() => {
     Promise.all([
       fetch('/api/mood').then((r) => r.json()),
       fetch('/api/mood/history?days=7').then((r) => r.json()),
-      fetch('/api/user/profile').then((r) => r.json()),
     ])
-      .then(([m, h, p]) => {
+      .then(([m, h]) => {
         setMood(m as MoodData)
         setHistory(h as HistoryData)
-        setPartnerName(p?.couple?.partnerName ?? null)
         setLoading(false)
       })
       .catch(() => setLoading(false))
   }, [])
+
+  const partnerName = profileData?.couple?.partnerName ?? null
 
   const weekChart = useMemo(() => {
     if (!history) return []
@@ -102,10 +104,9 @@ export default function DailyPage() {
   if (loading) {
     return (
       <DashboardLayout user={{ name: null, email: '' }} couple={null}>
-        <div className="loading-screen">
-          <div className="loading-icon">⚡</div>
-          <div className="loading-text">Загружаем будни</div>
-        </div>
+        <div className="h1">Будни</div>
+        <SkeletonCard count={3} />
+        <SkeletonCard count={2} />
       </DashboardLayout>
     )
   }

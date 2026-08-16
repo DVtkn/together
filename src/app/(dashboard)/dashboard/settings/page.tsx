@@ -4,7 +4,9 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
 import { cn } from '@/lib/utils/cn'
+import { SkeletonCard } from '@/components/skeleton-card'
 import { signOut } from 'next-auth/react'
+import { useProfile, useSettings as useSettingsSWR, useCities } from '@/lib/hooks'
 import { subscribeToPush, unsubscribeFromPush } from '@/lib/push-client'
 
 interface UserSettings {
@@ -52,21 +54,19 @@ export default function SettingsPage() {
   const [linkUsername, setLinkUsername] = useState('')
   const [linking, setLinking] = useState(false)
 
+  const { data: settingsRes, mutate: mutateSettings } = useSettingsSWR()
+  const { data: citiesRes } = useCities()
+  const { data: profileRes, mutate: mutateProfile } = useProfile()
+
   useEffect(() => {
-    Promise.all([
-      fetch('/api/user/settings').then((res) => res.json()),
-      fetch('/api/cities').then((res) => res.json()),
-      fetch('/api/user/profile').then((res) => res.json()),
-    ])
-      .then(([settingsRes, citiesRes, profileRes]) => {
-        if (settingsRes?.settings) setSettings(settingsRes.settings)
-        setCouple(settingsRes?.couple ?? null)
-        setCities(citiesRes?.cities || [])
-        setCityId(profileRes?.user?.city?.id || null)
-        setLoading(false)
-      })
-      .catch(() => setLoading(false))
-  }, [])
+    // hydrate settings form once data arrives (one-time init, not derived state)
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (settingsRes?.settings) setSettings(settingsRes.settings as unknown as UserSettings)
+    setCouple(settingsRes?.couple ?? null)
+    setCities(citiesRes?.cities || [])
+    setCityId(profileRes?.user?.city?.id || null)
+    if (settingsRes || citiesRes || profileRes) setLoading(false)
+  }, [settingsRes, citiesRes, profileRes])
 
   const handleSave = async () => {
     setSaving(true)
@@ -79,6 +79,7 @@ export default function SettingsPage() {
       })
       if (res.ok) {
         setMessage({ type: 'success', text: 'Настройки сохранены' })
+        mutateSettings()
       } else {
         const err = await res.json()
         setMessage({ type: 'error', text: err.error || 'Ошибка сохранения' })
@@ -102,6 +103,7 @@ export default function SettingsPage() {
       if (res.ok) {
         setCityId(value || null)
         setMessage({ type: 'success', text: 'Город обновлён — подборки мест станут актуальнее' })
+        mutateProfile()
       } else {
         const err = await res.json()
         setMessage({ type: 'error', text: err.error || 'Ошибка сохранения города' })
@@ -155,6 +157,7 @@ export default function SettingsPage() {
       if (res.ok) {
         router.push('/dashboard?left=true')
         router.refresh()
+        await mutateSettings()
       } else {
         const err = await res.json()
         setMessage({ type: 'error', text: err.error || 'Ошибка' })
@@ -183,8 +186,7 @@ export default function SettingsPage() {
       if (res.ok) {
         setMessage({ type: 'success', text: 'Пара создана! Пригласите партнёра войти в аккаунт — общие данные станут доступны сразу.' })
         setLinkUsername('')
-        const settingsRes = await fetch('/api/user/settings').then((r) => r.json())
-        setCouple(settingsRes.couple)
+        await mutateSettings()
         router.refresh()
       } else {
         const err = await res.json()
@@ -200,10 +202,8 @@ export default function SettingsPage() {
   if (loading) {
     return (
       <DashboardLayout user={{ name: null, email: '' }} couple={null}>
-        <div className="loading-screen">
-          <div className="loading-icon">⚙️</div>
-          <div className="loading-text">Загружаем настройки</div>
-        </div>
+        <div className="h1">Настройки</div>
+        <SkeletonCard count={3} />
       </DashboardLayout>
     )
   }

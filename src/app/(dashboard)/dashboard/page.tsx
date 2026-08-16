@@ -4,6 +4,7 @@ import { Suspense, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
+import { SkeletonCard } from '@/components/skeleton-card'
 
 interface DashboardData {
   user: { name: string | null; email: string }
@@ -58,14 +59,8 @@ function DashboardContent() {
   if (loading || !data) {
     return (
       <DashboardLayout user={{ name: null, email: '' }} couple={null}>
-        <div className="loading-screen">
-          <div className="loading-icon">💜</div>
-          <div className="loading-text">Загружаем ваш дашборд</div>
-          <div className="loading-step">Собираем данные о вашей паре…</div>
-          <div className="loading-bar">
-            <div className="loading-bar-fill" style={{ width: '100%', animation: 'typing-bounce 1.4s infinite' }} />
-          </div>
-        </div>
+        <div className="h1">Дом</div>
+        <SkeletonCard count={4} />
       </DashboardLayout>
     )
   }

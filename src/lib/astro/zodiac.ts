@@ -61,7 +61,8 @@ function getChineseZodiac(year: number): { animal: string; element: string } {
   const baseYear = 1984
   const cyclePosition = ((year - baseYear) % 60 + 60) % 60
   const animalIndex = cyclePosition % 12
-  const elementIndex = Math.floor(cyclePosition / 12) % 5
+  // Стихии сменяются каждые 2 года (60-летний цикл = 5 стихий × 2 года)
+  const elementIndex = Math.floor(cyclePosition / 2) % 5
 
   return {
     animal: CHINESE_ZODIAC[animalIndex].animal,
