@@ -1,60 +1,47 @@
-import { BarChart2, Bot, BookOpen, HeartPulse, MapPin, ShoppingBag } from 'lucide-react'
-
 const FEATURES = [
   {
-    icon: BookOpen,
+    icon: '📖',
     title: 'База знаний о партнёре',
     description: 'Цветы, виш-лист, хотелки и настроение. Партнёр видит, что вам нравится, и перестаёт гадать.',
   },
   {
-    icon: BarChart2,
+    icon: '📊',
     title: 'Совместный отчёт',
-    description: 'Пять опросников — и общий радар по 6 темам: привязанность, конфликты, ценности, будущее. Видно, где вы уже близки, а где стоит поговорить.',
+    description: 'Пять опросников — и общий радар по шести темам. Видно, где вы близки, а где стоит поговорить.',
   },
   {
-    icon: HeartPulse,
+    icon: '🫀',
     title: 'Пульс отношений',
-    description: 'Раз в неделю — три коротких вопроса. Проще заметить, что что-то меняется, пока это ещё не стало большой проблемой.',
+    description: 'Раз в неделю — три коротких вопроса. Проще заметить перемены, пока это не проблема.',
   },
   {
-    icon: Bot,
+    icon: '🦉',
     title: 'ИИ-ассистент',
-    description: 'Помогает разобрать ссору, подобрать слова и сформулировать «я-сообщение». Знает ваш контекст и не лезет с советами из ниоткуда.',
+    description: 'Помогает разобрать ссору и сформулировать «я-сообщение». Знает ваш контекст.',
   },
   {
-    icon: MapPin,
+    icon: '📍',
     title: 'Куда пойти',
-    description: 'Рестораны, кафе и маршруты в вашем городе. Подбираем под бюджет и настроение, а не «как у всех».',
+    description: 'Места и маршруты в вашем городе — под бюджет и настроение.',
   },
   {
-    icon: ShoppingBag,
+    icon: '🎁',
     title: 'Подарки без угадывания',
-    description: 'Партнёр сам пишет, что хочет: ссылки, мелочи, букеты. Никаких «ну я думал, тебе понравится».',
+    description: 'Партнёр сам пишет, что хочет. Никаких «ну я думал, тебе понравится».',
   },
 ]
 
 const Features = () => {
   return (
-    <section className="py-24 lg:py-32 border-y border-slate-200 dark:border-slate-800">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl lg:text-4xl font-bold text-slate-950 dark:text-slate-50">
-            Не надо держать всё в голове
-          </h2>
-          <p className="mt-4 text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-            Никакой магии: проверенные методики и простые инструменты, которыми удобно пользоваться вдвоём.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {FEATURES.map((feature) => (
-            <div
-              key={feature.title}
-              className="rounded-2xl border border-slate-200 dark:border-slate-800 p-6 transition-shadow hover:shadow-lg hover:shadow-rose-100/50 dark:hover:shadow-rose-950/20"
-            >
-              <feature.icon className="h-8 w-8 text-rose-500 mb-4" aria-hidden="true" />
-              <h3 className="text-lg font-semibold text-slate-950 dark:text-slate-50 mb-2">{feature.title}</h3>
-              <p className="text-slate-600 dark:text-slate-400">{feature.description}</p>
+    <section className="lp-sec" id="features">
+      <div className="lp-sec-in">
+        <div className="k">Что внутри</div>
+        <div className="l-grid">
+          {FEATURES.map((f) => (
+            <div key={f.title} className="l-card">
+              <i aria-hidden="true">{f.icon}</i>
+              <b>{f.title}</b>
+              <p>{f.description}</p>
             </div>
           ))}
         </div>

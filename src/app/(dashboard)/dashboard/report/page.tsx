@@ -2,7 +2,6 @@
 
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { Progress } from '@/components/ui/progress'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
 
 const RADAR_AXES = [
@@ -48,29 +47,24 @@ const RadarChart = ({ data }: { data: Record<string, number> }) => {
         </linearGradient>
       </defs>
 
-      {/* Сетка */}
       {[1, 2, 3, 4, 5].map((l) => {
         const r = (radius / 5) * l
         const pts = RADAR_AXES.map((_, i) => point(i, r)).map(([x, y]) => `${x},${y}`).join(' ')
-        return <polygon key={l} points={pts} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth={1} />
+        return <polygon key={l} points={pts} fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth={1} />
       })}
 
-      {/* Оси */}
       {RADAR_AXES.map((a, i) => {
         const [x, y] = point(i, radius)
-        return <line key={a.key} x1={cx} y1={cy} x2={x} y2={y} stroke="rgba(255,255,255,0.08)" strokeWidth={1} />
+        return <line key={a.key} x1={cx} y1={cy} x2={x} y2={y} stroke="rgba(255,255,255,0.07)" strokeWidth={1} />
       })}
 
-      {/* Данные */}
       <polygon points={dataPolygon} fill="url(#radarGrad)" fillOpacity={0.22} stroke="url(#radarGrad)" strokeWidth={2.5} strokeLinejoin="round" />
 
-      {/* Вершины */}
       {RADAR_AXES.map((a, i) => {
         const [x, y] = point(i, (val(a.key) / 10) * radius)
         return <circle key={a.key} cx={x} cy={y} r={4.5} fill="#8B5CF6" stroke="#fff" strokeWidth={1.5} />
       })}
 
-      {/* Подписи и значения */}
       {RADAR_AXES.map((a, i) => {
         const [x, y] = point(i, radius + 26)
         return (
@@ -100,7 +94,7 @@ export default function ReportPage() {
 
   if (loading) {
     return (
-      <DashboardLayout user={{ name: null, email: '', image: null }} couple={null}>
+      <DashboardLayout user={{ name: null, email: '' }} couple={null}>
         <div className="loading-screen">
           <div className="loading-icon">📊</div>
           <div className="loading-text">Строим ваш отчёт</div>
@@ -115,14 +109,14 @@ export default function ReportPage() {
 
   if (!report) {
     return (
-      <DashboardLayout user={{ name: null, email: '', image: null }} couple={null}>
-        <div className="container" style={{ textAlign: 'center', paddingTop: 40 }}>
-          <div className="hero-icon" aria-hidden="true" style={{ marginBottom: 24 }}>🔍</div>
-          <h1>Отчёт не найден</h1>
-          <p style={{ maxWidth: 420, margin: '0 auto 24px' }}>
+      <DashboardLayout user={{ name: null, email: '' }} couple={null}>
+        <div className="empty" style={{ paddingTop: 60 }}>
+          <i>🔍</i>
+          <div className="h2" style={{ marginBottom: 6 }}>Отчёт не найден</div>
+          <div className="dim" style={{ marginBottom: 18 }}>
             Пройдите все опросники вместе с партнёром, чтобы получить совместный отчёт.
-          </p>
-          <Link href="/dashboard/assessments" className="btn btn-primary" style={{ display: 'inline-flex', width: 'auto', padding: '14px 28px' }}>
+          </div>
+          <Link href="/dashboard/assessments" className="btn btn-p">
             Перейти к опросникам
           </Link>
         </div>
@@ -135,106 +129,86 @@ export default function ReportPage() {
   const score = Math.round((avg / 10) * 100)
 
   return (
-    <DashboardLayout user={{ name: null, email: '', image: null }} couple={null}>
-      <div className="container">
-        {/* Шапка результатов */}
-        <div className="results-header">
-          <span className="eyebrow">Ваш результат</span>
-          <h1>Совместимость вашей пары</h1>
-          <p style={{ marginTop: 8 }}>
-            Сгенерирован {new Date(report.generatedAt).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })}
-          </p>
-          <div className="results-score">
-            <span className="results-score-value gradient-text">{score}%</span>
-            <span className="results-score-label">совместимость</span>
-          </div>
-        </div>
+    <DashboardLayout user={{ name: null, email: '' }} couple={null}>
+      <div className="h1">Карта пары</div>
+      <div className="dim">Без оценок. Только факты.</div>
 
-        {/* Радар + Инсайты */}
-        <div className="results-grid">
-          <div className="radar-container">
-            <h3>🎯 Радар совместимости</h3>
-            <p style={{ color: 'var(--text-dim)', fontSize: 13, textAlign: 'center', marginBottom: 16 }}>
-              Оценка по 6 темам (0–10). Чем выше и ровнее фигура, тем увереннее вы друг в друге.
-            </p>
-            <RadarChart data={report.radarData} />
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 12, width: '100%', marginTop: 20 }}>
-              {RADAR_AXES.map((axis) => (
-                <div key={axis.key} style={{ textAlign: 'center', padding: 12, borderRadius: 12, background: 'var(--surface)', border: '1px solid var(--border)' }}>
-                  <span style={{ fontSize: 18 }} aria-hidden="true">{axis.icon}</span>
-                  <p style={{ fontSize: 11, color: 'var(--text-dim)', margin: '4px 0' }}>{axis.label}</p>
-                  <p style={{ fontSize: 22, fontWeight: 800 }}>{report.radarData[axis.key]?.toFixed(1) || '—'}</p>
-                  <Progress value={(report.radarData[axis.key] || 0) * 10} className="mt-1 h-1" />
+      <div className="radar mt">
+        <RadarChart data={report.radarData} />
+        <div style={{ display: 'flex', gap: 14, fontSize: 12, marginTop: 12, alignItems: 'center' }}>
+          <span style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+            <i style={{ width: 10, height: 10, borderRadius: '50%', background: 'var(--grad)', display: 'inline-block', fontStyle: 'normal' }}></i>
+            Ваша пара
+          </span>
+          <b style={{ marginLeft: 'auto', fontSize: 26, background: 'var(--grad)', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>{score}%</b>
+        </div>
+      </div>
+
+      {report.strongSides.length > 0 && (
+        <>
+          <div className="k">Сила</div>
+          {report.strongSides.map((side, i) => (
+            <div key={i} className="cd static">
+              <div className="cd-r">
+                <div className="cd-ic">💬</div>
+                <div className="cd-t">
+                  <b>{side.title}</b>
+                  <span>{side.description}</span>
                 </div>
-              ))}
+              </div>
+              {side.evidence && <div className="small" style={{ marginTop: 8, color: 'var(--ok)' }}>Доказательство: {side.evidence}</div>}
             </div>
-          </div>
+          ))}
+        </>
+      )}
 
-          <div className="insights-panel">
-            {report.strongSides.length > 0 && (
-              <div>
-                <h2 className="section-title" style={{ margin: '0 0 16px' }}>💪 Сильные стороны</h2>
-                {report.strongSides.map((side, i) => (
-                  <div key={i} className="insight-card strength">
-                    <span className="insight-icon" aria-hidden="true">✅</span>
-                    <div className="insight-content">
-                      <h4>{side.title}</h4>
-                      <p>{side.description}</p>
-                      {side.evidence && <p style={{ marginTop: 6, fontSize: 12, color: 'var(--success)' }}>Доказательство: {side.evidence}</p>}
-                    </div>
-                  </div>
-                ))}
+      {report.growthAreas.length > 0 && (
+        <>
+          <div className="k">Рост</div>
+          {report.growthAreas.map((area, i) => (
+            <div key={i} className="cd static">
+              <div className="cd-r">
+                <div className="cd-ic">⚡</div>
+                <div className="cd-t">
+                  <b>{area.title}</b>
+                  <span>{area.description}</span>
+                </div>
               </div>
-            )}
-
-            {report.growthAreas.length > 0 && (
-              <div style={{ marginTop: 16 }}>
-                <h2 className="section-title" style={{ margin: '0 0 16px' }}>🌱 Зоны роста</h2>
-                {report.growthAreas.map((area, i) => (
-                  <div key={i} className="insight-card growth">
-                    <span className="insight-icon" aria-hidden="true">🚀</span>
-                    <div className="insight-content">
-                      <h4>{area.title}</h4>
-                      <p>{area.description}</p>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 8, fontSize: 13 }}>
-                        <span style={{ color: 'var(--warning)' }}>Риск: {area.risk}</span>
-                        <span style={{ color: 'var(--success)' }}>Действие: {area.action}</span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 10, fontSize: 13 }}>
+                {area.risk && <span style={{ color: 'var(--warn)' }}>Риск: {area.risk}</span>}
+                {area.action && <span style={{ color: 'var(--ok)' }}>Действие: {area.action}</span>}
               </div>
-            )}
-          </div>
-        </div>
+            </div>
+          ))}
+        </>
+      )}
 
-        {/* Рекомендации */}
-        {report.recommendations.length > 0 && (
-          <div className="advice-section">
-            <h3>💡 Рекомендации на эту неделю</h3>
-            <ul className="advice-list">
-              {report.recommendations.map((rec, i) => (
-                <li key={i}>
-                  <strong style={{ color: 'var(--text)' }}>{rec.title}</strong>
-                  <br />
-                  {rec.description}
-                  <br />
-                  <span style={{ fontSize: 12 }}>
-                    {rec.axis} · сложность {rec.difficulty}/3 · {rec.durationMin} мин
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+      {report.recommendations.length > 0 && (
+        <>
+          <div className="k">Рекомендации на неделю</div>
+          {report.recommendations.map((rec, i) => (
+            <div key={i} className="cd static">
+              <div className="cd-r">
+                <div className="cd-ic">💡</div>
+                <div className="cd-t">
+                  <b>{rec.title}</b>
+                  <span>{rec.description}</span>
+                  <div className="small" style={{ marginTop: 4 }}>{rec.axis} · сложность {rec.difficulty}/3 · {rec.durationMin} мин</div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </>
+      )}
 
-        {/* Дисклеймер */}
-        <div className="notice notice-amber" style={{ marginTop: 32 }}>
-          <span style={{ fontSize: 20 }} aria-hidden="true">⚠️</span>
-          <div>
-            <strong>Важно помнить.</strong> Together — инструмент самопознания и коммуникации, не медицинская и не психотерапевтическая услуга.
-            Результаты не являются диагнозом. Отчёт — повод поговорить, а не приговор. При признаках кризиса или насилия — обратитесь к специалисту.
-          </div>
+      <Link href="/dashboard/ai" className="btn btn-p btn-w mt">
+        Обсудить с Совой
+      </Link>
+
+      <div className="notice notice-amber" style={{ marginTop: 24 }}>
+        <span style={{ fontSize: 20 }} aria-hidden="true">⚠️</span>
+        <div>
+          <strong>Важно.</strong> Together — инструмент самопознания, не медицинская услуга. Отчёт — повод поговорить, а не приговор.
         </div>
       </div>
     </DashboardLayout>

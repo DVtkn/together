@@ -52,7 +52,7 @@ export async function getAIResponse(messages: Array<{role: string; content: stri
       }
     }
     return { content, usage }
-  } catch (error: unknown) {
+  } catch {
     return { content: 'Ошибка соединения с ИИ', usage: { input: 0, output: 0 } }
   }
 }
@@ -71,10 +71,18 @@ export function extractContent(response: {choices?: Array<{ message?: { content?
     const firstChoice = choices[0]
     const msg = firstChoice.message
     if (!msg) return ''
-    return (msg.content ?? msg.reasoning ?? '').trim()
+    return stripReasoning(msg.content ?? msg.reasoning ?? '')
   } catch {
     return ''
   }
+}
+
+export function stripReasoning(content: string): string {
+  return content
+    .replace(/<think>[\s\S]*?<\/think>/gi, '')
+    .replace(/<thinking>[\s\S]*?<\/thinking>/gi, '')
+    .replace(/^### Thinking Process:[\s\S]*?(?=###|$)/i, '')
+    .trim()
 }
 
 export function safeParseResponse(response: {choices?: Array<{ message?: { content?: string | null; reasoning?: string } }>; usage?: { input?: number; output?: number }}): AIResponse {
