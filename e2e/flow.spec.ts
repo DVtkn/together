@@ -63,3 +63,38 @@ test.describe('Настроение', () => {
     await expect(page.getByRole('button', { name: 'Всё супер' })).toHaveAttribute('aria-pressed', 'true')
   })
 })
+
+test.describe('Настройки', () => {
+  test('кнопка «Покинуть пару» активируется после ввода слова leave', async ({ page }) => {
+    await page.goto('/dashboard/settings')
+    await expect(page.locator('.h1', { hasText: 'Настройки' })).toBeVisible()
+
+    const leaveBtn = page.getByRole('button', { name: 'Покинуть пару' })
+    await expect(leaveBtn).toBeDisabled()
+    await expect(page.getByText(/Введите слово/).first()).toBeVisible()
+
+    const field = page.getByPlaceholder('leave')
+    await field.fill('LEAVE')
+    await expect(leaveBtn).toBeEnabled()
+  })
+
+  test('кнопка «Удалить навсегда» активируется после ввода слова delete', async ({ page }) => {
+    await page.goto('/dashboard/settings')
+    await expect(page.locator('.h1', { hasText: 'Настройки' })).toBeVisible()
+
+    const delBtn = page.getByRole('button', { name: 'Удалить навсегда' })
+    await expect(delBtn).toBeDisabled()
+
+    const field = page.getByPlaceholder('delete')
+    await field.fill('delete')
+    await expect(delBtn).toBeEnabled()
+  })
+
+  test('выход из аккаунта разлогинивает и ведёт на лендинг', async ({ page }) => {
+    await page.goto('/dashboard/settings')
+    await expect(page.locator('.h1', { hasText: 'Настройки' })).toBeVisible()
+
+    await page.getByRole('button', { name: 'Выйти из аккаунта' }).click()
+    await expect(page.getByRole('link', { name: 'Войти' }).first()).toBeVisible({ timeout: 10000 })
+  })
+})

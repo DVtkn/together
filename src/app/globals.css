@@ -667,3 +667,27 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 /* ==== FIX-3 график недели без данных ==== */
 .wc-bar{min-height:6px;opacity:.35}
 .wc-bar:not(:empty){opacity:1}
+
+/* ==== FIX: настройки — опасные кнопки и подтверждение ==== */
+.btn-danger{background:rgba(239,68,68,.15);color:var(--red)}
+.btn-danger:hover:not(:disabled){background:rgba(239,68,68,.25)}
+.btn-danger:disabled{opacity:.35;cursor:not-allowed}
+.auth-input{width:100%;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;color:var(--text);font-family:inherit;font-size:15px;outline:none;transition:border-color .15s}
+.auth-input:focus{border-color:var(--pri)}
+.auth-input::placeholder{color:var(--mute)}
+
+/* ==== FIX: страницы входа/регистрации ==== */
+.auth-wrap{min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:20px;background:var(--bg);overflow-y:auto}
+.auth-card{width:100%;max-width:400px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:28px;margin:auto}
+.auth-label{display:block;font-size:12px;font-weight:600;color:var(--dim);margin:14px 0 6px}
+.auth-link{display:block;text-align:center;margin-top:16px;color:var(--dim);font-size:14px;text-decoration:none}
+.auth-link:hover{color:var(--text)}
+.auth-divider{display:flex;align-items:center;gap:10px;color:var(--mute);font-size:12px;text-transform:uppercase;letter-spacing:.08em;margin:18px 0}
+.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--line)}
+.auth-oauth{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.auth-oauth .btn{width:100%}
+.auth-checks{margin-top:16px;display:flex;flex-direction:column;gap:10px}
+.auth-check{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--dim);cursor:pointer}
+.auth-check input{margin-top:3px;accent-color:var(--pri)}
+.auth-check a{color:var(--pri);text-decoration:none}
+.auth-check a:hover{text-decoration:underline}

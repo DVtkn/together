@@ -47,7 +47,8 @@ export default function SettingsPage() {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [deleting, setDeleting] = useState(false)
-  const [deletePassword, setDeletePassword] = useState('')
+  const [leaveText, setLeaveText] = useState('')
+  const [deleteText, setDeleteText] = useState('')
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
   const [cities, setCities] = useState<City[]>([])
   const [cityId, setCityId] = useState<string | null>(null)
@@ -116,7 +117,7 @@ export default function SettingsPage() {
   }
 
   const handleDeleteAccount = async () => {
-    if (deletePassword !== 'DELETE') return
+    if (deleteText.trim().toLowerCase() !== 'delete') return
     setDeleting(true)
     try {
       const res = await fetch('/api/user/delete', { method: 'DELETE' })
@@ -150,7 +151,7 @@ export default function SettingsPage() {
   }
 
   const handleLeaveCouple = async () => {
-    if (deletePassword !== 'LEAVE') return
+    if (leaveText.trim().toLowerCase() !== 'leave') return
     setDeleting(true)
     try {
       const res = await fetch('/api/couples/leave', { method: 'POST' })
@@ -222,6 +223,20 @@ export default function SettingsPage() {
           <div>{message.text}</div>
         </div>
       )}
+
+      <div className="k">Аккаунт</div>
+      <div className="cd static">
+        <div className="cd-r">
+          <div className="cd-ic">👤</div>
+          <div className="cd-t">
+            <b>{profileRes?.user?.name || settings.name || 'Без имени'}</b>
+            <span>{profileRes?.user?.email || settings.email || '—'}</span>
+          </div>
+        </div>
+        <button className="btn btn-s btn-w" style={{ marginTop: 12 }} onClick={() => signOut({ callbackUrl: '/' })}>
+          Выйти из аккаунта
+        </button>
+      </div>
 
       <div className="k">Профиль</div>
       <div className="cd static">
@@ -345,17 +360,20 @@ export default function SettingsPage() {
                 <span style={{ fontSize: 18 }} aria-hidden="true">🚪</span>
                 <div>
                   <strong>Покинуть пару нельзя отменить.</strong> Совместные данные станут недоступны, личная история останется.
+                  <div className="small" style={{ marginTop: 8 }}>
+                    Введите слово <b style={{ color: 'var(--warn)' }}>leave</b> для подтверждения
+                  </div>
                   <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
                     <input
                       type="text"
-                      className="input"
-                      placeholder="Введите LEAVE"
-                      value={deletePassword}
-                      onChange={(e) => setDeletePassword(e.target.value)}
+                      className="auth-input"
+                      placeholder="leave"
+                      value={leaveText}
+                      onChange={(e) => setLeaveText(e.target.value)}
                       disabled={deleting}
                     />
-                    <button className="btn btn-dg" onClick={handleLeaveCouple} disabled={deleting || deletePassword !== 'LEAVE'}>
-                      Покинуть пару
+                    <button className="btn btn-danger" onClick={handleLeaveCouple} disabled={deleting || leaveText.trim().toLowerCase() !== 'leave'}>
+                      {deleting ? '…' : 'Покинуть пару'}
                     </button>
                   </div>
                 </div>
@@ -381,16 +399,19 @@ export default function SettingsPage() {
           <b style={{ color: 'var(--red)' }}>Удалить аккаунт</b>
           <span>Удалит все ваши данные: профиль, ответы, пульс, диалоги, пару. Необратимо.</span>
         </div>
+        <div className="small" style={{ marginTop: 8 }}>
+          Введите слово <b style={{ color: 'var(--warn)' }}>delete</b> для подтверждения
+        </div>
         <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
           <input
             type="text"
-            className="input"
-            placeholder="Введите DELETE"
-            value={deletePassword}
-            onChange={(e) => setDeletePassword(e.target.value)}
+            className="auth-input"
+            placeholder="delete"
+            value={deleteText}
+            onChange={(e) => setDeleteText(e.target.value)}
             disabled={deleting}
           />
-          <button className="btn btn-dg" onClick={handleDeleteAccount} disabled={deleting || deletePassword !== 'DELETE'}>
+          <button className="btn btn-danger" onClick={handleDeleteAccount} disabled={deleting || deleteText.trim().toLowerCase() !== 'delete'}>
             {deleting ? '…' : 'Удалить навсегда'}
           </button>
         </div>

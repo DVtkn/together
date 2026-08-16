@@ -3,6 +3,7 @@
 import { ReactNode, useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { signOut } from 'next-auth/react'
 import { cn } from '@/lib/utils/cn'
 import { useCouple, useProfile } from '@/lib/hooks'
 import { registerServiceWorker } from '@/lib/push-client'
@@ -97,6 +98,9 @@ export function DashboardLayout({ children, user, couple }: DashboardLayoutProps
             <Link href="/dashboard/settings" aria-label="Настройки" className="icon-btn">
               ⚙
             </Link>
+            <button className="icon-btn" aria-label="Выйти" title="Выйти" onClick={() => signOut({ callbackUrl: '/' })}>
+              ⎋
+            </button>
           </div>
         </div>
       </header>
