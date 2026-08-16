@@ -42,6 +42,16 @@ interface HistoryData {
   }
 }
 
+interface DailyQuestion {
+  id: string
+  date: string
+  text: string
+  myAnswer: string | null
+  partnerAnswer: string | null
+  myAnswered: boolean
+  partnerAnswered: boolean
+}
+
 const DAY_NAMES = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб']
 
 export default function DailyPage() {
@@ -49,16 +59,21 @@ export default function DailyPage() {
   const [history, setHistory] = useState<HistoryData | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
+  const [question, setQuestion] = useState<DailyQuestion | null>(null)
+  const [answer, setAnswer] = useState('')
+  const [answerBusy, setAnswerBusy] = useState(false)
   const { data: profileData } = useProfile()
 
   useEffect(() => {
     Promise.all([
       fetch('/api/mood').then((r) => r.json()),
       fetch('/api/mood/history?days=7').then((r) => r.json()),
+      fetch('/api/daily-question').then((r) => r.json()),
     ])
-      .then(([m, h]) => {
+      .then(([m, h, q]) => {
         setMood(m as MoodData)
         setHistory(h as HistoryData)
+        setQuestion(q?.question ?? null)
         setLoading(false)
       })
       .catch(() => setLoading(false))
@@ -94,10 +109,33 @@ export default function DailyPage() {
       setMood((m) => ({ ...m, mine: { emoji, text } }))
       const h = await fetch('/api/mood/history?days=7').then((r) => r.json())
       setHistory(h as HistoryData)
+      window.dispatchEvent(new Event('together:refresh'))
     } catch (e) {
       console.error('Mood save failed:', e)
     } finally {
       setSaving(false)
+    }
+  }
+
+  const submitAnswer = async () => {
+    if (!answer.trim()) return
+    setAnswerBusy(true)
+    try {
+      const r = await fetch('/api/daily-question', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ answer: answer.trim() }),
+      })
+      const j = await r.json()
+      if (r.ok) {
+        setQuestion((q) => q ? { ...q, myAnswered: true, myAnswer: j.myAnswer } : q)
+        setAnswer('')
+        window.dispatchEvent(new Event('together:refresh'))
+      }
+    } catch (e) {
+      console.error('Answer save failed:', e)
+    } finally {
+      setAnswerBusy(false)
     }
   }
 
@@ -132,8 +170,46 @@ export default function DailyPage() {
             </button>
           ))}
         </div>
-        {saving && <div className="small" style={{ textAlign: 'center', marginTop: 8, color: 'var(--mute)' }}>Сохранение…</div>}
+        {saving && <div className="small" style={{ textAlign: 'center', marginTop: 8, color: 'var(--mute)' }}>Данные сохранены</div>}
       </div>
+
+      {question && (
+        <>
+          <div className="k">Вопрос дня</div>
+          <div className="cd static" style={{ border: '1px solid rgba(16,185,129,.3)' }}>
+            <div className="cd-r">
+              <div className="cd-ic">☀️</div>
+              <div className="cd-t">
+                <b>{question.text}</b>
+                <span>{question.myAnswered && question.partnerAnswered ? 'Вы ответили оба 💜' : question.myAnswered ? 'Вы ответили · ждём партнёра' : 'Ответьте — партнёр увидит'}</span>
+              </div>
+            </div>
+
+            {!question.myAnswered ? (
+              <div style={{ marginTop: 12 }}>
+                <textarea className="mood-note" placeholder="Ваш ответ…" value={answer}
+                  onChange={(e) => setAnswer(e.target.value)} />
+                <button className="btn btn-p btn-w" style={{ marginTop: 8 }} disabled={answerBusy || !answer.trim()} onClick={submitAnswer}>
+                  {answerBusy ? 'Отправляем…' : 'Ответить'}
+                </button>
+              </div>
+            ) : (
+              <div style={{ marginTop: 10 }}>
+                <div className="small" style={{ color: 'var(--mute)' }}>Ваш ответ:</div>
+                <div style={{ fontSize: 13, lineHeight: 1.5, marginTop: 2 }}>{question.myAnswer}</div>
+                {question.partnerAnswered ? (
+                  <>
+                    <div className="small" style={{ color: 'var(--mute)', marginTop: 10 }}>Ответ партнёра:</div>
+                    <div style={{ fontSize: 13, lineHeight: 1.5, marginTop: 2 }}>{question.partnerAnswer}</div>
+                  </>
+                ) : (
+                  <div className="small" style={{ color: 'var(--mute)', marginTop: 10 }}>Партнёр ещё не ответил(а) — его ответ появится здесь.</div>
+                )}
+              </div>
+            )}
+          </div>
+        </>
+      )}
 
       <div className="k">Сейчас</div>
       <div className="cd static">
@@ -229,6 +305,38 @@ export default function DailyPage() {
         <div className="cd-r">
           <div className="cd-ic">🌙</div>
           <div className="cd-t"><b>Челленджи недели</b><span>Задания под ваши зоны роста</span></div>
+          <span className="arr">›</span>
+        </div>
+      </Link>
+
+      <Link href="/dashboard/chat" className="cd">
+        <div className="cd-r">
+          <div className="cd-ic">💬</div>
+          <div className="cd-t"><b>Чат пары</b><span>Только вы двое</span></div>
+          <span className="arr">›</span>
+        </div>
+      </Link>
+
+      <Link href="/dashboard/rituals" className="cd">
+        <div className="cd-r">
+          <div className="cd-ic">🕊️</div>
+          <div className="cd-t"><b>Ритуалы</b><span>Маленькие традиции пары</span></div>
+          <span className="arr">›</span>
+        </div>
+      </Link>
+
+      <Link href="/dashboard/memories" className="cd">
+        <div className="cd-r">
+          <div className="cd-ic">📸</div>
+          <div className="cd-t"><b>Воспоминания</b><span>Моменты, которые стоит сохранить</span></div>
+          <span className="arr">›</span>
+        </div>
+      </Link>
+
+      <Link href="/dashboard/letters" className="cd">
+        <div className="cd-r">
+          <div className="cd-ic">💌</div>
+          <div className="cd-t"><b>Письма</b><span>То, что трудно сказать вслух</span></div>
           <span className="arr">›</span>
         </div>
       </Link>

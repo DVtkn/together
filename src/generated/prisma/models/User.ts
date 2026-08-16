@@ -305,6 +305,12 @@ export type UserWhereInput = {
   Couple_User_coupleIdToCouple?: Prisma.XOR<Prisma.CoupleNullableScalarRelationFilter, Prisma.CoupleWhereInput> | null
   WishlistItem?: Prisma.WishlistItemListRelationFilter
   Flower?: Prisma.FlowerListRelationFilter
+  Notification?: Prisma.NotificationListRelationFilter
+  CoupleMessage?: Prisma.CoupleMessageListRelationFilter
+  Memory?: Prisma.MemoryListRelationFilter
+  RitualCompletion?: Prisma.RitualCompletionListRelationFilter
+  LetterFrom?: Prisma.LetterListRelationFilter
+  LetterTo?: Prisma.LetterListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -345,6 +351,12 @@ export type UserOrderByWithRelationInput = {
   Couple_User_coupleIdToCouple?: Prisma.CoupleOrderByWithRelationInput
   WishlistItem?: Prisma.WishlistItemOrderByRelationAggregateInput
   Flower?: Prisma.FlowerOrderByRelationAggregateInput
+  Notification?: Prisma.NotificationOrderByRelationAggregateInput
+  CoupleMessage?: Prisma.CoupleMessageOrderByRelationAggregateInput
+  Memory?: Prisma.MemoryOrderByRelationAggregateInput
+  RitualCompletion?: Prisma.RitualCompletionOrderByRelationAggregateInput
+  LetterFrom?: Prisma.LetterOrderByRelationAggregateInput
+  LetterTo?: Prisma.LetterOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -388,6 +400,12 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   Couple_User_coupleIdToCouple?: Prisma.XOR<Prisma.CoupleNullableScalarRelationFilter, Prisma.CoupleWhereInput> | null
   WishlistItem?: Prisma.WishlistItemListRelationFilter
   Flower?: Prisma.FlowerListRelationFilter
+  Notification?: Prisma.NotificationListRelationFilter
+  CoupleMessage?: Prisma.CoupleMessageListRelationFilter
+  Memory?: Prisma.MemoryListRelationFilter
+  RitualCompletion?: Prisma.RitualCompletionListRelationFilter
+  LetterFrom?: Prisma.LetterListRelationFilter
+  LetterTo?: Prisma.LetterListRelationFilter
 }, "id" | "username" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -474,6 +492,12 @@ export type UserCreateInput = {
   Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
   WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
   Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -512,6 +536,12 @@ export type UserUncheckedCreateInput = {
   SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
   WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
   Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
 }
 
 export type UserUpdateInput = {
@@ -550,6 +580,12 @@ export type UserUpdateInput = {
   Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
   WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
   Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -588,6 +624,12 @@ export type UserUncheckedUpdateInput = {
   SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
   WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
   Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -838,6 +880,90 @@ export type UserUpdateOneRequiredWithoutMoodEntryNestedInput = {
   upsert?: Prisma.UserUpsertWithoutMoodEntryInput
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutMoodEntryInput, Prisma.UserUpdateWithoutMoodEntryInput>, Prisma.UserUncheckedUpdateWithoutMoodEntryInput>
+}
+
+export type UserCreateNestedOneWithoutNotificationInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutNotificationInput, Prisma.UserUncheckedCreateWithoutNotificationInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNotificationInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutNotificationNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutNotificationInput, Prisma.UserUncheckedCreateWithoutNotificationInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNotificationInput
+  upsert?: Prisma.UserUpsertWithoutNotificationInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutNotificationInput, Prisma.UserUpdateWithoutNotificationInput>, Prisma.UserUncheckedUpdateWithoutNotificationInput>
+}
+
+export type UserCreateNestedOneWithoutCoupleMessageInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCoupleMessageInput, Prisma.UserUncheckedCreateWithoutCoupleMessageInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCoupleMessageInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutCoupleMessageNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCoupleMessageInput, Prisma.UserUncheckedCreateWithoutCoupleMessageInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCoupleMessageInput
+  upsert?: Prisma.UserUpsertWithoutCoupleMessageInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCoupleMessageInput, Prisma.UserUpdateWithoutCoupleMessageInput>, Prisma.UserUncheckedUpdateWithoutCoupleMessageInput>
+}
+
+export type UserCreateNestedOneWithoutMemoryInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMemoryInput, Prisma.UserUncheckedCreateWithoutMemoryInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMemoryInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutMemoryNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMemoryInput, Prisma.UserUncheckedCreateWithoutMemoryInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMemoryInput
+  upsert?: Prisma.UserUpsertWithoutMemoryInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutMemoryInput, Prisma.UserUpdateWithoutMemoryInput>, Prisma.UserUncheckedUpdateWithoutMemoryInput>
+}
+
+export type UserCreateNestedOneWithoutRitualCompletionInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRitualCompletionInput, Prisma.UserUncheckedCreateWithoutRitualCompletionInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRitualCompletionInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutRitualCompletionNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRitualCompletionInput, Prisma.UserUncheckedCreateWithoutRitualCompletionInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRitualCompletionInput
+  upsert?: Prisma.UserUpsertWithoutRitualCompletionInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRitualCompletionInput, Prisma.UserUpdateWithoutRitualCompletionInput>, Prisma.UserUncheckedUpdateWithoutRitualCompletionInput>
+}
+
+export type UserCreateNestedOneWithoutLetterFromInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutLetterFromInput, Prisma.UserUncheckedCreateWithoutLetterFromInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutLetterFromInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutLetterToInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutLetterToInput, Prisma.UserUncheckedCreateWithoutLetterToInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutLetterToInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutLetterFromNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutLetterFromInput, Prisma.UserUncheckedCreateWithoutLetterFromInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutLetterFromInput
+  upsert?: Prisma.UserUpsertWithoutLetterFromInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutLetterFromInput, Prisma.UserUpdateWithoutLetterFromInput>, Prisma.UserUncheckedUpdateWithoutLetterFromInput>
+}
+
+export type UserUpdateOneRequiredWithoutLetterToNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutLetterToInput, Prisma.UserUncheckedCreateWithoutLetterToInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutLetterToInput
+  upsert?: Prisma.UserUpsertWithoutLetterToInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutLetterToInput, Prisma.UserUpdateWithoutLetterToInput>, Prisma.UserUncheckedUpdateWithoutLetterToInput>
 }
 
 export type UserCreateNestedManyWithoutCityInput = {
@@ -1137,6 +1263,12 @@ export type UserCreateWithoutAIMessageInput = {
   Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
   WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
   Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
 }
 
 export type UserUncheckedCreateWithoutAIMessageInput = {
@@ -1174,6 +1306,12 @@ export type UserUncheckedCreateWithoutAIMessageInput = {
   SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
   WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
   Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
 }
 
 export type UserCreateOrConnectWithoutAIMessageInput = {
@@ -1227,6 +1365,12 @@ export type UserUpdateWithoutAIMessageInput = {
   Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
   WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
   Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAIMessageInput = {
@@ -1264,6 +1408,12 @@ export type UserUncheckedUpdateWithoutAIMessageInput = {
   SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
   WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
   Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserCreateWithoutAssessmentResponseInput = {
@@ -1301,6 +1451,12 @@ export type UserCreateWithoutAssessmentResponseInput = {
   Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
   WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
   Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
 }
 
 export type UserUncheckedCreateWithoutAssessmentResponseInput = {
@@ -1338,6 +1494,12 @@ export type UserUncheckedCreateWithoutAssessmentResponseInput = {
   SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
   WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
   Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
 }
 
 export type UserCreateOrConnectWithoutAssessmentResponseInput = {
@@ -1391,6 +1553,12 @@ export type UserUpdateWithoutAssessmentResponseInput = {
   Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
   WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
   Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssessmentResponseInput = {
@@ -1428,6 +1596,12 @@ export type UserUncheckedUpdateWithoutAssessmentResponseInput = {
   SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
   WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
   Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserCreateWithoutAstroProfileInput = {
@@ -1465,6 +1639,12 @@ export type UserCreateWithoutAstroProfileInput = {
   Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
   WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
   Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
 }
 
 export type UserUncheckedCreateWithoutAstroProfileInput = {
@@ -1502,6 +1682,12 @@ export type UserUncheckedCreateWithoutAstroProfileInput = {
   SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
   WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
   Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
 }
 
 export type UserCreateOrConnectWithoutAstroProfileInput = {
@@ -1555,6 +1741,12 @@ export type UserUpdateWithoutAstroProfileInput = {
   Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
   WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
   Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAstroProfileInput = {
@@ -1592,6 +1784,12 @@ export type UserUncheckedUpdateWithoutAstroProfileInput = {
   SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
   WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
   Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserCreateWithoutBouquetInput = {
@@ -1629,6 +1827,12 @@ export type UserCreateWithoutBouquetInput = {
   Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
   WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
   Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
 }
 
 export type UserUncheckedCreateWithoutBouquetInput = {
@@ -1666,6 +1870,12 @@ export type UserUncheckedCreateWithoutBouquetInput = {
   SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
   WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
   Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
 }
 
 export type UserCreateOrConnectWithoutBouquetInput = {
@@ -1719,6 +1929,12 @@ export type UserUpdateWithoutBouquetInput = {
   Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
   WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
   Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBouquetInput = {
@@ -1756,6 +1972,12 @@ export type UserUncheckedUpdateWithoutBouquetInput = {
   SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
   WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
   Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserCreateWithoutChallengeCompletionInput = {
@@ -1793,6 +2015,12 @@ export type UserCreateWithoutChallengeCompletionInput = {
   Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
   WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
   Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
 }
 
 export type UserUncheckedCreateWithoutChallengeCompletionInput = {
@@ -1830,6 +2058,12 @@ export type UserUncheckedCreateWithoutChallengeCompletionInput = {
   SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
   WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
   Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
 }
 
 export type UserCreateOrConnectWithoutChallengeCompletionInput = {
@@ -1883,6 +2117,12 @@ export type UserUpdateWithoutChallengeCompletionInput = {
   Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
   WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
   Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserUncheckedUpdateWithoutChallengeCompletionInput = {
@@ -1920,6 +2160,12 @@ export type UserUncheckedUpdateWithoutChallengeCompletionInput = {
   SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
   WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
   Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserCreateWithoutMoodEntryInput = {
@@ -1957,6 +2203,12 @@ export type UserCreateWithoutMoodEntryInput = {
   Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
   WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
   Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
 }
 
 export type UserUncheckedCreateWithoutMoodEntryInput = {
@@ -1994,6 +2246,12 @@ export type UserUncheckedCreateWithoutMoodEntryInput = {
   SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
   WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
   Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
 }
 
 export type UserCreateOrConnectWithoutMoodEntryInput = {
@@ -2047,6 +2305,12 @@ export type UserUpdateWithoutMoodEntryInput = {
   Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
   WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
   Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMoodEntryInput = {
@@ -2084,6 +2348,1140 @@ export type UserUncheckedUpdateWithoutMoodEntryInput = {
   SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
   WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
   Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
+}
+
+export type UserCreateWithoutNotificationInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryCreateNestedManyWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
+  City?: Prisma.CityCreateNestedOneWithoutUserInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
+  WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
+}
+
+export type UserUncheckedCreateWithoutNotificationInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  coupleId?: string | null
+  cityId?: string | null
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetUncheckedCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryUncheckedCreateNestedManyWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
+  WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
+}
+
+export type UserCreateOrConnectWithoutNotificationInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutNotificationInput, Prisma.UserUncheckedCreateWithoutNotificationInput>
+}
+
+export type UserUpsertWithoutNotificationInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutNotificationInput, Prisma.UserUncheckedUpdateWithoutNotificationInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutNotificationInput, Prisma.UserUncheckedCreateWithoutNotificationInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutNotificationInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutNotificationInput, Prisma.UserUncheckedUpdateWithoutNotificationInput>
+}
+
+export type UserUpdateWithoutNotificationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUpdateManyWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
+  City?: Prisma.CityUpdateOneWithoutUserNestedInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
+  WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
+}
+
+export type UserUncheckedUpdateWithoutNotificationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  coupleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUncheckedUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUncheckedUpdateManyWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
+  WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
+}
+
+export type UserCreateWithoutCoupleMessageInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryCreateNestedManyWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
+  City?: Prisma.CityCreateNestedOneWithoutUserInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
+  WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
+}
+
+export type UserUncheckedCreateWithoutCoupleMessageInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  coupleId?: string | null
+  cityId?: string | null
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetUncheckedCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryUncheckedCreateNestedManyWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
+  WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
+}
+
+export type UserCreateOrConnectWithoutCoupleMessageInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCoupleMessageInput, Prisma.UserUncheckedCreateWithoutCoupleMessageInput>
+}
+
+export type UserUpsertWithoutCoupleMessageInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCoupleMessageInput, Prisma.UserUncheckedUpdateWithoutCoupleMessageInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCoupleMessageInput, Prisma.UserUncheckedCreateWithoutCoupleMessageInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCoupleMessageInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCoupleMessageInput, Prisma.UserUncheckedUpdateWithoutCoupleMessageInput>
+}
+
+export type UserUpdateWithoutCoupleMessageInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUpdateManyWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
+  City?: Prisma.CityUpdateOneWithoutUserNestedInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
+  WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCoupleMessageInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  coupleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUncheckedUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUncheckedUpdateManyWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
+  WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
+}
+
+export type UserCreateWithoutMemoryInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryCreateNestedManyWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
+  City?: Prisma.CityCreateNestedOneWithoutUserInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
+  WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
+}
+
+export type UserUncheckedCreateWithoutMemoryInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  coupleId?: string | null
+  cityId?: string | null
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetUncheckedCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryUncheckedCreateNestedManyWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
+  WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
+}
+
+export type UserCreateOrConnectWithoutMemoryInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutMemoryInput, Prisma.UserUncheckedCreateWithoutMemoryInput>
+}
+
+export type UserUpsertWithoutMemoryInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutMemoryInput, Prisma.UserUncheckedUpdateWithoutMemoryInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutMemoryInput, Prisma.UserUncheckedCreateWithoutMemoryInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutMemoryInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutMemoryInput, Prisma.UserUncheckedUpdateWithoutMemoryInput>
+}
+
+export type UserUpdateWithoutMemoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUpdateManyWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
+  City?: Prisma.CityUpdateOneWithoutUserNestedInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
+  WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
+}
+
+export type UserUncheckedUpdateWithoutMemoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  coupleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUncheckedUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUncheckedUpdateManyWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
+  WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
+}
+
+export type UserCreateWithoutRitualCompletionInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryCreateNestedManyWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
+  City?: Prisma.CityCreateNestedOneWithoutUserInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
+  WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
+}
+
+export type UserUncheckedCreateWithoutRitualCompletionInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  coupleId?: string | null
+  cityId?: string | null
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetUncheckedCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryUncheckedCreateNestedManyWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
+  WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
+}
+
+export type UserCreateOrConnectWithoutRitualCompletionInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutRitualCompletionInput, Prisma.UserUncheckedCreateWithoutRitualCompletionInput>
+}
+
+export type UserUpsertWithoutRitualCompletionInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutRitualCompletionInput, Prisma.UserUncheckedUpdateWithoutRitualCompletionInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutRitualCompletionInput, Prisma.UserUncheckedCreateWithoutRitualCompletionInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutRitualCompletionInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutRitualCompletionInput, Prisma.UserUncheckedUpdateWithoutRitualCompletionInput>
+}
+
+export type UserUpdateWithoutRitualCompletionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUpdateManyWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
+  City?: Prisma.CityUpdateOneWithoutUserNestedInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
+  WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
+}
+
+export type UserUncheckedUpdateWithoutRitualCompletionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  coupleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUncheckedUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUncheckedUpdateManyWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
+  WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
+}
+
+export type UserCreateWithoutLetterFromInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryCreateNestedManyWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
+  City?: Prisma.CityCreateNestedOneWithoutUserInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
+  WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
+  LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
+}
+
+export type UserUncheckedCreateWithoutLetterFromInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  coupleId?: string | null
+  cityId?: string | null
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetUncheckedCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryUncheckedCreateNestedManyWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
+  WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
+  LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
+}
+
+export type UserCreateOrConnectWithoutLetterFromInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutLetterFromInput, Prisma.UserUncheckedCreateWithoutLetterFromInput>
+}
+
+export type UserCreateWithoutLetterToInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryCreateNestedManyWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
+  City?: Prisma.CityCreateNestedOneWithoutUserInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
+  WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
+}
+
+export type UserUncheckedCreateWithoutLetterToInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  coupleId?: string | null
+  cityId?: string | null
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetUncheckedCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryUncheckedCreateNestedManyWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
+  WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
+}
+
+export type UserCreateOrConnectWithoutLetterToInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutLetterToInput, Prisma.UserUncheckedCreateWithoutLetterToInput>
+}
+
+export type UserUpsertWithoutLetterFromInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutLetterFromInput, Prisma.UserUncheckedUpdateWithoutLetterFromInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutLetterFromInput, Prisma.UserUncheckedCreateWithoutLetterFromInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutLetterFromInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutLetterFromInput, Prisma.UserUncheckedUpdateWithoutLetterFromInput>
+}
+
+export type UserUpdateWithoutLetterFromInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUpdateManyWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
+  City?: Prisma.CityUpdateOneWithoutUserNestedInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
+  WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
+  LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
+}
+
+export type UserUncheckedUpdateWithoutLetterFromInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  coupleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUncheckedUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUncheckedUpdateManyWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
+  WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
+  LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
+}
+
+export type UserUpsertWithoutLetterToInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutLetterToInput, Prisma.UserUncheckedUpdateWithoutLetterToInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutLetterToInput, Prisma.UserUncheckedCreateWithoutLetterToInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutLetterToInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutLetterToInput, Prisma.UserUncheckedUpdateWithoutLetterToInput>
+}
+
+export type UserUpdateWithoutLetterToInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUpdateManyWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
+  City?: Prisma.CityUpdateOneWithoutUserNestedInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
+  WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
+}
+
+export type UserUncheckedUpdateWithoutLetterToInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  coupleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUncheckedUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUncheckedUpdateManyWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
+  WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
 }
 
 export type UserCreateWithoutCityInput = {
@@ -2121,6 +3519,12 @@ export type UserCreateWithoutCityInput = {
   Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
   WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
   Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
 }
 
 export type UserUncheckedCreateWithoutCityInput = {
@@ -2158,6 +3562,12 @@ export type UserUncheckedCreateWithoutCityInput = {
   SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
   WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
   Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
 }
 
 export type UserCreateOrConnectWithoutCityInput = {
@@ -2245,6 +3655,12 @@ export type UserCreateWithoutConsentLogInput = {
   Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
   WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
   Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
 }
 
 export type UserUncheckedCreateWithoutConsentLogInput = {
@@ -2282,6 +3698,12 @@ export type UserUncheckedCreateWithoutConsentLogInput = {
   SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
   WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
   Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
 }
 
 export type UserCreateOrConnectWithoutConsentLogInput = {
@@ -2335,6 +3757,12 @@ export type UserUpdateWithoutConsentLogInput = {
   Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
   WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
   Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserUncheckedUpdateWithoutConsentLogInput = {
@@ -2372,6 +3800,12 @@ export type UserUncheckedUpdateWithoutConsentLogInput = {
   SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
   WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
   Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserCreateWithoutCouple_Couple_partnerAIdToUserInput = {
@@ -2409,6 +3843,12 @@ export type UserCreateWithoutCouple_Couple_partnerAIdToUserInput = {
   Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
   WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
   Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
 }
 
 export type UserUncheckedCreateWithoutCouple_Couple_partnerAIdToUserInput = {
@@ -2446,6 +3886,12 @@ export type UserUncheckedCreateWithoutCouple_Couple_partnerAIdToUserInput = {
   SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
   WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
   Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
 }
 
 export type UserCreateOrConnectWithoutCouple_Couple_partnerAIdToUserInput = {
@@ -2488,6 +3934,12 @@ export type UserCreateWithoutCouple_Couple_partnerBIdToUserInput = {
   Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
   WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
   Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
 }
 
 export type UserUncheckedCreateWithoutCouple_Couple_partnerBIdToUserInput = {
@@ -2525,6 +3977,12 @@ export type UserUncheckedCreateWithoutCouple_Couple_partnerBIdToUserInput = {
   SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
   WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
   Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
 }
 
 export type UserCreateOrConnectWithoutCouple_Couple_partnerBIdToUserInput = {
@@ -2567,6 +4025,12 @@ export type UserCreateWithoutCouple_User_coupleIdToCoupleInput = {
   City?: Prisma.CityCreateNestedOneWithoutUserInput
   WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
   Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
 }
 
 export type UserUncheckedCreateWithoutCouple_User_coupleIdToCoupleInput = {
@@ -2604,6 +4068,12 @@ export type UserUncheckedCreateWithoutCouple_User_coupleIdToCoupleInput = {
   SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
   WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
   Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
 }
 
 export type UserCreateOrConnectWithoutCouple_User_coupleIdToCoupleInput = {
@@ -2662,6 +4132,12 @@ export type UserUpdateWithoutCouple_Couple_partnerAIdToUserInput = {
   Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
   WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
   Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCouple_Couple_partnerAIdToUserInput = {
@@ -2699,6 +4175,12 @@ export type UserUncheckedUpdateWithoutCouple_Couple_partnerAIdToUserInput = {
   SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
   WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
   Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserUpsertWithoutCouple_Couple_partnerBIdToUserInput = {
@@ -2747,6 +4229,12 @@ export type UserUpdateWithoutCouple_Couple_partnerBIdToUserInput = {
   Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
   WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
   Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCouple_Couple_partnerBIdToUserInput = {
@@ -2784,6 +4272,12 @@ export type UserUncheckedUpdateWithoutCouple_Couple_partnerBIdToUserInput = {
   SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
   WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
   Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserUpsertWithWhereUniqueWithoutCouple_User_coupleIdToCoupleInput = {
@@ -2837,6 +4331,12 @@ export type UserCreateWithoutCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUse
   Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
   WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
   Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
 }
 
 export type UserUncheckedCreateWithoutCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserInput = {
@@ -2874,6 +4374,12 @@ export type UserUncheckedCreateWithoutCoupleLinkRequest_CoupleLinkRequest_fromUs
   SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
   WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
   Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
 }
 
 export type UserCreateOrConnectWithoutCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserInput = {
@@ -2916,6 +4422,12 @@ export type UserCreateWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserI
   Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
   WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
   Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
 }
 
 export type UserUncheckedCreateWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserInput = {
@@ -2953,6 +4465,12 @@ export type UserUncheckedCreateWithoutCoupleLinkRequest_CoupleLinkRequest_toUser
   SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
   WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
   Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
 }
 
 export type UserCreateOrConnectWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserInput = {
@@ -3006,6 +4524,12 @@ export type UserUpdateWithoutCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUse
   Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
   WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
   Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserInput = {
@@ -3043,6 +4567,12 @@ export type UserUncheckedUpdateWithoutCoupleLinkRequest_CoupleLinkRequest_fromUs
   SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
   WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
   Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserUpsertWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserInput = {
@@ -3091,6 +4621,12 @@ export type UserUpdateWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserI
   Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
   WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
   Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserInput = {
@@ -3128,6 +4664,12 @@ export type UserUncheckedUpdateWithoutCoupleLinkRequest_CoupleLinkRequest_toUser
   SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
   WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
   Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserCreateWithoutFlowerInput = {
@@ -3165,6 +4707,12 @@ export type UserCreateWithoutFlowerInput = {
   City?: Prisma.CityCreateNestedOneWithoutUserInput
   Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
   WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
 }
 
 export type UserUncheckedCreateWithoutFlowerInput = {
@@ -3202,6 +4750,12 @@ export type UserUncheckedCreateWithoutFlowerInput = {
   PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
   WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
 }
 
 export type UserCreateOrConnectWithoutFlowerInput = {
@@ -3260,6 +4814,12 @@ export type UserCreateWithoutMoodStatusInput = {
   Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
   WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
   Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
 }
 
 export type UserUncheckedCreateWithoutMoodStatusInput = {
@@ -3297,6 +4857,12 @@ export type UserUncheckedCreateWithoutMoodStatusInput = {
   SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
   WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
   Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
 }
 
 export type UserCreateOrConnectWithoutMoodStatusInput = {
@@ -3350,6 +4916,12 @@ export type UserUpdateWithoutMoodStatusInput = {
   Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
   WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
   Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMoodStatusInput = {
@@ -3387,6 +4959,12 @@ export type UserUncheckedUpdateWithoutMoodStatusInput = {
   SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
   WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
   Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserCreateWithoutPulseCheckinInput = {
@@ -3424,6 +5002,12 @@ export type UserCreateWithoutPulseCheckinInput = {
   Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
   WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
   Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
 }
 
 export type UserUncheckedCreateWithoutPulseCheckinInput = {
@@ -3461,6 +5045,12 @@ export type UserUncheckedCreateWithoutPulseCheckinInput = {
   SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
   WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
   Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
 }
 
 export type UserCreateOrConnectWithoutPulseCheckinInput = {
@@ -3514,6 +5104,12 @@ export type UserUpdateWithoutPulseCheckinInput = {
   Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
   WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
   Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPulseCheckinInput = {
@@ -3551,6 +5147,12 @@ export type UserUncheckedUpdateWithoutPulseCheckinInput = {
   SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
   WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
   Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserCreateWithoutPushSubscriptionInput = {
@@ -3588,6 +5190,12 @@ export type UserCreateWithoutPushSubscriptionInput = {
   Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
   WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
   Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
 }
 
 export type UserUncheckedCreateWithoutPushSubscriptionInput = {
@@ -3625,6 +5233,12 @@ export type UserUncheckedCreateWithoutPushSubscriptionInput = {
   SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
   WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
   Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
 }
 
 export type UserCreateOrConnectWithoutPushSubscriptionInput = {
@@ -3678,6 +5292,12 @@ export type UserUpdateWithoutPushSubscriptionInput = {
   Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
   WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
   Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPushSubscriptionInput = {
@@ -3715,6 +5335,12 @@ export type UserUncheckedUpdateWithoutPushSubscriptionInput = {
   SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
   WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
   Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserCreateWithoutSmallCravingInput = {
@@ -3752,6 +5378,12 @@ export type UserCreateWithoutSmallCravingInput = {
   Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
   WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
   Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
 }
 
 export type UserUncheckedCreateWithoutSmallCravingInput = {
@@ -3789,6 +5421,12 @@ export type UserUncheckedCreateWithoutSmallCravingInput = {
   PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
   Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
 }
 
 export type UserCreateOrConnectWithoutSmallCravingInput = {
@@ -3842,6 +5480,12 @@ export type UserUpdateWithoutSmallCravingInput = {
   Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
   WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
   Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSmallCravingInput = {
@@ -3879,6 +5523,12 @@ export type UserUncheckedUpdateWithoutSmallCravingInput = {
   PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
   Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserCreateWithoutWishlistItemInput = {
@@ -3916,6 +5566,12 @@ export type UserCreateWithoutWishlistItemInput = {
   City?: Prisma.CityCreateNestedOneWithoutUserInput
   Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
   Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
 }
 
 export type UserUncheckedCreateWithoutWishlistItemInput = {
@@ -3953,6 +5609,12 @@ export type UserUncheckedCreateWithoutWishlistItemInput = {
   PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
   Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
 }
 
 export type UserCreateOrConnectWithoutWishlistItemInput = {
@@ -4006,6 +5668,12 @@ export type UserUpdateWithoutWishlistItemInput = {
   City?: Prisma.CityUpdateOneWithoutUserNestedInput
   Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
   Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserUncheckedUpdateWithoutWishlistItemInput = {
@@ -4043,6 +5711,12 @@ export type UserUncheckedUpdateWithoutWishlistItemInput = {
   PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
   Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserCreateManyCityInput = {
@@ -4100,6 +5774,12 @@ export type UserUpdateWithoutCityInput = {
   Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
   WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
   Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCityInput = {
@@ -4137,6 +5817,12 @@ export type UserUncheckedUpdateWithoutCityInput = {
   SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
   WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
   Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserUncheckedUpdateManyWithoutCityInput = {
@@ -4214,6 +5900,12 @@ export type UserUpdateWithoutCouple_User_coupleIdToCoupleInput = {
   City?: Prisma.CityUpdateOneWithoutUserNestedInput
   WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
   Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCouple_User_coupleIdToCoupleInput = {
@@ -4251,6 +5943,12 @@ export type UserUncheckedUpdateWithoutCouple_User_coupleIdToCoupleInput = {
   SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
   WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
   Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserUncheckedUpdateManyWithoutCouple_User_coupleIdToCoupleInput = {
@@ -4308,6 +6006,12 @@ export type UserUpdateWithoutFlowerInput = {
   City?: Prisma.CityUpdateOneWithoutUserNestedInput
   Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
   WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFlowerInput = {
@@ -4345,6 +6049,12 @@ export type UserUncheckedUpdateWithoutFlowerInput = {
   PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
   WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserUncheckedUpdateManyWithoutFlowerInput = {
@@ -4387,6 +6097,12 @@ export type UserCountOutputType = {
   SmallCraving: number
   WishlistItem: number
   Flower: number
+  Notification: number
+  CoupleMessage: number
+  Memory: number
+  RitualCompletion: number
+  LetterFrom: number
+  LetterTo: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -4403,6 +6119,12 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   SmallCraving?: boolean | UserCountOutputTypeCountSmallCravingArgs
   WishlistItem?: boolean | UserCountOutputTypeCountWishlistItemArgs
   Flower?: boolean | UserCountOutputTypeCountFlowerArgs
+  Notification?: boolean | UserCountOutputTypeCountNotificationArgs
+  CoupleMessage?: boolean | UserCountOutputTypeCountCoupleMessageArgs
+  Memory?: boolean | UserCountOutputTypeCountMemoryArgs
+  RitualCompletion?: boolean | UserCountOutputTypeCountRitualCompletionArgs
+  LetterFrom?: boolean | UserCountOutputTypeCountLetterFromArgs
+  LetterTo?: boolean | UserCountOutputTypeCountLetterToArgs
 }
 
 /**
@@ -4506,6 +6228,48 @@ export type UserCountOutputTypeCountFlowerArgs<ExtArgs extends runtime.Types.Ext
   where?: Prisma.FlowerWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountNotificationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.NotificationWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCoupleMessageArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CoupleMessageWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountMemoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MemoryWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountRitualCompletionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RitualCompletionWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountLetterFromArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LetterWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountLetterToArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LetterWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -4545,6 +6309,12 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   Couple_User_coupleIdToCouple?: boolean | Prisma.User$Couple_User_coupleIdToCoupleArgs<ExtArgs>
   WishlistItem?: boolean | Prisma.User$WishlistItemArgs<ExtArgs>
   Flower?: boolean | Prisma.User$FlowerArgs<ExtArgs>
+  Notification?: boolean | Prisma.User$NotificationArgs<ExtArgs>
+  CoupleMessage?: boolean | Prisma.User$CoupleMessageArgs<ExtArgs>
+  Memory?: boolean | Prisma.User$MemoryArgs<ExtArgs>
+  RitualCompletion?: boolean | Prisma.User$RitualCompletionArgs<ExtArgs>
+  LetterFrom?: boolean | Prisma.User$LetterFromArgs<ExtArgs>
+  LetterTo?: boolean | Prisma.User$LetterToArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -4636,6 +6406,12 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   Couple_User_coupleIdToCouple?: boolean | Prisma.User$Couple_User_coupleIdToCoupleArgs<ExtArgs>
   WishlistItem?: boolean | Prisma.User$WishlistItemArgs<ExtArgs>
   Flower?: boolean | Prisma.User$FlowerArgs<ExtArgs>
+  Notification?: boolean | Prisma.User$NotificationArgs<ExtArgs>
+  CoupleMessage?: boolean | Prisma.User$CoupleMessageArgs<ExtArgs>
+  Memory?: boolean | Prisma.User$MemoryArgs<ExtArgs>
+  RitualCompletion?: boolean | Prisma.User$RitualCompletionArgs<ExtArgs>
+  LetterFrom?: boolean | Prisma.User$LetterFromArgs<ExtArgs>
+  LetterTo?: boolean | Prisma.User$LetterToArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -4669,6 +6445,12 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     Couple_User_coupleIdToCouple: Prisma.$CouplePayload<ExtArgs> | null
     WishlistItem: Prisma.$WishlistItemPayload<ExtArgs>[]
     Flower: Prisma.$FlowerPayload<ExtArgs>[]
+    Notification: Prisma.$NotificationPayload<ExtArgs>[]
+    CoupleMessage: Prisma.$CoupleMessagePayload<ExtArgs>[]
+    Memory: Prisma.$MemoryPayload<ExtArgs>[]
+    RitualCompletion: Prisma.$RitualCompletionPayload<ExtArgs>[]
+    LetterFrom: Prisma.$LetterPayload<ExtArgs>[]
+    LetterTo: Prisma.$LetterPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -5102,6 +6884,12 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   Couple_User_coupleIdToCouple<T extends Prisma.User$Couple_User_coupleIdToCoupleArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$Couple_User_coupleIdToCoupleArgs<ExtArgs>>): Prisma.Prisma__CoupleClient<runtime.Types.Result.GetResult<Prisma.$CouplePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   WishlistItem<T extends Prisma.User$WishlistItemArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$WishlistItemArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WishlistItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   Flower<T extends Prisma.User$FlowerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$FlowerArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FlowerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  Notification<T extends Prisma.User$NotificationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$NotificationArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  CoupleMessage<T extends Prisma.User$CoupleMessageArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$CoupleMessageArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CoupleMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  Memory<T extends Prisma.User$MemoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$MemoryArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MemoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  RitualCompletion<T extends Prisma.User$RitualCompletionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$RitualCompletionArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RitualCompletionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  LetterFrom<T extends Prisma.User$LetterFromArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$LetterFromArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LetterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  LetterTo<T extends Prisma.User$LetterToArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$LetterToArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LetterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5973,6 +7761,150 @@ export type User$FlowerArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
   take?: number
   skip?: number
   distinct?: Prisma.FlowerScalarFieldEnum | Prisma.FlowerScalarFieldEnum[]
+}
+
+/**
+ * User.Notification
+ */
+export type User$NotificationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Notification
+   */
+  select?: Prisma.NotificationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Notification
+   */
+  omit?: Prisma.NotificationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NotificationInclude<ExtArgs> | null
+  where?: Prisma.NotificationWhereInput
+  orderBy?: Prisma.NotificationOrderByWithRelationInput | Prisma.NotificationOrderByWithRelationInput[]
+  cursor?: Prisma.NotificationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.NotificationScalarFieldEnum | Prisma.NotificationScalarFieldEnum[]
+}
+
+/**
+ * User.CoupleMessage
+ */
+export type User$CoupleMessageArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CoupleMessage
+   */
+  select?: Prisma.CoupleMessageSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CoupleMessage
+   */
+  omit?: Prisma.CoupleMessageOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CoupleMessageInclude<ExtArgs> | null
+  where?: Prisma.CoupleMessageWhereInput
+  orderBy?: Prisma.CoupleMessageOrderByWithRelationInput | Prisma.CoupleMessageOrderByWithRelationInput[]
+  cursor?: Prisma.CoupleMessageWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CoupleMessageScalarFieldEnum | Prisma.CoupleMessageScalarFieldEnum[]
+}
+
+/**
+ * User.Memory
+ */
+export type User$MemoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Memory
+   */
+  select?: Prisma.MemorySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Memory
+   */
+  omit?: Prisma.MemoryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MemoryInclude<ExtArgs> | null
+  where?: Prisma.MemoryWhereInput
+  orderBy?: Prisma.MemoryOrderByWithRelationInput | Prisma.MemoryOrderByWithRelationInput[]
+  cursor?: Prisma.MemoryWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MemoryScalarFieldEnum | Prisma.MemoryScalarFieldEnum[]
+}
+
+/**
+ * User.RitualCompletion
+ */
+export type User$RitualCompletionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RitualCompletion
+   */
+  select?: Prisma.RitualCompletionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the RitualCompletion
+   */
+  omit?: Prisma.RitualCompletionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RitualCompletionInclude<ExtArgs> | null
+  where?: Prisma.RitualCompletionWhereInput
+  orderBy?: Prisma.RitualCompletionOrderByWithRelationInput | Prisma.RitualCompletionOrderByWithRelationInput[]
+  cursor?: Prisma.RitualCompletionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RitualCompletionScalarFieldEnum | Prisma.RitualCompletionScalarFieldEnum[]
+}
+
+/**
+ * User.LetterFrom
+ */
+export type User$LetterFromArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Letter
+   */
+  select?: Prisma.LetterSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Letter
+   */
+  omit?: Prisma.LetterOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LetterInclude<ExtArgs> | null
+  where?: Prisma.LetterWhereInput
+  orderBy?: Prisma.LetterOrderByWithRelationInput | Prisma.LetterOrderByWithRelationInput[]
+  cursor?: Prisma.LetterWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LetterScalarFieldEnum | Prisma.LetterScalarFieldEnum[]
+}
+
+/**
+ * User.LetterTo
+ */
+export type User$LetterToArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Letter
+   */
+  select?: Prisma.LetterSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Letter
+   */
+  omit?: Prisma.LetterOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LetterInclude<ExtArgs> | null
+  where?: Prisma.LetterWhereInput
+  orderBy?: Prisma.LetterOrderByWithRelationInput | Prisma.LetterOrderByWithRelationInput[]
+  cursor?: Prisma.LetterWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LetterScalarFieldEnum | Prisma.LetterScalarFieldEnum[]
 }
 
 /**

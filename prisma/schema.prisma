@@ -45,6 +45,12 @@ model User {
   Couple_User_coupleIdToCouple                         Couple?               @relation("User_coupleIdToCouple", fields: [coupleId], references: [id])
   WishlistItem                                         WishlistItem[]
   Flower                                               Flower[]              @relation("FavoriteFlowers")
+  Notification                                         Notification[]
+  CoupleMessage                                        CoupleMessage[]
+  Memory                                               Memory[]
+  RitualCompletion                                     RitualCompletion[]
+  LetterFrom                                           Letter[]               @relation("LetterFrom")
+  LetterTo                                             Letter[]               @relation("LetterTo")
 
   @@index([coupleId])
   @@index([username])
@@ -206,6 +212,104 @@ model MoodEntry {
   @@index([createdAt])
 }
 
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String
+  text      String
+  href      String?
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  User      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+}
+
+model CoupleMessage {
+  id        String   @id
+  coupleId  String
+  senderId  String
+  content   String
+  createdAt DateTime @default(now())
+  Couple    Couple   @relation(fields: [coupleId], references: [id], onDelete: Cascade)
+  User      User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@index([coupleId, createdAt])
+}
+
+model DailyQuestion {
+  id        String    @id
+  coupleId  String
+  date      String
+  question  String
+  answerA   String?
+  answerB   String?
+  createdAt DateTime  @default(now())
+  Couple    Couple    @relation(fields: [coupleId], references: [id], onDelete: Cascade)
+
+  @@unique([coupleId, date])
+  @@index([coupleId, date])
+}
+
+model Memory {
+  id        String   @id
+  coupleId  String
+  userId    String
+  caption   String
+  imageUrl  String?
+  date      String?
+  createdAt DateTime @default(now())
+  Couple    Couple   @relation(fields: [coupleId], references: [id], onDelete: Cascade)
+  User      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([coupleId])
+  @@index([userId])
+}
+
+model Ritual {
+  id        String             @id
+  coupleId  String
+  title     String
+  emoji     String
+  daysOfWeek Int[]
+  active    Boolean            @default(true)
+  createdAt DateTime           @default(now())
+  Couple    Couple             @relation(fields: [coupleId], references: [id], onDelete: Cascade)
+  RitualCompletion RitualCompletion[]
+
+  @@index([coupleId])
+}
+
+model RitualCompletion {
+  id        String   @id
+  ritualId  String
+  userId    String
+  date      String
+  createdAt DateTime @default(now())
+  Ritual    Ritual   @relation(fields: [ritualId], references: [id], onDelete: Cascade)
+  User      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([ritualId, userId, date])
+  @@index([ritualId])
+}
+
+model Letter {
+  id        String   @id
+  coupleId  String
+  fromUserId String
+  toUserId  String
+  title     String
+  content   String
+  readAt    DateTime?
+  createdAt DateTime @default(now())
+  Couple    Couple   @relation(fields: [coupleId], references: [id], onDelete: Cascade)
+  Sender    User     @relation("LetterFrom", fields: [fromUserId], references: [id], onDelete: Cascade)
+  Recipient User     @relation("LetterTo", fields: [toUserId], references: [id], onDelete: Cascade)
+
+  @@index([coupleId])
+  @@index([toUserId])
+}
+
 model City {
   id       String  @id
   slug     String  @unique
@@ -251,6 +355,11 @@ model Couple {
   CoupleAnalysis               CoupleAnalysis[]
   SynastryReport               SynastryReport?
   User_User_coupleIdToCouple   User[]           @relation("User_coupleIdToCouple")
+  CoupleMessage                CoupleMessage[]
+  DailyQuestion                DailyQuestion[]
+  Memory                       Memory[]
+  Ritual                       Ritual[]
+  Letter                       Letter[]
 
   @@unique([partnerAId, partnerBId])
   @@index([status])

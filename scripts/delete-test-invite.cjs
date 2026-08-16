@@ -1,0 +1,6 @@
+require('dotenv').config()
+const { PrismaClient } = require('@prisma/client')
+const prisma = new PrismaClient()
+prisma.dateInvite.deleteMany({ where: { id: process.env.INVITE_ID || 'inv_z6eu5opfwrr' } })
+  .then(r => { console.log('deleted:', r.count); return prisma.$disconnect() })
+  .catch(e => { console.error('ERR:', e.message); return prisma.$disconnect() })

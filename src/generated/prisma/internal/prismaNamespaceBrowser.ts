@@ -62,6 +62,13 @@ export const ModelName = {
   ChallengeCompletion: 'ChallengeCompletion',
   DateInvite: 'DateInvite',
   MoodEntry: 'MoodEntry',
+  Notification: 'Notification',
+  CoupleMessage: 'CoupleMessage',
+  DailyQuestion: 'DailyQuestion',
+  Memory: 'Memory',
+  Ritual: 'Ritual',
+  RitualCompletion: 'RitualCompletion',
+  Letter: 'Letter',
   City: 'City',
   ConsentLog: 'ConsentLog',
   Couple: 'Couple',
@@ -265,6 +272,94 @@ export const MoodEntryScalarFieldEnum = {
 } as const
 
 export type MoodEntryScalarFieldEnum = (typeof MoodEntryScalarFieldEnum)[keyof typeof MoodEntryScalarFieldEnum]
+
+
+export const NotificationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  text: 'text',
+  href: 'href',
+  read: 'read',
+  createdAt: 'createdAt'
+} as const
+
+export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
+
+
+export const CoupleMessageScalarFieldEnum = {
+  id: 'id',
+  coupleId: 'coupleId',
+  senderId: 'senderId',
+  content: 'content',
+  createdAt: 'createdAt'
+} as const
+
+export type CoupleMessageScalarFieldEnum = (typeof CoupleMessageScalarFieldEnum)[keyof typeof CoupleMessageScalarFieldEnum]
+
+
+export const DailyQuestionScalarFieldEnum = {
+  id: 'id',
+  coupleId: 'coupleId',
+  date: 'date',
+  question: 'question',
+  answerA: 'answerA',
+  answerB: 'answerB',
+  createdAt: 'createdAt'
+} as const
+
+export type DailyQuestionScalarFieldEnum = (typeof DailyQuestionScalarFieldEnum)[keyof typeof DailyQuestionScalarFieldEnum]
+
+
+export const MemoryScalarFieldEnum = {
+  id: 'id',
+  coupleId: 'coupleId',
+  userId: 'userId',
+  caption: 'caption',
+  imageUrl: 'imageUrl',
+  date: 'date',
+  createdAt: 'createdAt'
+} as const
+
+export type MemoryScalarFieldEnum = (typeof MemoryScalarFieldEnum)[keyof typeof MemoryScalarFieldEnum]
+
+
+export const RitualScalarFieldEnum = {
+  id: 'id',
+  coupleId: 'coupleId',
+  title: 'title',
+  emoji: 'emoji',
+  daysOfWeek: 'daysOfWeek',
+  active: 'active',
+  createdAt: 'createdAt'
+} as const
+
+export type RitualScalarFieldEnum = (typeof RitualScalarFieldEnum)[keyof typeof RitualScalarFieldEnum]
+
+
+export const RitualCompletionScalarFieldEnum = {
+  id: 'id',
+  ritualId: 'ritualId',
+  userId: 'userId',
+  date: 'date',
+  createdAt: 'createdAt'
+} as const
+
+export type RitualCompletionScalarFieldEnum = (typeof RitualCompletionScalarFieldEnum)[keyof typeof RitualCompletionScalarFieldEnum]
+
+
+export const LetterScalarFieldEnum = {
+  id: 'id',
+  coupleId: 'coupleId',
+  fromUserId: 'fromUserId',
+  toUserId: 'toUserId',
+  title: 'title',
+  content: 'content',
+  readAt: 'readAt',
+  createdAt: 'createdAt'
+} as const
+
+export type LetterScalarFieldEnum = (typeof LetterScalarFieldEnum)[keyof typeof LetterScalarFieldEnum]
 
 
 export const CityScalarFieldEnum = {

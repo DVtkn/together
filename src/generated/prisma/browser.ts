@@ -73,6 +73,41 @@ export type DateInvite = Prisma.DateInviteModel
  */
 export type MoodEntry = Prisma.MoodEntryModel
 /**
+ * Model Notification
+ * 
+ */
+export type Notification = Prisma.NotificationModel
+/**
+ * Model CoupleMessage
+ * 
+ */
+export type CoupleMessage = Prisma.CoupleMessageModel
+/**
+ * Model DailyQuestion
+ * 
+ */
+export type DailyQuestion = Prisma.DailyQuestionModel
+/**
+ * Model Memory
+ * 
+ */
+export type Memory = Prisma.MemoryModel
+/**
+ * Model Ritual
+ * 
+ */
+export type Ritual = Prisma.RitualModel
+/**
+ * Model RitualCompletion
+ * 
+ */
+export type RitualCompletion = Prisma.RitualCompletionModel
+/**
+ * Model Letter
+ * 
+ */
+export type Letter = Prisma.LetterModel
+/**
  * Model City
  * 
  */
