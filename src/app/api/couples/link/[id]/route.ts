@@ -4,6 +4,7 @@ import { rateLimit } from '@/lib/rate-limit'
 import { getApiContext, unauthorized } from '@/lib/api-auth'
 import { linkAnswerSchema } from '@/lib/utils/validation'
 import { notify, nameOf } from '@/lib/notify'
+import { emitEvent } from '@/lib/story'
 
 // PATCH /api/couples/link/[id] - принять или отклонить входящий запрос
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -74,6 +75,9 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
         where: { id: { in: [requestRecord.fromUserId, ctx.user.id] } },
         data: { coupleId: couple.id },
       })
+
+      await emitEvent(couple.id, 'couple_created', 'Пара создана')
+      await emitEvent(couple.id, 'anniversary', 'Старт истории пары')
 
       await prisma.coupleLinkRequest.update({ where: { id }, data: { status: 'ACCEPTED', updatedAt: new Date() } })
 

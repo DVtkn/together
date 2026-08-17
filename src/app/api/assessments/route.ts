@@ -4,6 +4,7 @@ import { rateLimit } from '@/lib/rate-limit'
 import { getApiContext, unauthorized } from '@/lib/api-auth'
 import { assessmentSubmitSchema } from '@/lib/utils/validation'
 import { notify, nameOf } from '@/lib/notify'
+import { emitEvent } from '@/lib/story'
 
 export async function GET(request: NextRequest) {
   const rl = await rateLimit('assessments', request.headers.get('x-forwarded-for') || 'anon')
@@ -162,6 +163,25 @@ export async function POST(request: NextRequest) {
       where: { userId: ctx.user.id, assessmentId },
     })
 
+    if (ctx.couple) {
+      const before = answered - answers.length
+      if (before < assessment.Question.length && answered >= assessment.Question.length) {
+        await emitEvent(ctx.couple.id, 'first_test', `Пройден тест «${assessment.title}»`, {
+          assessmentKey: assessment.key,
+        })
+      }
+      if (ctx.partner && answered >= assessment.Question.length) {
+        const partnerCount = await prisma.assessmentResponse.count({
+          where: { userId: ctx.partner.id, assessmentId },
+        })
+        if (partnerCount >= assessment.Question.length) {
+          await emitEvent(ctx.couple.id, 'both_tests', `Оба прошли «${assessment.title}»`, {
+            assessmentKey: assessment.key,
+          })
+        }
+      }
+    }
+
     if (ctx.partner && answered >= assessment.Question.length) {
       const partnerCount = await prisma.assessmentResponse.count({
         where: { userId: ctx.partner.id, assessmentId },
@@ -171,7 +191,7 @@ export async function POST(request: NextRequest) {
           ctx.partner.id,
           'assessment_completed',
           `${nameOf(ctx.user)} прошёл(ла) «${assessment.title}» — карта обновлена`,
-          '/dashboard/report'
+          '/dashboard/couple#report'
         )
       }
     }
@@ -258,6 +278,9 @@ async function maybeGenerateReport(ctx: NonNullable<Awaited<ReturnType<typeof ge
       },
     })
   }
+  await emitEvent(couple.id, 'report_generated', 'Отчёт пары готов', {
+    reportVersion: 1,
+  })
 }
 
 async function computeRadar(coupleId: string, userId: string, partnerId: string, assessments: Array<{ id: string; radarAxis: string | null; Question: Array<{ id: string; text: string; dimension: string | null; reverseScored: boolean }> }>) {

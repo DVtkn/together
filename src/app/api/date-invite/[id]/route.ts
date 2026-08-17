@@ -4,6 +4,7 @@ import { rateLimit } from '@/lib/rate-limit'
 import { getApiContext, unauthorized } from '@/lib/api-auth'
 import { z } from 'zod'
 import { notify, nameOf } from '@/lib/notify'
+import { emitEvent } from '@/lib/story'
 
 const patchSchema = z.object({
   vibe: z.string().min(1).max(40).optional(),
@@ -71,6 +72,16 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
         `${nameOf(ctx.user)} выбрала: ${invite.venueName ?? 'место'}${when ? `, ${when}` : ''}`,
         '/dashboard/date'
       )
+    }
+
+    if (invite.status === 'CONFIRMED' && ctx.couple) {
+      await emitEvent(ctx.couple.id, 'first_date', `Свидание: ${invite.venueName ?? 'без места'}`, {
+        inviteId: invite.id,
+        venueName: invite.venueName,
+        venueId: invite.venueId,
+        date: invite.date,
+        time: invite.time,
+      })
     }
 
     return NextResponse.json({

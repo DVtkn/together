@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { rateLimit } from '@/lib/rate-limit'
 import { getApiContext, unauthorized } from '@/lib/api-auth'
 import { notify, nameOf } from '@/lib/notify'
+import { emitEvent } from '@/lib/story'
 
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const rl = await rateLimit('default', request.headers.get('x-forwarded-for') || 'anon')
@@ -48,6 +49,12 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
         where: { id },
         data: { status: 'COMPLETED', completedAt: new Date() },
       })
+      if (ctx.couple) {
+        await emitEvent(ctx.couple.id, 'challenge_completed', `Челлендж «${challenge.title}» выполнен`, {
+          challengeId: challenge.id,
+          axis: challenge.axis,
+        })
+      }
     }
 
     if (ctx.partner) {
@@ -55,7 +62,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
         ctx.partner.id,
         'challenge_completed',
         `${nameOf(ctx.user)} выполнил(а) челлендж «${challenge.title}»`,
-        '/dashboard/challenges'
+        '/dashboard/daily#challenges'
       )
     }
 

@@ -1,7 +1,8 @@
 'use client'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
+import { DECKS, IntimacyDeck } from '@/lib/decks'
 
 type Status = {
   couple: null | { id: string; status: string; partnerName: string | null }
@@ -12,15 +13,60 @@ type Status = {
   synastry: null | { score: number; hasBirthDates: boolean }
 }
 
+interface StoryEvent {
+  id: string
+  type: string
+  title: string
+  meta: Record<string, unknown> | null
+  createdAt: string
+}
+
+interface DateMemory {
+  id: string
+  venueName: string
+  date: string
+  photoUrl: string | null
+  note: string | null
+  createdAt: string
+}
+
+const STORY_EMOJI: Record<string, string> = {
+  couple_created: '💞',
+  first_test: '🧪',
+  both_tests: '🧪',
+  report_generated: '📄',
+  first_date: '📍',
+  challenge_completed: '🌙',
+  anniversary: '🎂',
+  date_visited: '📸',
+}
+
+function storyEmoji(type: string): string {
+  return STORY_EMOJI[type] ?? '✨'
+}
+
+function fmtDate(iso: string): string {
+  const d = new Date(iso)
+  return d.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' })
+}
+
 export default function CouplePage() {
   const [s, setS] = useState<Status | null>(null)
   const [login, setLogin] = useState('')
   const [busy, setBusy] = useState(false)
   const [err, setErr] = useState<string | null>(null)
   const [ok, setOk] = useState<string | null>(null)
+  const [story, setStory] = useState<{ events: StoryEvent[]; memories: DateMemory[] } | null>(null)
+
+  const [deck, setDeck] = useState<IntimacyDeck | null>(null)
+  const [deckIdx, setDeckIdx] = useState(0)
+  const [doneCount, setDoneCount] = useState(0)
 
   const load = useCallback(() => {
     fetch('/api/couples/status').then(r => r.json()).then(setS).catch(() => {})
+    fetch('/api/couple-events').then(r => r.json()).then(d => {
+      if (d && Array.isArray(d.events)) setStory({ events: d.events, memories: d.memories ?? [] })
+    }).catch(() => {})
   }, [])
   useEffect(() => { load() }, [load])
 
@@ -52,6 +98,12 @@ export default function CouplePage() {
     load()
   }
 
+  function openDeck(d: IntimacyDeck) {
+    setDeck(d)
+    setDeckIdx(0)
+    setDoneCount(0)
+  }
+
   if (!s) return (
     <DashboardLayout>
       <div className="loading-screen"><div className="loading-icon">💞</div><div className="loading-text">Загружаем</div></div>
@@ -62,13 +114,25 @@ export default function CouplePage() {
   const total = s.assessments.length || 10
   const nextTest = s.assessments.find(a => !a.both && !a.me && !a.partner)
 
+  const timeline: Array<{
+    id: string
+    at: number
+    emoji: string
+    title: string
+    type: string
+    memory?: DateMemory
+  }> = [
+    ...story?.events.map(e => ({ id: `e_${e.id}`, at: new Date(e.createdAt).getTime(), emoji: storyEmoji(e.type), title: e.title, type: e.type })) ?? [],
+    ...story?.memories.map(m => ({ id: `m_${m.id}`, at: new Date(m.date).getTime(), emoji: '📸', title: m.venueName, type: 'date_visited', memory: m })) ?? [],
+  ].sort((a, b) => a.at - b.at)
+
   return (
     <DashboardLayout>
       <div className="h1">Кто вы вдвоём</div>
-      <div className="dim">Тесты, отчёт, звёзды — всё о вашей паре.</div>
+      <div className="dim">Тесты, отчёт, звёзды, история — всё о вашей паре.</div>
 
       {/* ==== ПАРА ==== */}
-      <div className="k">Пара</div>
+      <div className="k" id="pair">Пара</div>
       {!s.couple && !s.outgoing && !s.incoming && (
         <div className="cd static pair-hero">
           <div className="pair-emoji">💞</div>
@@ -135,7 +199,7 @@ export default function CouplePage() {
       )}
 
       {/* ==== ОПРОСНИКИ ==== */}
-      <div className="k">Опросники · {done} из {total}</div>
+      <div className="k" id="tests">Опросники · {done} из {total}</div>
       <div className="prog-line"><div className="prog-fill" style={{ width: `${(done / total) * 100}%` }} /></div>
       <div className="assess-grid">
         {s.assessments.map(a => {
@@ -147,14 +211,6 @@ export default function CouplePage() {
           }
           const statusKey = a.both ? 'both' : a.me ? 'me' : a.partner ? 'partner' : 'neither'
           const statusText = statusMap[statusKey] || 'не начат'
-          const minutes = '~7 мин'
-          const statusBadge = a.both ? (
-            <span className="a-status">оба ✓</span>
-          ) : statusText === 'не начат' ? (
-            <span className="a-status">не начат · {minutes}</span>
-          ) : (
-            <span className="a-status">продолжить</span>
-          )
           return (
             <Link key={a.key} href={`/dashboard/assessments/${a.key}`} className={`a-card ${a.both ? 'done' : ''}`}>
               <i>{a.emoji}</i>
@@ -166,9 +222,9 @@ export default function CouplePage() {
       </div>
 
       {/* ==== РЕЗУЛЬТАТЫ ==== */}
-      <div className="k">Результаты</div>
+      <div className="k" id="report">Отчёт</div>
       <div className="grid-2res">
-        <Link href="/dashboard/report" className="cd res-card">
+        <Link href="/dashboard/couple#report" className="cd res-card">
           {s.report ? (
             <>
               <div className="res-num">{s.report.compatibility !== null ? `${s.report.compatibility}%` : '—'}</div>
@@ -186,21 +242,98 @@ export default function CouplePage() {
             </>
           )}
         </Link>
-        <Link href="/dashboard/astro" className="cd res-card">
-          {s.synastry?.hasBirthDates ? (
+      </div>
+
+      {/* ==== СИНАСТРИЯ ==== */}
+      <div className="k" id="synastry">Синастрия</div>
+      <div className="cd res-card">
+        {s.synastry?.hasBirthDates ? (
+          <>
+            <div className="res-num">{s.synastry.score}%</div>
+            <b>Совместимость по датам рождения</b>
+            <span>По натальным картам и аспектам</span>
+          </>
+        ) : (
+          <>
+            <div className="res-lock">🔮</div>
+            <b>Синастрия</b>
+            <span>Укажите даты рождения обоих в настройках</span>
+            <Link href="/dashboard/settings" className="btn btn-s btn-sm" style={{ marginTop: 10 }}>Указать даты</Link>
+          </>
+        )}
+      </div>
+
+      {/* ==== КОЛОДЫ БЛИЗОСТИ ==== */}
+      <div className="k" id="decks">Колоды близости</div>
+      {!deck ? (
+        <div className="deck-grid">
+          {DECKS.map(d => (
+            <button key={d.key} className="cd deck-card" onClick={() => openDeck(d)}>
+              <div className="deck-emoji">{d.emoji}</div>
+              <b>{d.title}</b>
+              <span className="dim" style={{ fontSize: 12 }}>{d.questions.length} вопросов</span>
+              <span className="dim" style={{ fontSize: 12 }}>{d.description}</span>
+            </button>
+          ))}
+        </div>
+      ) : (
+        <div className="cd static">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+            <b>{deck.emoji} {deck.title}</b>
+            <button className="link-btn" onClick={() => setDeck(null)}>← ко всем колодам</button>
+          </div>
+          {deckIdx < deck.questions.length ? (
             <>
-              <div className="res-num">{s.synastry.score}%</div>
-              <b>Синастрия</b>
-              <span>По датам рождения</span>
+              <div className="deck-q">«{deck.questions[deckIdx].question}»</div>
+              <div className="dim" style={{ fontSize: 12, margin: '8px 0 16px' }}>
+                {deck.questions[deckIdx].axis
+                  ? `Сфера: ${deck.questions[deckIdx].axis}`
+                  : 'Просто о важном'} · вопрос {deckIdx + 1} из {deck.questions.length}
+              </div>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <button className="btn btn-p" style={{ flex: 1 }} onClick={() => { setDoneCount(d => d + 1); setDeckIdx(i => Math.min(i + 1, deck.questions.length - 1)) }}>
+                  Обсудили ✓
+                </button>
+                <button className="btn btn-s" style={{ flex: 1 }} onClick={() => setDeckIdx(i => Math.min(i + 1, deck.questions.length - 1))}>
+                  Следующий →
+                </button>
+              </div>
+              <div className="prog-line" style={{ marginTop: 16 }}><div className="prog-fill" style={{ width: `${(doneCount / deck.questions.length) * 100}%` }} /></div>
             </>
           ) : (
-            <>
-              <div className="res-lock">🔮</div>
-              <b>Синастрия</b>
-              <span>Укажите даты рождения в настройках</span>
-            </>
+            <div className="empty" style={{ padding: '12px 0' }}>
+              <i>🎉</i>
+              <div className="h2" style={{ marginBottom: 6 }}>Колода пройдена</div>
+              <div className="dim" style={{ marginBottom: 16 }}>Обсудили {doneCount} из {deck.questions.length} вопросов.</div>
+              <button className="btn btn-p" onClick={() => setDeck(null)}>К другим колодам</button>
+            </div>
           )}
-        </Link>
+        </div>
+      )}
+
+      {/* ==== ИСТОРИЯ ПАРЫ ==== */}
+      <div className="k" id="story">История пары</div>
+      <div className="cd static">
+        {timeline.length === 0 ? (
+          <div className="dim" style={{ textAlign: 'center', padding: '12px 0' }}>
+            Здесь будет ваша история: первые тесты, свидания и достижения.
+          </div>
+        ) : (
+          <div className="timeline">
+            {timeline.map(item => (
+              <div key={item.id} className="tl-item">
+                <div className="tl-emoji">{item.emoji}</div>
+                <div className="tl-body">
+                  <b>{item.title}</b>
+                  <span>{fmtDate(new Date(item.at).toISOString())}</span>
+                  {item.type === 'date_visited' && item.memory?.note && (
+                    <p className="tl-note">{item.memory.note}</p>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </DashboardLayout>
   )

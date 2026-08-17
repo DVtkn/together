@@ -79,6 +79,8 @@ export default function DatePage() {
   const [time, setTime] = useState<string | null>(null)
   const [calOpen, setCalOpen] = useState(false)
   const [cal, setCal] = useState(() => { const n = new Date(); return { y: n.getFullYear(), m: n.getMonth() } })
+  const [visitedBusy, setVisitedBusy] = useState(false)
+  const [visitedNote, setVisitedNote] = useState(false)
 
   const load = useCallback(() => {
     fetch('/api/user/profile').then(r => r.json()).then(d => {
@@ -129,6 +131,19 @@ export default function DatePage() {
 
   const cancelInvite = () => { if (active) patchInvite(active.id, { status: 'DECLINED' }) }
   const confirmInvite = () => { if (active) patchInvite(active.id, { status: 'CONFIRMED' }) }
+
+  const markVisited = async () => {
+    if (!active || visitedBusy) return
+    setVisitedBusy(true)
+    try {
+      const r = await fetch(`/api/date/${active.id}/visited`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({}) })
+      if (r.ok) {
+        setVisitedNote(true)
+        window.dispatchEvent(new Event('together:refresh'))
+        setInvites(prev => prev.map(i => i.id === active.id ? { ...i, status: 'CONFIRMED' } : i))
+      }
+    } catch { /* ignore */ } finally { setVisitedBusy(false) }
+  }
 
   const pickVibe = (id: string) => { setVibe(id); setVenue(null); setTimeout(() => setStep(2), 150) }
   const pickRandom = () => pickVibe(VIBES[Math.floor(Math.random() * VIBES.length)].id)
@@ -199,7 +214,10 @@ export default function DatePage() {
   return (
     <DashboardLayout>
       <div className="h1">Свидание</div>
-      <div className="dim">Ты зовёшь. Она выбирает. Ты бронируешь.</div>
+      <div className="dim" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+        <span>Ты зовёшь. Она выбирает. Ты бронируешь.</span>
+        <Link href="/dashboard/couple#story" className="link-btn" style={{ whiteSpace: 'nowrap' }}>📖 История пары</Link>
+      </div>
 
       {err && <div className="notice notice-amber" style={{ marginTop: 12 }}>{err}</div>}
 
@@ -266,7 +284,9 @@ export default function DatePage() {
           {planCard(active, 'Свидание подтверждено', 'Не забудь забронировать и позвонить.')}
           <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
             <a className="btn btn-p" style={{ flex: 1 }} href="tel:+78120000000">📞 Позвонить</a>
+            <button className="btn btn-s" style={{ flex: 1 }} disabled={visitedBusy} onClick={markVisited}>Сходили ✓</button>
           </div>
+          {visitedNote && <div className="dim" style={{ marginTop: 10, fontSize: 13 }}>Отметили в истории пары 💜</div>}
         </>
       )}
 
