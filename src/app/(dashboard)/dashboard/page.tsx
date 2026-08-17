@@ -38,6 +38,20 @@ interface WarmthItem {
   createdAt: string
 }
 
+interface AssessmentProgress {
+  key: string
+  title: string
+  emoji?: string
+  completedByCurrent: boolean
+  completedByPartner: boolean
+  bothCompleted: boolean
+}
+
+interface PartnerInfo {
+  name: string
+  mood: { emoji: string; text: string | null } | null
+}
+
 function greeting() {
   const h = new Date().getHours()
   if (h >= 5 && h < 12) return 'Доброе утро'
@@ -59,6 +73,8 @@ export default function DashboardPage() {
   const [challenge, setChallenge] = useState<any>(null)
   const [pause, setPause] = useState<{ active: boolean; endsAt: string | null; secondsLeft: number }>({ active: false, endsAt: null, secondsLeft: 0 })
   const [pulseBelowAvg, setPulseBelowAvg] = useState(false)
+  const [assessments, setAssessments] = useState<AssessmentProgress[]>([])
+  const [partner, setPartner] = useState<PartnerInfo | null>(null)
 
   const load = useCallback(() => {
     Promise.all([
@@ -74,6 +90,11 @@ export default function DashboardPage() {
       setPause(p)
       setDq(q?.question ?? null)
       setAnswered(q?.question?.myAnswered ?? false)
+      setAssessments(d?.assessments ?? [])
+      setPartner({
+        name: d?.couple?.partnerA?.name === d?.user?.name ? d?.couple?.partnerB?.name ?? 'Партнёр' : d?.couple?.partnerA?.name ?? 'Партнёр',
+        mood: d?.partnerMood ?? null,
+      })
     }).catch(() => {})
   }, [])
   useEffect(() => { load() }, [load])
@@ -111,7 +132,7 @@ export default function DashboardPage() {
 
   const answerSoftly = () => {
     if (!signalModal) return
-    router.push(signalModal.reply ? `/dashboard/chat?reply=${encodeURIComponent(signalModal.reply)}` : '/dashboard/chat')
+    router.push(signalModal.reply ? `/dashboard/ai?reply=${encodeURIComponent(signalModal.reply)}` : '/dashboard/ai')
     setSignalModal(null)
   }
 
@@ -137,6 +158,10 @@ export default function DashboardPage() {
   const pauseFmt = pause.active && pause.secondsLeft > 0
     ? `${Math.floor(pause.secondsLeft / 60)}:${String(pause.secondsLeft % 60).padStart(2, '0')}`
     : null
+
+  const testsDone = assessments.filter(a => a.bothCompleted).length
+  const testsTotal = assessments.length || 10
+  const nextTest = assessments.find(a => !a.bothCompleted)
 
   const hasNextAction = dq || care || challenge || warmth.length > 0 || signals.length > 0 || pauseFmt
 
@@ -274,6 +299,39 @@ export default function DashboardPage() {
           </div>
         </div>
       )}
+
+            {/* Прогресс тестов */}
+      <div className="k">Ваш прогресс</div>
+      <div className="cd static">
+        <div className="cd-r">
+          <div className="cd-ic">🗺️</div>
+          <div className="cd-t">
+            <b>Совместимость</b>
+            <span>{testsDone} из {testsTotal} тестов пройдено вместе</span>
+          </div>
+        </div>
+        <div className="prog-line" style={{ marginTop: 12 }}><div className="prog-fill" style={{ width: `${(testsDone / testsTotal) * 100}%` }} /></div>
+        <Link
+          href={nextTest ? `/dashboard/assessments/${nextTest.key}` : '/dashboard/couple#tests'}
+          className="btn btn-p btn-w"
+          style={{ marginTop: 12 }}
+        >
+          {nextTest ? `Пройти «${nextTest.title}»` : 'Все тесты пройдены ✓'}
+        </Link>
+      </div>
+
+      {/* Партнёр сейчас */}
+      <div className="k">{partner?.name ?? 'Партнёр'} сейчас</div>
+      <Link href="/dashboard/daily#partner" className="cd" style={{ textDecoration: 'none' }}>
+        <div className="cd-r">
+          <div className="cd-ic" style={{ fontSize: 24 }}>{partner?.mood?.emoji ?? '💤'}</div>
+          <div className="cd-t">
+            <b>{partner?.mood?.text ?? 'Ещё не отметил(а) настроение'}</b>
+            <span>Нажмите, чтобы увидеть детали</span>
+          </div>
+          <span className="arr">›</span>
+        </div>
+      </Link>
 
       {!hasNextAction && (
         <div className="empty" style={{ paddingTop: 60 }}>

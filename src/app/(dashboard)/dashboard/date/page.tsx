@@ -81,6 +81,8 @@ export default function DatePage() {
   const [cal, setCal] = useState(() => { const n = new Date(); return { y: n.getFullYear(), m: n.getMonth() } })
   const [visitedBusy, setVisitedBusy] = useState(false)
   const [visitedNote, setVisitedNote] = useState(false)
+  const [tab, setTab] = useState<'new' | 'upcoming' | 'memories'>('new')
+  const [memories, setMemories] = useState<Array<{ id: string; venueName: string; date: string; photoUrl: string | null; note: string | null }>>([])
 
   const load = useCallback(() => {
     fetch('/api/user/profile').then(r => r.json()).then(d => {
@@ -92,6 +94,19 @@ export default function DatePage() {
     fetch('/api/date-invite').then(r => r.json()).then(d => {
       setInvites(d.invites ?? [])
     }).catch(() => {}).finally(() => setLoading(false))
+
+    fetch('/api/couple-events').then(r => r.json()).then(d => {
+      setMemories(d?.memories ?? [])
+    }).catch(() => {})
+  }, [])
+
+  useEffect(() => {
+    const onHash = () => {
+      if (window.location.hash === '#memories') setTab('memories')
+    }
+    window.addEventListener('hashchange', onHash)
+    if (window.location.hash === '#memories') setTab('memories')
+    return () => window.removeEventListener('hashchange', onHash)
   }, [])
 
   useEffect(() => { load() }, [load])
@@ -219,6 +234,43 @@ export default function DatePage() {
         <Link href="/dashboard/couple#story" className="link-btn" style={{ whiteSpace: 'nowrap' }}>📖 История пары</Link>
       </div>
 
+      <div className="seg" role="tablist" style={{ margin: '14px 0' }}>
+        {([['new', 'Новое'], ['upcoming', 'Предстоящие'], ['memories', 'История']] as const).map(([key, label]) => (
+          <button key={key} role="tab" aria-selected={tab === key} className={tab === key ? 'on' : ''} onClick={() => setTab(key)}>{label}</button>
+        ))}
+      </div>
+
+      {tab === 'memories' && (
+        <div id="memories">
+          <div className="k">История свиданий</div>
+          {memories.length === 0 ? (
+            <div className="cd static" style={{ textAlign: 'center', padding: '32px 20px' }}>
+              <div style={{ fontSize: 40, marginBottom: 12 }}>📸</div>
+              <div className="h2" style={{ marginBottom: 6 }}>Пока пусто</div>
+              <span className="dim">Сходите на свидание и нажмите «Сходили ✓» — память сохранится здесь.</span>
+            </div>
+          ) : (
+            <div className="mem-grid">
+              {memories.map(m => (
+                <div className="mem-card" key={m.id}>
+                  {m.photoUrl ? (
+                    <div className="mem-img" style={{ backgroundImage: `url(${m.photoUrl})` }} />
+                  ) : (
+                    <div className="mem-img mem-ph" />
+                  )}
+                  <div className="mem-body">
+                    <b>{m.venueName}</b>
+                    <span className="small">{new Date(m.date).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' })}</span>
+                    {m.note && <span className="small dim">{m.note}</span>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {tab !== 'memories' && <>
       {err && <div className="notice notice-amber" style={{ marginTop: 12 }}>{err}</div>}
 
       {/* ===== НЕТ АКТИВНОГО ИНВАЙТА ===== */}
@@ -431,6 +483,7 @@ export default function DatePage() {
           ))}
         </>
       )}
+      </>}
     </DashboardLayout>
   )
 }

@@ -17,9 +17,10 @@ const NAV_ITEMS = [
 ]
 
 const GROUPS: Record<string, string[]> = {
-  '/dashboard/couple': ['/dashboard/couple', '/dashboard/assessments', '/dashboard/report', '/dashboard/astro', '/dashboard/memories', '/dashboard/letters'],
-  '/dashboard/daily': ['/dashboard/daily', '/dashboard/pulse', '/dashboard/challenges', '/dashboard/partner', '/dashboard/chat', '/dashboard/rituals'],
-  '/dashboard/date': ['/dashboard/date', '/dashboard/venues'],
+  '/dashboard/couple': ['/dashboard/couple', '/dashboard/assessments'],
+  '/dashboard/daily': ['/dashboard/daily'],
+  '/dashboard/date': ['/dashboard/date'],
+  '/dashboard/ai': ['/dashboard/ai'],
 }
 
 interface NotificationItem {
@@ -94,12 +95,43 @@ export function DashboardLayout({ children, user, couple }: DashboardLayoutProps
   const [emergencyOpen, setEmergencyOpen] = useState(false)
   const [notif, setNotif] = useState<{ items: NotificationItem[]; unread: number }>({ items: [], unread: 0 })
   const [notifOpen, setNotifOpen] = useState(false)
+  const [pause, setPause] = useState<{ active: boolean; secondsLeft: number }>({ active: false, secondsLeft: 0 })
+  const [pauseOpen, setPauseOpen] = useState(false)
   const { data: profileData } = useProfile()
   const swrCouple = useCouple()
 
   useEffect(() => {
     registerServiceWorker()
+    const t = setInterval(() => {
+      fetch('/api/pause').then(r => r.json()).then(p => {
+        if (p) setPause({ active: p.active ?? false, secondsLeft: p.secondsLeft ?? 0 })
+      }).catch(() => {})
+    }, 10000)
+    return () => clearInterval(t)
   }, [])
+
+  const startPause = async () => {
+    const r = await fetch('/api/pause', { method: 'POST' }).catch(() => null)
+    if (r && r.ok) {
+      const j = await r.json()
+      setPause({ active: true, secondsLeft: j.secondsLeft ?? 1200 })
+      setPauseOpen(true)
+      window.dispatchEvent(new Event('together:refresh'))
+    }
+  }
+
+  const cancelPause = async () => {
+    const r = await fetch('/api/pause', { method: 'DELETE' }).catch(() => null)
+    if (r && r.ok) {
+      setPause({ active: false, secondsLeft: 0 })
+      setPauseOpen(false)
+      window.dispatchEvent(new Event('together:refresh'))
+    }
+  }
+
+  const pauseFmt = pause.active && pause.secondsLeft > 0
+    ? `${Math.floor(pause.secondsLeft / 60)}:${String(pause.secondsLeft % 60).padStart(2, '0')}`
+    : ''
 
   const loadNotif = useCallback(() => {
     fetch('/api/notifications?limit=30').then((r) => r.json()).then((d) => {
@@ -177,6 +209,14 @@ export function DashboardLayout({ children, user, couple }: DashboardLayoutProps
               <Link href="/dashboard/settings" aria-label="Настройки" className="icon-btn">
                 ⚙
               </Link>
+              <button
+                className={cn('icon-btn', pause.active && 'on')}
+                aria-label={pause.active ? `Пауза активна · ${pauseFmt}` : 'Слово-стоп: пауза на 20 минут'}
+                title={pause.active ? `Пауза · осталось ${pauseFmt}` : 'Слово-стоп: пауза на 20 минут'}
+                onClick={() => pause.active ? setPauseOpen(true) : startPause()}
+              >
+                🛑
+              </button>
               <button className="icon-btn" aria-label="Выйти" title="Выйти" onClick={() => signOut({ callbackUrl: '/' })}>
                 ⎋
               </button>
@@ -277,6 +317,35 @@ export function DashboardLayout({ children, user, couple }: DashboardLayoutProps
           </ol>
           <button className="btn btn-p btn-w" style={{ marginTop: 20 }} onClick={() => setEmergencyOpen(false)}>
             Я готов(а) продолжить
+          </button>
+        </div>
+      </div>
+
+      {/* ПАУЗА (СТОП-СЛОВО) */}
+      <div
+        className={cn('modal', pauseOpen && 'active')}
+        onClick={(e) => {
+          if (e.target === e.currentTarget) setPauseOpen(false)
+        }}
+      >
+        <div className="modal-c">
+          <h3>🛑 Пауза</h3>
+          {pause.active ? (
+            <>
+              <p className="dim">Стоп-слово сработало. Пауза активна ещё <b>{pauseFmt}</b>.</p>
+              <p className="small dim" style={{ marginTop: 8 }}>
+                Дышите. Когда будете готовы — вернитесь к разговору мягко.
+              </p>
+              <button className="btn btn-s btn-w" style={{ marginTop: 16 }} onClick={cancelPause}>Снять паузу</button>
+            </>
+          ) : (
+            <>
+              <p className="dim">Пауза даёт 20 минут, чтобы успокоиться, когда эмоции зашкаливают.</p>
+              <button className="btn btn-p btn-w" style={{ marginTop: 16 }} onClick={startPause}>Начать паузу</button>
+            </>
+          )}
+          <button className="link-btn" style={{ display: 'block', width: '100%', textAlign: 'center', marginTop: 10 }} onClick={() => setPauseOpen(false)}>
+            Закрыть
           </button>
         </div>
       </div>

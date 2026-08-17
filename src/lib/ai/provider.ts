@@ -9,11 +9,11 @@ if (!apiKey) {
   throw new Error("Groq API key not configured. Set GROQ_API_KEY in .env.local")
 }
 
-// Model chain: primary → fallback → OpenRouter free
+// Model chain: primary → fallback → final
 const CHAIN = [
-  process.env.AI_MODEL || "openai/gpt-oss-120b",
-  process.env.AI_FALLBACK_MODEL || "openai/gpt-oss-20b",
-  "qwen/qwen3.6-27b",
+  process.env.AI_MODEL || "qwen/qwen3.6-27b",
+  process.env.AI_FALLBACK_MODEL || "openai/gpt-oss-120b",
+  "openai/gpt-oss-20b",
 ]
 
 export interface AIResponse {

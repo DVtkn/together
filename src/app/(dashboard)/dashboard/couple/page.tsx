@@ -10,7 +10,13 @@ type Status = {
   outgoing: null | { id: string; toUsername: string }
   incoming: null | { id: string; fromUsername: string }
   assessments: Array<{ key: string; title: string; emoji: string; me: boolean; partner: boolean; both: boolean }>
-  report: null | { compatibility: number | null; completedBoth: number; total: number; openedAxes: number }
+  report: null | {
+    compatibility: number | null
+    completedBoth: number
+    total: number
+    openedAxes: number
+    axes: Array<{ key: string; name: string; value: number | null }>
+  }
   synastry: null | { score: number; hasBirthDates: boolean }
 }
 
@@ -123,7 +129,6 @@ export default function CouplePage() {
 
   const done = s.assessments.filter(a => a.both).length
   const total = s.assessments.length || 10
-  const nextTest = s.assessments.find(a => !a.both && !a.me && !a.partner)
 
   const timeline: Array<{
     id: string
@@ -233,26 +238,68 @@ export default function CouplePage() {
       </div>
 
       {/* ==== РЕЗУЛЬТАТЫ ==== */}
-      <div className="k" id="report">Отчёт</div>
-      <div className="grid-2res">
-        <Link href="/dashboard/couple#report" className="cd res-card">
-          {s.report ? (
-            <>
-              <div className="res-num">{s.report.compatibility !== null ? `${s.report.compatibility}%` : '—'}</div>
-              <b>Отчёт пары</b>
-              <span>Открыто осей: {s.report.openedAxes}/8</span>
-              {s.report.openedAxes < 8 && s.report.total > 0 && (
-                <div className="ai-action" style={{ marginTop: 10 }}>→ Пройдите «{nextTest?.title}», чтобы открыть ось</div>
-              )}
-            </>
-          ) : (
-            <>
-              <div className="res-num">—</div>
-              <b>Отчёт пары</b>
-              <span>Пройдите тесты вместе — карта откроется</span>
-            </>
-          )}
-        </Link>
+      <div className="k" id="report">Карта пары</div>
+      <div className="cd static">
+        {s.report ? (
+          <>
+            <div className="radar-wrap">
+              {(() => {
+                const axes = s.report.axes ?? []
+                const size = 220
+                const cx = size / 2
+                const cy = size / 2
+                const r = 80
+                const open = axes.filter(a => a.value !== null)
+                const n = Math.max(open.length, 3)
+                const pt = (i: number, radius: number) => {
+                  const angle = (Math.PI * 2 * i) / n - Math.PI / 2
+                  return { x: cx + radius * Math.cos(angle), y: cy + radius * Math.sin(angle) }
+                }
+                const rings = [0.25, 0.5, 0.75, 1]
+                const grid = rings.map(f => open.map((_, i) => pt(i, r * f)))
+                const poly = open.map((a, i) => {
+                  const v = Math.max(0, Math.min(10, a.value ?? 5))
+                  return pt(i, r * (v / 10))
+                })
+                const polyStr = poly.map(p => `${p.x},${p.y}`).join(' ')
+                const labelR = r + 18
+                const labels = open.map((a, i) => {
+                  const p = pt(i, labelR)
+                  return { ...p, text: a.name, value: a.value }
+                })
+                return (
+                  <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} role="img" aria-label="Карта пары по осям">
+                    {grid.map((ring, ri) => (
+                      <polygon key={ri} points={ring.map(p => `${p.x},${p.y}`).join(' ')} fill="none" stroke="var(--line)" strokeWidth={1} />
+                    ))}
+                    {open.map((_, i) => {
+                      const p1 = pt(i, r)
+                      const p0 = pt(0, r)
+                      return <line key={i} x1={cx} y1={cy} x2={p1.x} y2={p1.y} stroke="var(--line)" strokeWidth={1} />
+                    })}
+                    <polygon points={polyStr} fill="rgba(139,92,246,.18)" stroke="var(--grad)" strokeWidth={2} strokeLinejoin="round" />
+                    {open.map((a, i) => {
+                      const p = pt(i, r * (Math.max(0, Math.min(10, a.value ?? 5)) / 10))
+                      return <circle key={i} cx={p.x} cy={p.y} r={3.5} fill="#8b5cf6" />
+                    })}
+                    {labels.map((l, i) => (
+                      <text key={i} x={l.x} y={l.y} textAnchor="middle" dominantBaseline="middle" fontSize={9} fill="var(--mute)" fontWeight={600}>
+                        {l.text.length > 9 ? l.text.slice(0, 8) + '…' : l.text}
+                      </text>
+                    ))}
+                  </svg>
+                )
+              })()}
+            </div>
+            <div className="small" style={{ textAlign: 'center', marginTop: 8, color: 'var(--mute)' }}>
+              Открыто {s.report.openedAxes}/8 осей {s.report.compatibility !== null && `· совместимость ${s.report.compatibility}%`}
+            </div>
+          </>
+        ) : (
+          <div className="dim" style={{ textAlign: 'center', padding: '12px 0' }}>
+            Пройдите тесты вместе — карта пары откроется по осям.
+          </div>
+        )}
       </div>
 
       {/* ==== СИНАСТРИЯ ==== */}

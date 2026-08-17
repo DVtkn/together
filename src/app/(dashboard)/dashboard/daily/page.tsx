@@ -52,8 +52,10 @@ interface Wish { id: string; title: string; link: string | null; status: string;
 const SECTIONS = [
   { key: 'mood', label: 'Настроение', emoji: '😄' },
   { key: 'signals', label: 'Сигналы', emoji: '🤗' },
+  { key: 'warmth', label: 'Банк тепла', emoji: '💌' },
   { key: 'pulse', label: 'Пульс', emoji: '🫀' },
   { key: 'challenges', label: 'Челленджи', emoji: '🌙' },
+  { key: 'rituals', label: 'Ритуалы', emoji: '🕊️' },
   { key: 'partner', label: 'Партнёр', emoji: '💐' },
 ]
 
@@ -85,6 +87,16 @@ export default function DailyPage() {
   const [warmth, setWarmth] = useState<Array<{ id: string; text: string; fromName: string; fromId: string; createdAt: string }>>([])
   const [warmthText, setWarmthText] = useState('')
 
+  const [rituals, setRituals] = useState<Array<{ id: string; title: string; emoji: string; mine: boolean; partner: boolean }>>([])
+  const [ritualInput, setRitualInput] = useState('')
+  const [ritualOpen, setRitualOpen] = useState(false)
+  const RITUAL_IDEAS = [
+    { t: 'Утренний кофе молча', e: '☕' },
+    { t: 'Вечерний чай на балконе', e: '🍵' },
+    { t: 'Прогулка без телефонов', e: '🚶' },
+    { t: 'Обнимашки на 20 секунд', e: '🤗' },
+  ]
+
   const load = useCallback(() => {
     Promise.all([
       fetch('/api/mood').then(r => r.json()),
@@ -94,7 +106,8 @@ export default function DailyPage() {
       fetch('/api/pulse').then(r => r.json()).catch(() => ({ checkins: [] })),
       fetch('/api/challenges').then(r => r.json()).catch(() => ({ challenges: [] })),
       fetch('/api/warmth?limit=3').then(r => r.json()).catch(() => ({ entries: [] })),
-    ]).then(([m, p, d, sig, pul, ch, wm]) => {
+      fetch('/api/rituals').then(r => r.json()).catch(() => ({ items: [] })),
+    ]).then(([m, p, d, sig, pul, ch, wm, rt]) => {
       setMyMood(m.mine ?? null)
       setPartner({ name: p?.couple?.partnerName ?? 'Партнёр', mood: m.partner ? { ...m.partner, at: m.partner.at } : null })
       setName(d?.user?.name?.split(' ')[0] ?? '')
@@ -102,6 +115,7 @@ export default function DailyPage() {
       setPulse(pul)
       setChallenges(ch?.challenges ?? [])
       setWarmth(wm?.entries ?? [])
+      setRituals(rt?.items ?? [])
     }).catch(() => {})
   }, [])
   useEffect(() => { load() }, [load])
@@ -185,6 +199,24 @@ export default function DailyPage() {
     setWarmthText('')
     const wm = await fetch('/api/warmth?limit=3').then(r => r.json())
     setWarmth(wm?.entries ?? [])
+    window.dispatchEvent(new Event('together:refresh'))
+  }
+
+  async function addRitual(title?: string) {
+    const t = (title ?? ritualInput).trim()
+    if (t.length < 2) return
+    await fetch('/api/rituals', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title: t, emoji: '🕊️' }) })
+    setRitualInput('')
+    setRitualOpen(false)
+    const rt = await fetch('/api/rituals').then(r => r.json())
+    setRituals(rt?.items ?? [])
+    window.dispatchEvent(new Event('together:refresh'))
+  }
+
+  async function toggleRitual(id: string) {
+    await fetch(`/api/rituals/${id}/done`, { method: 'POST' }).catch(() => {})
+    const rt = await fetch('/api/rituals').then(r => r.json())
+    setRituals(rt?.items ?? [])
     window.dispatchEvent(new Event('together:refresh'))
   }
 
@@ -367,7 +399,53 @@ export default function DailyPage() {
         )}
       </div>
 
-      {/* 6 · Партнёр */}
+      {/* 6 · Ритуалы */}
+      <div id="rituals" style={{ scrollMarginTop: 80 }}>
+        <div className="k">Ритуалы</div>
+        <div className="cd static">
+          <div className="dim" style={{ fontSize: 12, marginBottom: 12 }}>Маленькие повторяющиеся традиции пары.</div>
+          {!ritualOpen && (
+            <button className="btn btn-s btn-w" style={{ width: '100%', marginBottom: 12 }} onClick={() => setRitualOpen(true)}>
+              + Добавить ритуал
+            </button>
+          )}
+          {ritualOpen && (
+            <div style={{ marginBottom: 12 }}>
+              <div className="rit-ideas" style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 8 }}>
+                {RITUAL_IDEAS.map(idea => (
+                  <button key={idea.t} className="chip" onClick={() => addRitual(idea.t)}>{idea.e} {idea.t}</button>
+                ))}
+              </div>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <input className="input" style={{ flex: 1 }} placeholder="Свой ритуал…" value={ritualInput}
+                  onChange={e => setRitualInput(e.target.value)}
+                  onKeyDown={e => e.key === 'Enter' && addRitual()} />
+                <button className="btn btn-p" disabled={ritualInput.trim().length < 2} onClick={() => addRitual()}>OK</button>
+              </div>
+            </div>
+          )}
+          {rituals.length === 0 ? (
+            <div className="dim" style={{ fontSize: 13 }}>Ритуалов пока нет. Добавьте первый — например, «Утренний кофе молча».</div>
+          ) : (
+            <div className="feed">
+              {rituals.map(r => (
+                <div key={r.id} className="cd-r" style={{ padding: '8px 0' }}>
+                  <div className="cd-ic">{r.emoji}</div>
+                  <div className="cd-t">
+                    <b>{r.title}</b>
+                    <span>{r.mine ? 'Вы ✓' : 'Вы —'} · {r.partner ? 'Партнёр ✓' : 'Партнёр —'}</span>
+                  </div>
+                  <button className={r.mine ? 'btn btn-ok btn-sm' : 'btn btn-s btn-sm'} onClick={() => toggleRitual(r.id)}>
+                    {r.mine ? '✓' : 'Отметить'}
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* 7 · Партнёр */}
       <div id="partner" style={{ scrollMarginTop: 80 }}>
         <div className="k">Партнёр</div>
         <div className="cd static">
