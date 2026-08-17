@@ -76,7 +76,7 @@ export default function RegisterPage() {
   return (
     <div className="auth-wrap">
       <div className="auth-card">
-        <Link href="/" className="logo" style={{ justifyContent: 'center' }}><i></i>Together</Link>
+        <Link href="/" className="logo" style={{ justifyContent: 'center' }}><i>∞</i>Loop</Link>
         <div className="h2" style={{ textAlign: 'center', marginTop: 16 }}>Создать аккаунт</div>
         <div className="dim" style={{ textAlign: 'center' }}>Пароль и дата рождения. Последняя нужна, чтобы посчитать вашу синастрию.</div>
 

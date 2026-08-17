@@ -474,7 +474,7 @@ export default function SettingsPage() {
       <div className="notice notice-amber" style={{ marginTop: 20 }}>
         <span style={{ fontSize: 20 }} aria-hidden="true">⚠️</span>
         <div>
-          <strong>Важно.</strong> Together — инструмент самопознания, не медицинская услуга. При признаках кризиса или насилия обратитесь к специалисту.
+          <strong>Важно.</strong> Loop — инструмент самопознания, не медицинская услуга. При признаках кризиса или насилия обратитесь к специалисту.
         </div>
       </div>
     </DashboardLayout>

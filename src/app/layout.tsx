@@ -11,30 +11,30 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://together.app'),
-  title: 'Together — Станьте ближе',
+  title: 'Loop — Станьте ближе',
   description: 'Приложение для пар: научные опросники, совместный отчёт, ИИ-ассистент, база знаний о партнёре и подборки свиданий. Приватно и этично.',
   keywords: ['отношения', 'пара', 'психология', 'совместимость', 'конфликты', 'близость', 'ИИ', 'свидания'],
-  authors: [{ name: 'Together Team' }],
-  creator: 'Together',
+  authors: [{ name: 'Loop Team' }],
+  creator: 'Loop',
   openGraph: {
     type: 'website',
     locale: 'ru_RU',
     url: 'https://together.app',
-    siteName: 'Together',
-    title: 'Together — Станьте ближе',
+    siteName: 'Loop',
+    title: 'Loop — Станьте ближе',
     description: 'Научные опросники для пар, совместный отчёт, ИИ-ассистент, куда пойти вдвоём.',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Together — приложение для пар',
+        alt: 'Loop — приложение для пар',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Together — Станьте ближе',
+    title: 'Loop — Станьте ближе',
     description: 'Научные опросники для пар, совместный отчёт, ИИ-ассистент.',
     images: ['/og-image.png'],
   },
@@ -52,7 +52,7 @@ export default function RootLayout({
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="apple-mobile-web-app-title" content="Together" />
+        <meta name="apple-mobile-web-app-title" content="Loop" />
         <meta name="theme-color" content="#0F172A" />
         <link rel="apple-touch-icon" href="/icons/icon-192.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />

@@ -60,7 +60,7 @@ export async function GET(request: NextRequest) {
       status: 200,
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
-        'Content-Disposition': 'attachment; filename="together-export.json"',
+        'Content-Disposition': 'attachment; filename="loop-export.json"',
       },
     })
   } catch (error) {

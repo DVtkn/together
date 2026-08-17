@@ -6,7 +6,7 @@ const Footer = () => {
       <div className="lp-foot-in">
         <div>
           <Link href="/" className="logo">
-            <i></i>Together
+            <i>∞</i>Loop
           </Link>
           <p style={{ color: 'var(--dim)', fontSize: 14, marginTop: 12, maxWidth: 320 }}>
             Короткие опросники, общий отчёт и ассистент — чтобы быть ближе, а не на расстоянии вытянутой руки.
@@ -36,8 +36,8 @@ const Footer = () => {
       </div>
 
       <div className="lp-foot-bottom">
-        <p>© {new Date().getFullYear()} Together. Все права защищены.</p>
-        <p>Together не является медицинским или психотерапевтическим сервисом. Астрологические данные и рекомендации не заменяют помощь специалиста.</p>
+        <p>© {new Date().getFullYear()} Loop. Все права защищены.</p>
+        <p>Loop не является медицинским или психотерапевтическим сервисом. Астрологические данные и рекомендации не заменяют помощь специалиста.</p>
       </div>
     </footer>
   )

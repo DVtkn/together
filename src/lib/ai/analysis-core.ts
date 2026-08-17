@@ -31,7 +31,7 @@ export function profileHash(profile: CoupleProfile): string {
 
 export function analysisPrompt(profile: CoupleProfile): string {
   const profileJson = JSON.stringify(profile, null, 2)
-  return `Ты — семейный психолог приложения для пар Together.
+  return `Ты — семейный психолог приложения для пар Loop.
 Даны результаты пары по измерениям (0–10, где 10 — полное совпадение) и risk-маркеры.
 Данные: ${profileJson}
 

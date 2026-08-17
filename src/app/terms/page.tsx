@@ -5,7 +5,7 @@ export default function Terms() {
 
       <div style={{ fontSize: 15, lineHeight: 1.8, color: 'var(--dim)' }}>
         <p style={{ marginBottom: '24px' }}>
-          Приложение Together («Сервис») предоставляет услуги по укреплению отношений между партнерами.
+          Приложение Loop («Сервис») предоставляет услуги по укреплению отношений между партнерами.
         </p>
         <ul style={{ marginBottom: '24px', paddingLeft: '24px' }}>
           <li>Регистрируясь в Сервисе, вы подтверждаете, что вам не менее 18 лет</li>

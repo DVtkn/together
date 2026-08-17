@@ -18,8 +18,8 @@ function MobileMenu({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
     >
       <div className="flex items-center justify-center h-full">
         <nav className="flex flex-col gap-6 py-12 mx-auto w-full max-w-md items-center">
-          <Link href="/" className="logo" aria-label="Together Home" onClick={onClose}>
-            <i></i>Together
+          <Link href="/" className="logo" aria-label="Loop Home" onClick={onClose}>
+            <i>∞</i>Loop
           </Link>
           {LANDING_LINKS.map((l) => (
             <Link key={l.href} href={l.href} className="nv" onClick={onClose}>
@@ -47,7 +47,7 @@ const Header = () => {
     <header className="lp-h">
       <div className="lp-h-in">
         <Link href="/" className="logo">
-          <i></i>Together
+          <i>∞</i>Loop
         </Link>
         <nav className="lp-nav" aria-label="Основная навигация">
           {LANDING_LINKS.map((l) => (

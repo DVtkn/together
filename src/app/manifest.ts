@@ -2,8 +2,8 @@ import type { MetadataRoute } from 'next'
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'Together — приложение для пар',
-    short_name: 'Together',
+    name: 'Loop — приложение для пар',
+    short_name: 'Loop',
     description: 'Научные опросники, совместный отчёт, ИИ-ассистент для пар.',
     start_url: '/dashboard',
     display: 'standalone',
