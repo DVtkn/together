@@ -19,6 +19,7 @@ const NAV_ITEMS = [
 const GROUPS: Record<string, string[]> = {
   '/dashboard/couple': ['/dashboard/couple', '/dashboard/assessments', '/dashboard/report', '/dashboard/astro', '/dashboard/memories', '/dashboard/letters'],
   '/dashboard/daily': ['/dashboard/daily', '/dashboard/pulse', '/dashboard/challenges', '/dashboard/partner', '/dashboard/chat', '/dashboard/rituals'],
+  '/dashboard/date': ['/dashboard/date', '/dashboard/venues'],
 }
 
 interface NotificationItem {
@@ -47,6 +48,11 @@ const NOTIF_ICON: Record<string, string> = {
   ritual_added: '🕊️',
   ritual_done: '✓',
   letter_sent: '💌',
+  signal_received: '🤗',
+  pause_started: '🛑',
+  pause_ended: '⏸️',
+  warmth_added: '💌',
+  daily_revealed: '🔮',
 }
 
 function timeAgo(iso: string): string {

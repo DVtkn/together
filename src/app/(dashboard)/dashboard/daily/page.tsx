@@ -1,7 +1,8 @@
 'use client'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
+import { cn } from '@/lib/utils/cn'
 
 const MOODS = [
   { emoji: '😄', text: 'Всё супер' },
@@ -13,46 +14,107 @@ const MOODS = [
 ]
 const SCORE: Record<string, number> = { '😄': 5, '🙂': 4, '😐': 3, '🥺': 2, '😰': 2, '😤': 1 }
 
-function greeting() {
-  const h = new Date().getHours()
-  if (h >= 5 && h < 12) return 'Доброе утро'
-  if (h >= 12 && h < 18) return 'Привет'
-  if (h >= 18 && h < 23) return 'Добрый вечер'
-  return 'Не спится?'
+interface Signal {
+  id: string
+  emoji: string
+  meaning: string
+  suggestedReply: string
 }
+
+interface PulseData {
+  checkins: Array<{
+    year: number
+    weekNumber: number
+    user: { closeness: number; conflictResolution: number; missing: string | null } | null
+    partner: { closeness: number; conflictResolution: number; missing: string | null } | null
+  }>
+}
+
+interface Challenge {
+  id: string
+  weekNumber: number
+  year: number
+  title: string
+  description: string
+  instruction: string
+  examplePhrase: string | null
+  axis: string
+  difficulty: number
+  durationMin: number
+  status: string
+  completedByCurrent: boolean
+  completedByPartner: boolean
+}
+
+interface Craving { id: string; item: string; status: string }
+interface Wish { id: string; title: string; link: string | null; status: string; priceRange: string | null }
+
+const SECTIONS = [
+  { key: 'mood', label: 'Настроение', emoji: '😄' },
+  { key: 'signals', label: 'Сигналы', emoji: '🤗' },
+  { key: 'pulse', label: 'Пульс', emoji: '🫀' },
+  { key: 'challenges', label: 'Челленджи', emoji: '🌙' },
+  { key: 'partner', label: 'Партнёр', emoji: '💐' },
+]
 
 export default function DailyPage() {
   const [name, setName] = useState('')
   const [myMood, setMyMood] = useState<{ emoji: string; text: string | null } | null>(null)
   const [partner, setPartner] = useState<{ name: string; mood: { emoji: string; text: string | null; at: string } | null } | null>(null)
-  const [week, setWeek] = useState<Array<{ label: string; mine: number | null; theirs: number | null }>>([])
-  const [challenge, setChallenge] = useState<any>(null)
+  const [signals, setSignals] = useState<Signal[]>([])
+  const [signalSent, setSignalSent] = useState<string | null>(null)
   const [saved, setSaved] = useState(false)
+
+  const [pulse, setPulse] = useState<PulseData | null>(null)
+  const [closeness, setCloseness] = useState(5)
+  const [conflictResolution, setConflictResolution] = useState(5)
+  const [missing, setMissing] = useState('')
+  const [pulseSubmitting, setPulseSubmitting] = useState(false)
+
+  const [challenges, setChallenges] = useState<Challenge[]>([])
+  const [completing, setCompleting] = useState<string | null>(null)
+
+  const [partnerTab, setPartnerTab] = useState('mood')
+  const [partnerMood, setPartnerMood] = useState<{ emoji: string; text: string | null } | null>(null)
+  const [cravings, setCravings] = useState<Craving[]>([])
+  const [partnerCravings, setPartnerCravings] = useState<Craving[]>([])
+  const [cravingInput, setCravingInput] = useState('')
+  const [wishes, setWishes] = useState<Wish[]>([])
+  const [partnerWishes, setPartnerWishes] = useState<Wish[]>([])
+  const [wishTitle, setWishTitle] = useState('')
+  const [warmth, setWarmth] = useState<Array<{ id: string; text: string; fromName: string; fromId: string; createdAt: string }>>([])
+  const [warmthText, setWarmthText] = useState('')
 
   const load = useCallback(() => {
     Promise.all([
       fetch('/api/mood').then(r => r.json()),
-      fetch('/api/mood/history?days=7').then(r => r.json()),
       fetch('/api/user/profile').then(r => r.json()),
       fetch('/api/dashboard').then(r => r.json()),
-    ]).then(([m, h, p, d]) => {
+      fetch('/api/signals').then(r => r.json()).catch(() => ({ signals: [] })),
+      fetch('/api/pulse').then(r => r.json()).catch(() => ({ checkins: [] })),
+      fetch('/api/challenges').then(r => r.json()).catch(() => ({ challenges: [] })),
+      fetch('/api/warmth?limit=3').then(r => r.json()).catch(() => ({ entries: [] })),
+    ]).then(([m, p, d, sig, pul, ch, wm]) => {
       setMyMood(m.mine ?? null)
       setPartner({ name: p?.couple?.partnerName ?? 'Партнёр', mood: m.partner ? { ...m.partner, at: m.partner.at } : null })
-      setChallenge(d?.activeChallenge ?? null)
       setName(d?.user?.name?.split(' ')[0] ?? '')
-      const days: any[] = []
-      const DN = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб']
-      for (let i = 6; i >= 0; i--) {
-        const dt = new Date(); dt.setDate(dt.getDate() - i)
-        const key = dt.toDateString()
-        const mine = h?.history?.mine?.find((e: any) => new Date(e.createdAt).toDateString() === key)
-        const theirs = h?.history?.partner?.find((e: any) => new Date(e.createdAt).toDateString() === key)
-        days.push({ label: DN[dt.getDay()], mine: mine ? SCORE[mine.emoji] ?? 3 : null, theirs: theirs ? SCORE[theirs.emoji] ?? 3 : null })
-      }
-      setWeek(days)
+      setSignals(sig?.signals ?? [])
+      setPulse(pul)
+      setChallenges(ch?.challenges ?? [])
+      setWarmth(wm?.entries ?? [])
     }).catch(() => {})
   }, [])
   useEffect(() => { load() }, [load])
+
+  useEffect(() => {
+    if (partnerTab === 'mood') {
+      fetch('/api/mood').then(r => r.json()).then(m => setPartnerMood(m.partner ?? null)).catch(() => {})
+    } else if (partnerTab === 'cravings') {
+      fetch('/api/cravings').then(r => r.json()).then(c => { setCravings(c.cravings?.mine || []); setPartnerCravings(c.cravings?.partner || []) }).catch(() => {})
+    } else if (partnerTab === 'wishlist') {
+      fetch('/api/wishlist').then(r => r.json()).then(w => { setWishes(w.items?.mine || []); setPartnerWishes(w.items?.partner || []) }).catch(() => {})
+    }
+  }, [partnerTab])
 
   async function tap(m: { emoji: string; text: string }) {
     setMyMood(m); setSaved(false)
@@ -66,98 +128,339 @@ export default function DailyPage() {
     alert('Напоминание отправлено 💜')
   }
 
-  const hasWeek = week.some(d => d.mine !== null || d.theirs !== null)
+  async function sendSignal(s: Signal) {
+    await fetch(`/api/signals/${s.id}/send`, { method: 'POST' }).catch(() => {})
+    setSignalSent(s.id)
+    window.dispatchEvent(new Event('together:refresh'))
+    setTimeout(() => setSignalSent(null), 3000)
+  }
+
+  async function submitPulse() {
+    setPulseSubmitting(true)
+    try {
+      await fetch('/api/pulse', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ closeness, conflictResolution, missing: missing || undefined }),
+      })
+      const res = await fetch('/api/pulse')
+      setPulse(await res.json())
+      setMissing('')
+    } catch { /* ignore */ } finally { setPulseSubmitting(false) }
+  }
+
+  async function completeChallenge(id: string) {
+    setCompleting(id)
+    try {
+      await fetch(`/api/challenges/${id}/complete`, { method: 'POST' })
+      const res = await fetch('/api/challenges')
+      setChallenges((await res.json()).challenges ?? [])
+    } catch { /* ignore */ } finally { setCompleting(null) }
+    window.dispatchEvent(new Event('together:refresh'))
+  }
+
+  async function addCraving() {
+    const item = cravingInput.trim()
+    if (!item) return
+    await fetch('/api/cravings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ item }) })
+    setCravingInput('')
+    const c = await fetch('/api/cravings').then(r => r.json())
+    setCravings(c.cravings?.mine || [])
+    window.dispatchEvent(new Event('together:refresh'))
+  }
+
+  async function addWish() {
+    const title = wishTitle.trim()
+    if (!title) return
+    await fetch('/api/wishlist', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title, link: '' }) })
+    setWishTitle('')
+    const w = await fetch('/api/wishlist').then(r => r.json())
+    setWishes(w.items?.mine || [])
+    window.dispatchEvent(new Event('together:refresh'))
+  }
+
+  async function addWarmth() {
+    const text = warmthText.trim()
+    if (text.length < 2) return
+    await fetch('/api/warmth', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text }) })
+    setWarmthText('')
+    const wm = await fetch('/api/warmth?limit=3').then(r => r.json())
+    setWarmth(wm?.entries ?? [])
+    window.dispatchEvent(new Event('together:refresh'))
+  }
+
+  const weeks = pulse?.checkins ?? []
+  const userCurrent = weeks.length ? weeks[weeks.length - 1]?.user ?? null : null
+  const activeChallenges = challenges.filter(c => c.status === 'ACTIVE' || c.status === 'PENDING')
+  const completedCount = challenges.filter(c => c.status === 'COMPLETED').length
 
   return (
     <DashboardLayout>
-      <div className="h1">{greeting()}{name ? `, ${name}` : ''}.</div>
-      <div className="dim">Полминуты — и вы на связи.</div>
+      <div className="h1">{name ? `${name}, ваш день` : 'Ваш день'}.</div>
+      <div className="dim">Настроение, пульс, челленджи и партнёр — всё в одном месте.</div>
 
-      {/* 1 · Как ты */}
-      <div className="cd static mood-hero">
-        <div className="mood-q">Как ты?</div>
-        <div className="mood-row">
-          {MOODS.map(m => (
-            <button key={m.emoji} className={`mood-big ${myMood?.emoji === m.emoji ? 'sel' : ''}`}
-              onClick={() => tap(m)} aria-label={m.text}>
-              <i>{m.emoji}</i><b>{m.text}</b>
-            </button>
-          ))}
+      {/* Навигация по секциям */}
+      <div className="chip-row" style={{ display: 'flex', gap: 8, overflowX: 'auto', paddingBottom: 4, marginBottom: 8 }}>
+        {SECTIONS.map(sec => (
+          <a key={sec.key} href={`#${sec.key}`} className="chip">{sec.emoji} {sec.label}</a>
+        ))}
+      </div>
+
+      {/* 1 · Настроение */}
+      <div id="mood" style={{ scrollMarginTop: 80 }}>
+        <div className="k">Настроение</div>
+        <div className="cd static mood-hero">
+          <div className="mood-q">Как ты?</div>
+          <div className="mood-row">
+            {MOODS.map(m => (
+              <button key={m.emoji} className={`mood-big ${myMood?.emoji === m.emoji ? 'sel' : ''}`}
+                onClick={() => tap(m)} aria-label={m.text}>
+                <i>{m.emoji}</i><b>{m.text}</b>
+              </button>
+            ))}
+          </div>
+          <div className="autosave-hint">{saved ? '✓ Записано. Партнёр увидит.' : '💜 Один тап — и записано'}</div>
         </div>
-        <div className="autosave-hint">{saved ? '✓ Записано. Партнёр увидит.' : '💜 Один тап — и записано'}</div>
-      </div>
 
-      {/* 2 · Как партнёр */}
-      <div className="cd static">
-        {partner?.mood ? (
-          <div className="cd-r">
-            <div className="partner-emoji">{partner.mood.emoji}</div>
-            <div className="cd-t">
-              <b>{partner.name} сейчас</b>
-              <span>{partner.mood.text ?? 'Отметил(а) настроение'}</span>
+        <div className="cd static">
+          {partner?.mood ? (
+            <div className="cd-r">
+              <div className="partner-emoji">{partner.mood.emoji}</div>
+              <div className="cd-t">
+                <b>{partner.name} сейчас</b>
+                <span>{partner.mood.text ?? 'Отметил(а) настроение'}</span>
+              </div>
+              <Link href="/dashboard/ai" className="btn btn-s btn-sm">💬 Поддержать</Link>
             </div>
-            <Link href="/dashboard/ai" className="btn btn-s btn-sm">💬 Поддержать</Link>
-          </div>
-        ) : (
-          <div className="cd-r">
-            <div className="partner-emoji" style={{ opacity: .5 }}>💤</div>
-            <div className="cd-t">
-              <b>{partner?.name ?? 'Партнёр'} ещё не отметил(а)</b>
-              <span>Когда отметит — увидите здесь</span>
+          ) : (
+            <div className="cd-r">
+              <div className="partner-emoji" style={{ opacity: .5 }}>💤</div>
+              <div className="cd-t">
+                <b>{partner?.name ?? 'Партнёр'} ещё не отметил(а)</b>
+                <span>Когда отметит — увидите здесь</span>
+              </div>
+              <button className="btn btn-s btn-sm" onClick={remind}>🔔 Напомнить</button>
             </div>
-            <button className="btn btn-s btn-sm" onClick={remind}>🔔 Напомнить</button>
-          </div>
-        )}
-      </div>
-
-      {/* 3 · Челлендж недели */}
-      {challenge && (
-        <div className="cd">
-          <div className="cd-r">
-            <div className="cd-ic">🌙</div>
-            <div className="cd-t">
-              <b>{challenge.title}</b>
-              <span>{challenge.completedByCurrent ? 'Вы — сделали ✓' : 'Вы — ещё нет'} · {challenge.completedByPartner ? 'партнёр ✓' : 'партнёр —'}</span>
-            </div>
-          </div>
-          {!challenge.completedByCurrent && (
-            <Link href="/dashboard/challenges" className="btn btn-p btn-w" style={{ marginTop: 12 }}>Отметить выполнение</Link>
           )}
         </div>
-      )}
+      </div>
 
-      {/* 4 · Неделя вместе */}
-      <div className="cd static">
-        <div className="cd-r" style={{ marginBottom: hasWeek ? 14 : 0 }}>
-          <div className="cd-ic">📈</div>
-          <div className="cd-t"><b>Ваша неделя вместе</b></div>
+      {/* 2 · Тихие сигналы */}
+      <div id="signals" style={{ scrollMarginTop: 80 }}>
+        <div className="k">Тихие сигналы</div>
+        <div className="cd static">
+          <div className="dim" style={{ fontSize: 12, marginBottom: 12 }}>Один тап — и партнёр поймёт, что вам нужно. Без слов.</div>
+          <div className="signal-row">
+            {signals.map(s => (
+              <button key={s.id} className={cn('signal-btn', signalSent === s.id && 'sent')} onClick={() => sendSignal(s)} title={s.meaning}>
+                <span>{s.emoji}</span>
+                <b>{s.meaning}</b>
+                {signalSent === s.id && <i className="signal-ok">✓</i>}
+              </button>
+            ))}
+          </div>
+          {signals.length === 0 && <div className="dim" style={{ fontSize: 13 }}>Партнёра пока нет — сигналы появятся, когда вы соединитесь.</div>}
         </div>
-        {hasWeek ? (
-          <>
-            <div className="week-chart">
-              {week.map((d, i) => (
-                <div key={i} className="wc-day">
-                  <div className="wc-bars">
-                    <div className="wc-bar dima" style={{ height: `${d.mine ? d.mine * 16 : 3}px`, opacity: d.mine ? 1 : .15 }} />
-                    <div className="wc-bar anya" style={{ height: `${d.theirs ? d.theirs * 16 : 3}px`, opacity: d.theirs ? 1 : .15 }} />
+      </div>
+
+      {/* 3 · Банк тепла */}
+      <div id="warmth" style={{ scrollMarginTop: 80 }}>
+        <div className="k">Банк тепла</div>
+        <div className="cd static">
+          <div className="dim" style={{ fontSize: 12, marginBottom: 12 }}>Скажите партнёру спасибо или что-то тёплое — это копится и согревает в трудный день.</div>
+          <div className="warmth-form" style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+            <input className="input" style={{ flex: 1 }} placeholder="Спасибо за…" value={warmthText}
+              onChange={e => setWarmthText(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' && addWarmth()} />
+            <button className="btn btn-p" disabled={warmthText.trim().length < 2} onClick={addWarmth}>💌</button>
+          </div>
+          {warmth.length > 0 && (
+            <div className="warmth-list">
+              {warmth.map(w => (
+                <div key={w.id} className="warmth-item">
+                  <span className="warmth-ic">💌</span>
+                  <div>
+                    <b>{w.text}</b>
+                    <span className="small">{w.fromName} · {new Date(w.createdAt).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' })}</span>
                   </div>
-                  <span>{d.label}</span>
                 </div>
               ))}
             </div>
-            <div className="legend"><span className="dima"><i style={{ background: 'var(--grad)' }} />вы</span><span className="anya"><i style={{ background: 'var(--blue)' }} />{partner?.name ?? 'партнёр'}</span></div>
-          </>
-        ) : (
-          <div className="dim" style={{ textAlign: 'center', padding: '8px 0 4px', fontSize: 13 }}>
-            Когда вы оба отметите настроение, здесь появится ваша неделя.
+          )}
+        </div>
+      </div>
+
+      {/* 4 · Пульс */}
+      <div id="pulse" style={{ scrollMarginTop: 80 }}>
+        <div className="k">Пульс недели</div>
+        <div className="cd static">
+          <div className="range-stack">
+            <label>
+              <span>Близость</span>
+              <div className="range-line">
+                <span style={{ fontSize: 12, color: 'var(--mute)' }}>далеко</span>
+                <input type="range" min={1} max={10} value={closeness} onChange={e => setCloseness(Number(e.target.value))} />
+                <span style={{ fontSize: 12, color: 'var(--mute)' }}>очень близко</span>
+              </div>
+              <b className="range-val">{closeness}</b>
+            </label>
+            <label>
+              <span>Конструктивность конфликтов</span>
+              <div className="range-line">
+                <span style={{ fontSize: 12, color: 'var(--mute)' }}>деструктивно</span>
+                <input type="range" min={1} max={10} value={conflictResolution} onChange={e => setConflictResolution(Number(e.target.value))} />
+                <span style={{ fontSize: 12, color: 'var(--mute)' }}>конструктивно</span>
+              </div>
+              <b className="range-val">{conflictResolution}</b>
+            </label>
+            <label>
+              <span>Чего не хватило? (опционально)</span>
+              <input className="input" value={missing} onChange={e => setMissing(e.target.value)} placeholder="Например: больше времени вдвоём…" />
+            </label>
+          </div>
+          <button className="btn btn-p btn-w" style={{ marginTop: 16 }} onClick={submitPulse} disabled={pulseSubmitting}>
+            {pulseSubmitting ? 'Сохраняем…' : 'Сохранить пульс'}
+          </button>
+          {userCurrent && (
+            <div className="small" style={{ marginTop: 10, textAlign: 'center', color: 'var(--ok)' }}>
+              ✓ Уже заполнено на этой неделе: близость {userCurrent.closeness}/10 · конфликты {userCurrent.conflictResolution}/10
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* 5 · Челленджи */}
+      <div id="challenges" style={{ scrollMarginTop: 80 }}>
+        <div className="k">Челленджи · выполнено {completedCount}</div>
+        {activeChallenges.map(challenge => (
+          <div key={challenge.id} className="cd static mt">
+            <div className="cd-r">
+              <div className="cd-ic">🌙</div>
+              <div className="cd-t">
+                <b>{challenge.title}</b>
+                <span>{challenge.description}</span>
+              </div>
+            </div>
+            <div className="small" style={{ marginTop: 8 }}>Ось: {challenge.axis} · сложность {challenge.difficulty}/3 · {challenge.durationMin} мин</div>
+            <div className="small" style={{ marginTop: 4 }}>Задание: {challenge.instruction}</div>
+            {challenge.examplePhrase && (
+              <div className="notice notice-amber" style={{ marginTop: 12 }}>
+                <span>💬</span>
+                <div><strong>Пример фразы:</strong> «{challenge.examplePhrase}»</div>
+              </div>
+            )}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 16 }}>
+              <button
+                className={cn('btn', challenge.completedByCurrent ? 'btn-ok' : 'btn-p')}
+                disabled={challenge.completedByCurrent || completing === challenge.id}
+                onClick={() => !challenge.completedByCurrent && completeChallenge(challenge.id)}
+              >
+                {challenge.completedByCurrent ? '✓ Я сделал(а)' : completing === challenge.id ? '…' : 'Я сделал(а)'}
+              </button>
+              {challenge.completedByPartner && <span className="badge ok">Партнёр ✓</span>}
+            </div>
+          </div>
+        ))}
+        {activeChallenges.length === 0 && (
+          <div className="dim" style={{ fontSize: 13, padding: '8px 0' }}>
+            {challenges.length === 0 ? 'Челленджи появятся после заполнения пульса.' : 'На этой неделе челленджей нет.'}
           </div>
         )}
       </div>
 
-      {/* 5 · Быстрые ссылки */}
-      <div className="daily-links">
-        <Link href="/dashboard/partner" className="cd"><div className="cd-r"><div className="cd-ic">💐</div><div className="cd-t"><b>Партнёр</b><span>Хотелки, цветы, виш-лист</span></div><span className="arr">›</span></div></Link>
-        <Link href="/dashboard/pulse" className="cd"><div className="cd-r"><div className="cd-ic">🫀</div><div className="cd-t"><b>Пульс</b><span>Три вопроса о неделе</span></div><span className="arr">›</span></div></Link>
+      {/* 6 · Партнёр */}
+      <div id="partner" style={{ scrollMarginTop: 80 }}>
+        <div className="k">Партнёр</div>
+        <div className="cd static">
+          <div className="tabs" role="tablist">
+            {[['mood', 'Настроение'], ['cravings', 'Хотелки'], ['wishlist', 'Виш-лист']].map(([key, label]) => (
+              <button key={key} className={cn('tab', partnerTab === key && 'on')} onClick={() => setPartnerTab(key)}>{label}</button>
+            ))}
+          </div>
+
+          {partnerTab === 'mood' && (
+            <div className="partner-mood" style={{ padding: '8px 0' }}>
+              {partnerMood ? (
+                <div className="cd-r">
+                  <div className="partner-emoji">{partnerMood.emoji}</div>
+                  <div className="cd-t">
+                    <b>Настроение партнёра</b>
+                    <span>{partnerMood.text ?? 'Отметил(а) настроение'}</span>
+                  </div>
+                </div>
+              ) : (
+                <div className="dim" style={{ fontSize: 13, padding: '4px 0' }}>Партнёр ещё не отметил(а) настроение сегодня.</div>
+              )}
+            </div>
+          )}
+
+          {partnerTab === 'cravings' && (
+            <div style={{ padding: '4px 0' }}>
+              <div className="craving-form" style={{ display: 'flex', gap: 8, marginBottom: 10 }}>
+                <input className="input" style={{ flex: 1 }} placeholder="Хочется…" value={cravingInput}
+                  onChange={e => setCravingInput(e.target.value)}
+                  onKeyDown={e => e.key === 'Enter' && addCraving()} />
+                <button className="btn btn-p" disabled={!cravingInput.trim()} onClick={addCraving}>Добавить</button>
+              </div>
+              {cravings.length > 0 && (
+                <div className="feed">
+                  {cravings.map(c => (
+                    <div key={c.id} className="feed-item">
+                      <b>{c.item}</b>
+                      <span>{c.status === 'PICKED_UP' ? '✓ забрали' : 'ждёт'}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {partnerCravings.length > 0 && (
+                <>
+                  <div className="small" style={{ margin: '10px 0 4px', color: 'var(--mute)' }}>Хотелки партнёра:</div>
+                  <div className="feed">
+                    {partnerCravings.map(c => (
+                      <div key={c.id} className="feed-item">
+                        <b>{c.item}</b>
+                        <span>{c.status === 'PICKED_UP' ? '✓ забрали' : 'ждёт'}</span>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+
+          {partnerTab === 'wishlist' && (
+            <div style={{ padding: '4px 0' }}>
+              <div style={{ display: 'flex', gap: 8, marginBottom: 10 }}>
+                <input className="input" style={{ flex: 1 }} placeholder="Что хочешь?" value={wishTitle}
+                  onChange={e => setWishTitle(e.target.value)}
+                  onKeyDown={e => e.key === 'Enter' && addWish()} />
+                <button className="btn btn-p" disabled={!wishTitle.trim()} onClick={addWish}>Добавить</button>
+              </div>
+              {wishes.length > 0 && (
+                <div className="feed">
+                  {wishes.map(w => (
+                    <div key={w.id} className="feed-item">
+                      <b>{w.title}</b>
+                      <span>{w.status === 'BOUGHT' ? '✓ куплено' : 'в списке'}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {partnerWishes.length > 0 && (
+                <>
+                  <div className="small" style={{ margin: '10px 0 4px', color: 'var(--mute)' }}>Виш-лист партнёра:</div>
+                  <div className="feed">
+                    {partnerWishes.map(w => (
+                      <div key={w.id} className="feed-item">
+                        <b>{w.title}</b>
+                        <span>{w.status === 'BOUGHT' ? '✓ куплено' : 'в списке'}</span>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </DashboardLayout>
   )
