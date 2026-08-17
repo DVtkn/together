@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
@@ -52,12 +52,44 @@ interface PartnerInfo {
   mood: { emoji: string; text: string | null } | null
 }
 
-function greeting() {
-  const h = new Date().getHours()
-  if (h >= 5 && h < 12) return 'Доброе утро'
-  if (h >= 12 && h < 18) return 'Привет'
-  if (h >= 18 && h < 23) return 'Добрый вечер'
-  return 'Не спится?'
+function useTypewriter(text: string, speed = 40, startDelay = 250) {
+  const [out, setOut] = useState('')
+  const [done, setDone] = useState(false)
+  const [reduced, setReduced] = useState(false)
+
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+    setReduced(mq.matches)
+    const onChange = () => setReduced(mq.matches)
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [])
+
+  useEffect(() => {
+    if (reduced) {
+      setOut(text)
+      setDone(true)
+      return
+    }
+    let i = 0
+    let interval: ReturnType<typeof setInterval> | null = null
+    const t1 = setTimeout(() => {
+      interval = setInterval(() => {
+        i += 1
+        setOut(text.slice(0, i))
+        if (i >= text.length) {
+          if (interval) clearInterval(interval)
+          setDone(true)
+        }
+      }, speed)
+    }, startDelay)
+    return () => {
+      clearTimeout(t1)
+      if (interval) clearInterval(interval)
+    }
+  }, [text, speed, startDelay, reduced])
+
+  return { out, done }
 }
 
 export default function DashboardPage() {
@@ -106,33 +138,49 @@ export default function DashboardPage() {
     return () => clearInterval(t)
   }, [])
 
-  const [signalModal, setSignalModal] = useState<{ emoji: string; meaning: string; reply: string } | null>(null)
-  const [seenSignals, setSeenSignals] = useState<Set<string>>(new Set())
+  const [signalModal, setSignalModal] = useState<{ id: string; emoji: string; meaning: string; reply: string } | null>(null)
+  const shownSignals = useRef<Set<string>>(new Set())
 
   useEffect(() => {
     const check = () => {
       fetch('/api/notifications?limit=10').then(r => r.json()).then(d => {
         if (!d || !Array.isArray(d.items)) return
-        const sig = d.items.find((n: any) => n.type === 'signal_received' && !n.read && !seenSignals.has(n.id))
+        const sig = d.items.find((n: any) => n.type === 'signal_received' && !n.read && !shownSignals.current.has(n.id))
         if (sig) {
+          shownSignals.current.add(sig.id)
           const params = new URLSearchParams(sig.href?.split('?')[1] ?? '')
           setSignalModal({
+            id: params.get('id') || '',
             emoji: params.get('signal') || '🤗',
             meaning: params.get('meaning') || 'тихий сигнал',
             reply: params.get('reply') || '',
           })
-          setSeenSignals(prev => new Set(prev).add(sig.id))
         }
       }).catch(() => {})
     }
     check()
     const t = setInterval(check, 8000)
     return () => clearInterval(t)
-  }, [seenSignals])
+  }, [])
+
+  const ackSignal = (action: 'accept' | 'later') => {
+    if (!signalModal || !signalModal.id) return
+    fetch(`/api/signals/${signalModal.id}/ack`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action }),
+    }).catch(() => {})
+  }
 
   const answerSoftly = () => {
     if (!signalModal) return
+    ackSignal('accept')
     router.push(signalModal.reply ? `/dashboard/ai?reply=${encodeURIComponent(signalModal.reply)}` : '/dashboard/ai')
+    setSignalModal(null)
+  }
+
+  const dismissSignal = () => {
+    ackSignal('later')
     setSignalModal(null)
   }
 
@@ -165,9 +213,12 @@ export default function DashboardPage() {
 
   const hasNextAction = dq || care || challenge || warmth.length > 0 || signals.length > 0 || pauseFmt
 
+  const headline = `Синхронизация сердец${name ? `, ${name}` : ''}…`
+  const { out, done } = useTypewriter(headline)
+
   return (
     <DashboardLayout>
-      <div className="h1">{greeting()}{name ? `, ${name}` : ''}.</div>
+      <h1 className="h1" aria-label={headline}>{out}{!done && <span className="tw-caret" aria-hidden="true" />}</h1>
       <div className="dim">Что сейчас важнее всего — прямо здесь.</div>
 
       {/* Следующее действие */}
@@ -344,13 +395,13 @@ export default function DashboardPage() {
 
       {/* Модалка тихого сигнала */}
       {signalModal && (
-        <div className="modal active" onClick={e => { if (e.target === e.currentTarget) setSignalModal(null) }}>
+        <div className="modal active" onClick={e => { if (e.target === e.currentTarget) dismissSignal() }}>
           <div className="modal-c" style={{ textAlign: 'center' }}>
             <div style={{ fontSize: 64, marginBottom: 12 }}>{signalModal.emoji}</div>
             <h3 style={{ marginBottom: 6 }}>Партнёр просит о поддержке</h3>
             <p className="dim" style={{ marginBottom: 20 }}>«{signalModal.meaning}»</p>
             <button className="btn btn-p btn-w" style={{ marginBottom: 8 }} onClick={answerSoftly}>🤍 Ответить мягко</button>
-            <button className="link-btn" style={{ display: 'block', width: '100%', textAlign: 'center' }} onClick={() => setSignalModal(null)}>Позже</button>
+            <button className="link-btn" style={{ display: 'block', width: '100%', textAlign: 'center' }} onClick={dismissSignal}>Позже</button>
           </div>
         </div>
       )}
