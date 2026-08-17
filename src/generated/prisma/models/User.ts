@@ -311,6 +311,7 @@ export type UserWhereInput = {
   RitualCompletion?: Prisma.RitualCompletionListRelationFilter
   LetterFrom?: Prisma.LetterListRelationFilter
   LetterTo?: Prisma.LetterListRelationFilter
+  WarmthEntry?: Prisma.WarmthEntryListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -357,6 +358,7 @@ export type UserOrderByWithRelationInput = {
   RitualCompletion?: Prisma.RitualCompletionOrderByRelationAggregateInput
   LetterFrom?: Prisma.LetterOrderByRelationAggregateInput
   LetterTo?: Prisma.LetterOrderByRelationAggregateInput
+  WarmthEntry?: Prisma.WarmthEntryOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -406,6 +408,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   RitualCompletion?: Prisma.RitualCompletionListRelationFilter
   LetterFrom?: Prisma.LetterListRelationFilter
   LetterTo?: Prisma.LetterListRelationFilter
+  WarmthEntry?: Prisma.WarmthEntryListRelationFilter
 }, "id" | "username" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -498,6 +501,7 @@ export type UserCreateInput = {
   RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -542,6 +546,7 @@ export type UserUncheckedCreateInput = {
   RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -586,6 +591,7 @@ export type UserUpdateInput = {
   RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -630,6 +636,7 @@ export type UserUncheckedUpdateInput = {
   RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -908,6 +915,20 @@ export type UserUpdateOneRequiredWithoutCoupleMessageNestedInput = {
   upsert?: Prisma.UserUpsertWithoutCoupleMessageInput
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCoupleMessageInput, Prisma.UserUpdateWithoutCoupleMessageInput>, Prisma.UserUncheckedUpdateWithoutCoupleMessageInput>
+}
+
+export type UserCreateNestedOneWithoutWarmthEntryInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutWarmthEntryInput, Prisma.UserUncheckedCreateWithoutWarmthEntryInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutWarmthEntryInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutWarmthEntryNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutWarmthEntryInput, Prisma.UserUncheckedCreateWithoutWarmthEntryInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutWarmthEntryInput
+  upsert?: Prisma.UserUpsertWithoutWarmthEntryInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutWarmthEntryInput, Prisma.UserUpdateWithoutWarmthEntryInput>, Prisma.UserUncheckedUpdateWithoutWarmthEntryInput>
 }
 
 export type UserCreateNestedOneWithoutMemoryInput = {
@@ -1269,6 +1290,7 @@ export type UserCreateWithoutAIMessageInput = {
   RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAIMessageInput = {
@@ -1312,6 +1334,7 @@ export type UserUncheckedCreateWithoutAIMessageInput = {
   RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAIMessageInput = {
@@ -1371,6 +1394,7 @@ export type UserUpdateWithoutAIMessageInput = {
   RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAIMessageInput = {
@@ -1414,6 +1438,7 @@ export type UserUncheckedUpdateWithoutAIMessageInput = {
   RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAssessmentResponseInput = {
@@ -1457,6 +1482,7 @@ export type UserCreateWithoutAssessmentResponseInput = {
   RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAssessmentResponseInput = {
@@ -1500,6 +1526,7 @@ export type UserUncheckedCreateWithoutAssessmentResponseInput = {
   RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAssessmentResponseInput = {
@@ -1559,6 +1586,7 @@ export type UserUpdateWithoutAssessmentResponseInput = {
   RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssessmentResponseInput = {
@@ -1602,6 +1630,7 @@ export type UserUncheckedUpdateWithoutAssessmentResponseInput = {
   RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAstroProfileInput = {
@@ -1645,6 +1674,7 @@ export type UserCreateWithoutAstroProfileInput = {
   RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAstroProfileInput = {
@@ -1688,6 +1718,7 @@ export type UserUncheckedCreateWithoutAstroProfileInput = {
   RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAstroProfileInput = {
@@ -1747,6 +1778,7 @@ export type UserUpdateWithoutAstroProfileInput = {
   RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAstroProfileInput = {
@@ -1790,6 +1822,7 @@ export type UserUncheckedUpdateWithoutAstroProfileInput = {
   RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutBouquetInput = {
@@ -1833,6 +1866,7 @@ export type UserCreateWithoutBouquetInput = {
   RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutBouquetInput = {
@@ -1876,6 +1910,7 @@ export type UserUncheckedCreateWithoutBouquetInput = {
   RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutBouquetInput = {
@@ -1935,6 +1970,7 @@ export type UserUpdateWithoutBouquetInput = {
   RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBouquetInput = {
@@ -1978,6 +2014,7 @@ export type UserUncheckedUpdateWithoutBouquetInput = {
   RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutChallengeCompletionInput = {
@@ -2021,6 +2058,7 @@ export type UserCreateWithoutChallengeCompletionInput = {
   RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutChallengeCompletionInput = {
@@ -2064,6 +2102,7 @@ export type UserUncheckedCreateWithoutChallengeCompletionInput = {
   RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutChallengeCompletionInput = {
@@ -2123,6 +2162,7 @@ export type UserUpdateWithoutChallengeCompletionInput = {
   RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutChallengeCompletionInput = {
@@ -2166,6 +2206,7 @@ export type UserUncheckedUpdateWithoutChallengeCompletionInput = {
   RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutMoodEntryInput = {
@@ -2209,6 +2250,7 @@ export type UserCreateWithoutMoodEntryInput = {
   RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutMoodEntryInput = {
@@ -2252,6 +2294,7 @@ export type UserUncheckedCreateWithoutMoodEntryInput = {
   RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutMoodEntryInput = {
@@ -2311,6 +2354,7 @@ export type UserUpdateWithoutMoodEntryInput = {
   RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMoodEntryInput = {
@@ -2354,6 +2398,7 @@ export type UserUncheckedUpdateWithoutMoodEntryInput = {
   RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutNotificationInput = {
@@ -2397,6 +2442,7 @@ export type UserCreateWithoutNotificationInput = {
   RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutNotificationInput = {
@@ -2440,6 +2486,7 @@ export type UserUncheckedCreateWithoutNotificationInput = {
   RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutNotificationInput = {
@@ -2499,6 +2546,7 @@ export type UserUpdateWithoutNotificationInput = {
   RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNotificationInput = {
@@ -2542,6 +2590,7 @@ export type UserUncheckedUpdateWithoutNotificationInput = {
   RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCoupleMessageInput = {
@@ -2585,6 +2634,7 @@ export type UserCreateWithoutCoupleMessageInput = {
   RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCoupleMessageInput = {
@@ -2628,6 +2678,7 @@ export type UserUncheckedCreateWithoutCoupleMessageInput = {
   RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCoupleMessageInput = {
@@ -2687,6 +2738,7 @@ export type UserUpdateWithoutCoupleMessageInput = {
   RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCoupleMessageInput = {
@@ -2726,6 +2778,199 @@ export type UserUncheckedUpdateWithoutCoupleMessageInput = {
   WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
   Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
   Notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutWarmthEntryInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryCreateNestedManyWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
+  City?: Prisma.CityCreateNestedOneWithoutUserInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
+  WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
+}
+
+export type UserUncheckedCreateWithoutWarmthEntryInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  coupleId?: string | null
+  cityId?: string | null
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetUncheckedCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryUncheckedCreateNestedManyWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
+  WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
+}
+
+export type UserCreateOrConnectWithoutWarmthEntryInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutWarmthEntryInput, Prisma.UserUncheckedCreateWithoutWarmthEntryInput>
+}
+
+export type UserUpsertWithoutWarmthEntryInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutWarmthEntryInput, Prisma.UserUncheckedUpdateWithoutWarmthEntryInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutWarmthEntryInput, Prisma.UserUncheckedCreateWithoutWarmthEntryInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutWarmthEntryInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutWarmthEntryInput, Prisma.UserUncheckedUpdateWithoutWarmthEntryInput>
+}
+
+export type UserUpdateWithoutWarmthEntryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUpdateManyWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
+  City?: Prisma.CityUpdateOneWithoutUserNestedInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
+  WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
+}
+
+export type UserUncheckedUpdateWithoutWarmthEntryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  coupleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUncheckedUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUncheckedUpdateManyWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
+  WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedUpdateManyWithoutUserNestedInput
   Memory?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
   RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
@@ -2773,6 +3018,7 @@ export type UserCreateWithoutMemoryInput = {
   RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutMemoryInput = {
@@ -2816,6 +3062,7 @@ export type UserUncheckedCreateWithoutMemoryInput = {
   RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutMemoryInput = {
@@ -2875,6 +3122,7 @@ export type UserUpdateWithoutMemoryInput = {
   RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMemoryInput = {
@@ -2918,6 +3166,7 @@ export type UserUncheckedUpdateWithoutMemoryInput = {
   RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutRitualCompletionInput = {
@@ -2961,6 +3210,7 @@ export type UserCreateWithoutRitualCompletionInput = {
   Memory?: Prisma.MemoryCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutRitualCompletionInput = {
@@ -3004,6 +3254,7 @@ export type UserUncheckedCreateWithoutRitualCompletionInput = {
   Memory?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutRitualCompletionInput = {
@@ -3063,6 +3314,7 @@ export type UserUpdateWithoutRitualCompletionInput = {
   Memory?: Prisma.MemoryUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRitualCompletionInput = {
@@ -3106,6 +3358,7 @@ export type UserUncheckedUpdateWithoutRitualCompletionInput = {
   Memory?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutLetterFromInput = {
@@ -3149,6 +3402,7 @@ export type UserCreateWithoutLetterFromInput = {
   Memory?: Prisma.MemoryCreateNestedManyWithoutUserInput
   RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
   LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutLetterFromInput = {
@@ -3192,6 +3446,7 @@ export type UserUncheckedCreateWithoutLetterFromInput = {
   Memory?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
   RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
   LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutLetterFromInput = {
@@ -3240,6 +3495,7 @@ export type UserCreateWithoutLetterToInput = {
   Memory?: Prisma.MemoryCreateNestedManyWithoutUserInput
   RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
+  WarmthEntry?: Prisma.WarmthEntryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutLetterToInput = {
@@ -3283,6 +3539,7 @@ export type UserUncheckedCreateWithoutLetterToInput = {
   Memory?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
   RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutLetterToInput = {
@@ -3342,6 +3599,7 @@ export type UserUpdateWithoutLetterFromInput = {
   Memory?: Prisma.MemoryUpdateManyWithoutUserNestedInput
   RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
   LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLetterFromInput = {
@@ -3385,6 +3643,7 @@ export type UserUncheckedUpdateWithoutLetterFromInput = {
   Memory?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
   RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
   LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutLetterToInput = {
@@ -3439,6 +3698,7 @@ export type UserUpdateWithoutLetterToInput = {
   Memory?: Prisma.MemoryUpdateManyWithoutUserNestedInput
   RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLetterToInput = {
@@ -3482,6 +3742,7 @@ export type UserUncheckedUpdateWithoutLetterToInput = {
   Memory?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
   RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCityInput = {
@@ -3525,6 +3786,7 @@ export type UserCreateWithoutCityInput = {
   RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCityInput = {
@@ -3568,6 +3830,7 @@ export type UserUncheckedCreateWithoutCityInput = {
   RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCityInput = {
@@ -3661,6 +3924,7 @@ export type UserCreateWithoutConsentLogInput = {
   RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutConsentLogInput = {
@@ -3704,6 +3968,7 @@ export type UserUncheckedCreateWithoutConsentLogInput = {
   RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutConsentLogInput = {
@@ -3763,6 +4028,7 @@ export type UserUpdateWithoutConsentLogInput = {
   RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutConsentLogInput = {
@@ -3806,6 +4072,7 @@ export type UserUncheckedUpdateWithoutConsentLogInput = {
   RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCouple_Couple_partnerAIdToUserInput = {
@@ -3849,6 +4116,7 @@ export type UserCreateWithoutCouple_Couple_partnerAIdToUserInput = {
   RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCouple_Couple_partnerAIdToUserInput = {
@@ -3892,6 +4160,7 @@ export type UserUncheckedCreateWithoutCouple_Couple_partnerAIdToUserInput = {
   RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCouple_Couple_partnerAIdToUserInput = {
@@ -3940,6 +4209,7 @@ export type UserCreateWithoutCouple_Couple_partnerBIdToUserInput = {
   RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCouple_Couple_partnerBIdToUserInput = {
@@ -3983,6 +4253,7 @@ export type UserUncheckedCreateWithoutCouple_Couple_partnerBIdToUserInput = {
   RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCouple_Couple_partnerBIdToUserInput = {
@@ -4031,6 +4302,7 @@ export type UserCreateWithoutCouple_User_coupleIdToCoupleInput = {
   RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCouple_User_coupleIdToCoupleInput = {
@@ -4074,6 +4346,7 @@ export type UserUncheckedCreateWithoutCouple_User_coupleIdToCoupleInput = {
   RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCouple_User_coupleIdToCoupleInput = {
@@ -4138,6 +4411,7 @@ export type UserUpdateWithoutCouple_Couple_partnerAIdToUserInput = {
   RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCouple_Couple_partnerAIdToUserInput = {
@@ -4181,6 +4455,7 @@ export type UserUncheckedUpdateWithoutCouple_Couple_partnerAIdToUserInput = {
   RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutCouple_Couple_partnerBIdToUserInput = {
@@ -4235,6 +4510,7 @@ export type UserUpdateWithoutCouple_Couple_partnerBIdToUserInput = {
   RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCouple_Couple_partnerBIdToUserInput = {
@@ -4278,6 +4554,7 @@ export type UserUncheckedUpdateWithoutCouple_Couple_partnerBIdToUserInput = {
   RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithWhereUniqueWithoutCouple_User_coupleIdToCoupleInput = {
@@ -4337,6 +4614,7 @@ export type UserCreateWithoutCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUse
   RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserInput = {
@@ -4380,6 +4658,7 @@ export type UserUncheckedCreateWithoutCoupleLinkRequest_CoupleLinkRequest_fromUs
   RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserInput = {
@@ -4428,6 +4707,7 @@ export type UserCreateWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserI
   RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserInput = {
@@ -4471,6 +4751,7 @@ export type UserUncheckedCreateWithoutCoupleLinkRequest_CoupleLinkRequest_toUser
   RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserInput = {
@@ -4530,6 +4811,7 @@ export type UserUpdateWithoutCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUse
   RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUserInput = {
@@ -4573,6 +4855,7 @@ export type UserUncheckedUpdateWithoutCoupleLinkRequest_CoupleLinkRequest_fromUs
   RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserInput = {
@@ -4627,6 +4910,7 @@ export type UserUpdateWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserI
   RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserInput = {
@@ -4670,6 +4954,7 @@ export type UserUncheckedUpdateWithoutCoupleLinkRequest_CoupleLinkRequest_toUser
   RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutFlowerInput = {
@@ -4713,6 +4998,7 @@ export type UserCreateWithoutFlowerInput = {
   RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFlowerInput = {
@@ -4756,6 +5042,7 @@ export type UserUncheckedCreateWithoutFlowerInput = {
   RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFlowerInput = {
@@ -4820,6 +5107,7 @@ export type UserCreateWithoutMoodStatusInput = {
   RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutMoodStatusInput = {
@@ -4863,6 +5151,7 @@ export type UserUncheckedCreateWithoutMoodStatusInput = {
   RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutMoodStatusInput = {
@@ -4922,6 +5211,7 @@ export type UserUpdateWithoutMoodStatusInput = {
   RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMoodStatusInput = {
@@ -4965,6 +5255,7 @@ export type UserUncheckedUpdateWithoutMoodStatusInput = {
   RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPulseCheckinInput = {
@@ -5008,6 +5299,7 @@ export type UserCreateWithoutPulseCheckinInput = {
   RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPulseCheckinInput = {
@@ -5051,6 +5343,7 @@ export type UserUncheckedCreateWithoutPulseCheckinInput = {
   RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPulseCheckinInput = {
@@ -5110,6 +5403,7 @@ export type UserUpdateWithoutPulseCheckinInput = {
   RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPulseCheckinInput = {
@@ -5153,6 +5447,7 @@ export type UserUncheckedUpdateWithoutPulseCheckinInput = {
   RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPushSubscriptionInput = {
@@ -5196,6 +5491,7 @@ export type UserCreateWithoutPushSubscriptionInput = {
   RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPushSubscriptionInput = {
@@ -5239,6 +5535,7 @@ export type UserUncheckedCreateWithoutPushSubscriptionInput = {
   RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPushSubscriptionInput = {
@@ -5298,6 +5595,7 @@ export type UserUpdateWithoutPushSubscriptionInput = {
   RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPushSubscriptionInput = {
@@ -5341,6 +5639,7 @@ export type UserUncheckedUpdateWithoutPushSubscriptionInput = {
   RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSmallCravingInput = {
@@ -5384,6 +5683,7 @@ export type UserCreateWithoutSmallCravingInput = {
   RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSmallCravingInput = {
@@ -5427,6 +5727,7 @@ export type UserUncheckedCreateWithoutSmallCravingInput = {
   RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSmallCravingInput = {
@@ -5486,6 +5787,7 @@ export type UserUpdateWithoutSmallCravingInput = {
   RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSmallCravingInput = {
@@ -5529,6 +5831,7 @@ export type UserUncheckedUpdateWithoutSmallCravingInput = {
   RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutWishlistItemInput = {
@@ -5572,6 +5875,7 @@ export type UserCreateWithoutWishlistItemInput = {
   RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutWishlistItemInput = {
@@ -5615,6 +5919,7 @@ export type UserUncheckedCreateWithoutWishlistItemInput = {
   RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
   LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
   LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutWishlistItemInput = {
@@ -5674,6 +5979,7 @@ export type UserUpdateWithoutWishlistItemInput = {
   RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutWishlistItemInput = {
@@ -5717,6 +6023,7 @@ export type UserUncheckedUpdateWithoutWishlistItemInput = {
   RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyCityInput = {
@@ -5780,6 +6087,7 @@ export type UserUpdateWithoutCityInput = {
   RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCityInput = {
@@ -5823,6 +6131,7 @@ export type UserUncheckedUpdateWithoutCityInput = {
   RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateManyWithoutCityInput = {
@@ -5906,6 +6215,7 @@ export type UserUpdateWithoutCouple_User_coupleIdToCoupleInput = {
   RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCouple_User_coupleIdToCoupleInput = {
@@ -5949,6 +6259,7 @@ export type UserUncheckedUpdateWithoutCouple_User_coupleIdToCoupleInput = {
   RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateManyWithoutCouple_User_coupleIdToCoupleInput = {
@@ -6012,6 +6323,7 @@ export type UserUpdateWithoutFlowerInput = {
   RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFlowerInput = {
@@ -6055,6 +6367,7 @@ export type UserUncheckedUpdateWithoutFlowerInput = {
   RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
   LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
   LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateManyWithoutFlowerInput = {
@@ -6103,6 +6416,7 @@ export type UserCountOutputType = {
   RitualCompletion: number
   LetterFrom: number
   LetterTo: number
+  WarmthEntry: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -6125,6 +6439,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   RitualCompletion?: boolean | UserCountOutputTypeCountRitualCompletionArgs
   LetterFrom?: boolean | UserCountOutputTypeCountLetterFromArgs
   LetterTo?: boolean | UserCountOutputTypeCountLetterToArgs
+  WarmthEntry?: boolean | UserCountOutputTypeCountWarmthEntryArgs
 }
 
 /**
@@ -6270,6 +6585,13 @@ export type UserCountOutputTypeCountLetterToArgs<ExtArgs extends runtime.Types.E
   where?: Prisma.LetterWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountWarmthEntryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.WarmthEntryWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -6315,6 +6637,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   RitualCompletion?: boolean | Prisma.User$RitualCompletionArgs<ExtArgs>
   LetterFrom?: boolean | Prisma.User$LetterFromArgs<ExtArgs>
   LetterTo?: boolean | Prisma.User$LetterToArgs<ExtArgs>
+  WarmthEntry?: boolean | Prisma.User$WarmthEntryArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -6412,6 +6735,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   RitualCompletion?: boolean | Prisma.User$RitualCompletionArgs<ExtArgs>
   LetterFrom?: boolean | Prisma.User$LetterFromArgs<ExtArgs>
   LetterTo?: boolean | Prisma.User$LetterToArgs<ExtArgs>
+  WarmthEntry?: boolean | Prisma.User$WarmthEntryArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -6451,6 +6775,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     RitualCompletion: Prisma.$RitualCompletionPayload<ExtArgs>[]
     LetterFrom: Prisma.$LetterPayload<ExtArgs>[]
     LetterTo: Prisma.$LetterPayload<ExtArgs>[]
+    WarmthEntry: Prisma.$WarmthEntryPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -6890,6 +7215,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   RitualCompletion<T extends Prisma.User$RitualCompletionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$RitualCompletionArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RitualCompletionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   LetterFrom<T extends Prisma.User$LetterFromArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$LetterFromArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LetterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   LetterTo<T extends Prisma.User$LetterToArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$LetterToArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LetterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  WarmthEntry<T extends Prisma.User$WarmthEntryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$WarmthEntryArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WarmthEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7905,6 +8231,30 @@ export type User$LetterToArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.LetterScalarFieldEnum | Prisma.LetterScalarFieldEnum[]
+}
+
+/**
+ * User.WarmthEntry
+ */
+export type User$WarmthEntryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the WarmthEntry
+   */
+  select?: Prisma.WarmthEntrySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the WarmthEntry
+   */
+  omit?: Prisma.WarmthEntryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WarmthEntryInclude<ExtArgs> | null
+  where?: Prisma.WarmthEntryWhereInput
+  orderBy?: Prisma.WarmthEntryOrderByWithRelationInput | Prisma.WarmthEntryOrderByWithRelationInput[]
+  cursor?: Prisma.WarmthEntryWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.WarmthEntryScalarFieldEnum | Prisma.WarmthEntryScalarFieldEnum[]
 }
 
 /**

@@ -55,6 +55,11 @@ export default function SettingsPage() {
   const [linkUsername, setLinkUsername] = useState('')
   const [linking, setLinking] = useState(false)
 
+  const [signals, setSignals] = useState<Array<{ id: string; emoji: string; meaning: string; suggestedReply: string }>>([])
+  const [sigEmoji, setSigEmoji] = useState('🤗')
+  const [sigMeaning, setSigMeaning] = useState('')
+  const [sigReply, setSigReply] = useState('')
+
   const { data: settingsRes, mutate: mutateSettings } = useSettingsSWR()
   const { data: citiesRes } = useCities()
   const { data: profileRes, mutate: mutateProfile } = useProfile()
@@ -68,6 +73,29 @@ export default function SettingsPage() {
     setCityId(profileRes?.user?.city?.id || null)
     if (settingsRes || citiesRes || profileRes) setLoading(false)
   }, [settingsRes, citiesRes, profileRes])
+
+  useEffect(() => {
+    if (settingsRes?.couple) {
+      fetch('/api/signals').then(r => r.json()).then(d => {
+        if (d?.signals) setSignals(d.signals)
+      }).catch(() => {})
+    }
+  }, [settingsRes])
+
+  const addSignal = async () => {
+    if (sigMeaning.trim().length < 2 || sigReply.trim().length < 2) return
+    const r = await fetch('/api/signals', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ emoji: sigEmoji || '🤗', meaning: sigMeaning.trim(), suggestedReply: sigReply.trim() }),
+    })
+    if (r.ok) {
+      const d = await r.json()
+      setSignals(prev => [...prev, d.signal])
+      setSigMeaning('')
+      setSigReply('')
+    }
+  }
 
   const handleSave = async () => {
     setSaving(true)
@@ -382,6 +410,32 @@ export default function SettingsPage() {
           )}
         </div>
       )}
+
+      <div className="k">Тихие сигналы</div>
+      <div className="cd static">
+        <div className="dim" style={{ fontSize: 12, marginBottom: 12 }}>
+          Один тап на «Доме» или в «Буднях» — и партнёр увидит ваш сигнал с мягким ответом.
+        </div>
+        <div className="signal-list" style={{ display: 'grid', gap: 8, marginBottom: 12 }}>
+          {signals.map(s => (
+            <div key={s.id} className="feed-item" style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <span style={{ fontSize: 20 }}>{s.emoji}</span>
+              <div style={{ flex: 1 }}>
+                <b>{s.meaning}</b>
+                <span className="small" style={{ display: 'block' }}>{s.suggestedReply}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div style={{ display: 'grid', gap: 8 }}>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <input className="input" style={{ width: 56, textAlign: 'center' }} maxLength={4} value={sigEmoji} onChange={e => setSigEmoji(e.target.value)} aria-label="Эмодзи сигнала" />
+            <input className="input" style={{ flex: 1 }} placeholder="Смысл: «Обними меня»" value={sigMeaning} onChange={e => setSigMeaning(e.target.value)} />
+          </div>
+          <input className="input" placeholder="Мягкий ответ: «Иду. Крепко обнимаю»" value={sigReply} onChange={e => setSigReply(e.target.value)} />
+          <button className="btn btn-p btn-w" disabled={sigMeaning.trim().length < 2 || sigReply.trim().length < 2} onClick={addSignal}>Добавить сигнал</button>
+        </div>
+      </div>
 
       <div className="k">Данные</div>
       <div className="cd static">

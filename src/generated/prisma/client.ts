@@ -112,6 +112,31 @@ export type CoupleMessage = Prisma.CoupleMessageModel
  */
 export type DailyQuestion = Prisma.DailyQuestionModel
 /**
+ * Model Signal
+ * 
+ */
+export type Signal = Prisma.SignalModel
+/**
+ * Model PauseSession
+ * 
+ */
+export type PauseSession = Prisma.PauseSessionModel
+/**
+ * Model WarmthEntry
+ * 
+ */
+export type WarmthEntry = Prisma.WarmthEntryModel
+/**
+ * Model CoupleEvent
+ * 
+ */
+export type CoupleEvent = Prisma.CoupleEventModel
+/**
+ * Model DateMemory
+ * 
+ */
+export type DateMemory = Prisma.DateMemoryModel
+/**
  * Model Memory
  * 
  */
@@ -206,6 +231,16 @@ export type SynastryReport = Prisma.SynastryReportModel
  * 
  */
 export type Venue = Prisma.VenueModel
+/**
+ * Model CommunityVenueRating
+ * 
+ */
+export type CommunityVenueRating = Prisma.CommunityVenueRatingModel
+/**
+ * Model CommunityVenue
+ * 
+ */
+export type CommunityVenue = Prisma.CommunityVenueModel
 /**
  * Model WishlistItem
  * 

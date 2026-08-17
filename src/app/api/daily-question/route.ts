@@ -73,6 +73,7 @@ export async function GET(request: NextRequest) {
       partnerAnswer: isPartnerA ? question.answerB : question.answerA,
       myAnswered: Boolean(isPartnerA ? question.answerA : question.answerB),
       partnerAnswered: Boolean(isPartnerA ? question.answerB : question.answerA),
+      revealed: question.revealed,
       answerMineKey: isPartnerA ? 'answerA' : 'answerB',
     },
   })
@@ -120,6 +121,16 @@ export async function POST(request: NextRequest) {
     data: isPartnerA ? { answerA: validation.data.answer } : { answerB: validation.data.answer },
   })
 
+  const bothAnswered = Boolean(updated.answerA) && Boolean(updated.answerB)
+  let revealed = false
+  if (bothAnswered && !updated.revealed) {
+    await prisma.dailyQuestion.update({
+      where: { id: question.id },
+      data: { revealed: true },
+    })
+    revealed = true
+  }
+
   if (ctx.partner) {
     await notify(
       ctx.partner.id,
@@ -127,9 +138,17 @@ export async function POST(request: NextRequest) {
       `${nameOf(ctx.user)} ответил(а) на вопрос дня`,
       '/dashboard/daily'
     )
+    if (revealed) {
+      await notify(
+        ctx.partner.id,
+        'daily_revealed',
+        'Оба ответили на вопрос дня — ответы раскрыты 🔮',
+        '/dashboard/daily'
+      )
+    }
   }
 
-  return NextResponse.json({ ok: true, myAnswer: isPartnerA ? updated.answerA : updated.answerB })
+  return NextResponse.json({ ok: true, myAnswer: isPartnerA ? updated.answerA : updated.answerB, revealed })
 }
 
 export const dynamic = 'force-dynamic'

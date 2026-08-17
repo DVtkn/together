@@ -51,6 +51,7 @@ model User {
   RitualCompletion                                     RitualCompletion[]
   LetterFrom                                           Letter[]               @relation("LetterFrom")
   LetterTo                                             Letter[]               @relation("LetterTo")
+  WarmthEntry                                          WarmthEntry[]
 
   @@index([coupleId])
   @@index([username])
@@ -244,11 +245,69 @@ model DailyQuestion {
   question  String
   answerA   String?
   answerB   String?
+  revealed  Boolean   @default(false)
   createdAt DateTime  @default(now())
   Couple    Couple    @relation(fields: [coupleId], references: [id], onDelete: Cascade)
 
   @@unique([coupleId, date])
   @@index([coupleId, date])
+}
+
+model Signal {
+  id              String  @id @default(cuid())
+  coupleId        String
+  emoji           String
+  meaning         String
+  suggestedReply  String
+  Couple          Couple  @relation(fields: [coupleId], references: [id], onDelete: Cascade)
+
+  @@index([coupleId])
+}
+
+model PauseSession {
+  id        String   @id @default(cuid())
+  coupleId  String   @unique
+  startedBy String
+  endsAt    DateTime
+  active    Boolean  @default(true)
+  Couple    Couple   @relation(fields: [coupleId], references: [id], onDelete: Cascade)
+}
+
+model WarmthEntry {
+  id         String   @id @default(cuid())
+  coupleId   String
+  fromUserId String
+  text       String
+  createdAt  DateTime @default(now())
+  Couple     Couple   @relation(fields: [coupleId], references: [id], onDelete: Cascade)
+  User       User     @relation(fields: [fromUserId], references: [id], onDelete: Cascade)
+
+  @@index([coupleId])
+}
+
+model CoupleEvent {
+  id        String   @id @default(cuid())
+  coupleId  String
+  type      String
+  title     String
+  meta      Json?
+  createdAt DateTime @default(now())
+  Couple    Couple   @relation(fields: [coupleId], references: [id], onDelete: Cascade)
+
+  @@index([coupleId, createdAt])
+}
+
+model DateMemory {
+  id         String   @id @default(cuid())
+  coupleId   String
+  venueName  String
+  date       DateTime
+  photoUrl   String?
+  note       String?
+  createdAt  DateTime @default(now())
+  Couple     Couple   @relation(fields: [coupleId], references: [id], onDelete: Cascade)
+
+  @@index([coupleId])
 }
 
 model Memory {
@@ -360,6 +419,11 @@ model Couple {
   Memory                       Memory[]
   Ritual                       Ritual[]
   Letter                       Letter[]
+  Signal                       Signal[]
+  PauseSession                 PauseSession?
+  WarmthEntry                  WarmthEntry[]
+  CoupleEvent                  CoupleEvent[]
+  DateMemory                   DateMemory[]
 
   @@unique([partnerAId, partnerBId])
   @@index([status])
@@ -552,6 +616,35 @@ model Venue {
 
   @@index([cityId])
   @@index([cityId, type])
+}
+
+model CommunityVenueRating {
+  id        String   @id @default(cuid())
+  venueId   String
+  userId    String
+  rating    Float                          // 1..5
+  createdAt DateTime @default(now())
+  venue     CommunityVenue @relation(fields: [venueId], references: [id], onDelete: Cascade)
+
+  @@unique([venueId, userId])              // один голос на человека
+}
+
+model CommunityVenue {
+  id          String   @id @default(cuid())
+  cityName    String   // нормализовано: "томск"
+  dish        String   // "роллы" | "пицца" | ...
+  name        String
+  address     String?
+  phone       String?
+  comment     String?  // 140 символов
+  createdBy   String
+  createdAt   DateTime @default(now())
+  ratings     CommunityVenueRating[]
+  picks       Int      @default(0)  // сколько раз выбрали в свиданиях
+  reports     Int      @default(0)
+
+  @@unique([cityName, dish, name])          // анти-дубликат
+  @@index([cityName, dish])
 }
 
 model WishlistItem {

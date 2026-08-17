@@ -65,6 +65,11 @@ export const ModelName = {
   Notification: 'Notification',
   CoupleMessage: 'CoupleMessage',
   DailyQuestion: 'DailyQuestion',
+  Signal: 'Signal',
+  PauseSession: 'PauseSession',
+  WarmthEntry: 'WarmthEntry',
+  CoupleEvent: 'CoupleEvent',
+  DateMemory: 'DateMemory',
   Memory: 'Memory',
   Ritual: 'Ritual',
   RitualCompletion: 'RitualCompletion',
@@ -84,6 +89,8 @@ export const ModelName = {
   SmallCraving: 'SmallCraving',
   SynastryReport: 'SynastryReport',
   Venue: 'Venue',
+  CommunityVenueRating: 'CommunityVenueRating',
+  CommunityVenue: 'CommunityVenue',
   WishlistItem: 'WishlistItem'
 } as const
 
@@ -305,10 +312,69 @@ export const DailyQuestionScalarFieldEnum = {
   question: 'question',
   answerA: 'answerA',
   answerB: 'answerB',
+  revealed: 'revealed',
   createdAt: 'createdAt'
 } as const
 
 export type DailyQuestionScalarFieldEnum = (typeof DailyQuestionScalarFieldEnum)[keyof typeof DailyQuestionScalarFieldEnum]
+
+
+export const SignalScalarFieldEnum = {
+  id: 'id',
+  coupleId: 'coupleId',
+  emoji: 'emoji',
+  meaning: 'meaning',
+  suggestedReply: 'suggestedReply'
+} as const
+
+export type SignalScalarFieldEnum = (typeof SignalScalarFieldEnum)[keyof typeof SignalScalarFieldEnum]
+
+
+export const PauseSessionScalarFieldEnum = {
+  id: 'id',
+  coupleId: 'coupleId',
+  startedBy: 'startedBy',
+  endsAt: 'endsAt',
+  active: 'active'
+} as const
+
+export type PauseSessionScalarFieldEnum = (typeof PauseSessionScalarFieldEnum)[keyof typeof PauseSessionScalarFieldEnum]
+
+
+export const WarmthEntryScalarFieldEnum = {
+  id: 'id',
+  coupleId: 'coupleId',
+  fromUserId: 'fromUserId',
+  text: 'text',
+  createdAt: 'createdAt'
+} as const
+
+export type WarmthEntryScalarFieldEnum = (typeof WarmthEntryScalarFieldEnum)[keyof typeof WarmthEntryScalarFieldEnum]
+
+
+export const CoupleEventScalarFieldEnum = {
+  id: 'id',
+  coupleId: 'coupleId',
+  type: 'type',
+  title: 'title',
+  meta: 'meta',
+  createdAt: 'createdAt'
+} as const
+
+export type CoupleEventScalarFieldEnum = (typeof CoupleEventScalarFieldEnum)[keyof typeof CoupleEventScalarFieldEnum]
+
+
+export const DateMemoryScalarFieldEnum = {
+  id: 'id',
+  coupleId: 'coupleId',
+  venueName: 'venueName',
+  date: 'date',
+  photoUrl: 'photoUrl',
+  note: 'note',
+  createdAt: 'createdAt'
+} as const
+
+export type DateMemoryScalarFieldEnum = (typeof DateMemoryScalarFieldEnum)[keyof typeof DateMemoryScalarFieldEnum]
 
 
 export const MemoryScalarFieldEnum = {
@@ -593,6 +659,34 @@ export const VenueScalarFieldEnum = {
 } as const
 
 export type VenueScalarFieldEnum = (typeof VenueScalarFieldEnum)[keyof typeof VenueScalarFieldEnum]
+
+
+export const CommunityVenueRatingScalarFieldEnum = {
+  id: 'id',
+  venueId: 'venueId',
+  userId: 'userId',
+  rating: 'rating',
+  createdAt: 'createdAt'
+} as const
+
+export type CommunityVenueRatingScalarFieldEnum = (typeof CommunityVenueRatingScalarFieldEnum)[keyof typeof CommunityVenueRatingScalarFieldEnum]
+
+
+export const CommunityVenueScalarFieldEnum = {
+  id: 'id',
+  cityName: 'cityName',
+  dish: 'dish',
+  name: 'name',
+  address: 'address',
+  phone: 'phone',
+  comment: 'comment',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt',
+  picks: 'picks',
+  reports: 'reports'
+} as const
+
+export type CommunityVenueScalarFieldEnum = (typeof CommunityVenueScalarFieldEnum)[keyof typeof CommunityVenueScalarFieldEnum]
 
 
 export const WishlistItemScalarFieldEnum = {
