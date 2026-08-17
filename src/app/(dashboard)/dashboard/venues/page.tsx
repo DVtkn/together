@@ -1,192 +1,132 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import Link from 'next/link'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
-import { cn } from '@/lib/utils/cn'
-import { useCities, useProfile } from '@/lib/hooks'
-import useSWR from 'swr'
-
-const VENUE_TYPE_LABELS: Record<string, string> = {
-  RESTAURANT: '🍽 Рестораны',
-  CAFE: '☕ Кафе',
-  BAR: '🍸 Бары',
-  PARK: '🌳 Парки',
-  WALK: '🚶 Прогулки',
-  MUSEUM: '🖼 Музеи',
-  CINEMA: '🎬 Кино',
-  SPA: '💆 СПА',
-}
-
-const PRICE_LABELS: Record<number, string> = {
-  1: '💵 доступно',
-  2: '💵💵 средне',
-  3: '💵💵💵 дорого',
-  4: '💵💵💵💵 премиум',
-}
 
 interface Venue {
   id: string
-  type: string
   name: string
-  description: string | null
-  emoji: string
-  area: string | null
   address: string | null
-  priceLevel: number
-  romantic: boolean
-  recommendation: string | null
+  phone: string | null
+  comment: string | null
+  avgRating: number | null
+  ratingsCount: number
+  picks: number
+  addedBy: string
+  isNew: boolean
 }
 
 export default function VenuesPage() {
-  const [selectedCityId, setSelectedCityId] = useState<string | null>(null)
-  const [type, setType] = useState<string | null>(null)
-  const [maxPrice, setMaxPrice] = useState<string | null>(null)
-  const [query, setQuery] = useState('')
-  const [saving, setSaving] = useState(false)
+  const [city, setCity] = useState<string>('')
+  const [dish, setDish] = useState<string>('')
+  const [top, setTop] = useState<Venue[]>([])
+  const [fresh, setFresh] = useState<Venue[]>([])
 
-  const { data: citiesData } = useCities()
-  const { data: profileData } = useProfile()
-
-  const cities = citiesData?.cities || []
-  const userCity = profileData?.user?.city || null
-
-  // Инициализация выбранного города из профиля (adjust-state-during-render)
-  if (userCity?.id && selectedCityId === null) {
-    setSelectedCityId(userCity.id)
-  }
-
-  const params = new URLSearchParams()
-  if (selectedCityId) params.set('cityId', selectedCityId)
-  if (type) params.set('type', type)
-  if (maxPrice) params.set('price', maxPrice)
-  if (query.trim()) params.set('query', query.trim())
-
-  const { data: venuesData, isLoading: loading } = useSWR<{ venues: Venue[]; needsCity?: boolean }>(
-    selectedCityId ? `/api/venues?${params.toString()}` : null
-  )
-
-  const venues = venuesData?.venues || []
-  const needsCity = venuesData?.needsCity ?? false
-  const myCity = selectedCityId ? (cities.find((c) => c.id === selectedCityId) ?? userCity) : userCity
-
-  const saveCity = async (cityId: string) => {
-    setSaving(true)
+  const loadVenues = async () => {
+    if (!city) return
     try {
-      const res = await fetch('/api/user/profile', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ cityId }),
-      })
-      if (res.ok) setSelectedCityId(cityId || null)
+      const res = await fetch(`/api/venues?city=${encodeURIComponent(city)}&dish=${encodeURIComponent(dish)}`)
+      const data = await res.json()
+      setTop(data.top || [])
+      setFresh(data.fresh || [])
     } catch (e) {
-      console.error('save city failed', e)
-    } finally {
-      setSaving(false)
+      console.error('Failed to load venues:', e)
     }
   }
 
+  const handleAdd = () => {
+    alert('Функция добавления заведения будет доступна позже')
+  }
+
   return (
-    <DashboardLayout user={{ name: null, email: '' }} couple={null}>
-      <div className="h1">Куда пойти вдвоём</div>
-      <div className="dim">Рестораны, кафе и прогулки. Под фильтр, а не «куда-нибудь».</div>
+    <DashboardLayout>
+      <div className="h1">Куда поесть? · {city || ''} · {dish || ''}</div>
 
-      <div className="mt" style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-        <b className="small">Город:</b>
-        <select
-          aria-label="Выбрать город"
-          value={selectedCityId || ''}
-          onChange={(e) => saveCity(e.target.value)}
-          disabled={saving}
-          className="input"
-          style={{ flex: 1, minWidth: 180 }}
-        >
-          <option value="">{myCity ? myCity.name : 'Выберите город'}</option>
-          {cities
-            .filter((c) => c.id !== myCity?.id)
-            .map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.emoji} {c.name}
-              </option>
-            ))}
-        </select>
-      </div>
-
-      {needsCity && !selectedCityId && (
-        <div className="notice notice-amber mt">
-          <span style={{ fontSize: 20 }} aria-hidden="true">📍</span>
-          <div>Выберите город вверху — покажем подборку мест для свиданий.</div>
-        </div>
-      )}
-
-      {selectedCityId && (
-        <>
-          <div className="chips mt">
-            <button className={cn('chip', type === null && 'sel')} onClick={() => setType(null)}>Все</button>
-            {Object.entries(VENUE_TYPE_LABELS).map(([key, label]) => (
-              <button key={key} className={cn('chip', type === key && 'sel')} onClick={() => setType(type === key ? null : key)}>
-                {label}
-              </button>
-            ))}
-          </div>
-
-          <div className="mt" style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
-            <select
-              aria-label="Максимальная цена"
-              value={maxPrice || ''}
-              onChange={(e) => setMaxPrice(e.target.value || null)}
-              className="input"
-              style={{ flex: 1, minWidth: 150 }}
-            >
-              <option value="">Любая цена</option>
-              {[1, 2, 3, 4].map((p) => (
-                <option key={p} value={p}>{PRICE_LABELS[p]}</option>
-              ))}
-            </select>
+      <div className="cd static" style={{ marginBottom: 20 }}>
+        <div className="cd-r">
+          <div className="cd-ic">🏙️</div>
+          <div className="cd-t">
+            <b>Город</b>
             <input
-              className="input"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="🔍 Поиск по названию"
-              style={{ flex: 2, minWidth: 180 }}
+              type="text"
+              placeholder="Например: Томск"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              disabled={!!top.length}
+              style={{ width: '100%' }}
             />
           </div>
+          <span className="arr">›</span>
+        </div>
+        <div className="cd-r" style={{ paddingLeft: 12 }}>
+          <div className="cd-ic">🍽️</div>
+          <div className="cd-t">
+            <b>Блюдо</b>
+            <input
+              type="text"
+              placeholder="Например: роллы"
+              value={dish}
+              onChange={(e) => setDish(e.target.value)}
+            />
+          </div>
+        </div>
+      </div>
 
-          {loading ? (
-            <div className="loading-screen" style={{ paddingTop: 60 }}>
-              <div className="loading-text">Ищем места…</div>
+      <div>
+        {top.length > 0 && (
+          <div>
+            <div className="k">Лучшие venue (≥4.3)</div>
+            <div className="venue-list">
+              {top.map((v) => {
+                const ratingOk = v.avgRating != null && v.avgRating >= 4.7
+                return (
+                  <div
+                    key={v.id}
+                    className="ven"
+                    onClick={() => alert(`Выбрано: ${v.name}`)}
+                  >
+                    <div className="ven-ic">🍽️</div>
+                    <div className="ven-t">
+                      <b>{v.name}</b>
+                      <span>{v.address || ''} · добавил {v.addedBy}</span>
+                    </div>
+                    <span className={ratingOk ? 'rate good' : 'rate'}>
+                      {v.avgRating?.toFixed(1)}★ {v.ratingsCount} оценок
+                    </span>
+                    <button className="btn btn-s btn-sm" onClick={handleAdd}>★ Оценить</button>
+                  </div>
+                )
+              })}
             </div>
-          ) : venues.length === 0 ? (
-            <div className="empty mt">
-              <i>🔍</i>
-              <div className="dim">Под такие фильтры ничего не нашлось.</div>
-            </div>
-          ) : (
-            <div className="ven-grid mt">
-              {venues.map((v) => (
-                <div key={v.id} className="cd static">
-                  <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 }}>
-                    <div style={{ fontSize: 32 }} aria-hidden="true">{v.emoji}</div>
-                    {v.romantic && <span className="badge pri">💗 романтично</span>}
+          </div>
+        )}
+
+        {fresh.length > 0 && (
+          <div>
+            <div className="k">Новые · без рейтинга</div>
+            <div className="venue-list">
+              {fresh.map((v) => (
+                <div key={v.id} className="ven">
+                  <div className="ven-ic">🆕</div>
+                  <div className="ven-t">
+                    <b>{v.name}</b>
+                    <span>{v.address || ''} · добавил {v.addedBy}</span>
                   </div>
-                  <b style={{ fontSize: 15, marginTop: 8, display: 'block' }}>{v.name}</b>
-                  <div className="small" style={{ marginTop: 2 }}>
-                    {VENUE_TYPE_LABELS[v.type] || v.type}
-                    {v.area ? ` · ${v.area}` : ''}
-                  </div>
-                  {v.description && <p style={{ fontSize: 13, color: 'var(--dim)', marginTop: 8, lineHeight: 1.5 }}>{v.description}</p>}
-                  {v.recommendation && (
-                    <p style={{ fontSize: 13, fontStyle: 'italic', color: 'var(--mute)', marginTop: 6 }}>«{v.recommendation}»</p>
-                  )}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 12, paddingTop: 10, borderTop: '1px solid var(--line)', fontSize: 13 }}>
-                    <span style={{ color: 'var(--dim)' }}>{PRICE_LABELS[v.priceLevel]}</span>
-                    {v.address && <span className="small" style={{ color: 'var(--mute)' }}>{v.address}</span>}
-                  </div>
+                  <span className="rate new">новое</span>
                 </div>
               ))}
             </div>
-          )}
-        </>
-      )}
+          </div>
+        )}
+
+        <div style={{ marginTop: 24, textAlign: 'center' }}>
+          <button className="btn btn-s btn-w" onClick={handleAdd}>
+            + Добавить заведение
+          </button>
+          <span className="dim">Будьте primeros в городе</span>
+        </div>
+      </div>
     </DashboardLayout>
   )
 }

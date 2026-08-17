@@ -168,7 +168,7 @@ export default function AIChatPage() {
                 <span className="dim">Помню вашу пару: отчёты, пульс, челленджи. Чем помочь?</span>
                 <div className="chips" style={{ justifyContent: 'center', marginTop: 12 }}>
                   {['Что ты умеешь?', 'Помоги сформулировать мысль', 'Разбери наш спор', 'Идея свидания'].map(q => (
-                    <button key={q} className="chip" onClick={() => handleSend()}>{q}</button>
+                    <button key={q} className="chip" onClick={() => setInput(q + ' ')}>{q}</button>
                   ))}
                 </div>
               </div>
