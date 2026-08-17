@@ -45,6 +45,8 @@ export default function AIChatPage() {
   const [hasCouple, setHasCouple] = useState(false)
   const [coupleMessages, setCoupleMessages] = useState<CoupleMsg[]>([])
   const [coupleBusy, setCoupleBusy] = useState(false)
+  const [sovaConnected, setSovaConnected] = useState(false)
+  const [sovaBusy, setSovaBusy] = useState(false)
 
   const [letters, setLetters] = useState<Array<{ id: string; title: string; content: string; fromName: string; isMine: boolean; read: boolean; createdAt: string }>>([])
   const [letterOpen, setLetterOpen] = useState(false)
@@ -240,6 +242,20 @@ export default function AIChatPage() {
     finally { setCoupleBusy(false) }
   }
 
+  const connectSova = async () => {
+    if (sovaBusy) return
+    setSovaBusy(true)
+    try {
+      const r = await fetch('/api/couple-chat/sova', { method: 'POST' })
+      const j = await r.json()
+      if (r.ok && j.item) {
+        setCoupleMessages(prev => [...prev, j.item])
+        window.dispatchEvent(new Event('together:refresh'))
+      }
+    } catch { /* ignore */ }
+    finally { setSovaBusy(false) }
+  }
+
   const formatTime = (d: string) => new Date(d).toLocaleTimeString('ru-RU')
 
   return (
@@ -263,7 +279,17 @@ export default function AIChatPage() {
           {chatMode === 'couple' && (
             <div className="couple-chat-banner">
               <span>Чат с {partnerName} — только вы двое</span>
-              <Link href="/dashboard/ai" className="btn btn-s btn-sm" onClick={() => setChatMode('solo')}>🦉 Подключить Сову</Link>
+              <button
+                className="btn btn-s btn-sm"
+                disabled={sovaBusy}
+                onClick={() => {
+                  if (sovaConnected) { setSovaConnected(false); return }
+                  connectSova()
+                  setSovaConnected(true)
+                }}
+              >
+                {sovaBusy ? '🦉 Сова думает…' : sovaConnected ? '🦉 Сова в диалоге ✓' : '🦉 Подключить Сову'}
+              </button>
             </div>
           )}
 
