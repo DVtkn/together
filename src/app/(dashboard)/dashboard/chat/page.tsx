@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
+import { cn } from '@/lib/utils/cn'
 
 interface Message {
   id: string
@@ -21,7 +22,26 @@ export default function CoupleChatPage() {
   const [busy, setBusy] = useState(false)
   const [me, setMe] = useState<{ id: string } | null>(null)
   const [hasCouple, setHasCouple] = useState(false)
+  const [pause, setPause] = useState<{ active: boolean; secondsLeft: number }>({ active: false, secondsLeft: 0 })
   const scrollRef = useRef<HTMLDivElement>(null)
+
+  const startPause = async () => {
+    const r = await fetch('/api/pause', { method: 'POST' }).catch(() => null)
+    if (r && r.ok) {
+      const j = await r.json()
+      setPause({ active: true, secondsLeft: j.secondsLeft ?? 1200 })
+      window.dispatchEvent(new Event('together:refresh'))
+    }
+  }
+
+  useEffect(() => {
+    const t = setInterval(() => {
+      fetch('/api/pause').then(r => r.json()).then(j => {
+        if (j) setPause({ active: j.active ?? false, secondsLeft: j.secondsLeft ?? 0 })
+      }).catch(() => {})
+    }, 10000)
+    return () => clearInterval(t)
+  }, [])
 
   const load = useCallback(() => {
     fetch('/api/user/profile').then(r => r.json()).then(d => {
@@ -88,6 +108,10 @@ export default function CoupleChatPage() {
     </DashboardLayout>
   )
 
+  const pauseFmt = pause.active && pause.secondsLeft > 0
+    ? `${Math.floor(pause.secondsLeft / 60)}:${String(pause.secondsLeft % 60).padStart(2, '0')}`
+    : ''
+
   return (
     <DashboardLayout>
       <div className="chat">
@@ -98,6 +122,14 @@ export default function CoupleChatPage() {
               <b>Чат пары</b>
               <span style={{ display: 'block' }}>Только вы двое</span>
             </div>
+            <button
+              className={cn('icon-btn pause-btn', pause?.active ? 'on' : '')}
+              onClick={startPause}
+              title={pause?.active ? `Пауза активна · осталось ${pauseFmt}` : 'Стоп-слово: пауза на 20 минут'}
+              aria-label="Стоп-слово: пауза на 20 минут"
+            >
+              🛑
+            </button>
             <span className="dot" title="онлайн" aria-label="онлайн" />
           </div>
 
