@@ -16,9 +16,9 @@ const Footer = () => {
         <div>
           <h4>Продукт</h4>
           <Link href="/dashboard">Дашборд</Link>
-          <Link href="/dashboard/partner">База знаний о партнёре</Link>
-          <Link href="/dashboard/report">Отчёт</Link>
-          <Link href="/dashboard/venues">Куда пойти</Link>
+          <Link href="/dashboard/daily#partner">База знаний о партнёре</Link>
+          <Link href="/dashboard/couple#report">Отчёт</Link>
+          <Link href="/dashboard/date">Куда пойти</Link>
         </div>
 
         <div>
