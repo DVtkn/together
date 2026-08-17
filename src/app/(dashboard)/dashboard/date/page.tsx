@@ -262,7 +262,7 @@ export default function DatePage() {
       <div className="h1">Свидание</div>
       <div className="dim" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
         <span>Ты зовёшь. Она выбирает. Ты бронируешь.</span>
-        <Link href="/dashboard/couple#story" className="link-btn" style={{ whiteSpace: 'nowrap' }}>📖 История пары</Link>
+        <Link href="/dashboard/story" className="link-btn" style={{ whiteSpace: 'nowrap' }}>📖 История пары</Link>
       </div>
 
       <div className="seg" role="tablist" style={{ margin: '14px 0' }}>

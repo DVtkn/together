@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
 import { cn } from '@/lib/utils/cn'
 import { SkeletonCard } from '@/components/skeleton-card'
@@ -383,6 +384,17 @@ export default function SettingsPage() {
                 {couple.partnerA.name || 'Партнёр А'} · {couple.partnerB.name || 'Партнёр Б'}
                 {couple.startedAt && ` · вместе с ${new Date(couple.startedAt).toLocaleDateString('ru-RU', { month: 'long', year: 'numeric' })}`}
               </div>
+
+              <Link href="/dashboard/story" className="cd" style={{ marginTop: 14, textDecoration: 'none' }}>
+                <div className="cd-r">
+                  <div className="cd-ic">📖</div>
+                  <div className="cd-t">
+                    <b>История пары</b>
+                    <span>Таймлайн: тесты, свидания, достижения</span>
+                  </div>
+                  <span className="arr">›</span>
+                </div>
+              </Link>
 
               <div className="notice notice-rose" style={{ marginTop: 14 }}>
                 <span style={{ fontSize: 18 }} aria-hidden="true">🚪</span>
