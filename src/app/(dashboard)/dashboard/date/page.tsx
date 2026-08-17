@@ -4,7 +4,17 @@ import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
 
-type Venue = { n: string; a: string; p: number; e: string; tag?: string }
+type Venue = { n: string; a: string; p: number; e: string; tag?: string; rating?: number | null; picks?: number }
+
+type CommunityVenue = {
+  id: string
+  name: string
+  address: string
+  avgRating: number | null
+  ratingsCount: number
+  picks: number
+  isNew: boolean
+}
 
 type Invite = {
   id: string
@@ -43,8 +53,9 @@ const VENUES: Record<string, Venue[]> = {
   nothing: [{ n: 'Доставка + фильм', a: 'у вас дома', p: 2, e: '🎬' }, { n: 'Спа для двоих', a: 'Центр', p: 3, e: '💆' }],
 }
 
-const TIME_GROUPS = [
-  { label: 'Утро', slots: ['10:00', '10:30', '11:00', '11:30'] },
+const COMMUNITY_CITIES = ['Москва', 'Санкт-Петербург', 'Новосибирск', 'Екатеринбург', 'Казань', 'Нижний Новгород', 'Самара', 'Омск', 'Красноярск', 'Воронеж', 'Пермь', 'Волгоград', 'Уфа', 'Челябинск']
+
+const TIME_GROUPS = [  { label: 'Утро', slots: ['10:00', '10:30', '11:00', '11:30'] },
   { label: 'День', slots: ['12:00', '13:00', '14:00', '15:00'] },
   { label: 'Вечер', slots: ['18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00'] },
 ]
@@ -83,6 +94,11 @@ export default function DatePage() {
   const [visitedNote, setVisitedNote] = useState(false)
   const [tab, setTab] = useState<'new' | 'upcoming' | 'memories'>('new')
   const [memories, setMemories] = useState<Array<{ id: string; venueName: string; date: string; photoUrl: string | null; note: string | null }>>([])
+  const [commCity, setCommCity] = useState('Санкт-Петербург')
+  const [commOpen, setCommOpen] = useState(false)
+  const [commVenues, setCommVenues] = useState<CommunityVenue[]>([])
+  const [commBusy, setCommBusy] = useState(false)
+  const [commErr, setCommErr] = useState<string | null>(null)
 
   const load = useCallback(() => {
     fetch('/api/user/profile').then(r => r.json()).then(d => {
@@ -164,6 +180,21 @@ export default function DatePage() {
   const pickRandom = () => pickVibe(VIBES[Math.floor(Math.random() * VIBES.length)].id)
   const applyCustom = () => { if (!custom.trim()) return; setVibe('custom'); setVenue(null); setStep(2) }
   const pickVenue = (v: Venue) => { setVenue(v); setTimeout(() => setStep(3), 150) }
+  const pickCommunity = async (v: CommunityVenue) => {
+    setVenue({ n: v.name, a: v.address, p: 2, e: '⭐', tag: v.avgRating ? `⭐ ${v.avgRating.toFixed(1)}` : 'новое', rating: v.avgRating, picks: v.picks })
+    setTimeout(() => setStep(3), 150)
+  }
+  const loadCommunity = async () => {
+    if (commBusy) return
+    setCommBusy(true); setCommErr(null)
+    try {
+      const r = await fetch(`/api/venues?city=${encodeURIComponent(commCity)}`)
+      const j = await r.json()
+      if (!r.ok) { setCommErr(j.error ?? 'Не удалось загрузить'); setCommVenues([]); return }
+      setCommVenues([...j.top ?? [], ...j.fresh ?? []])
+    } catch { setCommErr('Ошибка сети'); setCommVenues([]) }
+    finally { setCommBusy(false) }
+  }
   const pickDay = (d: Date) => { setDay(d); if (time && isBusy(d, time)) setTime(null) }
 
   const submitChoice = async () => {
@@ -381,6 +412,49 @@ export default function DatePage() {
               <div className="h2" style={{ textAlign: 'center' }}>
                 {custom && vibe === 'custom' ? `Куда? «${custom}»` : 'Куда пойдём?'}
               </div>
+
+              <div className="vibe-extra" style={{ marginBottom: 10 }}>
+                <button className={`vibe-btn ${commOpen ? 'sel' : ''}`} onClick={() => { setCommOpen(!commOpen); if (!commOpen && commVenues.length === 0) loadCommunity() }}>
+                  🏙️ Народная база мест
+                </button>
+              </div>
+
+              {commOpen && (
+                <div className="cd static" style={{ marginBottom: 12 }}>
+                  <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
+                    <select
+                      className="select"
+                      style={{ flex: 1, minWidth: 140 }}
+                      value={commCity}
+                      onChange={e => setCommCity(e.target.value)}
+                    >
+                      {COMMUNITY_CITIES.map(c => <option key={c} value={c}>{c}</option>)}
+                    </select>
+                    <button className="btn btn-s" disabled={commBusy} onClick={loadCommunity}>
+                      {commBusy ? 'Загружаем…' : 'Показать места'}
+                    </button>
+                  </div>
+                  {commErr && <div className="dim" style={{ marginTop: 8 }}>{commErr}</div>}
+                  {commVenues.length === 0 && !commErr && (
+                    <div className="dim" style={{ marginTop: 8 }}>Места из народной базы появятся здесь — выбирайте проверенные, с рейтингом ≥ 4.3.</div>
+                  )}
+                  {commVenues.map(v => (
+                    <div key={v.id} className={`ven ${venue?.n === v.name ? 'sel' : ''}`} onClick={() => pickCommunity(v)}>
+                      <div className="ven-ic">⭐</div>
+                      <div className="ven-t">
+                        <b>{v.name}</b>
+                        <span>{v.address}{v.isNew ? <span className="ven-tag">новое</span> : null}</span>
+                      </div>
+                      {v.avgRating ? (
+                        <span className="price">⭐ {v.avgRating.toFixed(1)}</span>
+                      ) : (
+                        <span className="price">новое</span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+
               {venues.map(v => (
                 <div key={v.n} className={`ven ${venue?.n === v.n ? 'sel' : ''}`} onClick={() => pickVenue(v)}>
                   <div className="ven-ic">{v.e}</div>

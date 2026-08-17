@@ -345,6 +345,8 @@ body{font-family:var(--font-inter),'Inter',-apple-system,sans-serif;background:v
 .vibe-btn{flex:1;padding:14px;border-radius:12px;background:var(--card);border:1px solid var(--line);color:var(--text);font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:.15s}
 .vibe-btn:hover{border-color:var(--pri);background:var(--card2)}
 .vibe-btn.sel{border-color:var(--pri);background:var(--card2);color:var(--text)}
+.select{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;color:var(--text);font-family:inherit;font-size:14px;font-weight:500;outline:none}
+.select:focus{border-color:var(--pri)}
 #customBox{margin-top:12px;display:none}
 .custom-input{width:100%;background:var(--card2);border:none;border-radius:12px;padding:14px;color:var(--text);font-family:inherit;resize:none;min-height:52px;font-size:15px;margin-bottom:10px}
 .custom-input::placeholder{color:var(--mute)}
