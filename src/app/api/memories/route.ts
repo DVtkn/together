@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
       ctx.partner.id,
       'memory_added',
       `${nameOf(ctx.user)} добавил(а) воспоминание`,
-      '/dashboard/memories'
+      '/dashboard/date#memories'
     )
   }
 

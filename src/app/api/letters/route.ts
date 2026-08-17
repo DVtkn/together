@@ -84,7 +84,7 @@ export async function POST(request: NextRequest) {
       ctx.partner.id,
       'letter_sent',
       `${nameOf(ctx.user)} написал(а) вам письмо 💌`,
-      '/dashboard/letters'
+      '/dashboard/ai#letters'
     )
   }
 

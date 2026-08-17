@@ -50,7 +50,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
         craving.userId,
         'craving_picked',
         `${nameOf(ctx.user)} принёс: ${craving.item} 🎁`,
-        '/dashboard/partner'
+        '/dashboard/daily#partner'
       )
     }
 

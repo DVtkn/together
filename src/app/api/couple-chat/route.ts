@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
   })
 
   if (!isSova && ctx.partner) {
-    await notify(ctx.partner.id, 'couple_message', 'В чате пары новое сообщение', '/dashboard/chat')
+    await notify(ctx.partner.id, 'couple_message', 'В чате пары новое сообщение', '/dashboard/ai')
   }
 
   return NextResponse.json({

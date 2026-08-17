@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
         ctx.partner.id,
         'craving_added',
         `У ${nameOf(ctx.user)} новая хотелка: ${craving.item}`,
-        '/dashboard/partner'
+        '/dashboard/daily#partner'
       )
     }
 
