@@ -8,16 +8,21 @@ const CITIES_100K = [
   'Москва', 'Санкт-Петербург', 'Новосибирск', 'Екатеринбург', 'Казань',
   'Нижний Новгород', 'Челябинск', 'Самара', 'Омск', 'Ростов-на-Дону',
   'Уфа', 'Красноярск', 'Воронеж', 'Пермь', 'Волгоград',
-  'Калининград', 'Кострома', 'Курск', 'Ли bed', 'Магнитогорск',
+  'Калининград', 'Кострома', 'Курск', 'Липецк', 'Магнитогорск',
   'Нальчик', 'Нижний Тагил', 'Норильск', 'Орел', 'Пенза',
-  'Первоуральск', 'Пяквит', 'Райчихинск', 'Sarov', 'Смоленск',
-  'Ставрополь', 'Тверь', 'Томск', 'Тюмень', 'Ulan-Ude',
-  'Хабаровск', 'Чебоксары', 'Эльтист', 'Якутск', 'Янтаруй',
+  'Первоуральск', 'Пятигорск', 'Райчихинск', 'Саров', 'Смоленск',
+  'Ставрополь', 'Тверь', 'Томск', 'Тюмень', 'Улан-Удэ',
+  'Хабаровск', 'Чебоксары', 'Элиста', 'Якутск', 'Ярославль',
 ]
 
 function isValidCity(city: string): boolean {
   const normalized = city.toLowerCase().trim()
   return CITIES_100K.some(c => c.toLowerCase() === normalized)
+}
+
+function canonicalCity(city: string): string | null {
+  const normalized = city.toLowerCase().trim()
+  return CITIES_100K.find(c => c.toLowerCase() === normalized) ?? null
 }
 
 // Вспомогательная функция расчета статистики
@@ -61,7 +66,8 @@ export async function GET(request: NextRequest) {
   const city = searchParams.get('city')?.trim()
   const dish = searchParams.get('dish')?.trim().toLowerCase() || ''
 
-  if (!city || !isValidCity(city)) {
+  const canonical = city ? canonicalCity(city) : null
+  if (!canonical) {
     return NextResponse.json(
       { error: 'Укажите корректный город из списка (≥100 тыс. чел.)' },
       { status: 400 }
@@ -70,28 +76,29 @@ export async function GET(request: NextRequest) {
 
   // Получаем все venue в городе
   const all = await prisma.communityVenue.findMany({
-    where: { cityName: city },
+    where: { cityName: canonical },
     take: 200,
   })
 
-  // Рейтинговые (≥4.3, топ-7) — фильтруем клиент-side
-  const topAll = all
-    .filter((v: any) => (v as any).avgRating && (v as any).avgRating >= 4.3)
-    .sort((a: any, b: any) => (b as any).avgRating - (a as any).avgRating)
+  // Считаем статистику для каждого (avgRating — вычисляемое поле, не хранится в БД)
+  const withStats = await Promise.all(all.map(async (v: any) => {
+    const stats = await getVenueStats(v.id)
+    return { venue: v, stats }
+  }))
+
+  // Рейтинговые (≥4.3, топ-7)
+  const top = withStats
+    .filter(({ stats }) => stats.avgRating != null && stats.avgRating >= 4.3)
+    .sort((a, b) => (b.stats.avgRating ?? 0) - (a.stats.avgRating ?? 0))
     .slice(0, 7)
-    .map(async (v: any) => {
-      const stats = await getVenueStats(v.id)
-      return formatVenue(v, stats)
-    })
-  const top = await Promise.all(topAll)
+    .map(({ venue, stats }) => formatVenue(venue, stats))
 
   // Новые без рейтинга (чтобы база росла)
-  const fresh = await prisma.communityVenue.findMany({
-    where: { cityName: city },
-    take: 3,
-    orderBy: { createdAt: 'desc' },
-  })
-  const freshResult = fresh.map((v: any) => ({
+  const freshVenues = all
+    .filter((v: any) => !withStats.find(({ venue }) => venue.id === v.id)?.stats.avgRating)
+    .sort((a: any, b: any) => b.createdAt.getTime() - a.createdAt.getTime())
+    .slice(0, 3)
+  const freshResult = freshVenues.map((v: any) => ({
     id: v.id,
     name: v.name,
     address: v.address,
@@ -124,7 +131,8 @@ export async function POST(request: NextRequest) {
   const { cityName, dish, name, address, phone, comment } = body
 
   // Валидации
-  if (!isValidCity(cityName)) {
+  const canonical = canonicalCity(cityName ?? '')
+  if (!canonical) {
     return NextResponse.json(
       { error: 'Город должен из списка городов ≥100 тыс. чел.' },
       { status: 400 }
@@ -135,7 +143,7 @@ export async function POST(request: NextRequest) {
   }
   // дубликат (city+dish+name, без учёта регистра) → 409
   const existing = await prisma.communityVenue.findFirst({
-    where: { cityName: cityName, dish: dish || '', name: { mode: 'insensitive', equals: name } },
+    where: { cityName: canonical, dish: dish || '', name: { mode: 'insensitive', equals: name } },
   })
   if (existing) {
     return NextResponse.json(
@@ -155,7 +163,7 @@ export async function POST(request: NextRequest) {
 
   const venue = await prisma.communityVenue.create({
     data: {
-      cityName,
+      cityName: canonical,
       dish,
       name,
       address,
