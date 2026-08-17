@@ -83,6 +83,7 @@ export async function GET(request: NextRequest) {
       completedBoth: progressive.completedBoth,
       total: progressive.total,
       openedAxes: progressive.axes.filter((a) => a.value !== null).length,
+      axes: progressive.axes.map((a) => ({ key: a.key, name: a.axis, value: a.value })),
     }
 
     if (partner) {

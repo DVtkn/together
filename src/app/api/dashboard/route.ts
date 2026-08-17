@@ -211,6 +211,17 @@ export async function GET(request: NextRequest) {
       }
     }
 
+    // === Настроение партнёра (последнее) ===
+    let partnerMood: { emoji: string; text: string | null } | null = null
+    if (ctx.partner) {
+      const latest = await prisma.moodEntry.findFirst({
+        where: { coupleId: ctx.couple!.id, userId: ctx.partner.id },
+        orderBy: { createdAt: 'desc' },
+        select: { emoji: true, text: true },
+      })
+      if (latest) partnerMood = { emoji: latest.emoji, text: latest.text }
+    }
+
     return NextResponse.json({
       user: { name: ctx.user.name, email: ctx.user.email ?? '' },
       couple,
@@ -224,6 +235,7 @@ export async function GET(request: NextRequest) {
       signals,
       warmth,
       pause,
+      partnerMood,
     })
   } catch (error) {
     console.error('Get dashboard error:', error)
