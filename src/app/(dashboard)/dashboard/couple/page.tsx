@@ -1,6 +1,7 @@
 'use client'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
 import { DECKS, IntimacyDeck } from '@/lib/decks'
 
@@ -57,6 +58,16 @@ export default function CouplePage() {
   const [err, setErr] = useState<string | null>(null)
   const [ok, setOk] = useState<string | null>(null)
   const [story, setStory] = useState<{ events: StoryEvent[]; memories: DateMemory[] } | null>(null)
+
+  const router = useRouter()
+  const repeatDate = async (venueName: string) => {
+    const res = await fetch('/api/date-invite', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ vibe: 'Повторить место', venueName }),
+    })
+    if (res.ok) router.push('/dashboard/date')
+  }
 
   const [deck, setDeck] = useState<IntimacyDeck | null>(null)
   const [deckIdx, setDeckIdx] = useState(0)
@@ -328,6 +339,11 @@ export default function CouplePage() {
                   <span>{fmtDate(new Date(item.at).toISOString())}</span>
                   {item.type === 'date_visited' && item.memory?.note && (
                     <p className="tl-note">{item.memory.note}</p>
+                  )}
+                  {item.type === 'date_visited' && item.memory?.venueName && (
+                    <div style={{ marginTop: 6 }}>
+                      <button className="link-btn" onClick={() => repeatDate(item.memory!.venueName!)}>↻ Повторить</button>
+                    </div>
                   )}
                 </div>
               </div>
