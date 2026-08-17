@@ -100,4 +100,27 @@ export async function POST(request: NextRequest) {
   return NextResponse.json({ active: true, endsAt: session.endsAt.toISOString(), secondsLeft: PAUSE_MINUTES * 60 })
 }
 
+export async function DELETE(request: NextRequest) {
+  const rl = await rateLimit('default', request.headers.get('x-forwarded-for') || 'anon')
+  if (!rl.ok) {
+    return NextResponse.json({ error: 'Слишком много запросов' }, { status: 429, headers: { 'Retry-After': String(rl.retryAfter) } })
+  }
+  const ctx = await getApiContext()
+  if (!ctx) return unauthorized()
+  const noCouple = requireCouple(ctx)
+  if (noCouple) return noCouple
+
+  const existing = await prisma.pauseSession.findUnique({
+    where: { coupleId: ctx.couple!.id },
+  })
+  if (existing) {
+    await prisma.pauseSession.update({
+      where: { id: existing.id },
+      data: { active: false },
+    })
+  }
+
+  return NextResponse.json({ active: false, endsAt: null, secondsLeft: 0 })
+}
+
 export const dynamic = 'force-dynamic'
