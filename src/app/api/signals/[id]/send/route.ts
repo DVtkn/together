@@ -28,11 +28,12 @@ export async function POST(
 
   if (ctx.partner) {
     const text = `${nameOf(ctx.user)} послал(а) сигнал ${signal.emoji} — «${signal.meaning}»`
-    await notify(ctx.partner.id, 'signal_received', text, '/dashboard/daily#signals')
+    const replyHref = `/dashboard/chat?reply=${encodeURIComponent(signal.suggestedReply)}&signal=${encodeURIComponent(signal.emoji)}&meaning=${encodeURIComponent(signal.meaning)}`
+    await notify(ctx.partner.id, 'signal_received', text, replyHref)
     await sendPushToUser(ctx.partner.id, {
       title: `${signal.emoji} Тихий сигнал`,
       body: `${nameOf(ctx.user)}: ${signal.meaning}`,
-      url: '/dashboard/daily#signals',
+      url: replyHref,
     })
   }
 

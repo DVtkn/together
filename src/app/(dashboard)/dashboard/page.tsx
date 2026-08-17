@@ -2,8 +2,9 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
+import { cn } from '@/lib/utils/cn'
 
 interface DailyQ {
   id: string
@@ -46,6 +47,7 @@ function greeting() {
 }
 
 export default function DashboardPage() {
+  const router = useRouter()
   const [name, setName] = useState('')
   const [dq, setDq] = useState<DailyQ | null>(null)
   const [answerInput, setAnswerInput] = useState('')
@@ -82,6 +84,36 @@ export default function DashboardPage() {
     }, 10000)
     return () => clearInterval(t)
   }, [])
+
+  const [signalModal, setSignalModal] = useState<{ emoji: string; meaning: string; reply: string } | null>(null)
+  const [seenSignals, setSeenSignals] = useState<Set<string>>(new Set())
+
+  useEffect(() => {
+    const check = () => {
+      fetch('/api/notifications?limit=10').then(r => r.json()).then(d => {
+        if (!d || !Array.isArray(d.items)) return
+        const sig = d.items.find((n: any) => n.type === 'signal_received' && !n.read && !seenSignals.has(n.id))
+        if (sig) {
+          const params = new URLSearchParams(sig.href?.split('?')[1] ?? '')
+          setSignalModal({
+            emoji: params.get('signal') || '🤗',
+            meaning: params.get('meaning') || 'тихий сигнал',
+            reply: params.get('reply') || '',
+          })
+          setSeenSignals(prev => new Set(prev).add(sig.id))
+        }
+      }).catch(() => {})
+    }
+    check()
+    const t = setInterval(check, 8000)
+    return () => clearInterval(t)
+  }, [seenSignals])
+
+  const answerSoftly = () => {
+    if (!signalModal) return
+    router.push(signalModal.reply ? `/dashboard/chat?reply=${encodeURIComponent(signalModal.reply)}` : '/dashboard/chat')
+    setSignalModal(null)
+  }
 
   async function submitAnswer() {
     const answer = answerInput.trim()
@@ -249,6 +281,19 @@ export default function DashboardPage() {
           <div className="h2" style={{ marginBottom: 6 }}>Всё спокойно</div>
           <div className="dim" style={{ marginBottom: 18 }}>Здесь появляется следующий шаг: вопрос дня, прогноз заботы и тёплые моменты.</div>
           <Link href="/dashboard/couple" className="btn btn-p">Кто мы вдвоём →</Link>
+        </div>
+      )}
+
+      {/* Модалка тихого сигнала */}
+      {signalModal && (
+        <div className="modal active" onClick={e => { if (e.target === e.currentTarget) setSignalModal(null) }}>
+          <div className="modal-c" style={{ textAlign: 'center' }}>
+            <div style={{ fontSize: 64, marginBottom: 12 }}>{signalModal.emoji}</div>
+            <h3 style={{ marginBottom: 6 }}>Партнёр просит о поддержке</h3>
+            <p className="dim" style={{ marginBottom: 20 }}>«{signalModal.meaning}»</p>
+            <button className="btn btn-p btn-w" style={{ marginBottom: 8 }} onClick={answerSoftly}>🤍 Ответить мягко</button>
+            <button className="link-btn" style={{ display: 'block', width: '100%', textAlign: 'center' }} onClick={() => setSignalModal(null)}>Позже</button>
+          </div>
         </div>
       )}
     </DashboardLayout>

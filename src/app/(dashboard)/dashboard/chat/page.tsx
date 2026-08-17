@@ -25,6 +25,15 @@ export default function CoupleChatPage() {
   const [pause, setPause] = useState<{ active: boolean; secondsLeft: number }>({ active: false, secondsLeft: 0 })
   const scrollRef = useRef<HTMLDivElement>(null)
 
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search)
+    const reply = q.get('reply')
+    if (reply) setInput(reply)
+    if (q.get('signal')) {
+      window.history.replaceState({}, '', window.location.pathname)
+    }
+  }, [])
+
   const startPause = async () => {
     const r = await fetch('/api/pause', { method: 'POST' }).catch(() => null)
     if (r && r.ok) {
