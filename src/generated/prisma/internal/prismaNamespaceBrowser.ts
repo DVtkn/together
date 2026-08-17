@@ -324,7 +324,8 @@ export const SignalScalarFieldEnum = {
   coupleId: 'coupleId',
   emoji: 'emoji',
   meaning: 'meaning',
-  suggestedReply: 'suggestedReply'
+  suggestedReply: 'suggestedReply',
+  ackedAt: 'ackedAt'
 } as const
 
 export type SignalScalarFieldEnum = (typeof SignalScalarFieldEnum)[keyof typeof SignalScalarFieldEnum]

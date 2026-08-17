@@ -254,12 +254,13 @@ model DailyQuestion {
 }
 
 model Signal {
-  id              String  @id @default(cuid())
+  id              String     @id @default(cuid())
   coupleId        String
   emoji           String
   meaning         String
   suggestedReply  String
-  Couple          Couple  @relation(fields: [coupleId], references: [id], onDelete: Cascade)
+  ackedAt         DateTime?
+  Couple          Couple     @relation(fields: [coupleId], references: [id], onDelete: Cascade)
 
   @@index([coupleId])
 }

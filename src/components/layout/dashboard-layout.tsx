@@ -50,6 +50,7 @@ const NOTIF_ICON: Record<string, string> = {
   ritual_done: '✓',
   letter_sent: '💌',
   signal_received: '🤗',
+  signal_accepted: '🤍',
   pause_started: '🛑',
   pause_ended: '⏸️',
   warmth_added: '💌',
@@ -187,7 +188,7 @@ export function DashboardLayout({ children, user, couple }: DashboardLayoutProps
       <header className="hd">
         <div className="hd-in">
           <Link href="/dashboard" className="logo">
-            <i></i>Together
+            <i>∞</i>Loop
           </Link>
           <nav className="nav" aria-label="Основная навигация">
             {NAV_ITEMS.map((item) => (
