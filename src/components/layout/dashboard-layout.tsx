@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils/cn'
 import { useCouple, useProfile } from '@/lib/hooks'
 import { registerServiceWorker } from '@/lib/push-client'
 import { OnboardingTour } from '@/components/onboarding-tour'
+import { MoodModal } from '@/components/mood-modal'
 
 const NAV_ITEMS = [
   { key: 'home', href: '/dashboard', label: 'Дом', icon: '🏠' },
@@ -100,6 +101,8 @@ export function DashboardLayout({ children, user, couple }: DashboardLayoutProps
   const [pause, setPause] = useState<{ active: boolean; secondsLeft: number }>({ active: false, secondsLeft: 0 })
   const [pauseOpen, setPauseOpen] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [moodOpen, setMoodOpen] = useState(false)
+  const [myMood, setMyMood] = useState<{ emoji: string } | null>(null)
   const [toasts, setToasts] = useState<{ id: number; text: string }[]>([])
   const { data: profileData } = useProfile()
   const swrCouple = useCouple()
@@ -169,6 +172,18 @@ export function DashboardLayout({ children, user, couple }: DashboardLayoutProps
     await fetch('/api/notifications/read-all', { method: 'POST' })
     setNotif((p) => ({ items: p.items.map((i) => ({ ...i, read: true })), unread: 0 }))
   }
+
+  const loadMood = useCallback(() => {
+    fetch('/api/mood').then((r) => r.json()).then((m) => {
+      if (m && m.mine) setMyMood({ emoji: m.mine.emoji })
+    }).catch(() => {})
+  }, [])
+
+  useEffect(() => {
+    loadMood()
+    window.addEventListener('together:refresh', loadMood)
+    return () => window.removeEventListener('together:refresh', loadMood)
+  }, [loadMood])
 
   const openItem = async (n: NotificationItem) => {
     if (!n.read) {
@@ -247,6 +262,13 @@ export function DashboardLayout({ children, user, couple }: DashboardLayoutProps
         <button className="bell" aria-label="Уведомления" onClick={() => setNotifOpen(!notifOpen)}>
           🔔{notif.unread > 0 && <span className="bell-badge">{notif.unread > 9 ? '9+' : notif.unread}</span>}
         </button>
+
+        {/* НАСТРОЕНИЕ — быстрый тап с любой страницы */}
+        <button className="mood-fab" aria-label="Отметить настроение" title="Как ты?" onClick={() => setMoodOpen(true)}>
+          {myMood?.emoji ?? '🙂'}
+        </button>
+
+        {moodOpen && <MoodModal onClose={() => setMoodOpen(false)} onSaved={setMyMood} />}
 
         {notifOpen && (
           <div className="bell-panel">
