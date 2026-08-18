@@ -5,29 +5,8 @@ import { useRouter } from 'next/navigation'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
 import { cn } from '@/lib/utils/cn'
 import { toast } from '@/lib/toast'
-import { timeAgo } from '@/lib/time'
 
-const MOODS = [
-  { emoji: '😄', text: 'Всё супер' },
-  { emoji: '🙂', text: 'Нормально' },
-  { emoji: '😐', text: 'Спокойно' },
-  { emoji: '🥺', text: 'Мне грустно' },
-  { emoji: '😰', text: 'Тревожусь' },
-  { emoji: '😤', text: 'Раздражён' },
-]
 const SCORE: Record<string, number> = { '😄': 5, '🙂': 4, '😐': 3, '🥺': 2, '😰': 2, '😤': 1 }
-
-interface Signal {
-  id: string
-  emoji: string
-  meaning: string
-  suggestedReply: string
-}
-
-interface SignalStatus {
-  lastSent: { signalId: string; emoji: string; meaning: string; at: string; answered: boolean } | null
-  incoming: { signalId: string; emoji: string; meaning: string; suggestedReply: string; at: string } | null
-}
 
 interface PulseData {
   checkins: Array<{
@@ -60,7 +39,6 @@ interface Wish { id: string; title: string; link: string | null; status: string;
 const SECTIONS = [
   { key: 'mood', label: 'Настроение', emoji: '😄' },
   { key: 'partner-now', label: 'Сейчас', emoji: '💞' },
-  { key: 'signals', label: 'Сигналы', emoji: '🤗' },
   { key: 'warmth', label: 'Тепло', emoji: '💌' },
   { key: 'pulse', label: 'Пульс', emoji: '🫀' },
   { key: 'challenges', label: 'Ритуалы', emoji: '🕊️' },
@@ -72,11 +50,6 @@ export default function DailyPage() {
   const [name, setName] = useState('')
   const [myMood, setMyMood] = useState<{ emoji: string; text: string | null } | null>(null)
   const [partner, setPartner] = useState<{ name: string; mood: { emoji: string; text: string | null; at: string } | null } | null>(null)
-  const [signals, setSignals] = useState<Signal[]>([])
-  const [signalStatus, setSignalStatus] = useState<SignalStatus>({ lastSent: null, incoming: null })
-  const [confirmSignal, setConfirmSignal] = useState<Signal | null>(null)
-  const [signalSent, setSignalSent] = useState<string | null>(null)
-  const [saved, setSaved] = useState(false)
 
   const [pulse, setPulse] = useState<PulseData | null>(null)
   const [closeness, setCloseness] = useState(5)
@@ -113,40 +86,29 @@ export default function DailyPage() {
 
   const load = useCallback(() => {
     Promise.all([
-      fetch('/api/mood').then(r => r.json()),
-      fetch('/api/user/profile').then(r => r.json()),
-      fetch('/api/dashboard').then(r => r.json()),
-      fetch('/api/signals').then(r => r.json()).catch(() => ({ signals: [], lastSent: null, incoming: null })),
+      fetch('/api/mood').then(r => r.json()).catch(() => ({ mine: null, partner: null })),
+      fetch('/api/user/profile').then(r => r.json()).catch(() => ({})),
+      fetch('/api/dashboard').then(r => r.json()).catch(() => ({})),
       fetch('/api/pulse').then(r => r.json()).catch(() => ({ checkins: [] })),
       fetch('/api/challenges').then(r => r.json()).catch(() => ({ challenges: [] })),
       fetch('/api/warmth?limit=3').then(r => r.json()).catch(() => ({ entries: [] })),
       fetch('/api/rituals').then(r => r.json()).catch(() => ({ items: [] })),
-    ]).then(([m, p, d, sig, pul, ch, wm, rt]) => {
+    ]).then(([m, p, d, pul, ch, wm, rt]) => {
       setMyMood(m.mine ?? null)
       setPartner({ name: p?.couple?.partnerName ?? 'Партнёр', mood: m.partner ? { ...m.partner, at: m.partner.at } : null })
       setName(d?.user?.name?.split(' ')[0] ?? '')
-      setSignals(sig?.signals ?? [])
-      setSignalStatus({ lastSent: sig?.lastSent ?? null, incoming: sig?.incoming ?? null })
       setPulse(pul)
       setChallenges(ch?.challenges ?? [])
       setWarmth(wm?.entries ?? [])
       setRituals(rt?.items ?? [])
     }).catch(() => {})
   }, [])
-  useEffect(() => { load() }, [load])
-
   useEffect(() => {
-    const poll = () => {
-      fetch('/api/signals').then(r => r.json()).then(d => {
-        if (!d) return
-        setSignals(d.signals ?? [])
-        setSignalStatus({ lastSent: d.lastSent ?? null, incoming: d.incoming ?? null })
-      }).catch(() => {})
-    }
-    poll()
-    const t = setInterval(poll, 8000)
-    return () => clearInterval(t)
-  }, [])
+    load()
+    const refresh = () => load()
+    window.addEventListener('together:refresh', refresh)
+    return () => window.removeEventListener('together:refresh', refresh)
+  }, [load])
 
   useEffect(() => {
     if (partnerTab === 'mood') {
@@ -160,49 +122,9 @@ export default function DailyPage() {
     }
   }, [partnerTab])
 
-  async function tap(m: { emoji: string; text: string }) {
-    setMyMood(m); setSaved(false)
-    await fetch('/api/mood', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ emoji: m.emoji, text: m.text }) })
-    setSaved(true)
-    toast('Настроение записано')
-    window.dispatchEvent(new Event('together:refresh'))
-  }
-
   async function remind() {
     await fetch('/api/notifications/remind-mood', { method: 'POST' }).catch(() => {})
     alert('Напоминание отправлено 💜')
-  }
-
-  const respondToSignal = (inc: NonNullable<SignalStatus['incoming']>) => {
-    fetch(`/api/signals/${inc.signalId}/ack`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'accept' }),
-    }).catch(() => {})
-    setSignalStatus(p => ({ ...p, incoming: null }))
-    window.dispatchEvent(new Event('together:refresh'))
-    router.push(inc.suggestedReply ? `/dashboard/ai?reply=${encodeURIComponent(inc.suggestedReply)}` : '/dashboard/ai')
-  }
-
-  const dismissIncoming = () => {
-    const inc = signalStatus.incoming
-    if (!inc) return
-    fetch(`/api/signals/${inc.signalId}/ack`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'later' }),
-    }).catch(() => {})
-    setSignalStatus(p => ({ ...p, incoming: null }))
-    window.dispatchEvent(new Event('together:refresh'))
-  }
-
-  async function sendSignal(s: Signal) {
-    const r = await fetch(`/api/signals/${s.id}/send`, { method: 'POST' }).catch(() => null)
-    setConfirmSignal(null)
-    if (r?.ok) toast('Сигнал отправлен партнёру 🤗')
-    setSignalSent(s.id)
-    window.dispatchEvent(new Event('together:refresh'))
-    setTimeout(() => setSignalSent(null), 3000)
   }
 
   async function submitPulse() {
@@ -380,20 +302,20 @@ export default function DailyPage() {
         ))}
       </div>
 
-      {/* 1 · Настроение — один тап */}
+      {/* 1 · Настроение — статус-карточка */}
       <div id="mood" style={{ scrollMarginTop: 80 }}>
         <div className="k">Настроение</div>
-        <div className="cd static mood-hero">
-          <div className="mood-q">Как ты?</div>
-          <div className="mood-row">
-            {MOODS.map(m => (
-              <button key={m.emoji} className={`mood-big ${myMood?.emoji === m.emoji ? 'sel' : ''}`}
-                onClick={() => tap(m)} aria-label={m.text}>
-                <i>{m.emoji}</i><b>{m.text}</b>
-              </button>
-            ))}
+        <div className="cd static">
+          <div className="cd-r">
+            <div className="cd-ic" style={{ fontSize: 24 }}>{myMood?.emoji ?? '🙂'}</div>
+            <div className="cd-t">
+              <b>Моё сегодня: {myMood?.emoji ?? 'ещё не отмечено'}</b>
+              <span>{myMood?.text ? myMood.text : 'Один тап — и партнёр увидит'}</span>
+            </div>
+            <button className="btn btn-s btn-sm" onClick={() => window.dispatchEvent(new CustomEvent('together:open', { detail: { type: 'mood' } }))}>
+              изменить
+            </button>
           </div>
-          <div className="autosave-hint">{saved ? '✓ Записано. Партнёр увидит.' : '💜 Один тап — и записано'}</div>
         </div>
       </div>
 
@@ -422,74 +344,6 @@ export default function DailyPage() {
           )}
         </div>
       </div>
-
-      {/* 3 · Тихий сигнал — полный */}
-      <div id="signals" style={{ scrollMarginTop: 80 }}>
-        <div className="k">Тихий сигнал</div>
-        <div className="cd static">
-          <div className="dim" style={{ fontSize: 12, marginBottom: 12 }}>Один тап — и партнёр поймёт, что вам нужно. Без слов.</div>
-
-          {signalStatus.incoming && (
-            <div className="signal-incoming" style={{ marginBottom: 12 }}>
-              <div className="cd-r">
-                <div className="cd-ic" style={{ fontSize: 22 }}>{signalStatus.incoming.emoji}</div>
-                <div className="cd-t">
-                  <b>{partnerName} просит поддержки</b>
-                  <span>Сигнал «{signalStatus.incoming.meaning}» · {timeAgo(signalStatus.incoming.at)}</span>
-                </div>
-              </div>
-              <div style={{ display: 'flex', gap: 8, marginTop: 10, flexWrap: 'wrap' }}>
-                <button className="btn btn-p btn-sm" onClick={() => respondToSignal(signalStatus.incoming!)}>Ответить мягко</button>
-                <button className="btn btn-s btn-sm" onClick={dismissIncoming}>Сейчас не могу</button>
-              </div>
-            </div>
-          )}
-
-          {signals.length > 0 ? (
-            <div className="signal-row">
-              {signals.map(s => {
-                const status = signalStatus.lastSent?.signalId === s.id
-                  ? (signalStatus.lastSent.answered ? 'confirmed' : 'sent')
-                  : null
-                return (
-                  <button key={s.id} className={cn('signal-btn', status && (status === 'sent' ? 'sent' : 'confirmed'))}
-                    onClick={() => setConfirmSignal(s)} title={s.meaning}>
-                    <span>{s.emoji}</span>
-                    <b>{s.meaning}</b>
-                    <i className="small">{partnerName ? `${partnerName} увидит: «${s.suggestedReply}»` : s.suggestedReply}</i>
-                    {status === 'sent' && <span className="signal-ok">⏳</span>}
-                    {status === 'confirmed' && <span className="signal-ok">🤍</span>}
-                  </button>
-                )
-              })}
-            </div>
-          ) : (
-            <div className="dim" style={{ fontSize: 13 }}>Партнёра пока нет — сигналы появятся, когда вы соединитесь.</div>
-          )}
-
-          {signalStatus.lastSent && (
-            <div className="signal-status" style={{ marginTop: 12 }}>
-              {signalStatus.lastSent.answered
-                ? `🤍 ${partnerName} откликнулся(ась) · ${timeAgo(signalStatus.lastSent.at)}`
-                : `⏳ Отправлено · ждём отклика · ${timeAgo(signalStatus.lastSent.at)}`}
-            </div>
-          )}
-          <button className="link-btn" onClick={() => router.push('/dashboard/settings#signals')} style={{ marginTop: 8 }}>Настроить свои сигналы</button>
-        </div>
-      </div>
-
-      {/* Подтверждение сигнала */}
-      {confirmSignal && (
-        <div className="modal active" onClick={e => e.target === e.currentTarget && setConfirmSignal(null)}>
-          <div className="modal-c" style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: 44 }}>{confirmSignal.emoji}</div>
-            <h3 style={{ margin: '8px 0 6px' }}>Отправить «{confirmSignal.meaning}»?</h3>
-            <p className="dim" style={{ fontSize: 13 }}>{partnerName} получит уведомление с сигналом и подсказкой, как ответить мягко.</p>
-            <button className="btn btn-p btn-w" style={{ marginTop: 14 }} onClick={() => sendSignal(confirmSignal)}>Отправить</button>
-            <button className="btn btn-s btn-w" style={{ marginTop: 8 }} onClick={() => setConfirmSignal(null)}>Отмена</button>
-          </div>
-        </div>
-      )}
 
       {/* 4 · Банк тепла */}
       <div id="warmth" style={{ scrollMarginTop: 80 }}>

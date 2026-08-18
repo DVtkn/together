@@ -233,7 +233,7 @@ export default function DashboardPage() {
       actions.push({ key: 'challenge', emoji: '🌙', title: 'Челлендж недели', sub: challenge.title, href: '/dashboard/daily#challenges', cta: 'Отметить' })
     }
     if (signalStatus.incoming) {
-      actions.push({ key: 'signal', emoji: '🤗', title: 'Партнёр просит поддержки', sub: 'Тихий сигнал ждёт отклика', href: '/dashboard/daily#signals', cta: 'Ответить' })
+      actions.push({ key: 'signal', emoji: '🕊️', title: `${partnerName} просит поддержки`, sub: 'Тихий сигнал ждёт отклика', href: '', cta: 'Ответить' })
     }
     if (care) {
       actions.push({ key: 'care', emoji: '🌦', title: 'Прогноз заботы', sub: care.text, href: '/dashboard/date', cta: care.cta })
@@ -294,8 +294,13 @@ export default function DashboardPage() {
                   <b>{a.title}</b>
                   <span>{a.sub}</span>
                 </div>
-                {a.key !== 'dailyq' && (
+                {a.key !== 'dailyq' && a.key !== 'signal' && (
                   <Link href={a.href} className="btn btn-secondary btn-sm">{a.cta ?? 'Открыть'}</Link>
+                )}
+                {a.key === 'signal' && (
+                  <button className="btn btn-secondary btn-sm" onClick={() => window.dispatchEvent(new CustomEvent('together:open', { detail: { type: 'signal' } }))}>
+                    Ответить
+                  </button>
                 )}
               </div>
               {a.key === 'dailyq' && (
