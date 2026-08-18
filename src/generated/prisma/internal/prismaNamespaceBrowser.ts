@@ -136,7 +136,7 @@ export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof User
 
 export const AIConversationScalarFieldEnum = {
   id: 'id',
-  coupleId: 'coupleId',
+  userId: 'userId',
   title: 'title',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

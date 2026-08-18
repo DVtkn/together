@@ -286,6 +286,7 @@ export type UserWhereInput = {
   emailEnabled?: Prisma.BoolFilter<"User"> | boolean
   weeklyPulseReminder?: Prisma.BoolFilter<"User"> | boolean
   challengeReminder?: Prisma.BoolFilter<"User"> | boolean
+  AIConversation?: Prisma.AIConversationListRelationFilter
   AIMessage?: Prisma.AIMessageListRelationFilter
   AssessmentResponse?: Prisma.AssessmentResponseListRelationFilter
   AstroProfile?: Prisma.XOR<Prisma.AstroProfileNullableScalarRelationFilter, Prisma.AstroProfileWhereInput> | null
@@ -333,6 +334,7 @@ export type UserOrderByWithRelationInput = {
   emailEnabled?: Prisma.SortOrder
   weeklyPulseReminder?: Prisma.SortOrder
   challengeReminder?: Prisma.SortOrder
+  AIConversation?: Prisma.AIConversationOrderByRelationAggregateInput
   AIMessage?: Prisma.AIMessageOrderByRelationAggregateInput
   AssessmentResponse?: Prisma.AssessmentResponseOrderByRelationAggregateInput
   AstroProfile?: Prisma.AstroProfileOrderByWithRelationInput
@@ -383,6 +385,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   emailEnabled?: Prisma.BoolFilter<"User"> | boolean
   weeklyPulseReminder?: Prisma.BoolFilter<"User"> | boolean
   challengeReminder?: Prisma.BoolFilter<"User"> | boolean
+  AIConversation?: Prisma.AIConversationListRelationFilter
   AIMessage?: Prisma.AIMessageListRelationFilter
   AssessmentResponse?: Prisma.AssessmentResponseListRelationFilter
   AstroProfile?: Prisma.XOR<Prisma.AstroProfileNullableScalarRelationFilter, Prisma.AstroProfileWhereInput> | null
@@ -476,6 +479,7 @@ export type UserCreateInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
@@ -523,6 +527,7 @@ export type UserUncheckedCreateInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationUncheckedCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
@@ -566,6 +571,7 @@ export type UserUpdateInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
@@ -613,6 +619,7 @@ export type UserUncheckedUpdateInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUncheckedUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -763,14 +770,14 @@ export type UserMinOrderByAggregateInput = {
   challengeReminder?: Prisma.SortOrder
 }
 
-export type UserNullableScalarRelationFilter = {
-  is?: Prisma.UserWhereInput | null
-  isNot?: Prisma.UserWhereInput | null
-}
-
 export type UserScalarRelationFilter = {
   is?: Prisma.UserWhereInput
   isNot?: Prisma.UserWhereInput
+}
+
+export type UserNullableScalarRelationFilter = {
+  is?: Prisma.UserWhereInput | null
+  isNot?: Prisma.UserWhereInput | null
 }
 
 export type UserListRelationFilter = {
@@ -801,6 +808,20 @@ export type DateTimeFieldUpdateOperationsInput = {
 
 export type BoolFieldUpdateOperationsInput = {
   set?: boolean
+}
+
+export type UserCreateNestedOneWithoutAIConversationInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAIConversationInput, Prisma.UserUncheckedCreateWithoutAIConversationInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAIConversationInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutAIConversationNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAIConversationInput, Prisma.UserUncheckedCreateWithoutAIConversationInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAIConversationInput
+  upsert?: Prisma.UserUpsertWithoutAIConversationInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAIConversationInput, Prisma.UserUpdateWithoutAIConversationInput>, Prisma.UserUncheckedUpdateWithoutAIConversationInput>
 }
 
 export type UserCreateNestedOneWithoutAIMessageInput = {
@@ -1249,6 +1270,202 @@ export type UserUpdateOneRequiredWithoutWishlistItemNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutWishlistItemInput, Prisma.UserUpdateWithoutWishlistItemInput>, Prisma.UserUncheckedUpdateWithoutWishlistItemInput>
 }
 
+export type UserCreateWithoutAIConversationInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryCreateNestedManyWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingCreateNestedManyWithoutUserInput
+  City?: Prisma.CityCreateNestedOneWithoutUserInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleCreateNestedOneWithoutUser_User_coupleIdToCoupleInput
+  WishlistItem?: Prisma.WishlistItemCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutAIConversationInput = {
+  id?: string
+  username: string
+  email?: string | null
+  name?: string | null
+  passwordHash?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  dateOfBirth?: Date | string | null
+  zodiacSign?: string | null
+  chineseZodiac?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  coupleId?: string | null
+  cityId?: string | null
+  pushEnabled?: boolean
+  emailEnabled?: boolean
+  weeklyPulseReminder?: boolean
+  challengeReminder?: boolean
+  AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
+  AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
+  Bouquet?: Prisma.BouquetUncheckedCreateNestedManyWithoutUserInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedCreateNestedManyWithoutUserInput
+  ConsentLog?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerAIdToUserInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedCreateNestedOneWithoutUser_Couple_partnerBIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_fromUserIdToUserInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedCreateNestedManyWithoutUser_CoupleLinkRequest_toUserIdToUserInput
+  MoodStatus?: Prisma.MoodStatusUncheckedCreateNestedOneWithoutUserInput
+  MoodEntry?: Prisma.MoodEntryUncheckedCreateNestedManyWithoutUserInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedCreateNestedManyWithoutUserInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  SmallCraving?: Prisma.SmallCravingUncheckedCreateNestedManyWithoutUserInput
+  WishlistItem?: Prisma.WishlistItemUncheckedCreateNestedManyWithoutUserInput
+  Flower?: Prisma.FlowerUncheckedCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedCreateNestedManyWithoutUserInput
+  Memory?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedCreateNestedManyWithoutUserInput
+  LetterFrom?: Prisma.LetterUncheckedCreateNestedManyWithoutSenderInput
+  LetterTo?: Prisma.LetterUncheckedCreateNestedManyWithoutRecipientInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutAIConversationInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAIConversationInput, Prisma.UserUncheckedCreateWithoutAIConversationInput>
+}
+
+export type UserUpsertWithoutAIConversationInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAIConversationInput, Prisma.UserUncheckedUpdateWithoutAIConversationInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAIConversationInput, Prisma.UserUncheckedCreateWithoutAIConversationInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAIConversationInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAIConversationInput, Prisma.UserUncheckedUpdateWithoutAIConversationInput>
+}
+
+export type UserUpdateWithoutAIConversationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUpdateManyWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUpdateManyWithoutUserNestedInput
+  City?: Prisma.CityUpdateOneWithoutUserNestedInput
+  Couple_User_coupleIdToCouple?: Prisma.CoupleUpdateOneWithoutUser_User_coupleIdToCoupleNestedInput
+  WishlistItem?: Prisma.WishlistItemUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAIConversationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  zodiacSign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chineseZodiac?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  coupleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
+  AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
+  AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
+  Bouquet?: Prisma.BouquetUncheckedUpdateManyWithoutUserNestedInput
+  ChallengeCompletion?: Prisma.ChallengeCompletionUncheckedUpdateManyWithoutUserNestedInput
+  ConsentLog?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  Couple_Couple_partnerAIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerAIdToUserNestedInput
+  Couple_Couple_partnerBIdToUser?: Prisma.CoupleUncheckedUpdateOneWithoutUser_Couple_partnerBIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_fromUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_fromUserIdToUserNestedInput
+  CoupleLinkRequest_CoupleLinkRequest_toUserIdToUser?: Prisma.CoupleLinkRequestUncheckedUpdateManyWithoutUser_CoupleLinkRequest_toUserIdToUserNestedInput
+  MoodStatus?: Prisma.MoodStatusUncheckedUpdateOneWithoutUserNestedInput
+  MoodEntry?: Prisma.MoodEntryUncheckedUpdateManyWithoutUserNestedInput
+  PulseCheckin?: Prisma.PulseCheckinUncheckedUpdateManyWithoutUserNestedInput
+  PushSubscription?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  SmallCraving?: Prisma.SmallCravingUncheckedUpdateManyWithoutUserNestedInput
+  WishlistItem?: Prisma.WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+  Flower?: Prisma.FlowerUncheckedUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  CoupleMessage?: Prisma.CoupleMessageUncheckedUpdateManyWithoutUserNestedInput
+  Memory?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
+  RitualCompletion?: Prisma.RitualCompletionUncheckedUpdateManyWithoutUserNestedInput
+  LetterFrom?: Prisma.LetterUncheckedUpdateManyWithoutSenderNestedInput
+  LetterTo?: Prisma.LetterUncheckedUpdateManyWithoutRecipientNestedInput
+  WarmthEntry?: Prisma.WarmthEntryUncheckedUpdateManyWithoutUserNestedInput
+}
+
 export type UserCreateWithoutAIMessageInput = {
   id?: string
   username: string
@@ -1266,6 +1483,7 @@ export type UserCreateWithoutAIMessageInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
   Bouquet?: Prisma.BouquetCreateNestedManyWithoutUserInput
@@ -1312,6 +1530,7 @@ export type UserUncheckedCreateWithoutAIMessageInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationUncheckedCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
   Bouquet?: Prisma.BouquetUncheckedCreateNestedManyWithoutUserInput
@@ -1370,6 +1589,7 @@ export type UserUpdateWithoutAIMessageInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
   Bouquet?: Prisma.BouquetUpdateManyWithoutUserNestedInput
@@ -1416,6 +1636,7 @@ export type UserUncheckedUpdateWithoutAIMessageInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUncheckedUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
   Bouquet?: Prisma.BouquetUncheckedUpdateManyWithoutUserNestedInput
@@ -1458,6 +1679,7 @@ export type UserCreateWithoutAssessmentResponseInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
   Bouquet?: Prisma.BouquetCreateNestedManyWithoutUserInput
@@ -1504,6 +1726,7 @@ export type UserUncheckedCreateWithoutAssessmentResponseInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationUncheckedCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
   Bouquet?: Prisma.BouquetUncheckedCreateNestedManyWithoutUserInput
@@ -1562,6 +1785,7 @@ export type UserUpdateWithoutAssessmentResponseInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
   Bouquet?: Prisma.BouquetUpdateManyWithoutUserNestedInput
@@ -1608,6 +1832,7 @@ export type UserUncheckedUpdateWithoutAssessmentResponseInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUncheckedUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
   Bouquet?: Prisma.BouquetUncheckedUpdateManyWithoutUserNestedInput
@@ -1650,6 +1875,7 @@ export type UserCreateWithoutAstroProfileInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
   Bouquet?: Prisma.BouquetCreateNestedManyWithoutUserInput
@@ -1696,6 +1922,7 @@ export type UserUncheckedCreateWithoutAstroProfileInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationUncheckedCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
   Bouquet?: Prisma.BouquetUncheckedCreateNestedManyWithoutUserInput
@@ -1754,6 +1981,7 @@ export type UserUpdateWithoutAstroProfileInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
   Bouquet?: Prisma.BouquetUpdateManyWithoutUserNestedInput
@@ -1800,6 +2028,7 @@ export type UserUncheckedUpdateWithoutAstroProfileInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUncheckedUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
   Bouquet?: Prisma.BouquetUncheckedUpdateManyWithoutUserNestedInput
@@ -1842,6 +2071,7 @@ export type UserCreateWithoutBouquetInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
@@ -1888,6 +2118,7 @@ export type UserUncheckedCreateWithoutBouquetInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationUncheckedCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
@@ -1946,6 +2177,7 @@ export type UserUpdateWithoutBouquetInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
@@ -1992,6 +2224,7 @@ export type UserUncheckedUpdateWithoutBouquetInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUncheckedUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -2034,6 +2267,7 @@ export type UserCreateWithoutChallengeCompletionInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
@@ -2080,6 +2314,7 @@ export type UserUncheckedCreateWithoutChallengeCompletionInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationUncheckedCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
@@ -2138,6 +2373,7 @@ export type UserUpdateWithoutChallengeCompletionInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
@@ -2184,6 +2420,7 @@ export type UserUncheckedUpdateWithoutChallengeCompletionInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUncheckedUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -2226,6 +2463,7 @@ export type UserCreateWithoutMoodEntryInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
@@ -2272,6 +2510,7 @@ export type UserUncheckedCreateWithoutMoodEntryInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationUncheckedCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
@@ -2330,6 +2569,7 @@ export type UserUpdateWithoutMoodEntryInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
@@ -2376,6 +2616,7 @@ export type UserUncheckedUpdateWithoutMoodEntryInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUncheckedUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -2418,6 +2659,7 @@ export type UserCreateWithoutNotificationInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
@@ -2464,6 +2706,7 @@ export type UserUncheckedCreateWithoutNotificationInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationUncheckedCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
@@ -2522,6 +2765,7 @@ export type UserUpdateWithoutNotificationInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
@@ -2568,6 +2812,7 @@ export type UserUncheckedUpdateWithoutNotificationInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUncheckedUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -2610,6 +2855,7 @@ export type UserCreateWithoutCoupleMessageInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
@@ -2656,6 +2902,7 @@ export type UserUncheckedCreateWithoutCoupleMessageInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationUncheckedCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
@@ -2714,6 +2961,7 @@ export type UserUpdateWithoutCoupleMessageInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
@@ -2760,6 +3008,7 @@ export type UserUncheckedUpdateWithoutCoupleMessageInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUncheckedUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -2802,6 +3051,7 @@ export type UserCreateWithoutWarmthEntryInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
@@ -2848,6 +3098,7 @@ export type UserUncheckedCreateWithoutWarmthEntryInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationUncheckedCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
@@ -2906,6 +3157,7 @@ export type UserUpdateWithoutWarmthEntryInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
@@ -2952,6 +3204,7 @@ export type UserUncheckedUpdateWithoutWarmthEntryInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUncheckedUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -2994,6 +3247,7 @@ export type UserCreateWithoutMemoryInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
@@ -3040,6 +3294,7 @@ export type UserUncheckedCreateWithoutMemoryInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationUncheckedCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
@@ -3098,6 +3353,7 @@ export type UserUpdateWithoutMemoryInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
@@ -3144,6 +3400,7 @@ export type UserUncheckedUpdateWithoutMemoryInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUncheckedUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -3186,6 +3443,7 @@ export type UserCreateWithoutRitualCompletionInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
@@ -3232,6 +3490,7 @@ export type UserUncheckedCreateWithoutRitualCompletionInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationUncheckedCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
@@ -3290,6 +3549,7 @@ export type UserUpdateWithoutRitualCompletionInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
@@ -3336,6 +3596,7 @@ export type UserUncheckedUpdateWithoutRitualCompletionInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUncheckedUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -3378,6 +3639,7 @@ export type UserCreateWithoutLetterFromInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
@@ -3424,6 +3686,7 @@ export type UserUncheckedCreateWithoutLetterFromInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationUncheckedCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
@@ -3471,6 +3734,7 @@ export type UserCreateWithoutLetterToInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
@@ -3517,6 +3781,7 @@ export type UserUncheckedCreateWithoutLetterToInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationUncheckedCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
@@ -3575,6 +3840,7 @@ export type UserUpdateWithoutLetterFromInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
@@ -3621,6 +3887,7 @@ export type UserUncheckedUpdateWithoutLetterFromInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUncheckedUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -3674,6 +3941,7 @@ export type UserUpdateWithoutLetterToInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
@@ -3720,6 +3988,7 @@ export type UserUncheckedUpdateWithoutLetterToInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUncheckedUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -3762,6 +4031,7 @@ export type UserCreateWithoutCityInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
@@ -3807,6 +4077,7 @@ export type UserUncheckedCreateWithoutCityInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationUncheckedCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
@@ -3900,6 +4171,7 @@ export type UserCreateWithoutConsentLogInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
@@ -3946,6 +4218,7 @@ export type UserUncheckedCreateWithoutConsentLogInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationUncheckedCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
@@ -4004,6 +4277,7 @@ export type UserUpdateWithoutConsentLogInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
@@ -4050,6 +4324,7 @@ export type UserUncheckedUpdateWithoutConsentLogInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUncheckedUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -4092,6 +4367,7 @@ export type UserCreateWithoutCouple_Couple_partnerAIdToUserInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
@@ -4138,6 +4414,7 @@ export type UserUncheckedCreateWithoutCouple_Couple_partnerAIdToUserInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationUncheckedCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
@@ -4185,6 +4462,7 @@ export type UserCreateWithoutCouple_Couple_partnerBIdToUserInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
@@ -4231,6 +4509,7 @@ export type UserUncheckedCreateWithoutCouple_Couple_partnerBIdToUserInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationUncheckedCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
@@ -4278,6 +4557,7 @@ export type UserCreateWithoutCouple_User_coupleIdToCoupleInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
@@ -4323,6 +4603,7 @@ export type UserUncheckedCreateWithoutCouple_User_coupleIdToCoupleInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationUncheckedCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
@@ -4387,6 +4668,7 @@ export type UserUpdateWithoutCouple_Couple_partnerAIdToUserInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
@@ -4433,6 +4715,7 @@ export type UserUncheckedUpdateWithoutCouple_Couple_partnerAIdToUserInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUncheckedUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -4486,6 +4769,7 @@ export type UserUpdateWithoutCouple_Couple_partnerBIdToUserInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
@@ -4532,6 +4816,7 @@ export type UserUncheckedUpdateWithoutCouple_Couple_partnerBIdToUserInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUncheckedUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -4590,6 +4875,7 @@ export type UserCreateWithoutCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUse
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
@@ -4636,6 +4922,7 @@ export type UserUncheckedCreateWithoutCoupleLinkRequest_CoupleLinkRequest_fromUs
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationUncheckedCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
@@ -4683,6 +4970,7 @@ export type UserCreateWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserI
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
@@ -4729,6 +5017,7 @@ export type UserUncheckedCreateWithoutCoupleLinkRequest_CoupleLinkRequest_toUser
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationUncheckedCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
@@ -4787,6 +5076,7 @@ export type UserUpdateWithoutCoupleLinkRequest_CoupleLinkRequest_fromUserIdToUse
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
@@ -4833,6 +5123,7 @@ export type UserUncheckedUpdateWithoutCoupleLinkRequest_CoupleLinkRequest_fromUs
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUncheckedUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -4886,6 +5177,7 @@ export type UserUpdateWithoutCoupleLinkRequest_CoupleLinkRequest_toUserIdToUserI
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
@@ -4932,6 +5224,7 @@ export type UserUncheckedUpdateWithoutCoupleLinkRequest_CoupleLinkRequest_toUser
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUncheckedUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -4974,6 +5267,7 @@ export type UserCreateWithoutFlowerInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
@@ -5020,6 +5314,7 @@ export type UserUncheckedCreateWithoutFlowerInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationUncheckedCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
@@ -5083,6 +5378,7 @@ export type UserCreateWithoutMoodStatusInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
@@ -5129,6 +5425,7 @@ export type UserUncheckedCreateWithoutMoodStatusInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationUncheckedCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
@@ -5187,6 +5484,7 @@ export type UserUpdateWithoutMoodStatusInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
@@ -5233,6 +5531,7 @@ export type UserUncheckedUpdateWithoutMoodStatusInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUncheckedUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -5275,6 +5574,7 @@ export type UserCreateWithoutPulseCheckinInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
@@ -5321,6 +5621,7 @@ export type UserUncheckedCreateWithoutPulseCheckinInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationUncheckedCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
@@ -5379,6 +5680,7 @@ export type UserUpdateWithoutPulseCheckinInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
@@ -5425,6 +5727,7 @@ export type UserUncheckedUpdateWithoutPulseCheckinInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUncheckedUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -5467,6 +5770,7 @@ export type UserCreateWithoutPushSubscriptionInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
@@ -5513,6 +5817,7 @@ export type UserUncheckedCreateWithoutPushSubscriptionInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationUncheckedCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
@@ -5571,6 +5876,7 @@ export type UserUpdateWithoutPushSubscriptionInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
@@ -5617,6 +5923,7 @@ export type UserUncheckedUpdateWithoutPushSubscriptionInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUncheckedUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -5659,6 +5966,7 @@ export type UserCreateWithoutSmallCravingInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
@@ -5705,6 +6013,7 @@ export type UserUncheckedCreateWithoutSmallCravingInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationUncheckedCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
@@ -5763,6 +6072,7 @@ export type UserUpdateWithoutSmallCravingInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
@@ -5809,6 +6119,7 @@ export type UserUncheckedUpdateWithoutSmallCravingInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUncheckedUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -5851,6 +6162,7 @@ export type UserCreateWithoutWishlistItemInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileCreateNestedOneWithoutUserInput
@@ -5897,6 +6209,7 @@ export type UserUncheckedCreateWithoutWishlistItemInput = {
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: Prisma.AIConversationUncheckedCreateNestedManyWithoutUserInput
   AIMessage?: Prisma.AIMessageUncheckedCreateNestedManyWithoutUserInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedCreateNestedManyWithoutUserInput
   AstroProfile?: Prisma.AstroProfileUncheckedCreateNestedOneWithoutUserInput
@@ -5955,6 +6268,7 @@ export type UserUpdateWithoutWishlistItemInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
@@ -6001,6 +6315,7 @@ export type UserUncheckedUpdateWithoutWishlistItemInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUncheckedUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -6063,6 +6378,7 @@ export type UserUpdateWithoutCityInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
@@ -6108,6 +6424,7 @@ export type UserUncheckedUpdateWithoutCityInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUncheckedUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -6191,6 +6508,7 @@ export type UserUpdateWithoutCouple_User_coupleIdToCoupleInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
@@ -6236,6 +6554,7 @@ export type UserUncheckedUpdateWithoutCouple_User_coupleIdToCoupleInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUncheckedUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -6299,6 +6618,7 @@ export type UserUpdateWithoutFlowerInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUpdateOneWithoutUserNestedInput
@@ -6345,6 +6665,7 @@ export type UserUncheckedUpdateWithoutFlowerInput = {
   emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   weeklyPulseReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   challengeReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  AIConversation?: Prisma.AIConversationUncheckedUpdateManyWithoutUserNestedInput
   AIMessage?: Prisma.AIMessageUncheckedUpdateManyWithoutUserNestedInput
   AssessmentResponse?: Prisma.AssessmentResponseUncheckedUpdateManyWithoutUserNestedInput
   AstroProfile?: Prisma.AstroProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -6397,6 +6718,7 @@ export type UserUncheckedUpdateManyWithoutFlowerInput = {
  */
 
 export type UserCountOutputType = {
+  AIConversation: number
   AIMessage: number
   AssessmentResponse: number
   Bouquet: number
@@ -6420,6 +6742,7 @@ export type UserCountOutputType = {
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  AIConversation?: boolean | UserCountOutputTypeCountAIConversationArgs
   AIMessage?: boolean | UserCountOutputTypeCountAIMessageArgs
   AssessmentResponse?: boolean | UserCountOutputTypeCountAssessmentResponseArgs
   Bouquet?: boolean | UserCountOutputTypeCountBouquetArgs
@@ -6450,6 +6773,13 @@ export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
    * Select specific fields to fetch from the UserCountOutputType
    */
   select?: Prisma.UserCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountAIConversationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AIConversationWhereInput
 }
 
 /**
@@ -6612,6 +6942,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   emailEnabled?: boolean
   weeklyPulseReminder?: boolean
   challengeReminder?: boolean
+  AIConversation?: boolean | Prisma.User$AIConversationArgs<ExtArgs>
   AIMessage?: boolean | Prisma.User$AIMessageArgs<ExtArgs>
   AssessmentResponse?: boolean | Prisma.User$AssessmentResponseArgs<ExtArgs>
   AstroProfile?: boolean | Prisma.User$AstroProfileArgs<ExtArgs>
@@ -6710,6 +7041,7 @@ export type UserSelectScalar = {
 
 export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "username" | "email" | "name" | "passwordHash" | "image" | "emailVerified" | "dateOfBirth" | "zodiacSign" | "chineseZodiac" | "createdAt" | "updatedAt" | "coupleId" | "cityId" | "pushEnabled" | "emailEnabled" | "weeklyPulseReminder" | "challengeReminder", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  AIConversation?: boolean | Prisma.User$AIConversationArgs<ExtArgs>
   AIMessage?: boolean | Prisma.User$AIMessageArgs<ExtArgs>
   AssessmentResponse?: boolean | Prisma.User$AssessmentResponseArgs<ExtArgs>
   AstroProfile?: boolean | Prisma.User$AstroProfileArgs<ExtArgs>
@@ -6750,6 +7082,7 @@ export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
   objects: {
+    AIConversation: Prisma.$AIConversationPayload<ExtArgs>[]
     AIMessage: Prisma.$AIMessagePayload<ExtArgs>[]
     AssessmentResponse: Prisma.$AssessmentResponsePayload<ExtArgs>[]
     AstroProfile: Prisma.$AstroProfilePayload<ExtArgs> | null
@@ -7190,6 +7523,7 @@ readonly fields: UserFieldRefs;
  */
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  AIConversation<T extends Prisma.User$AIConversationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$AIConversationArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AIConversationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   AIMessage<T extends Prisma.User$AIMessageArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$AIMessageArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AIMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   AssessmentResponse<T extends Prisma.User$AssessmentResponseArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$AssessmentResponseArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssessmentResponsePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   AstroProfile<T extends Prisma.User$AstroProfileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$AstroProfileArgs<ExtArgs>>): Prisma.Prisma__AstroProfileClient<runtime.Types.Result.GetResult<Prisma.$AstroProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
@@ -7661,6 +7995,30 @@ export type UserDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Limit how many Users to delete.
    */
   limit?: number
+}
+
+/**
+ * User.AIConversation
+ */
+export type User$AIConversationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AIConversation
+   */
+  select?: Prisma.AIConversationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AIConversation
+   */
+  omit?: Prisma.AIConversationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AIConversationInclude<ExtArgs> | null
+  where?: Prisma.AIConversationWhereInput
+  orderBy?: Prisma.AIConversationOrderByWithRelationInput | Prisma.AIConversationOrderByWithRelationInput[]
+  cursor?: Prisma.AIConversationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AIConversationScalarFieldEnum | Prisma.AIConversationScalarFieldEnum[]
 }
 
 /**
