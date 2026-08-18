@@ -908,6 +908,10 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 .mood-fab{position:fixed;top:calc(64px + var(--safe-t));right:12px;z-index:119;width:44px;height:44px;border-radius:50%;background:var(--card);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;transition:.15s}
 .mood-fab:hover{border-color:var(--pri)}
 @media(min-width:1024px){.mood-fab{top:124px;right:20px}}
+.sig-fab{position:fixed;top:calc(116px + var(--safe-t));right:12px;z-index:118;width:44px;height:44px;border-radius:50%;background:var(--card);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;transition:.15s}
+.sig-fab:hover{border-color:var(--pri)}
+.sig-badge{position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;padding:0 4px;border-radius:100px;background:var(--ok);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;line-height:1}
+@media(min-width:1024px){.sig-fab{top:176px;right:20px}}
 .autosave-hint{text-align:center;font-size:12px;color:var(--dim);margin-top:14px}
 .bell-item{display:flex;gap:10px;padding:12px 16px;cursor:pointer;border-bottom:1px solid var(--line);align-items:flex-start}
 .bell-item:last-child{border-bottom:none}
