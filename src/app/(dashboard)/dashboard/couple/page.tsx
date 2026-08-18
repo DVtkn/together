@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
 import { DECKS, IntimacyDeck } from '@/lib/decks'
 import { DIM_META } from '@/lib/report/dim-meta'
+import { toast } from '@/lib/toast'
 
 type Status = {
   couple: null | { id: string; status: string; partnerName: string | null; startedAt: string | null }
@@ -94,7 +95,7 @@ export default function CouplePage() {
     })
     const j = await r.json()
     if (!r.ok) setErr(j?.error ?? 'Не получилось отправить')
-    else { setOk('Инвайт отправлен. Ждём, пока партнёр примет.'); setLogin(''); load() }
+    else { setOk('Инвайт отправлен. Ждём, пока партнёр примет.'); setLogin(''); toast('Инвайт отправлен'); load() }
     setBusy(false)
     window.dispatchEvent(new Event('together:refresh'))
   }
@@ -105,12 +106,14 @@ export default function CouplePage() {
       method: 'PATCH', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ accept }),
     })
+    toast(accept ? 'Пара создана 💞' : 'Запрос отклонён')
     setBusy(false); load()
     window.dispatchEvent(new Event('together:refresh'))
   }
 
   async function cancel(id: string) {
     await fetch(`/api/couples/link/${id}`, { method: 'DELETE' })
+    toast('Инвайт отменён')
     load()
   }
 
@@ -244,7 +247,7 @@ export default function CouplePage() {
                 {an?.partnerPending ? 'Партнёр ещё не прошёл тесты. Как ответит — паспорт появится.' : 'Пройдите первые тесты вместе — совместимость, портрет и суперсила откроются здесь.'}
               </span>
               <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap' }}>
-                <Link href={s.assessments.find(a => !a.both) ? `/dashboard/assessments/${s.assessments.find(a => !a.both)!.key}` : '#tests'} className="btn btn-p">Пройти тест</Link>
+                <Link href={s.assessments.find(a => !a.both) ? `/dashboard/assessments/${s.assessments.find(a => !a.both)!.key}` : '#tests'} className="btn btn-primary">Пройти тест</Link>
                 <button className="btn btn-s" onClick={() => setTestsOpen(true)}>Смотреть тесты</button>
               </div>
             </div>
@@ -258,7 +261,7 @@ export default function CouplePage() {
               </div>
 
               {/* 3 · Точечные оси: вы vs партнёр */}
-              <div className="k">Как у вас дела</div>
+              <div className="k">Сильные стороны и зоны роста</div>
               <div className="cd static">
                 <div className="legend" style={{ marginTop: 0, marginBottom: 12 }}>
                   <span className="dima"><i />вы</span>
@@ -354,7 +357,7 @@ export default function CouplePage() {
                       <span>{advice}</span>
                     </div>
                   </div>
-                  <button className="btn btn-p btn-w" style={{ marginTop: 12 }} onClick={() => router.push('/dashboard/ai')}>Разобрать с Совой</button>
+                  <button className="btn btn-secondary btn-w" style={{ marginTop: 12 }} onClick={() => router.push('/dashboard/ai')}>Разобрать с Психологом</button>
                 </div>
               )}
             </>
@@ -362,7 +365,7 @@ export default function CouplePage() {
 
           {/* 5 · Тесты — свёрнуто */}
           <div className="k" id="tests">Опросники · {done}/{total}</div>
-          <div className="cd" onClick={() => setTestsOpen(o => !o)} style={{ cursor: 'pointer' }}>
+          <div className="cd card-action" onClick={() => setTestsOpen(o => !o)}>
             <div className="cd-r">
               <div className="cd-ic">🧪</div>
               <div className="cd-t">
@@ -378,10 +381,10 @@ export default function CouplePage() {
               <div className="assess-grid" style={{ marginTop: 12 }}>
                 {s.assessments.map(a => {
                   const statusMap: Record<string, string> = {
-                    both: 'оба ✓',
-                    me: 'вы ✓ · партнёр —',
-                    partner: 'партнёр ✓ · вы —',
-                    neither: 'не начат',
+                    both: 'Пройден вместе',
+                    me: 'Вы прошли · партнёр ещё нет',
+                    partner: 'Партнёр прошёл · вы ещё нет',
+                    neither: 'Не начат',
                   }
                   const statusKey = a.both ? 'both' : a.me ? 'me' : a.partner ? 'partner' : 'neither'
                   const statusText = statusMap[statusKey] || 'не начат'
@@ -399,7 +402,7 @@ export default function CouplePage() {
 
           {/* 6 · Синастрия компактно */}
           <div className="k">Синастрия</div>
-          <div className="cd" style={{ cursor: 'pointer', textDecoration: 'none' }} onClick={() => setSynOpen(o => !o)}>
+          <div className="cd card-action" onClick={() => setSynOpen(o => !o)}>
             <div className="cd-r">
               <div className="cd-ic">🔮</div>
               <div className="cd-t">

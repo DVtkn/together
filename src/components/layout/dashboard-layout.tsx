@@ -7,13 +7,14 @@ import { signOut } from 'next-auth/react'
 import { cn } from '@/lib/utils/cn'
 import { useCouple, useProfile } from '@/lib/hooks'
 import { registerServiceWorker } from '@/lib/push-client'
+import { OnboardingTour } from '@/components/onboarding-tour'
 
 const NAV_ITEMS = [
   { key: 'home', href: '/dashboard', label: 'Дом', icon: '🏠' },
-  { key: 'couple', href: '/dashboard/couple', label: 'Мы', icon: '💞' },
+  { key: 'couple', href: '/dashboard/couple', label: 'Пара', icon: '💞' },
   { key: 'date', href: '/dashboard/date', label: 'Свидание', icon: '📍' },
-  { key: 'daily', href: '/dashboard/daily', label: 'Будни', icon: '⚡' },
-  { key: 'ai', href: '/dashboard/ai', label: 'Сова', icon: '🦉' },
+  { key: 'daily', href: '/dashboard/daily', label: 'День', icon: '⚡' },
+  { key: 'ai', href: '/dashboard/ai', label: 'Психолог', icon: '🦉' },
 ]
 
 const GROUPS: Record<string, string[]> = {
@@ -98,17 +99,30 @@ export function DashboardLayout({ children, user, couple }: DashboardLayoutProps
   const [notifOpen, setNotifOpen] = useState(false)
   const [pause, setPause] = useState<{ active: boolean; secondsLeft: number }>({ active: false, secondsLeft: 0 })
   const [pauseOpen, setPauseOpen] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [toasts, setToasts] = useState<{ id: number; text: string }[]>([])
   const { data: profileData } = useProfile()
   const swrCouple = useCouple()
 
   useEffect(() => {
     registerServiceWorker()
+    const onToast = (e: Event) => {
+      const text = (e as CustomEvent<{ text: string }>).detail?.text
+      if (!text) return
+      const id = Date.now() + Math.random()
+      setToasts((p) => [...p, { id, text }])
+      setTimeout(() => setToasts((p) => p.filter((t) => t.id !== id)), 2500)
+    }
+    window.addEventListener('together:toast', onToast)
     const t = setInterval(() => {
       fetch('/api/pause').then(r => r.json()).then(p => {
         if (p) setPause({ active: p.active ?? false, secondsLeft: p.secondsLeft ?? 0 })
       }).catch(() => {})
     }, 10000)
-    return () => clearInterval(t)
+    return () => {
+      clearInterval(t)
+      window.removeEventListener('together:toast', onToast)
+    }
   }, [])
 
   const startPause = async () => {
@@ -203,13 +217,20 @@ export function DashboardLayout({ children, user, couple }: DashboardLayoutProps
             ))}
           </nav>
             <div className="hd-r">
-              <div className="avs">
-                <div className="av" title={me.name ?? undefined} aria-label={`Мой профиль: ${me.name ?? 'без имени'}`}>{initials(me.name)}</div>
-                {myCouple && myCouple.status !== 'DELETED' && myCouple.status !== 'ARCHIVED' && <div className="av p" title={partnerName ?? undefined} aria-label={`Профиль партнёра: ${partnerName ?? ''}`}>{initials(partnerName)}</div>}
+              <div className="avs-wrap">
+                <div className="avs" role="button" tabIndex={0} aria-label="Меню профиля" onClick={() => setMenuOpen(o => !o)} onKeyDown={(e) => { if (e.key === 'Enter') setMenuOpen(o => !o) }}>
+                  <div className="av" title={me.name ?? undefined} aria-hidden="true">{initials(me.name)}</div>
+                  {myCouple && myCouple.status !== 'DELETED' && myCouple.status !== 'ARCHIVED' && <div className="av p" title={partnerName ?? undefined} aria-hidden="true">{initials(partnerName)}</div>}
+                </div>
+                {menuOpen && (
+                  <div className="menu-panel" role="menu">
+                    <Link href="/dashboard/settings" className="menu-item" role="menuitem" onClick={() => setMenuOpen(false)}>👤 Профиль</Link>
+                    <Link href="/dashboard/settings" className="menu-item" role="menuitem" onClick={() => setMenuOpen(false)}>⚙ Настройки</Link>
+                    <Link href="/dashboard/story" className="menu-item" role="menuitem" onClick={() => setMenuOpen(false)}>📖 История пары</Link>
+                    <button className="menu-item" role="menuitem" onClick={() => signOut({ callbackUrl: '/' })}>⎋ Выйти</button>
+                  </div>
+                )}
               </div>
-              <Link href="/dashboard/settings" aria-label="Настройки" className="icon-btn">
-                ⚙
-              </Link>
               <button
                 className={cn('icon-btn', pause.active && 'on')}
                 aria-label={pause.active ? `Пауза активна · ${pauseFmt}` : 'Слово-стоп: пауза на 20 минут'}
@@ -217,9 +238,6 @@ export function DashboardLayout({ children, user, couple }: DashboardLayoutProps
                 onClick={() => pause.active ? setPauseOpen(true) : startPause()}
               >
                 🛑
-              </button>
-              <button className="icon-btn" aria-label="Выйти" title="Выйти" onClick={() => signOut({ callbackUrl: '/' })}>
-                ⎋
               </button>
             </div>
           </div>
@@ -254,6 +272,14 @@ export function DashboardLayout({ children, user, couple }: DashboardLayoutProps
       <div className="sc on">
         <div className="wrap">{children}</div>
       </div>
+
+      {/* ТОСТЫ */}
+      <div className="toasts" role="status" aria-live="polite">
+        {toasts.map((t) => <div key={t.id} className="toast">{t.text}</div>)}
+      </div>
+
+      {/* ОНБОРДИНГ */}
+      <OnboardingTour />
 
       {/* МОБИЛЬНЫЙ ТАБ-БАР */}
       <nav className="tb" aria-label="Основная навигация">

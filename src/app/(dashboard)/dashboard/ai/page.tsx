@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
 import { cn } from '@/lib/utils/cn'
+import { toast } from '@/lib/toast'
 
 interface Message {
   id: string
@@ -47,6 +48,8 @@ export default function AIChatPage() {
   const [coupleBusy, setCoupleBusy] = useState(false)
   const [sovaConnected, setSovaConnected] = useState(false)
   const [sovaBusy, setSovaBusy] = useState(false)
+  const [partnerTyping, setPartnerTyping] = useState(false)
+  const [partnerLastReadAt, setPartnerLastReadAt] = useState<string | null>(null)
 
   const [letters, setLetters] = useState<Array<{ id: string; title: string; content: string; fromName: string; isMine: boolean; read: boolean; createdAt: string }>>([])
   const [letterOpen, setLetterOpen] = useState(false)
@@ -75,6 +78,7 @@ export default function AIChatPage() {
       })
       if (r.ok) {
         setLetterTitle(''); setLetterContent(''); setLetterOpen(false)
+        toast('Письмо отправлено 💌')
         loadLetters()
         window.dispatchEvent(new Event('together:refresh'))
       }
@@ -206,15 +210,22 @@ export default function AIChatPage() {
     setMessages([])
   }
 
+  const reportRead = () => {
+    fetch('/api/couple-chat', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({}) }).catch(() => {})
+  }
+
   const loadCouple = () => {
     fetch('/api/couple-chat?limit=50').then(r => r.json()).then(d => {
       setCoupleMessages(d.items ?? [])
+      setPartnerTyping(Boolean(d.partnerTyping))
+      if (d.partnerLastReadAt) setPartnerLastReadAt(d.partnerLastReadAt)
+      reportRead()
     }).catch(() => {})
   }
   useEffect(() => {
     if (chatMode !== 'couple') return
     loadCouple()
-    const t = setInterval(loadCouple, 20000)
+    const t = setInterval(loadCouple, 3000)
     const refresh = () => loadCouple()
     window.addEventListener('together:refresh', refresh)
     return () => {
@@ -222,6 +233,14 @@ export default function AIChatPage() {
       window.removeEventListener('together:refresh', refresh)
     }
   }, [chatMode])
+
+  const lastTypingSent = useRef(0)
+  const sendTyping = () => {
+    const now = Date.now()
+    if (now - lastTypingSent.current < 2000) return
+    lastTypingSent.current = now
+    fetch('/api/couple-chat', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'typing' }) }).catch(() => {})
+  }
 
   const sendCouple = async () => {
     const content = input.trim()
@@ -266,8 +285,8 @@ export default function AIChatPage() {
             <button className="icon-btn" aria-label="Диалоги" title="Диалоги" onClick={() => setListOpen(true)}>🗂</button>
             <span style={{ fontSize: 20 }} aria-hidden="true">🦉</span>
             <div style={{ flex: 1, minWidth: 0 }}>
-              <b>Сова</b>
-              <span style={{ display: 'block' }}>Только вы и Сова — партнёр не видит</span>
+              <b>Психолог</b>
+              <span style={{ display: 'block' }}>🦉 Сова — ваш психолог · диалоги приватны</span>
             </div>
             <div className="seg" style={{ margin: 0, width: 'auto' }}>
               <button className={cn(chatMode === 'solo' && 'on')} onClick={() => setChatMode('solo')}>Соло</button>
@@ -288,7 +307,7 @@ export default function AIChatPage() {
                   setSovaConnected(true)
                 }}
               >
-                {sovaBusy ? '🦉 Сова думает…' : sovaConnected ? '🦉 Сова в диалоге ✓' : '🦉 Подключить Сову'}
+                {sovaBusy ? '🦉 Психолог думает…' : sovaConnected ? '🦉 Психолог в диалоге ✓' : '🦉 Подключить психолога'}
               </button>
             </div>
           )}
@@ -304,11 +323,15 @@ export default function AIChatPage() {
                 )}
                 {coupleMessages.map((msg) => {
                   const mine = msg.senderId === me?.id
+                  const read = mine && partnerLastReadAt && new Date(msg.createdAt) <= new Date(partnerLastReadAt)
                   return (
                     <div key={msg.id} className={mine ? 'm you' : 'm ai'}>
                       {!mine && <div className="who">{msg.senderName}</div>}
                       {msg.content}
-                      <div className="msg-t">{fmtTime(msg.createdAt)}</div>
+                      <div className="msg-t">
+                        {fmtTime(msg.createdAt)}
+                        {mine && <span className={read ? 'ticks read' : 'ticks'}>{read ? '✓✓' : '✓'}</span>}
+                      </div>
                     </div>
                   )
                 })}
@@ -318,7 +341,7 @@ export default function AIChatPage() {
                 {messages.length === 0 && !isLoading && (
                   <div className="sova-empty">
                     <div style={{ fontSize: 40 }}>🦉</div>
-                    <b>Привет, я Сова.</b>
+                    <b>Привет, я Сова — ваш психолог.</b>
                     <span className="dim">Диалоги приватные — только вы и Сова. Чем помочь?</span>
                     <div className="chips" style={{ justifyContent: 'center', marginTop: 12 }}>
                       {['Что ты умеешь?', 'Помоги сформулировать мысль', 'Разбери наш спор', 'Идея свидания'].map(q => (
@@ -366,6 +389,11 @@ export default function AIChatPage() {
           </div>
 
           <div className="chat-in">
+            {chatMode === 'couple' && partnerTyping && (
+              <div className="typing-line" role="status" aria-label="Партнёр набирает">
+                {partnerName} набирает<i /><i /><i />
+              </div>
+            )}
             <form
               onSubmit={(e) => {
                 e.preventDefault()
@@ -378,7 +406,7 @@ export default function AIChatPage() {
                   rows={1}
                   placeholder={chatMode === 'couple' ? 'Сообщение паре…' : 'Напишите сообщение…'}
                   value={input}
-                  onChange={(e) => setInput(e.target.value)}
+                  onChange={(e) => { setInput(e.target.value); if (chatMode === 'couple') sendTyping() }}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' && !e.shiftKey) {
                       e.preventDefault()

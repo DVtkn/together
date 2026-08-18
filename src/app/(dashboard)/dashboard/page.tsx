@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
 import { cn } from '@/lib/utils/cn'
+import { toast } from '@/lib/toast'
 
 interface DailyQ {
   id: string
@@ -205,13 +206,15 @@ export default function DashboardPage() {
     if (r.ok) {
       setAnswered(true)
       setAnswerInput('')
+      toast('Ответ записан')
       window.dispatchEvent(new Event('together:refresh'))
       load()
     }
   }
 
   async function sendSignal(s: Signal) {
-    await fetch(`/api/signals/${s.id}/send`, { method: 'POST' }).catch(() => {})
+    const r = await fetch(`/api/signals/${s.id}/send`, { method: 'POST' }).catch(() => null)
+    if (r?.ok) toast('Сигнал отправлен партнёру 🤗')
     setSignalSent(s.id)
     window.dispatchEvent(new Event('together:refresh'))
     setTimeout(() => setSignalSent(null), 3000)
@@ -235,7 +238,7 @@ export default function DashboardPage() {
   interface ActionItem { key: string; emoji: string; title: string; sub: string; href: string; cta?: string }
   const actions: ActionItem[] = []
   if (!partner) {
-    actions.push({ key: 'couple', emoji: '💞', title: 'Создать пару', sub: 'Свяжите аккаунты — тесты, отчёт и Сова станут общими', href: '/dashboard/couple' })
+    actions.push({ key: 'couple', emoji: '💞', title: 'Создать пару', sub: 'Свяжите аккаунты — тесты, отчёт и Психолог станут общими', href: '/dashboard/couple' })
   } else {
     if (dq && !dq.myAnswered) {
       actions.push({ key: 'dailyq', emoji: '🔮', title: 'Вопрос дня', sub: dq.text, href: '#dailyq', cta: 'Ответить' })
@@ -283,7 +286,7 @@ export default function DashboardPage() {
               </div>
             </div>
             <div style={{ display: 'flex', gap: 8, marginTop: 12, flexWrap: 'wrap' }}>
-              <Link href="/dashboard/date" className="btn btn-p">📍 Идея свидания</Link>
+              <Link href="/dashboard/date" className="btn btn-secondary">📍 Идея свидания</Link>
               <Link href="/dashboard/couple#decks" className="btn btn-s">🎴 Колода близости</Link>
             </div>
           </div>
@@ -301,7 +304,7 @@ export default function DashboardPage() {
                   <span>{a.sub}</span>
                 </div>
                 {a.key !== 'dailyq' && (
-                  <Link href={a.href} className="btn btn-p btn-sm">{a.cta ?? 'Открыть'}</Link>
+                  <Link href={a.href} className="btn btn-secondary btn-sm">{a.cta ?? 'Открыть'}</Link>
                 )}
               </div>
               {a.key === 'dailyq' && (
@@ -309,7 +312,7 @@ export default function DashboardPage() {
                   <input className="input" style={{ flex: 1 }} placeholder="Ваш ответ…" value={answerInput}
                     onChange={e => setAnswerInput(e.target.value)}
                     onKeyDown={e => e.key === 'Enter' && submitAnswer()} />
-                  <button className="btn btn-p" disabled={answerInput.trim().length < 1 || answered} onClick={submitAnswer}>Ответить</button>
+                  <button className="btn btn-primary" disabled={answerInput.trim().length < 1 || answered} onClick={submitAnswer}>Ответить</button>
                 </div>
               )}
             </div>
@@ -341,7 +344,7 @@ export default function DashboardPage() {
                     <p>{dq?.partnerAnswer ?? '—'}</p>
                   </div>
                   <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
-                    <Link href="/dashboard/ai" className="btn btn-s btn-sm btn-w">💬 Обсудить с Совой</Link>
+                    <Link href="/dashboard/ai" className="btn btn-s btn-sm btn-w">💬 Обсудить с Психологом</Link>
                     <button className="link-btn" onClick={() => setSeenReveal(true)}>Понятно</button>
                   </div>
                 </div>
@@ -400,7 +403,7 @@ export default function DashboardPage() {
         <div className="prog-line" style={{ marginTop: 12 }}><div className="prog-fill" style={{ width: `${(testsDone / testsTotal) * 100}%` }} /></div>
         <Link
           href={nextTest ? `/dashboard/assessments/${nextTest.key}` : '/dashboard/couple#report'}
-          className="btn btn-p btn-w"
+          className="btn btn-primary btn-w"
           style={{ marginTop: 12 }}
         >
           {nextTest ? 'Начать тест' : 'Открыть отчёт'}

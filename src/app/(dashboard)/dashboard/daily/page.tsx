@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
 import { cn } from '@/lib/utils/cn'
+import { toast } from '@/lib/toast'
 
 const MOODS = [
   { emoji: '😄', text: 'Всё супер' },
@@ -139,6 +140,7 @@ export default function DailyPage() {
     setMyMood(m); setSaved(false)
     await fetch('/api/mood', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ emoji: m.emoji, text: m.text }) })
     setSaved(true)
+    toast('Настроение записано')
     window.dispatchEvent(new Event('together:refresh'))
   }
 
@@ -148,7 +150,8 @@ export default function DailyPage() {
   }
 
   async function sendSignal(s: Signal) {
-    await fetch(`/api/signals/${s.id}/send`, { method: 'POST' }).catch(() => {})
+    const r = await fetch(`/api/signals/${s.id}/send`, { method: 'POST' }).catch(() => null)
+    if (r?.ok) toast('Сигнал отправлен партнёру 🤗')
     setSignalSent(s.id)
     window.dispatchEvent(new Event('together:refresh'))
     setTimeout(() => setSignalSent(null), 3000)
@@ -161,6 +164,7 @@ export default function DailyPage() {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ closeness, conflictResolution, missing: missing || undefined }),
       })
+      toast('Пульс недели сохранён')
       const res = await fetch('/api/pulse')
       setPulse(await res.json())
       setMissing('')
@@ -171,6 +175,7 @@ export default function DailyPage() {
     setCompleting(id)
     try {
       await fetch(`/api/challenges/${id}/complete`, { method: 'POST' })
+      toast('Челлендж отмечен 🌙')
       const res = await fetch('/api/challenges')
       setChallenges((await res.json()).challenges ?? [])
     } catch { /* ignore */ } finally { setCompleting(null) }
@@ -181,6 +186,7 @@ export default function DailyPage() {
     const item = cravingInput.trim()
     if (!item) return
     await fetch('/api/cravings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ item }) })
+    toast('Добавлено в хотелки')
     setCravingInput('')
     const c = await fetch('/api/cravings').then(r => r.json())
     setCravings(c.cravings?.mine || [])
@@ -191,6 +197,7 @@ export default function DailyPage() {
     const title = wishTitle.trim()
     if (!title) return
     await fetch('/api/wishlist', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title, link: wishLink.trim() || undefined }) })
+    toast('Добавлено в виш-лист')
     setWishTitle('')
     setWishLink('')
     const w = await fetch('/api/wishlist').then(r => r.json())
@@ -202,6 +209,7 @@ export default function DailyPage() {
     const text = warmthText.trim()
     if (text.length < 2) return
     await fetch('/api/warmth', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text }) })
+    toast('Записано в Банк тепла 💌')
     setWarmthText('')
     const wm = await fetch('/api/warmth?limit=3').then(r => r.json())
     setWarmth(wm?.entries ?? [])
@@ -212,6 +220,7 @@ export default function DailyPage() {
     const t = (title ?? ritualInput).trim()
     if (t.length < 2) return
     await fetch('/api/rituals', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title: t, emoji: '🕊️' }) })
+    toast('Ритуал добавлен')
     setRitualInput('')
     setRitualOpen(false)
     const rt = await fetch('/api/rituals').then(r => r.json())
@@ -220,9 +229,28 @@ export default function DailyPage() {
   }
 
   async function toggleRitual(id: string) {
-    await fetch(`/api/rituals/${id}/done`, { method: 'POST' }).catch(() => {})
+    const r = await fetch(`/api/rituals/${id}/done`, { method: 'POST' }).catch(() => null)
+    if (r?.ok) toast('Ритуал отмечен 🕊️')
     const rt = await fetch('/api/rituals').then(r => r.json())
     setRituals(rt?.items ?? [])
+    window.dispatchEvent(new Event('together:refresh'))
+  }
+
+  async function markGifted(id: string) {
+    const r = await fetch(`/api/wishlist/${id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status: 'BOUGHT' }) }).catch(() => null)
+    if (r?.ok) toast('Отмечено подаренным 🎁')
+    const w = await fetch('/api/wishlist').then(r => r.json())
+    setWishes(w.items?.mine || [])
+    setPartnerWishes(w.items?.partner || [])
+    window.dispatchEvent(new Event('together:refresh'))
+  }
+
+  async function pickCraving(id: string) {
+    const r = await fetch(`/api/cravings/${id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'pick' }) }).catch(() => null)
+    if (r?.ok) toast('Отмечено подаренным 🎁')
+    const c = await fetch('/api/cravings').then(r => r.json())
+    setCravings(c.cravings?.mine || [])
+    setPartnerCravings(c.cravings?.partner || [])
     window.dispatchEvent(new Event('together:refresh'))
   }
 
@@ -309,7 +337,7 @@ export default function DailyPage() {
             <input className="input" style={{ flex: 1 }} placeholder="Спасибо за…" value={warmthText}
               onChange={e => setWarmthText(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && addWarmth()} />
-            <button className="btn btn-p" disabled={warmthText.trim().length < 2} onClick={addWarmth}>💌</button>
+            <button className="btn btn-secondary" disabled={warmthText.trim().length < 2} onClick={addWarmth}>💌</button>
           </div>
           {warmth.length > 0 && (
             <div className="warmth-list">
@@ -355,7 +383,7 @@ export default function DailyPage() {
               <input className="input" value={missing} onChange={e => setMissing(e.target.value)} placeholder="Например: больше времени вдвоём…" />
             </label>
           </div>
-          <button className="btn btn-p btn-w" style={{ marginTop: 16 }} onClick={submitPulse} disabled={pulseSubmitting}>
+          <button className="btn btn-secondary btn-w" style={{ marginTop: 16 }} onClick={submitPulse} disabled={pulseSubmitting}>
             {pulseSubmitting ? 'Сохраняем…' : 'Сохранить пульс'}
           </button>
           {userCurrent && (
@@ -388,13 +416,15 @@ export default function DailyPage() {
             )}
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 16 }}>
               <button
-                className={cn('btn', challenge.completedByCurrent ? 'btn-ok' : 'btn-p')}
+                className={cn('btn', challenge.completedByCurrent ? 'btn-ok' : 'btn-secondary')}
                 disabled={challenge.completedByCurrent || completing === challenge.id}
                 onClick={() => !challenge.completedByCurrent && completeChallenge(challenge.id)}
               >
                 {challenge.completedByCurrent ? '✓ Я сделал(а)' : completing === challenge.id ? '…' : 'Я сделал(а)'}
               </button>
-              {challenge.completedByPartner && <span className="badge ok">Партнёр ✓</span>}
+              <span className="small" style={{ color: 'var(--mute)' }}>
+                {challenge.completedByCurrent ? 'Вы — сделали' : 'Вы — ещё нет'} · {challenge.completedByPartner ? `${partner?.name ?? 'Партнёр'} — сделал(а)` : `${partner?.name ?? 'Партнёр'} — ещё нет`}
+              </span>
             </div>
           </div>
         ))}
@@ -426,7 +456,7 @@ export default function DailyPage() {
                 <input className="input" style={{ flex: 1 }} placeholder="Свой ритуал…" value={ritualInput}
                   onChange={e => setRitualInput(e.target.value)}
                   onKeyDown={e => e.key === 'Enter' && addRitual()} />
-                <button className="btn btn-p" disabled={ritualInput.trim().length < 2} onClick={() => addRitual()}>OK</button>
+                <button className="btn btn-secondary" disabled={ritualInput.trim().length < 2} onClick={() => addRitual()}>OK</button>
               </div>
             </div>
           )}
@@ -483,7 +513,7 @@ export default function DailyPage() {
                 <input className="input" style={{ flex: 1 }} placeholder="Хочется…" value={cravingInput}
                   onChange={e => setCravingInput(e.target.value)}
                   onKeyDown={e => e.key === 'Enter' && addCraving()} />
-                <button className="btn btn-p" disabled={!cravingInput.trim()} onClick={addCraving}>Добавить</button>
+                <button className="btn btn-secondary" disabled={!cravingInput.trim()} onClick={addCraving}>Добавить</button>
               </div>
               {cravings.length > 0 && (
                 <div className="feed">
@@ -502,7 +532,10 @@ export default function DailyPage() {
                     {partnerCravings.map(c => (
                       <div key={c.id} className="feed-item">
                         <b>{c.item}</b>
-                        <span>{c.status === 'PICKED_UP' ? '✓ забрали' : 'ждёт'}</span>
+                        <span>{c.status === 'PICKED_UP' ? '✓ подарено' : 'ждёт'}</span>
+                        {c.status !== 'PICKED_UP' && (
+                          <button className="btn btn-s btn-sm" onClick={() => pickCraving(c.id)}>Отметить подаренным</button>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -517,7 +550,7 @@ export default function DailyPage() {
                 <input className="input" style={{ flex: 1 }} placeholder="Что хочешь?" value={wishTitle}
                   onChange={e => setWishTitle(e.target.value)}
                   onKeyDown={e => e.key === 'Enter' && addWish()} />
-                <button className="btn btn-p" disabled={!wishTitle.trim()} onClick={addWish}>Добавить</button>
+                <button className="btn btn-secondary" disabled={!wishTitle.trim()} onClick={addWish}>Добавить</button>
               </div>
               <input className="input" style={{ width: '100%', marginBottom: 10 }} placeholder="Ссылка на подарок (необязательно)" value={wishLink}
                 onChange={e => setWishLink(e.target.value)}
@@ -540,8 +573,11 @@ export default function DailyPage() {
                     {partnerWishes.map(w => (
                       <div key={w.id} className="feed-item">
                         <b>{w.title}</b>
-                        <span>{w.status === 'BOUGHT' ? '✓ куплено' : 'в списке'}</span>
+                        <span>{w.status === 'BOUGHT' ? '✓ подарено' : 'в списке'}</span>
                         {w.link && <a href={w.link} target="_blank" rel="noopener noreferrer" className="wish-link">🔗 ссылка</a>}
+                        {w.status !== 'BOUGHT' && (
+                          <button className="btn btn-s btn-sm" onClick={() => markGifted(w.id)}>Отметить подаренным</button>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -564,6 +600,7 @@ export default function DailyPage() {
                         onClick={async () => {
                           await fetch('/api/flowers', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ slug: f.slug }) })
                           setFlowers(prev => prev.map(x => x.slug === f.slug ? { ...x, favorite: !x.favorite } : x))
+                          toast(f.favorite ? 'Убрано из любимых' : 'Добавлено в любимые')
                         }}
                       >{f.favorite ? '❤️' : '🤍'}</button>
                     </div>
@@ -576,7 +613,8 @@ export default function DailyPage() {
                       onClick={async () => {
                         setFlowerBusy(true)
                         try {
-                          await fetch('/api/flowers/gift', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ slug: f.slug }) })
+                          const r = await fetch('/api/flowers/gift', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ slug: f.slug }) })
+                          if (r.ok) toast(`Цветок «${f.name}» подарен 💐`)
                           window.dispatchEvent(new Event('together:refresh'))
                         } finally { setFlowerBusy(false) }
                       }}

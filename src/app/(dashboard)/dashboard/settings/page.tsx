@@ -216,7 +216,7 @@ export default function SettingsPage() {
         body: JSON.stringify({ targetUsername: username }),
       })
       if (res.ok) {
-        setMessage({ type: 'success', text: 'Инвайт отправлен. Партнёр примет его в разделе «Мы», и пары станет общей.' })
+        setMessage({ type: 'success', text: 'Инвайт отправлен. Партнёр примет его в разделе «Пара», и пара станет общей.' })
         setLinkUsername('')
         await mutateSettings()
         router.refresh()
@@ -344,7 +344,7 @@ export default function SettingsPage() {
         <div className="cd static">
           <div className="cd-t" style={{ padding: 0 }}>
             <b>Создать пару</b>
-            <span>Свяжите аккаунты: общие опросники, челленджи, места и Сова станут доступны обоим.</span>
+            <span>Свяжите аккаунты: общие опросники, челленджи, места и Психолог станут доступны обоим.</span>
           </div>
           <label className="field-label" style={{ marginTop: 14 }} htmlFor="partner-username">Логин партнёра</label>
           <div style={{ display: 'flex', gap: 8 }}>
