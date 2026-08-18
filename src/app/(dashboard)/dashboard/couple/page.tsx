@@ -129,9 +129,9 @@ export default function CouplePage() {
   const dims = an?.dimensions ?? []
   const top = an?.strengths?.[0] ?? null
   const weak = an?.weaknesses?.[0] ?? null
-  const portrait = top || weak
-    ? `Пара с ${compat === null ? '' : compat >= 75 ? 'прочным' : compat >= 60 ? 'хорошим' : 'растущим'} фундаментом. Сила — ${top ? top.title.toLowerCase() : 'пока не открыта'}${top && top.score ? ` (${top.score}%)` : ''}, зона роста — ${weak ? weak.title.toLowerCase() : 'пока не определена'}.`
-    : 'Пройдите тесты вместе — и здесь появится портрет вашей пары.'
+  const gap = (d: { me: number; partner: number }) => Math.abs(d.me - d.partner)
+  const match = dims.filter(d => gap(d) <= 15).sort((a, b) => b.score - a.score)
+  const diverge = dims.filter(d => gap(d) > 30)
   const advice = weak ? DIM_META[weak.key]?.prevention : 'Держите ритуалы — они ваш фундамент.'
 
   const noPassport = partner === null || (an && an.dimensions.length === 0)
@@ -202,55 +202,67 @@ export default function CouplePage() {
       {/* ==== ПАСПОРТ ПАРЫ ==== */}
       {partner && s.couple?.status === 'ACTIVE' && (
         <>
-          {/* 1 · Паспорт пары */}
-          <div className="we-hero">
-            <div className="h1" style={{ marginBottom: 4 }}>Вы и {partner}</div>
-            <div className="dim">Вместе {fmtTogether(s.couple.startedAt)} · {done}/{total} тестов</div>
-            {noPassport ? (
-              <div className="cd static" style={{ maxWidth: 420, margin: '20px auto 0', textAlign: 'center' }}>
-                <div className="cd-ic" style={{ margin: '0 auto 8px', width: 48, height: 48 }}>🧪</div>
-                <b>Откройте паспорт пары</b>
-                <span className="dim" style={{ display: 'block', margin: '6px 0 12px' }}>
-                  {an?.partnerPending ? 'Партнёр ещё не прошёл тесты. Как ответит — паспорт появится.' : 'Пройдите первые тесты вместе — совместимость, портрет и суперсила откроются здесь.'}
-                </span>
-                <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap' }}>
-                  <Link href={s.assessments.find(a => !a.both) ? `/dashboard/assessments/${s.assessments.find(a => !a.both)!.key}` : '#tests'} className="btn btn-p">Пройти тест</Link>
-                  <button className="btn btn-s" onClick={() => setTestsOpen(true)}>Смотреть тесты</button>
-                </div>
-              </div>
-            ) : (
-              <>
-                <div className="we-compat">
-                  <div className="we-num">{compat}%</div>
-                  <div className="we-label">совместимость</div>
-                </div>
-                <p className="we-portrait">{portrait}</p>
-                {top && <span className="superpower">⚡ Суперсила: {top.title} · {top.score}%</span>}
-              </>
-            )}
+          {/* 1 · Компактный hero */}
+          <div className="we-compact">
+            <div className="we-line">
+              <h1 className="h1" style={{ marginBottom: 0 }}>Вы и {partner}</h1>
+              {compat !== null && <span className="compat-badge">{compat}%</span>}
+            </div>
+            <div className="dim">
+              Вместе {fmtTogether(s.couple.startedAt)} · {done}/{total} тестов
+              {top && ` · ⚡ ${top.title} ${top.score}%`}
+            </div>
           </div>
 
-          {/* 2 · Восемь осей: вы vs партнёр */}
-          {dims.length > 0 && (
+          {noPassport ? (
+            <div className="cd static" style={{ maxWidth: 420, margin: '0 auto 20px', textAlign: 'center' }}>
+              <div className="cd-ic" style={{ margin: '0 auto 8px', width: 48, height: 48 }}>🧪</div>
+              <b>Откройте паспорт пары</b>
+              <span className="dim" style={{ display: 'block', margin: '6px 0 12px' }}>
+                {an?.partnerPending ? 'Партнёр ещё не прошёл тесты. Как ответит — паспорт появится.' : 'Пройдите первые тесты вместе — совместимость, портрет и суперсила откроются здесь.'}
+              </span>
+              <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap' }}>
+                <Link href={s.assessments.find(a => !a.both) ? `/dashboard/assessments/${s.assessments.find(a => !a.both)!.key}` : '#tests'} className="btn btn-p">Пройти тест</Link>
+                <button className="btn btn-s" onClick={() => setTestsOpen(true)}>Смотреть тесты</button>
+              </div>
+            </div>
+          ) : (
             <>
+              {/* 2 · Сводка сходств */}
+              <div className="sim-chips">
+                {match.map(d => <span key={d.key} className="sim-chip ok">✓ {d.title}</span>)}
+                {dims.filter(d => gap(d) > 15 && gap(d) <= 30).map(d => <span key={d.key} className="sim-chip mid">~ {d.title}</span>)}
+                {diverge.map(d => <span key={d.key} className="sim-chip bad">≠ {d.title}</span>)}
+              </div>
+
+              {/* 3 · Точечные оси: вы vs партнёр */}
               <div className="k">Как у вас дела</div>
               <div className="cd static">
-                {dims.map(d => (
-                  <div className="dim-row" key={d.key}>
-                    <div className="dim-head">
-                      <b>{d.emoji} {d.title}</b>
-                      <span className={d.score >= 70 ? 'good' : d.score < 60 ? 'bad' : ''}>{d.score}%</span>
-                    </div>
-                    <div className="dim-bars">
-                      <div className="dim-bar me" style={{ width: `${Math.round(d.me)}%` }} />
-                      <div className="dim-bar pa" style={{ width: `${Math.round(d.partner)}%` }} />
-                    </div>
-                  </div>
-                ))}
-                <div className="legend">
+                <div className="legend" style={{ marginTop: 0, marginBottom: 12 }}>
                   <span className="dima"><i />вы</span>
                   <span className="anya"><i />{partner}</span>
+                  <span style={{ color: 'var(--mute)' }}>отрезок = разрыв</span>
                 </div>
+                {dims.map(d => {
+                  const g = gap(d)
+                  const tone = g <= 15 ? 'var(--ok)' : g <= 30 ? 'var(--warn)' : 'var(--red)'
+                  return (
+                    <div className="axis-row" key={d.key}>
+                      <div className="axis-head">
+                        <span>{d.emoji} {d.title}</span>
+                        <b style={{ color: d.score >= 70 ? 'var(--ok)' : d.score < 60 ? 'var(--warn)' : 'var(--text)' }}>{d.score}%</b>
+                      </div>
+                      <div className="dot-track">
+                        <div className="dot-gap" style={{ left: `${Math.min(d.me, d.partner)}%`, width: `${g}%`, background: tone }} />
+                        <i className="dot me" style={{ left: `${d.me}%` }} />
+                        <i className="dot pa" style={{ left: `${d.partner}%` }} />
+                      </div>
+                      <div className="axis-note" style={{ color: tone }}>
+                        {g <= 15 ? 'вы совпадаете' : g <= 30 ? 'есть разница' : 'сильно расходитесь — повод поговорить'}
+                      </div>
+                    </div>
+                  )
+                })}
               </div>
             </>
           )}
