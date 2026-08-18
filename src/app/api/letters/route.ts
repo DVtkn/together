@@ -4,6 +4,7 @@ import { rateLimit } from '@/lib/rate-limit'
 import { getApiContext, requireCouple, unauthorized } from '@/lib/api-auth'
 import { z } from 'zod'
 import { notify, nameOf } from '@/lib/notify'
+import { sendPushToUser } from '@/lib/push'
 
 const letterSchema = z.object({
   title: z.string().min(1).max(120).transform((s) => s.trim()),
@@ -86,6 +87,11 @@ export async function POST(request: NextRequest) {
       `${nameOf(ctx.user)} написал(а) вам письмо 💌`,
       '/dashboard/ai#letters'
     )
+    await sendPushToUser(ctx.partner.id, {
+      title: '💌 Вам письмо',
+      body: `${nameOf(ctx.user)} написал(а) вам письмо`,
+      url: '/dashboard/ai#letters',
+    })
   }
 
   return NextResponse.json({

@@ -99,6 +99,9 @@ export default function DatePage() {
   const [commVenues, setCommVenues] = useState<CommunityVenue[]>([])
   const [commBusy, setCommBusy] = useState(false)
   const [commErr, setCommErr] = useState<string | null>(null)
+  const [customVenue, setCustomVenue] = useState('')
+  const [customVenueOpen, setCustomVenueOpen] = useState(false)
+  const [manualDate, setManualDate] = useState('')
 
   const load = useCallback(() => {
     fetch('/api/user/profile').then(r => r.json()).then(d => {
@@ -196,6 +199,26 @@ export default function DatePage() {
     finally { setCommBusy(false) }
   }
   const pickDay = (d: Date) => { setDay(d); if (time && isBusy(d, time)) setTime(null) }
+
+  const applyCustomVenue = () => {
+    const name = customVenue.trim()
+    if (!name) return
+    setVenue({ n: name, a: 'своё место', p: 1, e: '📍' })
+    setCustomVenueOpen(false)
+    setTimeout(() => setStep(3), 150)
+  }
+
+  const pickManualDate = (val: string) => {
+    setManualDate(val)
+    if (!val) return
+    const [y, m, d] = val.split('-').map(Number)
+    if (!y || !m || !d) return
+    const dt = new Date(y, m - 1, d)
+    if (isNaN(dt.getTime())) return
+    pickDay(dt)
+  }
+
+  const gisLink = (name: string) => `https://2gis.ru/search/${encodeURIComponent(name)}`
 
   const submitChoice = async () => {
     if (!active || !venue || !day || !time) return
@@ -417,7 +440,38 @@ export default function DatePage() {
                 <button className={`vibe-btn ${commOpen ? 'sel' : ''}`} onClick={() => { setCommOpen(!commOpen); if (!commOpen && commVenues.length === 0) loadCommunity() }}>
                   🏙️ Народная база мест
                 </button>
+                <button className={`vibe-btn ${customVenueOpen ? 'sel' : ''}`} onClick={() => setCustomVenueOpen(!customVenueOpen)}>
+                  ✏️ Своё место
+                </button>
               </div>
+
+              {customVenueOpen && (
+                <div className="cd static" style={{ marginBottom: 12 }}>
+                  <div style={{ display: 'flex', gap: 8 }}>
+                    <input className="input" style={{ flex: 1 }} placeholder="Например: тот самый парк на Литейном…"
+                      value={customVenue}
+                      onChange={e => setCustomVenue(e.target.value)}
+                      onKeyDown={e => e.key === 'Enter' && applyCustomVenue()} />
+                    <button className="btn btn-p" disabled={!customVenue.trim()} onClick={applyCustomVenue}>Готово</button>
+                  </div>
+                  <div className="dim" style={{ marginTop: 8 }}>
+                    Подсказка: название найдётся и в 2ГИС — рядом с местом будет ссылка. 🌐
+                  </div>
+                </div>
+              )}
+
+              {venue && (
+                <div className="cd static" style={{ marginBottom: 12 }}>
+                  <div className="cd-r">
+                    <div className="cd-ic">📍</div>
+                    <div className="cd-t">
+                      <b>{venue.n}</b>
+                      <span>{venue.a}</span>
+                    </div>
+                    <Link href={gisLink(venue.n)} target="_blank" className="btn btn-s btn-sm" style={{ textDecoration: 'none' }}>🌐 в 2ГИС</Link>
+                  </div>
+                </div>
+              )}
 
               {commOpen && (
                 <div className="cd static" style={{ marginBottom: 12 }}>
@@ -485,6 +539,18 @@ export default function DatePage() {
                 ))}
               </div>
               <button className="link-btn" onClick={() => setCalOpen(!calOpen)}>📅 Выбрать в календаре</button>
+              <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginTop: 10 }}>
+                <input
+                  type="date"
+                  className="input"
+                  style={{ flex: 1, minWidth: 0 }}
+                  value={manualDate}
+                  min={`${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`}
+                  onChange={e => pickManualDate(e.target.value)}
+                  aria-label="Ввести дату вручную"
+                />
+                <span className="dim" style={{ fontSize: 12, whiteSpace: 'nowrap' }}>или введите цифрами</span>
+              </div>
               {calOpen && (
                 <div className="cal-wrap" style={{ display: 'block' }}>
                   <div className="cal-head">

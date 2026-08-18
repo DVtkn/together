@@ -55,6 +55,8 @@ export default function SettingsPage() {
   const [cityId, setCityId] = useState<string | null>(null)
   const [linkUsername, setLinkUsername] = useState('')
   const [linking, setLinking] = useState(false)
+  const [startDate, setStartDate] = useState('')
+  const [startDateOpen, setStartDateOpen] = useState(false)
 
   const [signals, setSignals] = useState<Array<{ id: string; emoji: string; meaning: string; suggestedReply: string }>>([])
   const [sigEmoji, setSigEmoji] = useState('🤗')
@@ -384,6 +386,47 @@ export default function SettingsPage() {
                 {couple.partnerA.name || 'Партнёр А'} · {couple.partnerB.name || 'Партнёр Б'}
                 {couple.startedAt && ` · вместе с ${new Date(couple.startedAt).toLocaleDateString('ru-RU', { month: 'long', year: 'numeric' })}`}
               </div>
+
+              {!startDateOpen ? (
+                <button className="link-btn" style={{ marginTop: 8 }} onClick={() => {
+                  if (couple.startedAt) setStartDate(couple.startedAt.slice(0, 10))
+                  setStartDateOpen(true)
+                }}>📅 Изменить дату «вместе с»</button>
+              ) : (
+                <div style={{ display: 'flex', gap: 8, marginTop: 10, alignItems: 'center' }}>
+                  <input
+                    type="date"
+                    className="input"
+                    style={{ flex: 1, minWidth: 0 }}
+                    value={startDate}
+                    max={new Date().toISOString().slice(0, 10)}
+                    onChange={e => setStartDate(e.target.value)}
+                  />
+                  <button
+                    className="btn btn-p btn-sm"
+                    disabled={!startDate}
+                    onClick={async () => {
+                      if (!startDate) return
+                      setSaving(true)
+                      try {
+                        const r = await fetch('/api/couples/start', {
+                          method: 'PATCH',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({ startedAt: startDate }),
+                        })
+                        if (r.ok) {
+                          setCouple(prev => prev ? { ...prev, startedAt: startDate } : prev)
+                          setStartDateOpen(false)
+                          setMessage({ type: 'success', text: 'Дата обновлена' })
+                        } else {
+                          const j = await r.json().catch(() => ({}))
+                          setMessage({ type: 'error', text: j.error || 'Не получилось' })
+                        }
+                      } finally { setSaving(false) }
+                    }}
+                  >Сохранить</button>
+                </div>
+              )}
 
               <Link href="/dashboard/story" className="cd" style={{ marginTop: 14, textDecoration: 'none' }}>
                 <div className="cd-r">

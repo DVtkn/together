@@ -16,6 +16,29 @@ function SignInForm() {
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [formError, setFormError] = useState('')
+  const [forgot, setForgot] = useState(false)
+  const [forgotEmail, setForgotEmail] = useState('')
+  const [forgotMsg, setForgotMsg] = useState<string | null>(null)
+  const [forgotBusy, setForgotBusy] = useState(false)
+
+  const submitForgot = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setForgotBusy(true); setForgotMsg(null)
+    try {
+      const r = await fetch('/api/auth/forgot-password', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: forgotEmail }),
+      })
+      const j = await r.json()
+      if (r.ok) {
+        setForgotMsg('Если аккаунт с таким email существует — письмо со ссылкой уже в пути.')
+      } else {
+        setForgotMsg(j.error || 'Не получилось. Попробуйте позже.')
+      }
+    } catch {
+      setForgotMsg('Ошибка сети. Попробуйте позже.')
+    } finally { setForgotBusy(false) }
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -55,20 +78,38 @@ function SignInForm() {
       <div className="auth-card">
         <Link href="/" className="logo" style={{ justifyContent: 'center' }}><i>∞</i>Loop</Link>
         <div className="h2" style={{ textAlign: 'center', marginTop: 16 }}>С возвращением</div>
-        <div className="dim" style={{ textAlign: 'center' }}>Войдите, чтобы продолжить</div>
+        <div className="dim" style={{ textAlign: 'center' }}>{forgot ? 'Восстановим доступ' : 'Войдите, чтобы продолжить'}</div>
 
-        <form onSubmit={handleSubmit} style={{ marginTop: 20 }}>
-          <label className="auth-label" htmlFor="username">Логин</label>
-          <input className="auth-input" id="username" name="username" value={username} onChange={(e) => setUsername(e.target.value)} autoComplete="username" required disabled={isLoading} />
-          <label className="auth-label" htmlFor="password">Пароль</label>
-          <input className="auth-input" id="password" name="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="current-password" required disabled={isLoading} />
-          {shownError && <div className="notice notice-amber" style={{ marginTop: 12 }} role="alert">{shownError}</div>}
-          <button className="btn btn-p btn-w" style={{ marginTop: 16 }} type="submit" disabled={isLoading}>
-            {isLoading ? 'Входим…' : 'Войти'}
-          </button>
-        </form>
+        {forgot ? (
+          <form onSubmit={submitForgot} style={{ marginTop: 20 }}>
+            <label className="auth-label" htmlFor="forgot-email">Email аккаунта</label>
+            <input className="auth-input" id="forgot-email" type="email" value={forgotEmail}
+              onChange={e => setForgotEmail(e.target.value)} autoComplete="email" required disabled={forgotBusy} />
+            {forgotMsg && <div className="notice notice-ok" style={{ marginTop: 12 }}>{forgotMsg}</div>}
+            {!forgotMsg && (
+              <button className="btn btn-p btn-w" style={{ marginTop: 16 }} type="submit" disabled={forgotBusy || !forgotEmail}>
+                {forgotBusy ? 'Отправляем…' : 'Отправить ссылку'}
+              </button>
+            )}
+            <button className="link-btn" style={{ marginTop: 14, display: 'block', marginLeft: 'auto', marginRight: 'auto' }} onClick={() => setForgot(false)}>← Ко входу</button>
+          </form>
+        ) : (
+          <>
+            <form onSubmit={handleSubmit} style={{ marginTop: 20 }}>
+              <label className="auth-label" htmlFor="username">Логин</label>
+              <input className="auth-input" id="username" name="username" value={username} onChange={(e) => setUsername(e.target.value)} autoComplete="username" required disabled={isLoading} />
+              <label className="auth-label" htmlFor="password">Пароль</label>
+              <input className="auth-input" id="password" name="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="current-password" required disabled={isLoading} />
+              {shownError && <div className="notice notice-amber" style={{ marginTop: 12 }} role="alert">{shownError}</div>}
+              <button className="btn btn-p btn-w" style={{ marginTop: 16 }} type="submit" disabled={isLoading}>
+                {isLoading ? 'Входим…' : 'Войти'}
+              </button>
+            </form>
 
-        <Link className="auth-link" href="/register">Нет пары? Создать аккаунт</Link>
+            <button className="link-btn" style={{ marginTop: 10, display: 'block', marginLeft: 'auto', marginRight: 'auto' }} onClick={() => setForgot(true)}>Забыли пароль?</button>
+            <Link className="auth-link" href="/register">Нет пары? Создать аккаунт</Link>
+          </>
+        )}
       </div>
     </div>
   )

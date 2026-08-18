@@ -13,6 +13,8 @@ model User {
   email                                                String?               @unique
   name                                                 String?
   passwordHash                                         String?
+  resetToken                                           String?
+  resetTokenExpires                                    DateTime?
   image                                                String?
   emailVerified                                        DateTime?
   dateOfBirth                                          DateTime?
@@ -56,6 +58,7 @@ model User {
 
   @@index([coupleId])
   @@index([username])
+  @@index([resetToken])
 }
 
 model AIConversation {

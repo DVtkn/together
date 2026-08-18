@@ -84,6 +84,9 @@ export default function DailyPage() {
   const [wishes, setWishes] = useState<Wish[]>([])
   const [partnerWishes, setPartnerWishes] = useState<Wish[]>([])
   const [wishTitle, setWishTitle] = useState('')
+  const [wishLink, setWishLink] = useState('')
+  const [flowers, setFlowers] = useState<Array<{ slug: string; name: string; emoji: string; meaning: string | null; favorite: boolean }>>([])
+  const [flowerBusy, setFlowerBusy] = useState(false)
   const [warmth, setWarmth] = useState<Array<{ id: string; text: string; fromName: string; fromId: string; createdAt: string }>>([])
   const [warmthText, setWarmthText] = useState('')
 
@@ -127,6 +130,8 @@ export default function DailyPage() {
       fetch('/api/cravings').then(r => r.json()).then(c => { setCravings(c.cravings?.mine || []); setPartnerCravings(c.cravings?.partner || []) }).catch(() => {})
     } else if (partnerTab === 'wishlist') {
       fetch('/api/wishlist').then(r => r.json()).then(w => { setWishes(w.items?.mine || []); setPartnerWishes(w.items?.partner || []) }).catch(() => {})
+    } else if (partnerTab === 'flowers') {
+      fetch('/api/flowers').then(r => r.json()).then(f => setFlowers(f.flowers || [])).catch(() => {})
     }
   }, [partnerTab])
 
@@ -185,8 +190,9 @@ export default function DailyPage() {
   async function addWish() {
     const title = wishTitle.trim()
     if (!title) return
-    await fetch('/api/wishlist', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title, link: '' }) })
+    await fetch('/api/wishlist', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title, link: wishLink.trim() || undefined }) })
     setWishTitle('')
+    setWishLink('')
     const w = await fetch('/api/wishlist').then(r => r.json())
     setWishes(w.items?.mine || [])
     window.dispatchEvent(new Event('together:refresh'))
@@ -450,7 +456,7 @@ export default function DailyPage() {
         <div className="k">Партнёр</div>
         <div className="cd static">
           <div className="tabs" role="tablist">
-            {[['mood', 'Настроение'], ['cravings', 'Хотелки'], ['wishlist', 'Виш-лист']].map(([key, label]) => (
+            {[['mood', 'Настроение'], ['cravings', 'Хотелки'], ['wishlist', 'Виш-лист'], ['flowers', 'Цветы']].map(([key, label]) => (
               <button key={key} className={cn('tab', partnerTab === key && 'on')} onClick={() => setPartnerTab(key)}>{label}</button>
             ))}
           </div>
@@ -507,18 +513,22 @@ export default function DailyPage() {
 
           {partnerTab === 'wishlist' && (
             <div style={{ padding: '4px 0' }}>
-              <div style={{ display: 'flex', gap: 8, marginBottom: 10 }}>
+              <div style={{ display: 'flex', gap: 8, marginBottom: 6 }}>
                 <input className="input" style={{ flex: 1 }} placeholder="Что хочешь?" value={wishTitle}
                   onChange={e => setWishTitle(e.target.value)}
                   onKeyDown={e => e.key === 'Enter' && addWish()} />
                 <button className="btn btn-p" disabled={!wishTitle.trim()} onClick={addWish}>Добавить</button>
               </div>
+              <input className="input" style={{ width: '100%', marginBottom: 10 }} placeholder="Ссылка на подарок (необязательно)" value={wishLink}
+                onChange={e => setWishLink(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && addWish()} />
               {wishes.length > 0 && (
                 <div className="feed">
                   {wishes.map(w => (
                     <div key={w.id} className="feed-item">
                       <b>{w.title}</b>
                       <span>{w.status === 'BOUGHT' ? '✓ куплено' : 'в списке'}</span>
+                      {w.link && <a href={w.link} target="_blank" rel="noopener noreferrer" className="wish-link">🔗 ссылка</a>}
                     </div>
                   ))}
                 </div>
@@ -531,11 +541,49 @@ export default function DailyPage() {
                       <div key={w.id} className="feed-item">
                         <b>{w.title}</b>
                         <span>{w.status === 'BOUGHT' ? '✓ куплено' : 'в списке'}</span>
+                        {w.link && <a href={w.link} target="_blank" rel="noopener noreferrer" className="wish-link">🔗 ссылка</a>}
                       </div>
                     ))}
                   </div>
                 </>
               )}
+            </div>
+          )}
+
+          {partnerTab === 'flowers' && (
+            <div style={{ padding: '4px 0' }}>
+              {flowers.length === 0 && <div className="dim" style={{ fontSize: 13, padding: '4px 0' }}>Загружаем цветы…</div>}
+              <div className="flower-grid">
+                {flowers.map(f => (
+                  <div key={f.slug} className={`flower-card ${f.favorite ? 'fav' : ''}`}>
+                    <div className="flower-top">
+                      <i>{f.emoji}</i>
+                      <button
+                        className="heart"
+                        aria-label={f.favorite ? 'Убрать из любимых' : 'В любимые'}
+                        onClick={async () => {
+                          await fetch('/api/flowers', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ slug: f.slug }) })
+                          setFlowers(prev => prev.map(x => x.slug === f.slug ? { ...x, favorite: !x.favorite } : x))
+                        }}
+                      >{f.favorite ? '❤️' : '🤍'}</button>
+                    </div>
+                    <b>{f.name}</b>
+                    <span className="dim" style={{ fontSize: 11 }}>{f.meaning}</span>
+                    <button
+                      className="btn btn-s btn-sm"
+                      style={{ marginTop: 8 }}
+                      disabled={flowerBusy}
+                      onClick={async () => {
+                        setFlowerBusy(true)
+                        try {
+                          await fetch('/api/flowers/gift', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ slug: f.slug }) })
+                          window.dispatchEvent(new Event('together:refresh'))
+                        } finally { setFlowerBusy(false) }
+                      }}
+                    >💐 Подарить</button>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>

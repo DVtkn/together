@@ -62,6 +62,11 @@ export default function CouplePage() {
   const [tab, setTab] = useState<ReportTab>('str')
   const [testsOpen, setTestsOpen] = useState(false)
   const [synOpen, setSynOpen] = useState(false)
+  const [nowMs, setNowMs] = useState(() => Date.now())
+  useEffect(() => {
+    const t = setInterval(() => setNowMs(Date.now()), 1000)
+    return () => clearInterval(t)
+  }, [])
   const [login, setLogin] = useState('')
   const [busy, setBusy] = useState(false)
   const [err, setErr] = useState<string | null>(null)
@@ -136,6 +141,13 @@ export default function CouplePage() {
 
   const noPassport = partner === null || (an && an.dimensions.length === 0)
   const allTestsDone = done === total
+
+  const startTs = s.couple?.startedAt ? new Date(s.couple.startedAt).getTime() : null
+  const diffMs = startTs !== null ? Math.max(0, nowMs - startTs) : null
+  const tDays = diffMs !== null ? Math.floor(diffMs / 86400000) : null
+  const tHours = diffMs !== null ? String(Math.floor(diffMs / 3600000) % 24).padStart(2, '0') : null
+  const tMins = diffMs !== null ? String(Math.floor(diffMs / 60000) % 60).padStart(2, '0') : null
+  const tSecs = diffMs !== null ? String(Math.floor(diffMs / 1000) % 60).padStart(2, '0') : null
 
   return (
     <DashboardLayout>
@@ -213,6 +225,16 @@ export default function CouplePage() {
               {top && ` · ⚡ ${top.title} ${top.score}%`}
             </div>
           </div>
+
+          {/* ⏳ Наше время */}
+          {diffMs !== null && (
+            <div className="cd static time-card">
+              <div className="time-num">
+                <b>{tDays}</b> <span>дн</span> {tHours}<span>:</span>{tMins}<span>:</span>{tSecs}
+              </div>
+              <div className="time-label">мы вместе уже столько</div>
+            </div>
+          )}
 
           {noPassport ? (
             <div className="cd static" style={{ maxWidth: 420, margin: '0 auto 20px', textAlign: 'center' }}>

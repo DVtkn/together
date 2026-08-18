@@ -5,6 +5,7 @@ import { getApiContext, unauthorized } from '@/lib/api-auth'
 import { z } from 'zod'
 import { notify, nameOf } from '@/lib/notify'
 import { emitEvent } from '@/lib/story'
+import { sendPushToUser } from '@/lib/push'
 
 const patchSchema = z.object({
   vibe: z.string().min(1).max(40).optional(),
@@ -66,12 +67,18 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 
     if (invite.status === 'PROPOSED' && invite.createdBy && invite.createdBy !== ctx.user.id) {
       const when = [invite.date, invite.time].filter(Boolean).join(' ')
+      const body = `${nameOf(ctx.user)} выбрала: ${invite.venueName ?? 'место'}${when ? `, ${when}` : ''}`
       await notify(
         invite.createdBy,
         'date_planned',
-        `${nameOf(ctx.user)} выбрала: ${invite.venueName ?? 'место'}${when ? `, ${when}` : ''}`,
+        body,
         '/dashboard/date'
       )
+      await sendPushToUser(invite.createdBy, {
+        title: '🗓️ Свидание спланировано',
+        body,
+        url: '/dashboard/date',
+      })
     }
 
     if (invite.status === 'CONFIRMED' && ctx.couple) {
