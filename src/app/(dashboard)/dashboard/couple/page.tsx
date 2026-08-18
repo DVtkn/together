@@ -463,7 +463,7 @@ export default function CouplePage() {
                       : 'Просто о важном'} · вопрос {deckIdx + 1} из {deck.questions.length}
                   </div>
                   <div style={{ display: 'flex', gap: 8 }}>
-                    <button className="btn btn-p" style={{ flex: 1 }} onClick={() => { setDoneCount(d => d + 1); setDeckIdx(i => Math.min(i + 1, deck.questions.length - 1)) }}>
+                    <button className="btn btn-secondary" style={{ flex: 1 }} onClick={() => { setDoneCount(d => d + 1); setDeckIdx(i => Math.min(i + 1, deck.questions.length - 1)) }}>
                       Обсудили ✓
                     </button>
                     <button className="btn btn-s" style={{ flex: 1 }} onClick={() => setDeckIdx(i => Math.min(i + 1, deck.questions.length - 1))}>
@@ -477,7 +477,7 @@ export default function CouplePage() {
                   <i>🎉</i>
                   <div className="h2" style={{ marginBottom: 6 }}>Колода пройдена</div>
                   <div className="dim" style={{ marginBottom: 16 }}>Обсудили {doneCount} из {deck.questions.length} вопросов.</div>
-                  <button className="btn btn-p" onClick={() => setDeck(null)}>К другим колодам</button>
+                  <button className="btn btn-secondary" onClick={() => setDeck(null)}>К другим колодам</button>
                 </div>
               )}
             </div>

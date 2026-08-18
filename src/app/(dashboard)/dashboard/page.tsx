@@ -227,6 +227,7 @@ export default function DashboardPage() {
   const testsDone = assessments.filter(a => a.bothCompleted).length
   const testsTotal = assessments.length || 10
   const nextTest = assessments.find(a => !a.bothCompleted)
+  const hasActiveQuestion = Boolean(dq && !dq.myAnswered)
 
   const headline = `Синхронизация сердец${name ? `, ${name}` : ''}…`
   const { out, done } = useTypewriter(headline)
@@ -403,7 +404,7 @@ export default function DashboardPage() {
         <div className="prog-line" style={{ marginTop: 12 }}><div className="prog-fill" style={{ width: `${(testsDone / testsTotal) * 100}%` }} /></div>
         <Link
           href={nextTest ? `/dashboard/assessments/${nextTest.key}` : '/dashboard/couple#report'}
-          className="btn btn-primary btn-w"
+          className={hasActiveQuestion ? 'btn btn-secondary btn-w' : 'btn btn-primary btn-w'}
           style={{ marginTop: 12 }}
         >
           {nextTest ? 'Начать тест' : 'Открыть отчёт'}
