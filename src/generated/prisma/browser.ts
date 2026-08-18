@@ -83,6 +83,16 @@ export type Notification = Prisma.NotificationModel
  */
 export type CoupleMessage = Prisma.CoupleMessageModel
 /**
+ * Model CoupleChatRead
+ * 
+ */
+export type CoupleChatRead = Prisma.CoupleChatReadModel
+/**
+ * Model CoupleTyping
+ * 
+ */
+export type CoupleTyping = Prisma.CoupleTypingModel
+/**
  * Model DailyQuestion
  * 
  */

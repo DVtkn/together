@@ -64,6 +64,8 @@ export const ModelName = {
   MoodEntry: 'MoodEntry',
   Notification: 'Notification',
   CoupleMessage: 'CoupleMessage',
+  CoupleChatRead: 'CoupleChatRead',
+  CoupleTyping: 'CoupleTyping',
   DailyQuestion: 'DailyQuestion',
   Signal: 'Signal',
   PauseSession: 'PauseSession',
@@ -130,7 +132,8 @@ export const UserScalarFieldEnum = {
   pushEnabled: 'pushEnabled',
   emailEnabled: 'emailEnabled',
   weeklyPulseReminder: 'weeklyPulseReminder',
-  challengeReminder: 'challengeReminder'
+  challengeReminder: 'challengeReminder',
+  onboardingDone: 'onboardingDone'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -305,6 +308,24 @@ export const CoupleMessageScalarFieldEnum = {
 } as const
 
 export type CoupleMessageScalarFieldEnum = (typeof CoupleMessageScalarFieldEnum)[keyof typeof CoupleMessageScalarFieldEnum]
+
+
+export const CoupleChatReadScalarFieldEnum = {
+  coupleId: 'coupleId',
+  userId: 'userId',
+  lastReadAt: 'lastReadAt'
+} as const
+
+export type CoupleChatReadScalarFieldEnum = (typeof CoupleChatReadScalarFieldEnum)[keyof typeof CoupleChatReadScalarFieldEnum]
+
+
+export const CoupleTypingScalarFieldEnum = {
+  coupleId: 'coupleId',
+  userId: 'userId',
+  until: 'until'
+} as const
+
+export type CoupleTypingScalarFieldEnum = (typeof CoupleTypingScalarFieldEnum)[keyof typeof CoupleTypingScalarFieldEnum]
 
 
 export const DailyQuestionScalarFieldEnum = {

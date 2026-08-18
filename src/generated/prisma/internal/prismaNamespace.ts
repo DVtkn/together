@@ -410,6 +410,8 @@ export const ModelName = {
   MoodEntry: 'MoodEntry',
   Notification: 'Notification',
   CoupleMessage: 'CoupleMessage',
+  CoupleChatRead: 'CoupleChatRead',
+  CoupleTyping: 'CoupleTyping',
   DailyQuestion: 'DailyQuestion',
   Signal: 'Signal',
   PauseSession: 'PauseSession',
@@ -453,7 +455,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "aIConversation" | "aIMessage" | "assessment" | "assessmentResponse" | "astroProfile" | "bouquet" | "challenge" | "challengeCompletion" | "dateInvite" | "moodEntry" | "notification" | "coupleMessage" | "dailyQuestion" | "signal" | "pauseSession" | "warmthEntry" | "coupleEvent" | "dateMemory" | "memory" | "ritual" | "ritualCompletion" | "letter" | "city" | "consentLog" | "couple" | "coupleLinkRequest" | "coupleReport" | "coupleAnalysis" | "flower" | "moodStatus" | "planetPosition" | "pulseCheckin" | "pushSubscription" | "question" | "smallCraving" | "synastryReport" | "venue" | "communityVenueRating" | "communityVenue" | "wishlistItem"
+    modelProps: "user" | "aIConversation" | "aIMessage" | "assessment" | "assessmentResponse" | "astroProfile" | "bouquet" | "challenge" | "challengeCompletion" | "dateInvite" | "moodEntry" | "notification" | "coupleMessage" | "coupleChatRead" | "coupleTyping" | "dailyQuestion" | "signal" | "pauseSession" | "warmthEntry" | "coupleEvent" | "dateMemory" | "memory" | "ritual" | "ritualCompletion" | "letter" | "city" | "consentLog" | "couple" | "coupleLinkRequest" | "coupleReport" | "coupleAnalysis" | "flower" | "moodStatus" | "planetPosition" | "pulseCheckin" | "pushSubscription" | "question" | "smallCraving" | "synastryReport" | "venue" | "communityVenueRating" | "communityVenue" | "wishlistItem"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1416,6 +1418,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.CoupleMessageCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.CoupleMessageCountAggregateOutputType> | number
+        }
+      }
+    }
+    CoupleChatRead: {
+      payload: Prisma.$CoupleChatReadPayload<ExtArgs>
+      fields: Prisma.CoupleChatReadFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CoupleChatReadFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoupleChatReadPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CoupleChatReadFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoupleChatReadPayload>
+        }
+        findFirst: {
+          args: Prisma.CoupleChatReadFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoupleChatReadPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CoupleChatReadFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoupleChatReadPayload>
+        }
+        findMany: {
+          args: Prisma.CoupleChatReadFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoupleChatReadPayload>[]
+        }
+        create: {
+          args: Prisma.CoupleChatReadCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoupleChatReadPayload>
+        }
+        createMany: {
+          args: Prisma.CoupleChatReadCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CoupleChatReadCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoupleChatReadPayload>[]
+        }
+        delete: {
+          args: Prisma.CoupleChatReadDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoupleChatReadPayload>
+        }
+        update: {
+          args: Prisma.CoupleChatReadUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoupleChatReadPayload>
+        }
+        deleteMany: {
+          args: Prisma.CoupleChatReadDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CoupleChatReadUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CoupleChatReadUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoupleChatReadPayload>[]
+        }
+        upsert: {
+          args: Prisma.CoupleChatReadUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoupleChatReadPayload>
+        }
+        aggregate: {
+          args: Prisma.CoupleChatReadAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCoupleChatRead>
+        }
+        groupBy: {
+          args: Prisma.CoupleChatReadGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CoupleChatReadGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CoupleChatReadCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CoupleChatReadCountAggregateOutputType> | number
+        }
+      }
+    }
+    CoupleTyping: {
+      payload: Prisma.$CoupleTypingPayload<ExtArgs>
+      fields: Prisma.CoupleTypingFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CoupleTypingFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoupleTypingPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CoupleTypingFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoupleTypingPayload>
+        }
+        findFirst: {
+          args: Prisma.CoupleTypingFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoupleTypingPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CoupleTypingFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoupleTypingPayload>
+        }
+        findMany: {
+          args: Prisma.CoupleTypingFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoupleTypingPayload>[]
+        }
+        create: {
+          args: Prisma.CoupleTypingCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoupleTypingPayload>
+        }
+        createMany: {
+          args: Prisma.CoupleTypingCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CoupleTypingCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoupleTypingPayload>[]
+        }
+        delete: {
+          args: Prisma.CoupleTypingDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoupleTypingPayload>
+        }
+        update: {
+          args: Prisma.CoupleTypingUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoupleTypingPayload>
+        }
+        deleteMany: {
+          args: Prisma.CoupleTypingDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CoupleTypingUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CoupleTypingUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoupleTypingPayload>[]
+        }
+        upsert: {
+          args: Prisma.CoupleTypingUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoupleTypingPayload>
+        }
+        aggregate: {
+          args: Prisma.CoupleTypingAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCoupleTyping>
+        }
+        groupBy: {
+          args: Prisma.CoupleTypingGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CoupleTypingGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CoupleTypingCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CoupleTypingCountAggregateOutputType> | number
         }
       }
     }
@@ -3550,7 +3700,8 @@ export const UserScalarFieldEnum = {
   pushEnabled: 'pushEnabled',
   emailEnabled: 'emailEnabled',
   weeklyPulseReminder: 'weeklyPulseReminder',
-  challengeReminder: 'challengeReminder'
+  challengeReminder: 'challengeReminder',
+  onboardingDone: 'onboardingDone'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -3725,6 +3876,24 @@ export const CoupleMessageScalarFieldEnum = {
 } as const
 
 export type CoupleMessageScalarFieldEnum = (typeof CoupleMessageScalarFieldEnum)[keyof typeof CoupleMessageScalarFieldEnum]
+
+
+export const CoupleChatReadScalarFieldEnum = {
+  coupleId: 'coupleId',
+  userId: 'userId',
+  lastReadAt: 'lastReadAt'
+} as const
+
+export type CoupleChatReadScalarFieldEnum = (typeof CoupleChatReadScalarFieldEnum)[keyof typeof CoupleChatReadScalarFieldEnum]
+
+
+export const CoupleTypingScalarFieldEnum = {
+  coupleId: 'coupleId',
+  userId: 'userId',
+  until: 'until'
+} as const
+
+export type CoupleTypingScalarFieldEnum = (typeof CoupleTypingScalarFieldEnum)[keyof typeof CoupleTypingScalarFieldEnum]
 
 
 export const DailyQuestionScalarFieldEnum = {
@@ -4549,6 +4718,8 @@ export type GlobalOmitConfig = {
   moodEntry?: Prisma.MoodEntryOmit
   notification?: Prisma.NotificationOmit
   coupleMessage?: Prisma.CoupleMessageOmit
+  coupleChatRead?: Prisma.CoupleChatReadOmit
+  coupleTyping?: Prisma.CoupleTypingOmit
   dailyQuestion?: Prisma.DailyQuestionOmit
   signal?: Prisma.SignalOmit
   pauseSession?: Prisma.PauseSessionOmit
