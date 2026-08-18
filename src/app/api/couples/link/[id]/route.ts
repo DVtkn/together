@@ -66,7 +66,6 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
           partnerAId: requestRecord.fromUserId,
           partnerBId: ctx.user.id,
           status: 'ACTIVE',
-          startedAt: new Date(),
           updatedAt: new Date(),
         },
       })

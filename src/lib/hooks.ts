@@ -16,7 +16,7 @@ export interface CoupleData {
   partnerA: { id: string; name: string | null }
   partnerB: { id: string; name: string | null }
   status: string
-  startedAt: string | null
+  relationshipStart: string | null
 }
 
 export interface ProfileResponse {

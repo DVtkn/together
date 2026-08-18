@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
           status: ctx.couple.status,
           partnerA: { name: ctx.couple.partnerAId === ctx.user.id ? ctx.user.name : (ctx.partner?.name ?? null), id: ctx.couple.partnerAId },
           partnerB: { name: ctx.couple.partnerBId === ctx.user.id ? ctx.user.name : (ctx.partner?.name ?? null), id: ctx.couple.partnerBId },
-          startedAt: ctx.couple.startedAt?.toISOString() ?? null,
+          relationshipStart: ctx.couple.relationshipStart?.toISOString() ?? null,
         }
       : null,
   })

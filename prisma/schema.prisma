@@ -427,7 +427,7 @@ model Couple {
   partnerAId                   String           @unique
   partnerBId                   String           @unique
   status                       CoupleStatus     @default(PENDING)
-  startedAt                    DateTime?
+  relationshipStart            DateTime?
   createdAt                    DateTime         @default(now())
   updatedAt                    DateTime
   Challenge                    Challenge[]

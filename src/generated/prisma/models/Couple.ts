@@ -29,7 +29,7 @@ export type CoupleMinAggregateOutputType = {
   partnerAId: string | null
   partnerBId: string | null
   status: $Enums.CoupleStatus | null
-  startedAt: Date | null
+  relationshipStart: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -39,7 +39,7 @@ export type CoupleMaxAggregateOutputType = {
   partnerAId: string | null
   partnerBId: string | null
   status: $Enums.CoupleStatus | null
-  startedAt: Date | null
+  relationshipStart: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -49,7 +49,7 @@ export type CoupleCountAggregateOutputType = {
   partnerAId: number
   partnerBId: number
   status: number
-  startedAt: number
+  relationshipStart: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -61,7 +61,7 @@ export type CoupleMinAggregateInputType = {
   partnerAId?: true
   partnerBId?: true
   status?: true
-  startedAt?: true
+  relationshipStart?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -71,7 +71,7 @@ export type CoupleMaxAggregateInputType = {
   partnerAId?: true
   partnerBId?: true
   status?: true
-  startedAt?: true
+  relationshipStart?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -81,7 +81,7 @@ export type CoupleCountAggregateInputType = {
   partnerAId?: true
   partnerBId?: true
   status?: true
-  startedAt?: true
+  relationshipStart?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -164,7 +164,7 @@ export type CoupleGroupByOutputType = {
   partnerAId: string
   partnerBId: string
   status: $Enums.CoupleStatus
-  startedAt: Date | null
+  relationshipStart: Date | null
   createdAt: Date
   updatedAt: Date
   _count: CoupleCountAggregateOutputType | null
@@ -195,7 +195,7 @@ export type CoupleWhereInput = {
   partnerAId?: Prisma.StringFilter<"Couple"> | string
   partnerBId?: Prisma.StringFilter<"Couple"> | string
   status?: Prisma.EnumCoupleStatusFilter<"Couple"> | $Enums.CoupleStatus
-  startedAt?: Prisma.DateTimeNullableFilter<"Couple"> | Date | string | null
+  relationshipStart?: Prisma.DateTimeNullableFilter<"Couple"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Couple"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Couple"> | Date | string
   Challenge?: Prisma.ChallengeListRelationFilter
@@ -223,7 +223,7 @@ export type CoupleOrderByWithRelationInput = {
   partnerAId?: Prisma.SortOrder
   partnerBId?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  startedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  relationshipStart?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   Challenge?: Prisma.ChallengeOrderByRelationAggregateInput
@@ -255,7 +255,7 @@ export type CoupleWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.CoupleWhereInput[]
   NOT?: Prisma.CoupleWhereInput | Prisma.CoupleWhereInput[]
   status?: Prisma.EnumCoupleStatusFilter<"Couple"> | $Enums.CoupleStatus
-  startedAt?: Prisma.DateTimeNullableFilter<"Couple"> | Date | string | null
+  relationshipStart?: Prisma.DateTimeNullableFilter<"Couple"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Couple"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Couple"> | Date | string
   Challenge?: Prisma.ChallengeListRelationFilter
@@ -283,7 +283,7 @@ export type CoupleOrderByWithAggregationInput = {
   partnerAId?: Prisma.SortOrder
   partnerBId?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  startedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  relationshipStart?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.CoupleCountOrderByAggregateInput
@@ -299,7 +299,7 @@ export type CoupleScalarWhereWithAggregatesInput = {
   partnerAId?: Prisma.StringWithAggregatesFilter<"Couple"> | string
   partnerBId?: Prisma.StringWithAggregatesFilter<"Couple"> | string
   status?: Prisma.EnumCoupleStatusWithAggregatesFilter<"Couple"> | $Enums.CoupleStatus
-  startedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Couple"> | Date | string | null
+  relationshipStart?: Prisma.DateTimeNullableWithAggregatesFilter<"Couple"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Couple"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Couple"> | Date | string
 }
@@ -307,7 +307,7 @@ export type CoupleScalarWhereWithAggregatesInput = {
 export type CoupleCreateInput = {
   id: string
   status?: $Enums.CoupleStatus
-  startedAt?: Date | string | null
+  relationshipStart?: Date | string | null
   createdAt?: Date | string
   updatedAt: Date | string
   Challenge?: Prisma.ChallengeCreateNestedManyWithoutCoupleInput
@@ -335,7 +335,7 @@ export type CoupleUncheckedCreateInput = {
   partnerAId: string
   partnerBId: string
   status?: $Enums.CoupleStatus
-  startedAt?: Date | string | null
+  relationshipStart?: Date | string | null
   createdAt?: Date | string
   updatedAt: Date | string
   Challenge?: Prisma.ChallengeUncheckedCreateNestedManyWithoutCoupleInput
@@ -359,7 +359,7 @@ export type CoupleUncheckedCreateInput = {
 export type CoupleUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCoupleStatusFieldUpdateOperationsInput | $Enums.CoupleStatus
-  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  relationshipStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Challenge?: Prisma.ChallengeUpdateManyWithoutCoupleNestedInput
@@ -387,7 +387,7 @@ export type CoupleUncheckedUpdateInput = {
   partnerAId?: Prisma.StringFieldUpdateOperationsInput | string
   partnerBId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCoupleStatusFieldUpdateOperationsInput | $Enums.CoupleStatus
-  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  relationshipStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Challenge?: Prisma.ChallengeUncheckedUpdateManyWithoutCoupleNestedInput
@@ -413,7 +413,7 @@ export type CoupleCreateManyInput = {
   partnerAId: string
   partnerBId: string
   status?: $Enums.CoupleStatus
-  startedAt?: Date | string | null
+  relationshipStart?: Date | string | null
   createdAt?: Date | string
   updatedAt: Date | string
 }
@@ -421,7 +421,7 @@ export type CoupleCreateManyInput = {
 export type CoupleUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCoupleStatusFieldUpdateOperationsInput | $Enums.CoupleStatus
-  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  relationshipStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -431,7 +431,7 @@ export type CoupleUncheckedUpdateManyInput = {
   partnerAId?: Prisma.StringFieldUpdateOperationsInput | string
   partnerBId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCoupleStatusFieldUpdateOperationsInput | $Enums.CoupleStatus
-  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  relationshipStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -456,7 +456,7 @@ export type CoupleCountOrderByAggregateInput = {
   partnerAId?: Prisma.SortOrder
   partnerBId?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  startedAt?: Prisma.SortOrder
+  relationshipStart?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -466,7 +466,7 @@ export type CoupleMaxOrderByAggregateInput = {
   partnerAId?: Prisma.SortOrder
   partnerBId?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  startedAt?: Prisma.SortOrder
+  relationshipStart?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -476,7 +476,7 @@ export type CoupleMinOrderByAggregateInput = {
   partnerAId?: Prisma.SortOrder
   partnerBId?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  startedAt?: Prisma.SortOrder
+  relationshipStart?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -778,7 +778,7 @@ export type CoupleUpdateOneRequiredWithoutSynastryReportNestedInput = {
 export type CoupleCreateWithoutUser_Couple_partnerAIdToUserInput = {
   id: string
   status?: $Enums.CoupleStatus
-  startedAt?: Date | string | null
+  relationshipStart?: Date | string | null
   createdAt?: Date | string
   updatedAt: Date | string
   Challenge?: Prisma.ChallengeCreateNestedManyWithoutCoupleInput
@@ -804,7 +804,7 @@ export type CoupleUncheckedCreateWithoutUser_Couple_partnerAIdToUserInput = {
   id: string
   partnerBId: string
   status?: $Enums.CoupleStatus
-  startedAt?: Date | string | null
+  relationshipStart?: Date | string | null
   createdAt?: Date | string
   updatedAt: Date | string
   Challenge?: Prisma.ChallengeUncheckedCreateNestedManyWithoutCoupleInput
@@ -833,7 +833,7 @@ export type CoupleCreateOrConnectWithoutUser_Couple_partnerAIdToUserInput = {
 export type CoupleCreateWithoutUser_Couple_partnerBIdToUserInput = {
   id: string
   status?: $Enums.CoupleStatus
-  startedAt?: Date | string | null
+  relationshipStart?: Date | string | null
   createdAt?: Date | string
   updatedAt: Date | string
   Challenge?: Prisma.ChallengeCreateNestedManyWithoutCoupleInput
@@ -859,7 +859,7 @@ export type CoupleUncheckedCreateWithoutUser_Couple_partnerBIdToUserInput = {
   id: string
   partnerAId: string
   status?: $Enums.CoupleStatus
-  startedAt?: Date | string | null
+  relationshipStart?: Date | string | null
   createdAt?: Date | string
   updatedAt: Date | string
   Challenge?: Prisma.ChallengeUncheckedCreateNestedManyWithoutCoupleInput
@@ -888,7 +888,7 @@ export type CoupleCreateOrConnectWithoutUser_Couple_partnerBIdToUserInput = {
 export type CoupleCreateWithoutUser_User_coupleIdToCoupleInput = {
   id: string
   status?: $Enums.CoupleStatus
-  startedAt?: Date | string | null
+  relationshipStart?: Date | string | null
   createdAt?: Date | string
   updatedAt: Date | string
   Challenge?: Prisma.ChallengeCreateNestedManyWithoutCoupleInput
@@ -915,7 +915,7 @@ export type CoupleUncheckedCreateWithoutUser_User_coupleIdToCoupleInput = {
   partnerAId: string
   partnerBId: string
   status?: $Enums.CoupleStatus
-  startedAt?: Date | string | null
+  relationshipStart?: Date | string | null
   createdAt?: Date | string
   updatedAt: Date | string
   Challenge?: Prisma.ChallengeUncheckedCreateNestedManyWithoutCoupleInput
@@ -954,7 +954,7 @@ export type CoupleUpdateToOneWithWhereWithoutUser_Couple_partnerAIdToUserInput =
 export type CoupleUpdateWithoutUser_Couple_partnerAIdToUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCoupleStatusFieldUpdateOperationsInput | $Enums.CoupleStatus
-  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  relationshipStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Challenge?: Prisma.ChallengeUpdateManyWithoutCoupleNestedInput
@@ -980,7 +980,7 @@ export type CoupleUncheckedUpdateWithoutUser_Couple_partnerAIdToUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   partnerBId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCoupleStatusFieldUpdateOperationsInput | $Enums.CoupleStatus
-  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  relationshipStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Challenge?: Prisma.ChallengeUncheckedUpdateManyWithoutCoupleNestedInput
@@ -1015,7 +1015,7 @@ export type CoupleUpdateToOneWithWhereWithoutUser_Couple_partnerBIdToUserInput =
 export type CoupleUpdateWithoutUser_Couple_partnerBIdToUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCoupleStatusFieldUpdateOperationsInput | $Enums.CoupleStatus
-  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  relationshipStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Challenge?: Prisma.ChallengeUpdateManyWithoutCoupleNestedInput
@@ -1041,7 +1041,7 @@ export type CoupleUncheckedUpdateWithoutUser_Couple_partnerBIdToUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   partnerAId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCoupleStatusFieldUpdateOperationsInput | $Enums.CoupleStatus
-  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  relationshipStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Challenge?: Prisma.ChallengeUncheckedUpdateManyWithoutCoupleNestedInput
@@ -1076,7 +1076,7 @@ export type CoupleUpdateToOneWithWhereWithoutUser_User_coupleIdToCoupleInput = {
 export type CoupleUpdateWithoutUser_User_coupleIdToCoupleInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCoupleStatusFieldUpdateOperationsInput | $Enums.CoupleStatus
-  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  relationshipStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Challenge?: Prisma.ChallengeUpdateManyWithoutCoupleNestedInput
@@ -1103,7 +1103,7 @@ export type CoupleUncheckedUpdateWithoutUser_User_coupleIdToCoupleInput = {
   partnerAId?: Prisma.StringFieldUpdateOperationsInput | string
   partnerBId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCoupleStatusFieldUpdateOperationsInput | $Enums.CoupleStatus
-  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  relationshipStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Challenge?: Prisma.ChallengeUncheckedUpdateManyWithoutCoupleNestedInput
@@ -1126,7 +1126,7 @@ export type CoupleUncheckedUpdateWithoutUser_User_coupleIdToCoupleInput = {
 export type CoupleCreateWithoutChallengeInput = {
   id: string
   status?: $Enums.CoupleStatus
-  startedAt?: Date | string | null
+  relationshipStart?: Date | string | null
   createdAt?: Date | string
   updatedAt: Date | string
   DateInvite?: Prisma.DateInviteCreateNestedManyWithoutCoupleInput
@@ -1153,7 +1153,7 @@ export type CoupleUncheckedCreateWithoutChallengeInput = {
   partnerAId: string
   partnerBId: string
   status?: $Enums.CoupleStatus
-  startedAt?: Date | string | null
+  relationshipStart?: Date | string | null
   createdAt?: Date | string
   updatedAt: Date | string
   DateInvite?: Prisma.DateInviteUncheckedCreateNestedManyWithoutCoupleInput
@@ -1192,7 +1192,7 @@ export type CoupleUpdateToOneWithWhereWithoutChallengeInput = {
 export type CoupleUpdateWithoutChallengeInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCoupleStatusFieldUpdateOperationsInput | $Enums.CoupleStatus
-  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  relationshipStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   DateInvite?: Prisma.DateInviteUpdateManyWithoutCoupleNestedInput
@@ -1219,7 +1219,7 @@ export type CoupleUncheckedUpdateWithoutChallengeInput = {
   partnerAId?: Prisma.StringFieldUpdateOperationsInput | string
   partnerBId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCoupleStatusFieldUpdateOperationsInput | $Enums.CoupleStatus
-  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  relationshipStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   DateInvite?: Prisma.DateInviteUncheckedUpdateManyWithoutCoupleNestedInput
@@ -1242,7 +1242,7 @@ export type CoupleUncheckedUpdateWithoutChallengeInput = {
 export type CoupleCreateWithoutDateInviteInput = {
   id: string
   status?: $Enums.CoupleStatus
-  startedAt?: Date | string | null
+  relationshipStart?: Date | string | null
   createdAt?: Date | string
   updatedAt: Date | string
   Challenge?: Prisma.ChallengeCreateNestedManyWithoutCoupleInput
@@ -1269,7 +1269,7 @@ export type CoupleUncheckedCreateWithoutDateInviteInput = {
   partnerAId: string
   partnerBId: string
   status?: $Enums.CoupleStatus
-  startedAt?: Date | string | null
+  relationshipStart?: Date | string | null
   createdAt?: Date | string
   updatedAt: Date | string
   Challenge?: Prisma.ChallengeUncheckedCreateNestedManyWithoutCoupleInput
@@ -1308,7 +1308,7 @@ export type CoupleUpdateToOneWithWhereWithoutDateInviteInput = {
 export type CoupleUpdateWithoutDateInviteInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCoupleStatusFieldUpdateOperationsInput | $Enums.CoupleStatus
-  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  relationshipStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Challenge?: Prisma.ChallengeUpdateManyWithoutCoupleNestedInput
@@ -1335,7 +1335,7 @@ export type CoupleUncheckedUpdateWithoutDateInviteInput = {
   partnerAId?: Prisma.StringFieldUpdateOperationsInput | string
   partnerBId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCoupleStatusFieldUpdateOperationsInput | $Enums.CoupleStatus
-  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  relationshipStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Challenge?: Prisma.ChallengeUncheckedUpdateManyWithoutCoupleNestedInput
@@ -1358,7 +1358,7 @@ export type CoupleUncheckedUpdateWithoutDateInviteInput = {
 export type CoupleCreateWithoutCoupleMessageInput = {
   id: string
   status?: $Enums.CoupleStatus
-  startedAt?: Date | string | null
+  relationshipStart?: Date | string | null
   createdAt?: Date | string
   updatedAt: Date | string
   Challenge?: Prisma.ChallengeCreateNestedManyWithoutCoupleInput
@@ -1385,7 +1385,7 @@ export type CoupleUncheckedCreateWithoutCoupleMessageInput = {
   partnerAId: string
   partnerBId: string
   status?: $Enums.CoupleStatus
-  startedAt?: Date | string | null
+  relationshipStart?: Date | string | null
   createdAt?: Date | string
   updatedAt: Date | string
   Challenge?: Prisma.ChallengeUncheckedCreateNestedManyWithoutCoupleInput
@@ -1424,7 +1424,7 @@ export type CoupleUpdateToOneWithWhereWithoutCoupleMessageInput = {
 export type CoupleUpdateWithoutCoupleMessageInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCoupleStatusFieldUpdateOperationsInput | $Enums.CoupleStatus
-  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  relationshipStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Challenge?: Prisma.ChallengeUpdateManyWithoutCoupleNestedInput
@@ -1451,7 +1451,7 @@ export type CoupleUncheckedUpdateWithoutCoupleMessageInput = {
   partnerAId?: Prisma.StringFieldUpdateOperationsInput | string
   partnerBId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCoupleStatusFieldUpdateOperationsInput | $Enums.CoupleStatus
-  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  relationshipStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Challenge?: Prisma.ChallengeUncheckedUpdateManyWithoutCoupleNestedInput
@@ -1474,7 +1474,7 @@ export type CoupleUncheckedUpdateWithoutCoupleMessageInput = {
 export type CoupleCreateWithoutDailyQuestionInput = {
   id: string
   status?: $Enums.CoupleStatus
-  startedAt?: Date | string | null
+  relationshipStart?: Date | string | null
   createdAt?: Date | string
   updatedAt: Date | string
   Challenge?: Prisma.ChallengeCreateNestedManyWithoutCoupleInput
@@ -1501,7 +1501,7 @@ export type CoupleUncheckedCreateWithoutDailyQuestionInput = {
   partnerAId: string
   partnerBId: string
   status?: $Enums.CoupleStatus
-  startedAt?: Date | string | null
+  relationshipStart?: Date | string | null
   createdAt?: Date | string
   updatedAt: Date | string
   Challenge?: Prisma.ChallengeUncheckedCreateNestedManyWithoutCoupleInput
@@ -1540,7 +1540,7 @@ export type CoupleUpdateToOneWithWhereWithoutDailyQuestionInput = {
 export type CoupleUpdateWithoutDailyQuestionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCoupleStatusFieldUpdateOperationsInput | $Enums.CoupleStatus
-  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  relationshipStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Challenge?: Prisma.ChallengeUpdateManyWithoutCoupleNestedInput
@@ -1567,7 +1567,7 @@ export type CoupleUncheckedUpdateWithoutDailyQuestionInput = {
   partnerAId?: Prisma.StringFieldUpdateOperationsInput | string
   partnerBId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCoupleStatusFieldUpdateOperationsInput | $Enums.CoupleStatus
-  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  relationshipStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Challenge?: Prisma.ChallengeUncheckedUpdateManyWithoutCoupleNestedInput
@@ -1590,7 +1590,7 @@ export type CoupleUncheckedUpdateWithoutDailyQuestionInput = {
 export type CoupleCreateWithoutSignalInput = {
   id: string
   status?: $Enums.CoupleStatus
-  startedAt?: Date | string | null
+  relationshipStart?: Date | string | null
   createdAt?: Date | string
   updatedAt: Date | string
   Challenge?: Prisma.ChallengeCreateNestedManyWithoutCoupleInput
@@ -1617,7 +1617,7 @@ export type CoupleUncheckedCreateWithoutSignalInput = {
   partnerAId: string
   partnerBId: string
   status?: $Enums.CoupleStatus
-  startedAt?: Date | string | null
+  relationshipStart?: Date | string | null
   createdAt?: Date | string
   updatedAt: Date | string
   Challenge?: Prisma.ChallengeUncheckedCreateNestedManyWithoutCoupleInput
@@ -1656,7 +1656,7 @@ export type CoupleUpdateToOneWithWhereWithoutSignalInput = {
 export type CoupleUpdateWithoutSignalInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCoupleStatusFieldUpdateOperationsInput | $Enums.CoupleStatus
-  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  relationshipStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Challenge?: Prisma.ChallengeUpdateManyWithoutCoupleNestedInput
@@ -1683,7 +1683,7 @@ export type CoupleUncheckedUpdateWithoutSignalInput = {
   partnerAId?: Prisma.StringFieldUpdateOperationsInput | string
   partnerBId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCoupleStatusFieldUpdateOperationsInput | $Enums.CoupleStatus
-  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  relationshipStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Challenge?: Prisma.ChallengeUncheckedUpdateManyWithoutCoupleNestedInput
@@ -1706,7 +1706,7 @@ export type CoupleUncheckedUpdateWithoutSignalInput = {
 export type CoupleCreateWithoutPauseSessionInput = {
   id: string
   status?: $Enums.CoupleStatus
-  startedAt?: Date | string | null
+  relationshipStart?: Date | string | null
   createdAt?: Date | string
   updatedAt: Date | string
   Challenge?: Prisma.ChallengeCreateNestedManyWithoutCoupleInput
@@ -1733,7 +1733,7 @@ export type CoupleUncheckedCreateWithoutPauseSessionInput = {
   partnerAId: string
   partnerBId: string
   status?: $Enums.CoupleStatus
-  startedAt?: Date | string | null
+  relationshipStart?: Date | string | null
   createdAt?: Date | string
   updatedAt: Date | string
   Challenge?: Prisma.ChallengeUncheckedCreateNestedManyWithoutCoupleInput
@@ -1772,7 +1772,7 @@ export type CoupleUpdateToOneWithWhereWithoutPauseSessionInput = {
 export type CoupleUpdateWithoutPauseSessionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCoupleStatusFieldUpdateOperationsInput | $Enums.CoupleStatus
-  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  relationshipStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Challenge?: Prisma.ChallengeUpdateManyWithoutCoupleNestedInput
@@ -1799,7 +1799,7 @@ export type CoupleUncheckedUpdateWithoutPauseSessionInput = {
   partnerAId?: Prisma.StringFieldUpdateOperationsInput | string
   partnerBId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCoupleStatusFieldUpdateOperationsInput | $Enums.CoupleStatus
-  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  relationshipStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Challenge?: Prisma.ChallengeUncheckedUpdateManyWithoutCoupleNestedInput
@@ -1822,7 +1822,7 @@ export type CoupleUncheckedUpdateWithoutPauseSessionInput = {
 export type CoupleCreateWithoutWarmthEntryInput = {
   id: string
   status?: $Enums.CoupleStatus
-  startedAt?: Date | string | null
+  relationshipStart?: Date | string | null
   createdAt?: Date | string
   updatedAt: Date | string
   Challenge?: Prisma.ChallengeCreateNestedManyWithoutCoupleInput
@@ -1849,7 +1849,7 @@ export type CoupleUncheckedCreateWithoutWarmthEntryInput = {
   partnerAId: string
   partnerBId: string
   status?: $Enums.CoupleStatus
-  startedAt?: Date | string | null
+  relationshipStart?: Date | string | null
   createdAt?: Date | string
   updatedAt: Date | string
   Challenge?: Prisma.ChallengeUncheckedCreateNestedManyWithoutCoupleInput
@@ -1888,7 +1888,7 @@ export type CoupleUpdateToOneWithWhereWithoutWarmthEntryInput = {
 export type CoupleUpdateWithoutWarmthEntryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCoupleStatusFieldUpdateOperationsInput | $Enums.CoupleStatus
-  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  relationshipStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Challenge?: Prisma.ChallengeUpdateManyWithoutCoupleNestedInput
@@ -1915,7 +1915,7 @@ export type CoupleUncheckedUpdateWithoutWarmthEntryInput = {
   partnerAId?: Prisma.StringFieldUpdateOperationsInput | string
   partnerBId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCoupleStatusFieldUpdateOperationsInput | $Enums.CoupleStatus
-  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  relationshipStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Challenge?: Prisma.ChallengeUncheckedUpdateManyWithoutCoupleNestedInput
@@ -1938,7 +1938,7 @@ export type CoupleUncheckedUpdateWithoutWarmthEntryInput = {
 export type CoupleCreateWithoutCoupleEventInput = {
   id: string
   status?: $Enums.CoupleStatus
-  startedAt?: Date | string | null
+  relationshipStart?: Date | string | null
   createdAt?: Date | string
   updatedAt: Date | string
   Challenge?: Prisma.ChallengeCreateNestedManyWithoutCoupleInput
@@ -1965,7 +1965,7 @@ export type CoupleUncheckedCreateWithoutCoupleEventInput = {
   partnerAId: string
   partnerBId: string
   status?: $Enums.CoupleStatus
-  startedAt?: Date | string | null
+  relationshipStart?: Date | string | null
   createdAt?: Date | string
   updatedAt: Date | string
   Challenge?: Prisma.ChallengeUncheckedCreateNestedManyWithoutCoupleInput
@@ -2004,7 +2004,7 @@ export type CoupleUpdateToOneWithWhereWithoutCoupleEventInput = {
 export type CoupleUpdateWithoutCoupleEventInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCoupleStatusFieldUpdateOperationsInput | $Enums.CoupleStatus
-  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  relationshipStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Challenge?: Prisma.ChallengeUpdateManyWithoutCoupleNestedInput
@@ -2031,7 +2031,7 @@ export type CoupleUncheckedUpdateWithoutCoupleEventInput = {
   partnerAId?: Prisma.StringFieldUpdateOperationsInput | string
   partnerBId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCoupleStatusFieldUpdateOperationsInput | $Enums.CoupleStatus
-  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  relationshipStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Challenge?: Prisma.ChallengeUncheckedUpdateManyWithoutCoupleNestedInput
@@ -2054,7 +2054,7 @@ export type CoupleUncheckedUpdateWithoutCoupleEventInput = {
 export type CoupleCreateWithoutDateMemoryInput = {
   id: string
   status?: $Enums.CoupleStatus
-  startedAt?: Date | string | null
+  relationshipStart?: Date | string | null
   createdAt?: Date | string
   updatedAt: Date | string
   Challenge?: Prisma.ChallengeCreateNestedManyWithoutCoupleInput
@@ -2081,7 +2081,7 @@ export type CoupleUncheckedCreateWithoutDateMemoryInput = {
   partnerAId: string
   partnerBId: string
   status?: $Enums.CoupleStatus
-  startedAt?: Date | string | null
+  relationshipStart?: Date | string | null
   createdAt?: Date | string
   updatedAt: Date | string
   Challenge?: Prisma.ChallengeUncheckedCreateNestedManyWithoutCoupleInput
@@ -2120,7 +2120,7 @@ export type CoupleUpdateToOneWithWhereWithoutDateMemoryInput = {
 export type CoupleUpdateWithoutDateMemoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCoupleStatusFieldUpdateOperationsInput | $Enums.CoupleStatus
-  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  relationshipStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Challenge?: Prisma.ChallengeUpdateManyWithoutCoupleNestedInput
@@ -2147,7 +2147,7 @@ export type CoupleUncheckedUpdateWithoutDateMemoryInput = {
   partnerAId?: Prisma.StringFieldUpdateOperationsInput | string
   partnerBId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCoupleStatusFieldUpdateOperationsInput | $Enums.CoupleStatus
-  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  relationshipStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Challenge?: Prisma.ChallengeUncheckedUpdateManyWithoutCoupleNestedInput
@@ -2170,7 +2170,7 @@ export type CoupleUncheckedUpdateWithoutDateMemoryInput = {
 export type CoupleCreateWithoutMemoryInput = {
   id: string
   status?: $Enums.CoupleStatus
-  startedAt?: Date | string | null
+  relationshipStart?: Date | string | null
   createdAt?: Date | string
   updatedAt: Date | string
   Challenge?: Prisma.ChallengeCreateNestedManyWithoutCoupleInput
@@ -2197,7 +2197,7 @@ export type CoupleUncheckedCreateWithoutMemoryInput = {
   partnerAId: string
   partnerBId: string
   status?: $Enums.CoupleStatus
-  startedAt?: Date | string | null
+  relationshipStart?: Date | string | null
   createdAt?: Date | string
   updatedAt: Date | string
   Challenge?: Prisma.ChallengeUncheckedCreateNestedManyWithoutCoupleInput
@@ -2236,7 +2236,7 @@ export type CoupleUpdateToOneWithWhereWithoutMemoryInput = {
 export type CoupleUpdateWithoutMemoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCoupleStatusFieldUpdateOperationsInput | $Enums.CoupleStatus
-  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  relationshipStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Challenge?: Prisma.ChallengeUpdateManyWithoutCoupleNestedInput
@@ -2263,7 +2263,7 @@ export type CoupleUncheckedUpdateWithoutMemoryInput = {
   partnerAId?: Prisma.StringFieldUpdateOperationsInput | string
   partnerBId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCoupleStatusFieldUpdateOperationsInput | $Enums.CoupleStatus
-  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  relationshipStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Challenge?: Prisma.ChallengeUncheckedUpdateManyWithoutCoupleNestedInput
@@ -2286,7 +2286,7 @@ export type CoupleUncheckedUpdateWithoutMemoryInput = {
 export type CoupleCreateWithoutRitualInput = {
   id: string
   status?: $Enums.CoupleStatus
-  startedAt?: Date | string | null
+  relationshipStart?: Date | string | null
   createdAt?: Date | string
   updatedAt: Date | string
   Challenge?: Prisma.ChallengeCreateNestedManyWithoutCoupleInput
@@ -2313,7 +2313,7 @@ export type CoupleUncheckedCreateWithoutRitualInput = {
   partnerAId: string
   partnerBId: string
   status?: $Enums.CoupleStatus
-  startedAt?: Date | string | null
+  relationshipStart?: Date | string | null
   createdAt?: Date | string
   updatedAt: Date | string
   Challenge?: Prisma.ChallengeUncheckedCreateNestedManyWithoutCoupleInput
@@ -2352,7 +2352,7 @@ export type CoupleUpdateToOneWithWhereWithoutRitualInput = {
 export type CoupleUpdateWithoutRitualInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCoupleStatusFieldUpdateOperationsInput | $Enums.CoupleStatus
-  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  relationshipStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Challenge?: Prisma.ChallengeUpdateManyWithoutCoupleNestedInput
@@ -2379,7 +2379,7 @@ export type CoupleUncheckedUpdateWithoutRitualInput = {
   partnerAId?: Prisma.StringFieldUpdateOperationsInput | string
   partnerBId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCoupleStatusFieldUpdateOperationsInput | $Enums.CoupleStatus
-  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  relationshipStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Challenge?: Prisma.ChallengeUncheckedUpdateManyWithoutCoupleNestedInput
@@ -2402,7 +2402,7 @@ export type CoupleUncheckedUpdateWithoutRitualInput = {
 export type CoupleCreateWithoutLetterInput = {
   id: string
   status?: $Enums.CoupleStatus
-  startedAt?: Date | string | null
+  relationshipStart?: Date | string | null
   createdAt?: Date | string
   updatedAt: Date | string
   Challenge?: Prisma.ChallengeCreateNestedManyWithoutCoupleInput
@@ -2429,7 +2429,7 @@ export type CoupleUncheckedCreateWithoutLetterInput = {
   partnerAId: string
   partnerBId: string
   status?: $Enums.CoupleStatus
-  startedAt?: Date | string | null
+  relationshipStart?: Date | string | null
   createdAt?: Date | string
   updatedAt: Date | string
   Challenge?: Prisma.ChallengeUncheckedCreateNestedManyWithoutCoupleInput
@@ -2468,7 +2468,7 @@ export type CoupleUpdateToOneWithWhereWithoutLetterInput = {
 export type CoupleUpdateWithoutLetterInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCoupleStatusFieldUpdateOperationsInput | $Enums.CoupleStatus
-  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  relationshipStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Challenge?: Prisma.ChallengeUpdateManyWithoutCoupleNestedInput
@@ -2495,7 +2495,7 @@ export type CoupleUncheckedUpdateWithoutLetterInput = {
   partnerAId?: Prisma.StringFieldUpdateOperationsInput | string
   partnerBId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCoupleStatusFieldUpdateOperationsInput | $Enums.CoupleStatus
-  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  relationshipStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Challenge?: Prisma.ChallengeUncheckedUpdateManyWithoutCoupleNestedInput
@@ -2518,7 +2518,7 @@ export type CoupleUncheckedUpdateWithoutLetterInput = {
 export type CoupleCreateWithoutCoupleReportInput = {
   id: string
   status?: $Enums.CoupleStatus
-  startedAt?: Date | string | null
+  relationshipStart?: Date | string | null
   createdAt?: Date | string
   updatedAt: Date | string
   Challenge?: Prisma.ChallengeCreateNestedManyWithoutCoupleInput
@@ -2545,7 +2545,7 @@ export type CoupleUncheckedCreateWithoutCoupleReportInput = {
   partnerAId: string
   partnerBId: string
   status?: $Enums.CoupleStatus
-  startedAt?: Date | string | null
+  relationshipStart?: Date | string | null
   createdAt?: Date | string
   updatedAt: Date | string
   Challenge?: Prisma.ChallengeUncheckedCreateNestedManyWithoutCoupleInput
@@ -2584,7 +2584,7 @@ export type CoupleUpdateToOneWithWhereWithoutCoupleReportInput = {
 export type CoupleUpdateWithoutCoupleReportInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCoupleStatusFieldUpdateOperationsInput | $Enums.CoupleStatus
-  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  relationshipStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Challenge?: Prisma.ChallengeUpdateManyWithoutCoupleNestedInput
@@ -2611,7 +2611,7 @@ export type CoupleUncheckedUpdateWithoutCoupleReportInput = {
   partnerAId?: Prisma.StringFieldUpdateOperationsInput | string
   partnerBId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCoupleStatusFieldUpdateOperationsInput | $Enums.CoupleStatus
-  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  relationshipStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Challenge?: Prisma.ChallengeUncheckedUpdateManyWithoutCoupleNestedInput
@@ -2634,7 +2634,7 @@ export type CoupleUncheckedUpdateWithoutCoupleReportInput = {
 export type CoupleCreateWithoutCoupleAnalysisInput = {
   id: string
   status?: $Enums.CoupleStatus
-  startedAt?: Date | string | null
+  relationshipStart?: Date | string | null
   createdAt?: Date | string
   updatedAt: Date | string
   Challenge?: Prisma.ChallengeCreateNestedManyWithoutCoupleInput
@@ -2661,7 +2661,7 @@ export type CoupleUncheckedCreateWithoutCoupleAnalysisInput = {
   partnerAId: string
   partnerBId: string
   status?: $Enums.CoupleStatus
-  startedAt?: Date | string | null
+  relationshipStart?: Date | string | null
   createdAt?: Date | string
   updatedAt: Date | string
   Challenge?: Prisma.ChallengeUncheckedCreateNestedManyWithoutCoupleInput
@@ -2700,7 +2700,7 @@ export type CoupleUpdateToOneWithWhereWithoutCoupleAnalysisInput = {
 export type CoupleUpdateWithoutCoupleAnalysisInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCoupleStatusFieldUpdateOperationsInput | $Enums.CoupleStatus
-  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  relationshipStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Challenge?: Prisma.ChallengeUpdateManyWithoutCoupleNestedInput
@@ -2727,7 +2727,7 @@ export type CoupleUncheckedUpdateWithoutCoupleAnalysisInput = {
   partnerAId?: Prisma.StringFieldUpdateOperationsInput | string
   partnerBId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCoupleStatusFieldUpdateOperationsInput | $Enums.CoupleStatus
-  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  relationshipStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Challenge?: Prisma.ChallengeUncheckedUpdateManyWithoutCoupleNestedInput
@@ -2750,7 +2750,7 @@ export type CoupleUncheckedUpdateWithoutCoupleAnalysisInput = {
 export type CoupleCreateWithoutSynastryReportInput = {
   id: string
   status?: $Enums.CoupleStatus
-  startedAt?: Date | string | null
+  relationshipStart?: Date | string | null
   createdAt?: Date | string
   updatedAt: Date | string
   Challenge?: Prisma.ChallengeCreateNestedManyWithoutCoupleInput
@@ -2777,7 +2777,7 @@ export type CoupleUncheckedCreateWithoutSynastryReportInput = {
   partnerAId: string
   partnerBId: string
   status?: $Enums.CoupleStatus
-  startedAt?: Date | string | null
+  relationshipStart?: Date | string | null
   createdAt?: Date | string
   updatedAt: Date | string
   Challenge?: Prisma.ChallengeUncheckedCreateNestedManyWithoutCoupleInput
@@ -2816,7 +2816,7 @@ export type CoupleUpdateToOneWithWhereWithoutSynastryReportInput = {
 export type CoupleUpdateWithoutSynastryReportInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCoupleStatusFieldUpdateOperationsInput | $Enums.CoupleStatus
-  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  relationshipStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Challenge?: Prisma.ChallengeUpdateManyWithoutCoupleNestedInput
@@ -2843,7 +2843,7 @@ export type CoupleUncheckedUpdateWithoutSynastryReportInput = {
   partnerAId?: Prisma.StringFieldUpdateOperationsInput | string
   partnerBId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCoupleStatusFieldUpdateOperationsInput | $Enums.CoupleStatus
-  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  relationshipStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Challenge?: Prisma.ChallengeUncheckedUpdateManyWithoutCoupleNestedInput
@@ -3016,7 +3016,7 @@ export type CoupleSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   partnerAId?: boolean
   partnerBId?: boolean
   status?: boolean
-  startedAt?: boolean
+  relationshipStart?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   Challenge?: boolean | Prisma.Couple$ChallengeArgs<ExtArgs>
@@ -3045,7 +3045,7 @@ export type CoupleSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   partnerAId?: boolean
   partnerBId?: boolean
   status?: boolean
-  startedAt?: boolean
+  relationshipStart?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   User_Couple_partnerAIdToUser?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -3057,7 +3057,7 @@ export type CoupleSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   partnerAId?: boolean
   partnerBId?: boolean
   status?: boolean
-  startedAt?: boolean
+  relationshipStart?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   User_Couple_partnerAIdToUser?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -3069,12 +3069,12 @@ export type CoupleSelectScalar = {
   partnerAId?: boolean
   partnerBId?: boolean
   status?: boolean
-  startedAt?: boolean
+  relationshipStart?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type CoupleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "partnerAId" | "partnerBId" | "status" | "startedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["couple"]>
+export type CoupleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "partnerAId" | "partnerBId" | "status" | "relationshipStart" | "createdAt" | "updatedAt", ExtArgs["result"]["couple"]>
 export type CoupleInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   Challenge?: boolean | Prisma.Couple$ChallengeArgs<ExtArgs>
   DateInvite?: boolean | Prisma.Couple$DateInviteArgs<ExtArgs>
@@ -3132,7 +3132,7 @@ export type $CouplePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     partnerAId: string
     partnerBId: string
     status: $Enums.CoupleStatus
-    startedAt: Date | null
+    relationshipStart: Date | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["couple"]>
@@ -3580,7 +3580,7 @@ export interface CoupleFieldRefs {
   readonly partnerAId: Prisma.FieldRef<"Couple", 'String'>
   readonly partnerBId: Prisma.FieldRef<"Couple", 'String'>
   readonly status: Prisma.FieldRef<"Couple", 'CoupleStatus'>
-  readonly startedAt: Prisma.FieldRef<"Couple", 'DateTime'>
+  readonly relationshipStart: Prisma.FieldRef<"Couple", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Couple", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Couple", 'DateTime'>
 }

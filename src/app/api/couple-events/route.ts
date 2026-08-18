@@ -24,16 +24,18 @@ export async function GET(request: NextRequest) {
     }),
   ])
 
-  if (events.length === 0 && ctx.couple!.startedAt) {
+  const relationshipAnchor = ctx.couple!.relationshipStart ?? ctx.couple!.createdAt
+
+  if (events.length === 0 && relationshipAnchor) {
     await prisma.coupleEvent.createMany({
       data: [
-        { id: `ce_${Math.random().toString(36).slice(2, 14)}`, coupleId: ctx.couple!.id, type: 'couple_created', title: 'Пара создана', createdAt: ctx.couple!.startedAt },
-        { id: `ce_${Math.random().toString(36).slice(2, 14)}`, coupleId: ctx.couple!.id, type: 'anniversary', title: 'Старт истории пары', createdAt: ctx.couple!.startedAt },
+        { id: `ce_${Math.random().toString(36).slice(2, 14)}`, coupleId: ctx.couple!.id, type: 'couple_created', title: 'Пара создана', createdAt: relationshipAnchor },
+        { id: `ce_${Math.random().toString(36).slice(2, 14)}`, coupleId: ctx.couple!.id, type: 'anniversary', title: 'Старт истории пары', createdAt: relationshipAnchor },
       ],
     })
     events.push(
-      { id: `ce_fallback1`, coupleId: ctx.couple!.id, type: 'couple_created', title: 'Пара создана', meta: null, createdAt: ctx.couple!.startedAt },
-      { id: `ce_fallback2`, coupleId: ctx.couple!.id, type: 'anniversary', title: 'Старт истории пары', meta: null, createdAt: ctx.couple!.startedAt }
+      { id: `ce_fallback1`, coupleId: ctx.couple!.id, type: 'couple_created', title: 'Пара создана', meta: null, createdAt: relationshipAnchor },
+      { id: `ce_fallback2`, coupleId: ctx.couple!.id, type: 'anniversary', title: 'Старт истории пары', meta: null, createdAt: relationshipAnchor }
     )
   }
 

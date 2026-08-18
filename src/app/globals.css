@@ -325,10 +325,12 @@ body{font-family:var(--font-inter),'Inter',-apple-system,sans-serif;background:v
 .legend .anya i{background:var(--blue)}
 .advice{border-color:rgba(139,92,246,.35)}
 .time-card{text-align:center;padding:14px 18px}
-.time-num{font-size:26px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:.02em}
-.time-num b{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;font-size:30px}
-.time-num span{color:var(--mute);font-size:16px;font-weight:600}
-.time-label{font-size:11px;color:var(--mute);text-transform:uppercase;letter-spacing:.08em;margin-top:4px}
+
+.together-card{text-align:center;padding:18px 18px 14px}
+.together-num{display:flex;align-items:baseline;justify-content:center;gap:8px;font-variant-numeric:tabular-nums}
+.together-num b{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;font-size:24px;font-weight:800;letter-spacing:.02em}
+.together-num .tick{font-size:16px;font-weight:700;color:var(--mute)}
+.together-label{font-size:11px;color:var(--mute);text-transform:uppercase;letter-spacing:.08em;margin-top:6px}
 .wish-link{display:inline-block;font-size:12px;color:var(--blue);margin-left:8px;text-decoration:none;font-weight:600}
 .wish-link:hover{text-decoration:underline}
 .flower-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}

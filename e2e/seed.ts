@@ -39,7 +39,6 @@ async function main() {
       partnerAId: userA.id,
       partnerBId: userB.id,
       status: 'ACTIVE',
-      startedAt: new Date(),
       updatedAt: new Date(),
     },
   })

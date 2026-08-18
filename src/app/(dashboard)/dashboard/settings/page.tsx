@@ -9,6 +9,9 @@ import { SkeletonCard } from '@/components/skeleton-card'
 import { signOut } from 'next-auth/react'
 import { useProfile, useSettings as useSettingsSWR, useCities } from '@/lib/hooks'
 import { subscribeToPush, unsubscribeFromPush } from '@/lib/push-client'
+import { DateInput } from '@/components/date-input'
+import { toast } from '@/lib/toast'
+import { parseRuDate, toRuDate } from '@/lib/dates'
 
 interface UserSettings {
   name: string | null
@@ -31,7 +34,7 @@ interface CoupleData {
   status: string
   partnerA: { name: string | null; id: string }
   partnerB: { name: string | null; id: string }
-  startedAt: string | null
+  relationshipStart: string | null
 }
 
 export default function SettingsPage() {
@@ -384,47 +387,45 @@ export default function SettingsPage() {
               </div>
               <div className="small" style={{ marginTop: 10 }}>
                 {couple.partnerA.name || 'Партнёр А'} · {couple.partnerB.name || 'Партнёр Б'}
-                {couple.startedAt && ` · вместе с ${new Date(couple.startedAt).toLocaleDateString('ru-RU', { month: 'long', year: 'numeric' })}`}
+                {couple.relationshipStart && ` · вместе с ${new Date(couple.relationshipStart).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })}`}
               </div>
 
               {!startDateOpen ? (
                 <button className="link-btn" style={{ marginTop: 8 }} onClick={() => {
-                  if (couple.startedAt) setStartDate(couple.startedAt.slice(0, 10))
+                  if (couple.relationshipStart) setStartDate(toRuDate(couple.relationshipStart))
                   setStartDateOpen(true)
-                }}>📅 Изменить дату «вместе с»</button>
+                }}>📅 Дата начала отношений</button>
               ) : (
-                <div style={{ display: 'flex', gap: 8, marginTop: 10, alignItems: 'center' }}>
-                  <input
-                    type="date"
-                    className="input"
-                    style={{ flex: 1, minWidth: 0 }}
-                    value={startDate}
-                    max={new Date().toISOString().slice(0, 10)}
-                    onChange={e => setStartDate(e.target.value)}
-                  />
-                  <button
-                    className="btn btn-p btn-sm"
-                    disabled={!startDate}
-                    onClick={async () => {
-                      if (!startDate) return
-                      setSaving(true)
-                      try {
-                        const r = await fetch('/api/couples/start', {
-                          method: 'PATCH',
-                          headers: { 'Content-Type': 'application/json' },
-                          body: JSON.stringify({ startedAt: startDate }),
-                        })
-                        if (r.ok) {
-                          setCouple(prev => prev ? { ...prev, startedAt: startDate } : prev)
-                          setStartDateOpen(false)
-                          setMessage({ type: 'success', text: 'Дата обновлена' })
-                        } else {
-                          const j = await r.json().catch(() => ({}))
-                          setMessage({ type: 'error', text: j.error || 'Не получилось' })
-                        }
-                      } finally { setSaving(false) }
-                    }}
-                  >Сохранить</button>
+                <div style={{ maxWidth: 220, marginTop: 10 }}>
+                  <DateInput value={startDate} onChange={setStartDate} autoFocus />
+                  <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
+                    <button
+                      className="btn btn-p btn-sm"
+                      style={{ flex: 1 }}
+                      disabled={!parseRuDate(startDate) || saving}
+                      onClick={async () => {
+                        if (!parseRuDate(startDate)) return
+                        setSaving(true)
+                        try {
+                          const r = await fetch('/api/couple', {
+                            method: 'PATCH',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ relationshipStart: startDate }),
+                          })
+                          if (r.ok) {
+                            setCouple(prev => prev ? { ...prev, relationshipStart: startDate } : prev)
+                            setStartDateOpen(false)
+                            toast('Счётчик обновлён')
+                            window.dispatchEvent(new Event('together:refresh'))
+                          } else {
+                            const j = await r.json().catch(() => ({}))
+                            toast(j.error || 'Не получилось')
+                          }
+                        } finally { setSaving(false) }
+                      }}
+                    >Сохранить</button>
+                    <button className="btn btn-s btn-sm" style={{ flex: 1 }} onClick={() => setStartDateOpen(false)}>Отмена</button>
+                  </div>
                 </div>
               )}
 

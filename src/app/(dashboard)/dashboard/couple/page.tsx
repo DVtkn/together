@@ -6,9 +6,12 @@ import { DashboardLayout } from '@/components/layout/dashboard-layout'
 import { DECKS, IntimacyDeck } from '@/lib/decks'
 import { DIM_META } from '@/lib/report/dim-meta'
 import { toast } from '@/lib/toast'
+import { TogetherCounter } from '@/components/together-counter'
+import { DateInput } from '@/components/date-input'
+import { parseRuDate, toRuDate } from '@/lib/dates'
 
 type Status = {
-  couple: null | { id: string; status: string; partnerName: string | null; startedAt: string | null }
+  couple: null | { id: string; status: string; partnerName: string | null; relationshipStart: string | null }
   outgoing: null | { id: string; toUsername: string }
   incoming: null | { id: string; fromUsername: string }
   assessments: Array<{ key: string; title: string; emoji: string; me: boolean; partner: boolean; both: boolean }>
@@ -63,11 +66,6 @@ export default function CouplePage() {
   const [tab, setTab] = useState<ReportTab>('str')
   const [testsOpen, setTestsOpen] = useState(false)
   const [synOpen, setSynOpen] = useState(false)
-  const [nowMs, setNowMs] = useState(() => Date.now())
-  useEffect(() => {
-    const t = setInterval(() => setNowMs(Date.now()), 1000)
-    return () => clearInterval(t)
-  }, [])
   const [login, setLogin] = useState('')
   const [busy, setBusy] = useState(false)
   const [err, setErr] = useState<string | null>(null)
@@ -145,12 +143,27 @@ export default function CouplePage() {
   const noPassport = partner === null || (an && an.dimensions.length === 0)
   const allTestsDone = done === total
 
-  const startTs = s.couple?.startedAt ? new Date(s.couple.startedAt).getTime() : null
-  const diffMs = startTs !== null ? Math.max(0, nowMs - startTs) : null
-  const tDays = diffMs !== null ? Math.floor(diffMs / 86400000) : null
-  const tHours = diffMs !== null ? String(Math.floor(diffMs / 3600000) % 24).padStart(2, '0') : null
-  const tMins = diffMs !== null ? String(Math.floor(diffMs / 60000) % 60).padStart(2, '0') : null
-  const tSecs = diffMs !== null ? String(Math.floor(diffMs / 1000) % 60).padStart(2, '0') : null
+  const relStart = s.couple?.relationshipStart ? new Date(s.couple.relationshipStart) : null
+  const [startEditOpen, setStartEditOpen] = useState(false)
+  const [startInput, setStartInput] = useState('')
+
+  const saveStart = async () => {
+    const d = parseRuDate(startInput)
+    if (!d) return
+    const r = await fetch('/api/couple', {
+      method: 'PATCH', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ relationshipStart: startInput }),
+    })
+    if (r.ok) {
+      toast('Счётчик обновлён')
+      setStartEditOpen(false)
+      load()
+      window.dispatchEvent(new Event('together:refresh'))
+    } else {
+      const j = await r.json().catch(() => ({}))
+      toast(j?.error ?? 'Не получилось сохранить дату')
+    }
+  }
 
   return (
     <DashboardLayout>
@@ -224,18 +237,31 @@ export default function CouplePage() {
               {compat !== null && <span className="compat-badge">{compat}%</span>}
             </div>
             <div className="dim">
-              Вместе {fmtTogether(s.couple.startedAt)} · {done}/{total} тестов
+              {relStart && <>Вместе {fmtTogether(s.couple!.relationshipStart)} · </>}
+              {done}/{total} тестов
               {top && ` · ⚡ ${top.title} ${top.score}%`}
             </div>
           </div>
 
-          {/* ⏳ Наше время */}
-          {diffMs !== null && (
-            <div className="cd static time-card">
-              <div className="time-num">
-                <b>{tDays}</b> <span>дн</span> {tHours}<span>:</span>{tMins}<span>:</span>{tSecs}
+          {/* ⏳ Наше время — от даты отношений (relationshipStart) */}
+          {(!startEditOpen && relStart) ? (
+            <div className="cd static together-card">
+              <TogetherCounter from={relStart} />
+              <div className="small together-label">МЫ ВМЕСТЕ УЖЕ СТОЛЬКО</div>
+              <button className="btn-ghost" onClick={() => { setStartInput(relStart ? toRuDate(relStart) : ''); setStartEditOpen(true) }}>Изменить дату</button>
+            </div>
+          ) : (
+            <div className="cd static" style={{ textAlign: 'center', padding: 24 }}>
+              <div style={{ fontSize: 32 }}>💞</div>
+              <b>Когда начались ваши отношения?</b>
+              <div className="dim" style={{ margin: '6px 0 14px' }}>Введите дату — и здесь пойдёт ваш счётчик.</div>
+              <div style={{ maxWidth: 220, margin: '0 auto' }}>
+                <DateInput value={startInput} onChange={setStartInput} autoFocus />
+                <button className="btn btn-p btn-w" style={{ marginTop: 10 }}
+                  disabled={!parseRuDate(startInput)} onClick={saveStart}>
+                  {relStart ? 'Сохранить' : 'Начать отсчёт'}
+                </button>
               </div>
-              <div className="time-label">мы вместе уже столько</div>
             </div>
           )}
 

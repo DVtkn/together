@@ -484,7 +484,7 @@ export const CoupleScalarFieldEnum = {
   partnerAId: 'partnerAId',
   partnerBId: 'partnerBId',
   status: 'status',
-  startedAt: 'startedAt',
+  relationshipStart: 'relationshipStart',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

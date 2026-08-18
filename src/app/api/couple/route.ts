@@ -3,11 +3,7 @@ import { rateLimit } from '@/lib/rate-limit'
 import { getApiContext, unauthorized, requireCouple } from '@/lib/api-auth'
 import { prisma } from '@/lib/prisma'
 import { emitEvent } from '@/lib/story'
-import { z } from 'zod'
-
-const startSchema = z.object({
-  startedAt: z.string().min(1).max(40),
-})
+import { parseRuDate } from '@/lib/dates'
 
 export async function PATCH(request: NextRequest) {
   const rl = await rateLimit('default', request.headers.get('x-forwarded-for') || 'anon')
@@ -23,28 +19,36 @@ export async function PATCH(request: NextRequest) {
   const guard = requireCouple(ctx)
   if (guard) return guard
   const couple = ctx.couple!
-  const partner = ctx.partner!
 
-  let body: { startedAt?: string } = {}
+  let body: { relationshipStart?: string } = {}
   try {
-    body = startSchema.parse(await request.json())
+    body = await request.json()
   } catch {
     return NextResponse.json({ error: 'Неверная дата' }, { status: 400 })
   }
 
-  const started = new Date(body.startedAt!)
-  if (isNaN(started.getTime())) {
-    return NextResponse.json({ error: 'Неверная дата' }, { status: 400 })
+  const raw = (body.relationshipStart ?? '').trim()
+  const d = parseRuDate(raw)
+  if (!d) {
+    return NextResponse.json({ error: 'Введите дату в формате ДД.ММ.ГГГГ' }, { status: 400 })
+  }
+  const now = new Date()
+  now.setHours(0, 0, 0, 0)
+  if (d > now) {
+    return NextResponse.json({ error: 'Дата не может быть в будущем' }, { status: 400 })
+  }
+  if (d.getFullYear() < 1950) {
+    return NextResponse.json({ error: 'Дата не может быть раньше 1950 года' }, { status: 400 })
   }
 
   const updated = await prisma.couple.update({
     where: { id: couple.id },
-    data: { startedAt: started },
+    data: { relationshipStart: d },
   })
 
-  emitEvent(couple.id, 'anniversary', 'Дата начала пары обновлена', { startedAt: body.startedAt })
+  emitEvent(couple.id, 'anniversary', 'Дата начала отношений обновлена', { relationshipStart: raw })
 
-  return NextResponse.json({ ok: true, startedAt: updated.startedAt?.toISOString() ?? null })
+  return NextResponse.json({ ok: true, relationshipStart: updated.relationshipStart?.toISOString() ?? null })
 }
 
 export const dynamic = 'force-dynamic'
