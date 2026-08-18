@@ -116,6 +116,7 @@ export async function GET(request: NextRequest) {
           id: couple.id,
           status: couple.status,
           partnerName: partner?.name ?? partner?.username ?? null,
+          startedAt: couple.startedAt ? couple.startedAt.toISOString() : null,
         }
       : null,
     outgoing,
