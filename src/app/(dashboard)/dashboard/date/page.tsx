@@ -283,9 +283,8 @@ export default function DatePage() {
   return (
     <DashboardLayout>
       <div className="h1">Свидание</div>
-      <div className="dim" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+      <div className="dim">
         <span>Ты зовёшь. Она выбирает. Ты бронируешь.</span>
-        <Link href="/dashboard/story" className="link-btn" style={{ whiteSpace: 'nowrap' }}>📖 История пары</Link>
       </div>
 
       <div className="seg" role="tablist" style={{ margin: '14px 0' }}>

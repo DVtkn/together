@@ -10,9 +10,19 @@ const REDIRECTS: Record<string, string> = {
   '/dashboard/assessments': '/dashboard/couple#tests',
   '/dashboard/astro': '/dashboard/couple#synastry',
   '/dashboard/memories': '/dashboard/date#memories',
-  '/dashboard/rituals': '/dashboard/daily#rituals',
+  '/dashboard/rituals': '/dashboard/daily#challenges',
   '/dashboard/letters': '/dashboard/ai#letters',
   '/dashboard/venues': '/dashboard/date',
+  '/pulse': '/dashboard/daily#pulse',
+  '/challenges': '/dashboard/daily#challenges',
+  '/partner': '/dashboard/daily#partner',
+  '/report': '/dashboard/couple#report',
+  '/assessments': '/dashboard/couple#tests',
+  '/astro': '/dashboard/couple#synastry',
+  '/memories': '/dashboard/date#memories',
+  '/rituals': '/dashboard/daily#challenges',
+  '/letters': '/dashboard/ai',
+  '/chat': '/dashboard/ai',
 }
 
 export default async function proxy(req: NextRequest) {
@@ -48,5 +58,19 @@ export default async function proxy(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/signin', '/register'],
+  matcher: [
+    '/dashboard/:path*',
+    '/signin',
+    '/register',
+    '/pulse/:path*',
+    '/challenges/:path*',
+    '/partner/:path*',
+    '/report/:path*',
+    '/assessments/:path*',
+    '/astro/:path*',
+    '/memories/:path*',
+    '/rituals/:path*',
+    '/letters/:path*',
+    '/chat/:path*',
+  ],
 }
