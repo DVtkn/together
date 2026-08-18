@@ -134,7 +134,8 @@ export const UserScalarFieldEnum = {
   emailEnabled: 'emailEnabled',
   weeklyPulseReminder: 'weeklyPulseReminder',
   challengeReminder: 'challengeReminder',
-  onboardingDone: 'onboardingDone'
+  onboardingDone: 'onboardingDone',
+  theme: 'theme'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]

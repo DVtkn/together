@@ -29,6 +29,7 @@ model User {
   weeklyPulseReminder                                  Boolean               @default(true)
   challengeReminder                                    Boolean               @default(true)
   onboardingDone                                       Boolean               @default(false)
+  theme                                                String                @default("aurora")
   AIConversation                                       AIConversation[]
   AIMessage                                            AIMessage[]
   AssessmentResponse                                   AssessmentResponse[]

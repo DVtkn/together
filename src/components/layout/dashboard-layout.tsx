@@ -104,6 +104,7 @@ export function DashboardLayout({ children, user, couple }: DashboardLayoutProps
   const [moodOpen, setMoodOpen] = useState(false)
   const [myMood, setMyMood] = useState<{ emoji: string } | null>(null)
   const [toasts, setToasts] = useState<{ id: number; text: string }[]>([])
+  const [theme, setTheme] = useState<'aurora' | 'night'>('aurora')
   const { data: profileData } = useProfile()
   const swrCouple = useCouple()
 
@@ -126,6 +127,26 @@ export function DashboardLayout({ children, user, couple }: DashboardLayoutProps
       clearInterval(t)
       window.removeEventListener('together:toast', onToast)
     }
+  }, [])
+
+  useEffect(() => {
+    const apply = (t: string) => {
+      const value: 'aurora' | 'night' = t === 'night' ? 'night' : 'aurora'
+      document.body.classList.remove('aurora', 'night')
+      document.body.classList.add(value)
+      setTheme(value)
+      try { localStorage.setItem('loop:theme', value) } catch { /* ignore */ }
+    }
+    const load = () => {
+      fetch('/api/user/theme').then(r => r.json()).then(d => apply(d?.theme ?? 'aurora')).catch(() => {})
+    }
+    let cached: string | null = null
+    try { cached = localStorage.getItem('loop:theme') } catch { /* ignore */ }
+    apply(cached ?? 'aurora')
+    load()
+    const onTheme = () => load()
+    window.addEventListener('together:theme', onTheme)
+    return () => window.removeEventListener('together:theme', onTheme)
   }, [])
 
   const startPause = async () => {
@@ -213,6 +234,7 @@ export function DashboardLayout({ children, user, couple }: DashboardLayoutProps
 
   return (
     <div className="app">
+      <div className="bg" aria-hidden="true"><i /><i /><i /><i /></div>
       {/* ДЕСКТОПНЫЙ HEADER */}
       <header className="hd">
         <div className="hd-in">

@@ -65,6 +65,7 @@ export default function SettingsPage() {
   const [sigEmoji, setSigEmoji] = useState('🤗')
   const [sigMeaning, setSigMeaning] = useState('')
   const [sigReply, setSigReply] = useState('')
+  const [theme, setTheme] = useState<'aurora' | 'night'>('aurora')
 
   const { data: settingsRes, mutate: mutateSettings } = useSettingsSWR()
   const { data: citiesRes } = useCities()
@@ -87,6 +88,11 @@ export default function SettingsPage() {
       }).catch(() => {})
     }
   }, [settingsRes])
+
+  useEffect(() => {
+    setTheme(document.body.classList.contains('night') ? 'night' : 'aurora')
+    fetch('/api/user/theme').then(r => r.json()).then(d => setTheme(d?.theme === 'night' ? 'night' : 'aurora')).catch(() => {})
+  }, [])
 
   const addSignal = async () => {
     if (sigMeaning.trim().length < 2 || sigReply.trim().length < 2) return
@@ -234,6 +240,24 @@ export default function SettingsPage() {
     }
   }
 
+  const handleTheme = async (t: 'aurora' | 'night') => {
+    setTheme(t)
+    document.body.classList.remove('aurora', 'night')
+    document.body.classList.add(t)
+    try {
+      const res = await fetch('/api/user/theme', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ theme: t }),
+      })
+      if (!res.ok) throw new Error()
+      toast('Тема сохранена')
+    } catch {
+      setMessage({ type: 'error', text: 'Не удалось сохранить тему' })
+    }
+    window.dispatchEvent(new Event('together:theme'))
+  }
+
   if (loading) {
     return (
       <DashboardLayout user={{ name: null, email: '' }} couple={null}>
@@ -305,6 +329,26 @@ export default function SettingsPage() {
         <button className="btn btn-p btn-w" style={{ marginTop: 16 }} onClick={handleSave} disabled={saving}>
           'Сохранить профиль'
         </button>
+      </div>
+
+      <div className="k">Тема оформления</div>
+      <div className="cd static">
+        <div className="cd-t" style={{ padding: 0 }}>
+          <b>Аврора или Ночь</b>
+          <span>Переключается сразу и сохраняется для вашего аккаунта.</span>
+        </div>
+        <div className="theme-opt" style={{ marginTop: 14 }}>
+          <button className={cn(theme === 'aurora' && 'on')} onClick={() => handleTheme('aurora')} aria-pressed={theme === 'aurora'}>
+            <i>☀️</i>
+            <b>Аврора</b>
+            <span>Светлая, мягкая</span>
+          </button>
+          <button className={cn(theme === 'night' && 'on')} onClick={() => handleTheme('night')} aria-pressed={theme === 'night'}>
+            <i>🌙</i>
+            <b>Ночь</b>
+            <span>Тёмная, глубокая</span>
+          </button>
+        </div>
       </div>
 
       <div className="k">Уведомления</div>

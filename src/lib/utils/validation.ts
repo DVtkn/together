@@ -74,6 +74,10 @@ export const consentSchema = z.object({
   accepted: z.boolean(),
 })
 
+export const themeSchema = z.object({
+  theme: z.enum(['aurora', 'night']),
+})
+
 export function validateData<T>(schema: z.ZodSchema<T>, data: unknown): { success: true; data: T } | { success: false; errors: z.ZodError } {
   const result = schema.safeParse(data)
   if (result.success) return { success: true, data: result.data }
