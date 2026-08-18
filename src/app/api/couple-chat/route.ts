@@ -26,9 +26,10 @@ export async function GET(request: NextRequest) {
 
   const { searchParams } = new URL(request.url)
   const limit = Math.min(100, Math.max(1, parseInt(searchParams.get('limit') || '50', 10) || 50))
+  const after = searchParams.get('after')
 
   const messages = await prisma.coupleMessage.findMany({
-    where: { coupleId: ctx.couple!.id },
+    where: { coupleId: ctx.couple!.id, ...(after ? { createdAt: { gt: new Date(after) } } : {}) },
     orderBy: { createdAt: 'desc' },
     take: limit,
     include: { User: { select: { id: true, name: true, username: true } } },
@@ -43,7 +44,21 @@ export async function GET(request: NextRequest) {
     isSova: m.senderId === 'sova',
   }))
 
-  return NextResponse.json({ items })
+  const partnerId = ctx.partner?.id
+  const [typingRow, readRow] = await Promise.all([
+    partnerId
+      ? prisma.coupleTyping.findUnique({ where: { coupleId_userId: { coupleId: ctx.couple!.id, userId: partnerId } } })
+      : null,
+    partnerId
+      ? prisma.coupleChatRead.findUnique({ where: { userId_coupleId: { userId: partnerId, coupleId: ctx.couple!.id } } })
+      : null,
+  ])
+
+  return NextResponse.json({
+    items,
+    partnerTyping: Boolean(typingRow && typingRow.until.getTime() > Date.now()),
+    partnerLastReadAt: readRow?.lastReadAt.toISOString() ?? null,
+  })
 }
 
 export async function POST(request: NextRequest) {
@@ -97,6 +112,30 @@ export async function POST(request: NextRequest) {
       isSova: message.senderId === 'sova',
     },
   }, { status: 201 })
+}
+
+export async function PATCH(request: NextRequest) {
+  const ctx = await getApiContext()
+  if (!ctx) return unauthorized()
+  const noCouple = requireCouple(ctx)
+  if (noCouple) return noCouple
+
+  const body = await request.json().catch(() => null)
+  if (body?.action === 'typing') {
+    await prisma.coupleTyping.upsert({
+      where: { coupleId_userId: { coupleId: ctx.couple!.id, userId: ctx.user.id } },
+      update: { until: new Date(Date.now() + 5000) },
+      create: { coupleId: ctx.couple!.id, userId: ctx.user.id, until: new Date(Date.now() + 5000) },
+    })
+    return NextResponse.json({ ok: true })
+  }
+
+  await prisma.coupleChatRead.upsert({
+    where: { userId_coupleId: { userId: ctx.user.id, coupleId: ctx.couple!.id } },
+    update: { lastReadAt: new Date() },
+    create: { userId: ctx.user.id, coupleId: ctx.couple!.id },
+  })
+  return NextResponse.json({ ok: true })
 }
 
 export const dynamic = 'force-dynamic'

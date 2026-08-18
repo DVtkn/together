@@ -28,6 +28,7 @@ model User {
   emailEnabled                                         Boolean               @default(true)
   weeklyPulseReminder                                  Boolean               @default(true)
   challengeReminder                                    Boolean               @default(true)
+  onboardingDone                                       Boolean               @default(false)
   AIConversation                                       AIConversation[]
   AIMessage                                            AIMessage[]
   AssessmentResponse                                   AssessmentResponse[]
@@ -242,6 +243,23 @@ model CoupleMessage {
   User      User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
 
   @@index([coupleId, createdAt])
+}
+
+model CoupleChatRead {
+  coupleId   String
+  userId     String
+  lastReadAt DateTime @default(now())
+
+  @@id([userId, coupleId])
+  @@index([coupleId])
+}
+
+model CoupleTyping {
+  coupleId String
+  userId   String
+  until    DateTime
+
+  @@id([coupleId, userId])
 }
 
 model DailyQuestion {
