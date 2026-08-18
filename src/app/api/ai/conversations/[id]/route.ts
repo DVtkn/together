@@ -18,7 +18,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
   try {
     const { id } = await params
     const conversation = await prisma.aIConversation.findUnique({ where: { id } })
-    if (!conversation || conversation.coupleId !== ctx.couple?.id) {
+    if (!conversation || conversation.userId !== ctx.user.id) {
       return NextResponse.json({ error: 'Диалог не найден' }, { status: 404 })
     }
 
@@ -60,7 +60,7 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
   try {
     const { id } = await params
     const conversation = await prisma.aIConversation.findUnique({ where: { id } })
-    if (!conversation || conversation.coupleId !== ctx.couple?.id) {
+    if (!conversation || conversation.userId !== ctx.user.id) {
       return NextResponse.json({ error: 'Диалог не найден' }, { status: 404 })
     }
 

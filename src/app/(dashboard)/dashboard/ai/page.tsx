@@ -267,7 +267,7 @@ export default function AIChatPage() {
             <span style={{ fontSize: 20 }} aria-hidden="true">🦉</span>
             <div style={{ flex: 1, minWidth: 0 }}>
               <b>Сова</b>
-              <span style={{ display: 'block' }}>Помнит ваш контекст: отчёты, пульс, челленджи</span>
+              <span style={{ display: 'block' }}>Только вы и Сова — партнёр не видит</span>
             </div>
             <div className="seg" style={{ margin: 0, width: 'auto' }}>
               <button className={cn(chatMode === 'solo' && 'on')} onClick={() => setChatMode('solo')}>Соло</button>
@@ -319,7 +319,7 @@ export default function AIChatPage() {
                   <div className="sova-empty">
                     <div style={{ fontSize: 40 }}>🦉</div>
                     <b>Привет, я Сова.</b>
-                    <span className="dim">Помню вашу пару: отчёты, пульс, челленджи. Чем помочь?</span>
+                    <span className="dim">Диалоги приватные — только вы и Сова. Чем помочь?</span>
                     <div className="chips" style={{ justifyContent: 'center', marginTop: 12 }}>
                       {['Что ты умеешь?', 'Помоги сформулировать мысль', 'Разбери наш спор', 'Идея свидания'].map(q => (
                         <button key={q} className="chip" onClick={() => setInput(q + ' ')}>{q}</button>

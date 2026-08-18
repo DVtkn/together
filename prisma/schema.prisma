@@ -26,6 +26,7 @@ model User {
   emailEnabled                                         Boolean               @default(true)
   weeklyPulseReminder                                  Boolean               @default(true)
   challengeReminder                                    Boolean               @default(true)
+  AIConversation                                       AIConversation[]
   AIMessage                                            AIMessage[]
   AssessmentResponse                                   AssessmentResponse[]
   AstroProfile                                         AstroProfile?
@@ -59,12 +60,14 @@ model User {
 
 model AIConversation {
   id        String      @id
-  coupleId  String
+  userId    String
   title     String?
   createdAt DateTime    @default(now())
   updatedAt DateTime
-  Couple    Couple      @relation(fields: [coupleId], references: [id], onDelete: Cascade)
+  User      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   AIMessage AIMessage[]
+
+  @@index([userId])
 }
 
 model AIMessage {
@@ -406,7 +409,6 @@ model Couple {
   startedAt                    DateTime?
   createdAt                    DateTime         @default(now())
   updatedAt                    DateTime
-  AIConversation               AIConversation[]
   Challenge                    Challenge[]
   DateInvite                   DateInvite[]
   User_Couple_partnerAIdToUser User             @relation("Couple_partnerAIdToUser", fields: [partnerAId], references: [id])

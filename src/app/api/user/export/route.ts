@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
       prisma.smallCraving.findMany({ where: { userId } }),
       prisma.wishlistItem.findMany({ where: { userId } }),
       prisma.aIConversation.findMany({
-        where: { Couple: { partnerAId: userId } },
+        where: { userId },
         include: { AIMessage: true },
       }),
       prisma.pushSubscription.findMany({ where: { userId } }),

@@ -16,12 +16,8 @@ export async function GET(request: NextRequest) {
   const ctx = await getApiContext()
   if (!ctx) return unauthorized()
 
-  if (!ctx.couple) {
-    return NextResponse.json({ conversations: [] })
-  }
-
   const conversations = await prisma.aIConversation.findMany({
-    where: { coupleId: ctx.couple.id },
+    where: { userId: ctx.user.id },
     include: { AIMessage: { orderBy: { createdAt: 'desc' }, take: 1 } },
     orderBy: { updatedAt: 'desc' },
     take: 30,
@@ -64,28 +60,24 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Сообщение слишком длинное' }, { status: 400 })
     }
 
-    const couple = ctx.couple
-    if (!couple) {
-      return NextResponse.json({ error: 'Чтобы общаться с ИИ, нужно быть в паре' }, { status: 400 })
-    }
-
     // --- жесткий системный промпт Совы ---
     const SYSTEM = `Ты — Сова, ИИ-психолог приложения Loop для пар.
 СТРОГО: 1) отвечай ТОЛЬКО на русском; 2) простой текст без markdown: без #, **, |таблиц|; 3) до 120 слов; 4) тон тёплый, без диагнозов; 5) один вопрос за раз.
 Если спрашивают «привет/что ты умеешь/как ты работаешь» — коротко представься и перечисли: разбираю ссоры и «я-сообщения», объясняю ваши тесты и отчёт, идеи свиданий, поддержка.
-Кризис/насилие/риск вреда — мягко направь к живому специалисту.`
+Кризис/насилие/риск вреда — мягко направь к живому специалисту.
+Важно: ваши диалоги приватны — партнёр их не видит.`
 
     // Найти или создать беседу
     let conversationId = body.conversationId || null
     if (conversationId) {
       const existing = await prisma.aIConversation.findUnique({ where: { id: conversationId } })
-      if (!existing || existing.coupleId !== couple.id) conversationId = null
+      if (!existing || existing.userId !== ctx.user.id) conversationId = null
     }
     if (!conversationId) {
       const created = await prisma.aIConversation.create({
         data: {
           id: `ai_${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`,
-          coupleId: couple.id,
+          userId: ctx.user.id,
           title: message.slice(0, 60),
           updatedAt: new Date(),
         },
