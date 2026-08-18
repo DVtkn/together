@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
 import { cn } from '@/lib/utils/cn'
 import { toast } from '@/lib/toast'
+import { DECKS, IntimacyDeck } from '@/lib/decks'
 
 interface Message {
   id: string
@@ -39,6 +40,10 @@ export default function AIChatPage() {
   const scrollRef = useRef<HTMLDivElement>(null)
 
   const [listOpen, setListOpen] = useState(false)
+  const [decksOpen, setDecksOpen] = useState(false)
+  const [deck, setDeck] = useState<IntimacyDeck | null>(null)
+  const [deckIdx, setDeckIdx] = useState(0)
+  const [doneCount, setDoneCount] = useState(0)
   const [chatMode, setChatMode] = useState<'solo' | 'couple'>('solo')
   const [lettersOpen, setLettersOpen] = useState(false)
   const [me, setMe] = useState<{ id: string } | null>(null)
@@ -277,12 +282,19 @@ export default function AIChatPage() {
 
   const formatTime = (d: string) => new Date(d).toLocaleTimeString('ru-RU')
 
+  const openDeck = (d: IntimacyDeck) => {
+    setDeck(d)
+    setDeckIdx(0)
+    setDoneCount(0)
+  }
+
   return (
     <DashboardLayout user={{ name: null, email: '' }} couple={null}>
       <div className="chat">
         <div className="chat-w">
           <div className="chat-h">
             <button className="icon-btn" aria-label="Диалоги" title="Диалоги" onClick={() => setListOpen(true)}>🗂</button>
+            <button className="icon-btn" aria-label="Колоды близости" title="Колоды близости" onClick={() => setDecksOpen(true)}>🎴</button>
             <span style={{ fontSize: 20 }} aria-hidden="true">🦉</span>
             <div style={{ flex: 1, minWidth: 0 }}>
               <b>Психолог</b>
@@ -442,6 +454,61 @@ export default function AIChatPage() {
           <div style={{ marginTop: 12, borderTop: '1px solid var(--line)', paddingTop: 10 }}>
             <button className="btn btn-s btn-w" style={{ width: '100%' }} onClick={() => { setListOpen(false); setLettersOpen(true); loadLetters() }}>💌 Письма</button>
           </div>
+        </div>
+      )}
+
+      {decksOpen && (
+        <div className="sheet" id="decks">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+            <b>🎴 Колоды близости</b>
+            <button className="link-btn" onClick={() => setDecksOpen(false)}>✕</button>
+          </div>
+          <div className="dim" style={{ fontSize: 13, marginBottom: 12 }}>Вопросы для разговора вдвоём. Обсудите — и почувствуйте себя ближе.</div>
+          {!deck ? (
+            <div className="deck-grid">
+              {DECKS.map(d => (
+                <button key={d.key} className="cd deck-card" onClick={() => openDeck(d)}>
+                  <div className="deck-emoji">{d.emoji}</div>
+                  <b>{d.title}</b>
+                  <span className="dim" style={{ fontSize: 12 }}>{d.questions.length} вопросов</span>
+                  <span className="dim" style={{ fontSize: 12 }}>{d.description}</span>
+                </button>
+              ))}
+            </div>
+          ) : (
+            <div className="cd static">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+                <b>{deck.emoji} {deck.title}</b>
+                <button className="link-btn" onClick={() => setDeck(null)}>← ко всем колодам</button>
+              </div>
+              {deckIdx < deck.questions.length ? (
+                <>
+                  <div className="deck-q">«{deck.questions[deckIdx].question}»</div>
+                  <div className="dim" style={{ fontSize: 12, margin: '8px 0 16px' }}>
+                    {deck.questions[deckIdx].axis
+                      ? `Сфера: ${deck.questions[deckIdx].axis}`
+                      : 'Просто о важном'} · вопрос {deckIdx + 1} из {deck.questions.length}
+                  </div>
+                  <div style={{ display: 'flex', gap: 8 }}>
+                    <button className="btn btn-secondary" style={{ flex: 1 }} onClick={() => { setDoneCount(d => d + 1); setDeckIdx(i => Math.min(i + 1, deck.questions.length - 1)) }}>
+                      Обсудили ✓
+                    </button>
+                    <button className="btn btn-s" style={{ flex: 1 }} onClick={() => setDeckIdx(i => Math.min(i + 1, deck.questions.length - 1))}>
+                      Следующий →
+                    </button>
+                  </div>
+                  <div className="prog-line" style={{ marginTop: 16 }}><div className="prog-fill" style={{ width: `${(doneCount / deck.questions.length) * 100}%` }} /></div>
+                </>
+              ) : (
+                <div className="empty" style={{ padding: '12px 0' }}>
+                  <i>🎉</i>
+                  <div className="h2" style={{ marginBottom: 6 }}>Колода пройдена</div>
+                  <div className="dim" style={{ marginBottom: 16 }}>Обсудили {doneCount} из {deck.questions.length} вопросов.</div>
+                  <button className="btn btn-secondary" onClick={() => setDeck(null)}>К другим колодам</button>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       )}
 

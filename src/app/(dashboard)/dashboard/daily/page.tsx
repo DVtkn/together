@@ -1,9 +1,11 @@
 'use client'
 import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
 import { cn } from '@/lib/utils/cn'
 import { toast } from '@/lib/toast'
+import { timeAgo } from '@/lib/time'
 
 const MOODS = [
   { emoji: '😄', text: 'Всё супер' },
@@ -20,6 +22,11 @@ interface Signal {
   emoji: string
   meaning: string
   suggestedReply: string
+}
+
+interface SignalStatus {
+  lastSent: { signalId: string; emoji: string; meaning: string; at: string; answered: boolean } | null
+  incoming: { signalId: string; emoji: string; meaning: string; suggestedReply: string; at: string } | null
 }
 
 interface PulseData {
@@ -52,19 +59,22 @@ interface Wish { id: string; title: string; link: string | null; status: string;
 
 const SECTIONS = [
   { key: 'mood', label: 'Настроение', emoji: '😄' },
+  { key: 'partner-now', label: 'Сейчас', emoji: '💞' },
   { key: 'signals', label: 'Сигналы', emoji: '🤗' },
-  { key: 'warmth', label: 'Банк тепла', emoji: '💌' },
+  { key: 'warmth', label: 'Тепло', emoji: '💌' },
   { key: 'pulse', label: 'Пульс', emoji: '🫀' },
-  { key: 'challenges', label: 'Челленджи', emoji: '🌙' },
-  { key: 'rituals', label: 'Ритуалы', emoji: '🕊️' },
-  { key: 'partner', label: 'Партнёр', emoji: '💐' },
+  { key: 'challenges', label: 'Ритуалы', emoji: '🕊️' },
+  { key: 'partner', label: 'Хотелки', emoji: '💐' },
 ]
 
 export default function DailyPage() {
+  const router = useRouter()
   const [name, setName] = useState('')
   const [myMood, setMyMood] = useState<{ emoji: string; text: string | null } | null>(null)
   const [partner, setPartner] = useState<{ name: string; mood: { emoji: string; text: string | null; at: string } | null } | null>(null)
   const [signals, setSignals] = useState<Signal[]>([])
+  const [signalStatus, setSignalStatus] = useState<SignalStatus>({ lastSent: null, incoming: null })
+  const [confirmSignal, setConfirmSignal] = useState<Signal | null>(null)
   const [signalSent, setSignalSent] = useState<string | null>(null)
   const [saved, setSaved] = useState(false)
 
@@ -106,7 +116,7 @@ export default function DailyPage() {
       fetch('/api/mood').then(r => r.json()),
       fetch('/api/user/profile').then(r => r.json()),
       fetch('/api/dashboard').then(r => r.json()),
-      fetch('/api/signals').then(r => r.json()).catch(() => ({ signals: [] })),
+      fetch('/api/signals').then(r => r.json()).catch(() => ({ signals: [], lastSent: null, incoming: null })),
       fetch('/api/pulse').then(r => r.json()).catch(() => ({ checkins: [] })),
       fetch('/api/challenges').then(r => r.json()).catch(() => ({ challenges: [] })),
       fetch('/api/warmth?limit=3').then(r => r.json()).catch(() => ({ entries: [] })),
@@ -116,6 +126,7 @@ export default function DailyPage() {
       setPartner({ name: p?.couple?.partnerName ?? 'Партнёр', mood: m.partner ? { ...m.partner, at: m.partner.at } : null })
       setName(d?.user?.name?.split(' ')[0] ?? '')
       setSignals(sig?.signals ?? [])
+      setSignalStatus({ lastSent: sig?.lastSent ?? null, incoming: sig?.incoming ?? null })
       setPulse(pul)
       setChallenges(ch?.challenges ?? [])
       setWarmth(wm?.entries ?? [])
@@ -123,6 +134,19 @@ export default function DailyPage() {
     }).catch(() => {})
   }, [])
   useEffect(() => { load() }, [load])
+
+  useEffect(() => {
+    const poll = () => {
+      fetch('/api/signals').then(r => r.json()).then(d => {
+        if (!d) return
+        setSignals(d.signals ?? [])
+        setSignalStatus({ lastSent: d.lastSent ?? null, incoming: d.incoming ?? null })
+      }).catch(() => {})
+    }
+    poll()
+    const t = setInterval(poll, 8000)
+    return () => clearInterval(t)
+  }, [])
 
   useEffect(() => {
     if (partnerTab === 'mood') {
@@ -149,8 +173,32 @@ export default function DailyPage() {
     alert('Напоминание отправлено 💜')
   }
 
+  const respondToSignal = (inc: NonNullable<SignalStatus['incoming']>) => {
+    fetch(`/api/signals/${inc.signalId}/ack`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'accept' }),
+    }).catch(() => {})
+    setSignalStatus(p => ({ ...p, incoming: null }))
+    window.dispatchEvent(new Event('together:refresh'))
+    router.push(inc.suggestedReply ? `/dashboard/ai?reply=${encodeURIComponent(inc.suggestedReply)}` : '/dashboard/ai')
+  }
+
+  const dismissIncoming = () => {
+    const inc = signalStatus.incoming
+    if (!inc) return
+    fetch(`/api/signals/${inc.signalId}/ack`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'later' }),
+    }).catch(() => {})
+    setSignalStatus(p => ({ ...p, incoming: null }))
+    window.dispatchEvent(new Event('together:refresh'))
+  }
+
   async function sendSignal(s: Signal) {
     const r = await fetch(`/api/signals/${s.id}/send`, { method: 'POST' }).catch(() => null)
+    setConfirmSignal(null)
     if (r?.ok) toast('Сигнал отправлен партнёру 🤗')
     setSignalSent(s.id)
     window.dispatchEvent(new Event('together:refresh'))
@@ -258,11 +306,72 @@ export default function DailyPage() {
   const userCurrent = weeks.length ? weeks[weeks.length - 1]?.user ?? null : null
   const activeChallenges = challenges.filter(c => c.status === 'ACTIVE' || c.status === 'PENDING')
   const completedCount = challenges.filter(c => c.status === 'COMPLETED').length
+  const partnerName = partner?.name ?? 'Партнёр'
+
+  const filledWeeks = weeks.filter(w => w.user || w.partner)
+  const chartWeeks = filledWeeks.slice(-12)
+  const last4 = filledWeeks.slice(-4)
+  const prev4 = filledWeeks.slice(-8, -4)
+  const avgClose = (arr: typeof filledWeeks, who: 'user' | 'partner') => {
+    const v = arr.filter(w => w[who]).map(w => w[who]!.closeness)
+    return v.length ? v.reduce((a, b) => a + b, 0) / v.length : null
+  }
+  const myLast = avgClose(last4, 'user')
+  const myPrev = avgClose(prev4, 'user')
+  const ptLast = avgClose(last4, 'partner')
+  const ptPrev = avgClose(prev4, 'partner')
+  const current = weeks.length ? weeks[weeks.length - 1] : null
+  const myCur = current?.user?.closeness
+  const ptCur = current?.partner?.closeness
+  const chartPoints = (who: 'user' | 'partner'): string | null => {
+    const n = chartWeeks.length
+    if (n < 2) return null
+    const pts: string[] = []
+    chartWeeks.forEach((w, i) => {
+      const v = w[who]?.closeness
+      if (v == null) return
+      const x = 10 + (i * (280 / (n - 1)))
+      const y = 100 - ((v - 1) / 9) * 88
+      pts.push(`${x.toFixed(1)},${y.toFixed(1)}`)
+    })
+    return pts.length > 1 ? pts.join(' ') : null
+  }
+  const myLine = chartPoints('user')
+  const ptLine = chartPoints('partner')
+
+  const insights: Array<{ emoji: string; text: string }> = []
+  if (myLast != null && myPrev != null) {
+    const d = +(myLast - myPrev).toFixed(1)
+    insights.push({
+      emoji: d > 0.3 ? '📈' : d < -0.3 ? '📉' : '➡️',
+      text: d > 0.3 ? `Ваша близость растёт: +${d.toFixed(1)} за 4 недели.` : d < -0.3 ? `Ваша близость снижается (−${Math.abs(d).toFixed(1)}) за 4 недели.` : 'Ваша близость стабильна.',
+    })
+  }
+  if (ptLast != null && ptPrev != null) {
+    const d = +(ptLast - ptPrev).toFixed(1)
+    insights.push({
+      emoji: d > 0.3 ? '📈' : d < -0.3 ? '📉' : '➡️',
+      text: d > 0.3 ? `Близость партнёра растёт: +${d.toFixed(1)} за 4 недели.` : d < -0.3 ? `Близость партнёра снижается (−${Math.abs(d).toFixed(1)}) за 4 недели.` : 'Близость партнёра стабильна.',
+    })
+  }
+  if (myCur != null && ptCur == null) {
+    insights.push({ emoji: '🔔', text: `${partnerName} ещё не отметил(а) пульс этой недели — напомните мягко.` })
+  } else if (myCur != null && ptCur != null) {
+    const diff = Math.abs(myCur - ptCur)
+    insights.push(
+      diff >= 2
+        ? { emoji: '🧭', text: `Восприятие близости расходится на ${diff} балла (вы ${myCur}, партнёр ${ptCur}). Обсудите это.` }
+        : { emoji: '💞', text: `На этой неделе вы сходитесь в ощущении близости (${myCur} и ${ptCur}).` }
+    )
+  }
+  if (insights.length === 0) {
+    insights.push({ emoji: '💜', text: 'Заполните пульс недели — здесь появятся график и инсайты.' })
+  }
 
   return (
     <DashboardLayout>
       <div className="h1">{name ? `${name}, ваш день` : 'Ваш день'}.</div>
-      <div className="dim">Настроение, пульс, челленджи и партнёр — всё в одном месте.</div>
+      <div className="dim">Эмоции, сигналы, тепло, пульс и ритуалы — для двоих каждый день.</div>
 
       {/* Навигация по секциям */}
       <div className="chip-row" style={{ display: 'flex', gap: 8, overflowX: 'auto', paddingBottom: 4, marginBottom: 8 }}>
@@ -271,7 +380,7 @@ export default function DailyPage() {
         ))}
       </div>
 
-      {/* 1 · Настроение */}
+      {/* 1 · Настроение — один тап */}
       <div id="mood" style={{ scrollMarginTop: 80 }}>
         <div className="k">Настроение</div>
         <div className="cd static mood-hero">
@@ -286,7 +395,11 @@ export default function DailyPage() {
           </div>
           <div className="autosave-hint">{saved ? '✓ Записано. Партнёр увидит.' : '💜 Один тап — и записано'}</div>
         </div>
+      </div>
 
+      {/* 2 · Партнёр сейчас + напомнить */}
+      <div id="partner-now" style={{ scrollMarginTop: 80 }}>
+        <div className="k">{partnerName} сейчас</div>
         <div className="cd static">
           {partner?.mood ? (
             <div className="cd-r">
@@ -301,7 +414,7 @@ export default function DailyPage() {
             <div className="cd-r">
               <div className="partner-emoji" style={{ opacity: .5 }}>💤</div>
               <div className="cd-t">
-                <b>{partner?.name ?? 'Партнёр'} ещё не отметил(а)</b>
+                <b>{partnerName} ещё не отметил(а)</b>
                 <span>Когда отметит — увидите здесь</span>
               </div>
               <button className="btn btn-s btn-sm" onClick={remind}>🔔 Напомнить</button>
@@ -310,25 +423,75 @@ export default function DailyPage() {
         </div>
       </div>
 
-      {/* 2 · Тихие сигналы */}
+      {/* 3 · Тихий сигнал — полный */}
       <div id="signals" style={{ scrollMarginTop: 80 }}>
-        <div className="k">Тихие сигналы</div>
+        <div className="k">Тихий сигнал</div>
         <div className="cd static">
           <div className="dim" style={{ fontSize: 12, marginBottom: 12 }}>Один тап — и партнёр поймёт, что вам нужно. Без слов.</div>
-          <div className="signal-row">
-            {signals.map(s => (
-              <button key={s.id} className={cn('signal-btn', signalSent === s.id && 'sent')} onClick={() => sendSignal(s)} title={s.meaning}>
-                <span>{s.emoji}</span>
-                <b>{s.meaning}</b>
-                {signalSent === s.id && <i className="signal-ok">✓</i>}
-              </button>
-            ))}
-          </div>
-          {signals.length === 0 && <div className="dim" style={{ fontSize: 13 }}>Партнёра пока нет — сигналы появятся, когда вы соединитесь.</div>}
+
+          {signalStatus.incoming && (
+            <div className="signal-incoming" style={{ marginBottom: 12 }}>
+              <div className="cd-r">
+                <div className="cd-ic" style={{ fontSize: 22 }}>{signalStatus.incoming.emoji}</div>
+                <div className="cd-t">
+                  <b>{partnerName} просит поддержки</b>
+                  <span>Сигнал «{signalStatus.incoming.meaning}» · {timeAgo(signalStatus.incoming.at)}</span>
+                </div>
+              </div>
+              <div style={{ display: 'flex', gap: 8, marginTop: 10, flexWrap: 'wrap' }}>
+                <button className="btn btn-p btn-sm" onClick={() => respondToSignal(signalStatus.incoming!)}>Ответить мягко</button>
+                <button className="btn btn-s btn-sm" onClick={dismissIncoming}>Сейчас не могу</button>
+              </div>
+            </div>
+          )}
+
+          {signals.length > 0 ? (
+            <div className="signal-row">
+              {signals.map(s => {
+                const status = signalStatus.lastSent?.signalId === s.id
+                  ? (signalStatus.lastSent.answered ? 'confirmed' : 'sent')
+                  : null
+                return (
+                  <button key={s.id} className={cn('signal-btn', status && (status === 'sent' ? 'sent' : 'confirmed'))}
+                    onClick={() => setConfirmSignal(s)} title={s.meaning}>
+                    <span>{s.emoji}</span>
+                    <b>{s.meaning}</b>
+                    <i className="small">{partnerName ? `${partnerName} увидит: «${s.suggestedReply}»` : s.suggestedReply}</i>
+                    {status === 'sent' && <span className="signal-ok">⏳</span>}
+                    {status === 'confirmed' && <span className="signal-ok">🤍</span>}
+                  </button>
+                )
+              })}
+            </div>
+          ) : (
+            <div className="dim" style={{ fontSize: 13 }}>Партнёра пока нет — сигналы появятся, когда вы соединитесь.</div>
+          )}
+
+          {signalStatus.lastSent && (
+            <div className="signal-status" style={{ marginTop: 12 }}>
+              {signalStatus.lastSent.answered
+                ? `🤍 ${partnerName} откликнулся(ась) · ${timeAgo(signalStatus.lastSent.at)}`
+                : `⏳ Отправлено · ждём отклика · ${timeAgo(signalStatus.lastSent.at)}`}
+            </div>
+          )}
+          <button className="link-btn" onClick={() => router.push('/dashboard/settings#signals')} style={{ marginTop: 8 }}>Настроить свои сигналы</button>
         </div>
       </div>
 
-      {/* 3 · Банк тепла */}
+      {/* Подтверждение сигнала */}
+      {confirmSignal && (
+        <div className="modal active" onClick={e => e.target === e.currentTarget && setConfirmSignal(null)}>
+          <div className="modal-c" style={{ textAlign: 'center' }}>
+            <div style={{ fontSize: 44 }}>{confirmSignal.emoji}</div>
+            <h3 style={{ margin: '8px 0 6px' }}>Отправить «{confirmSignal.meaning}»?</h3>
+            <p className="dim" style={{ fontSize: 13 }}>{partnerName} получит уведомление с сигналом и подсказкой, как ответить мягко.</p>
+            <button className="btn btn-p btn-w" style={{ marginTop: 14 }} onClick={() => sendSignal(confirmSignal)}>Отправить</button>
+            <button className="btn btn-s btn-w" style={{ marginTop: 8 }} onClick={() => setConfirmSignal(null)}>Отмена</button>
+          </div>
+        </div>
+      )}
+
+      {/* 4 · Банк тепла */}
       <div id="warmth" style={{ scrollMarginTop: 80 }}>
         <div className="k">Банк тепла</div>
         <div className="cd static">
@@ -355,7 +518,7 @@ export default function DailyPage() {
         </div>
       </div>
 
-      {/* 4 · Пульс */}
+      {/* 5 · Пульс — вход + график + инсайты */}
       <div id="pulse" style={{ scrollMarginTop: 80 }}>
         <div className="k">Пульс недели</div>
         <div className="cd static">
@@ -391,12 +554,48 @@ export default function DailyPage() {
               ✓ Уже заполнено на этой неделе: близость {userCurrent.closeness}/10 · конфликты {userCurrent.conflictResolution}/10
             </div>
           )}
+
+          <div className="k" style={{ marginTop: 20 }}>Динамика близости</div>
+          {chartWeeks.length >= 2 ? (
+            <>
+              <svg viewBox="0 0 300 112" style={{ width: '100%', height: 'auto' }} role="img" aria-label="График близости по неделям">
+                {[1, 4, 7, 10].map(v => {
+                  const y = 100 - ((v - 1) / 9) * 88
+                  return (
+                    <g key={v}>
+                      <line x1={10} y1={y} x2={290} y2={y} stroke="var(--border)" strokeWidth={1} strokeDasharray="3 4" />
+                      <text x={4} y={y + 3} fontSize={8} fill="var(--mute)">{v}</text>
+                    </g>
+                  )
+                })}
+                {myLine && <polyline points={myLine} fill="none" stroke="var(--accent)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />}
+                {ptLine && <polyline points={ptLine} fill="none" stroke="var(--pink)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />}
+              </svg>
+              <div style={{ display: 'flex', gap: 16, marginTop: 8, fontSize: 12 }}>
+                <span style={{ color: 'var(--mute)' }}><i style={{ display: 'inline-block', width: 10, height: 3, background: 'var(--accent)', borderRadius: 2, marginRight: 6 }} />Вы</span>
+                <span style={{ color: 'var(--mute)' }}><i style={{ display: 'inline-block', width: 10, height: 3, background: 'var(--pink)', borderRadius: 2, marginRight: 6 }} />Партнёр</span>
+              </div>
+            </>
+          ) : (
+            <div className="dim" style={{ fontSize: 13, marginTop: 8 }}>После пары недель здесь появится график близости.</div>
+          )}
+
+          {insights.length > 0 && (
+            <div className="pulse-insights" style={{ marginTop: 16, display: 'grid', gap: 8 }}>
+              {insights.map((ins, i) => (
+                <div key={i} className="notice" style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
+                  <span>{ins.emoji}</span>
+                  <div style={{ fontSize: 13 }}>{ins.text}</div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
-      {/* 5 · Челленджи */}
+      {/* 6 · Челленджи + ритуалы */}
       <div id="challenges" style={{ scrollMarginTop: 80 }}>
-        <div className="k">Челленджи · выполнено {completedCount}</div>
+        <div className="k">Челленджи и ритуалы</div>
         {activeChallenges.map(challenge => (
           <div key={challenge.id} className="cd static mt">
             <div className="cd-r">
@@ -423,7 +622,7 @@ export default function DailyPage() {
                 {challenge.completedByCurrent ? '✓ Я сделал(а)' : completing === challenge.id ? '…' : 'Я сделал(а)'}
               </button>
               <span className="small" style={{ color: 'var(--mute)' }}>
-                {challenge.completedByCurrent ? 'Вы — сделали' : 'Вы — ещё нет'} · {challenge.completedByPartner ? `${partner?.name ?? 'Партнёр'} — сделал(а)` : `${partner?.name ?? 'Партнёр'} — ещё нет`}
+                {challenge.completedByCurrent ? 'Вы — сделали' : 'Вы — ещё нет'} · {challenge.completedByPartner ? `${partnerName} — сделал(а)` : `${partnerName} — ещё нет`}
               </span>
             </div>
           </div>
@@ -433,12 +632,9 @@ export default function DailyPage() {
             {challenges.length === 0 ? 'Челленджи появятся после заполнения пульса.' : 'На этой неделе челленджей нет.'}
           </div>
         )}
-      </div>
 
-      {/* 6 · Ритуалы */}
-      <div id="rituals" style={{ scrollMarginTop: 80 }}>
-        <div className="k">Ритуалы</div>
-        <div className="cd static">
+        <div className="cd static mt">
+          <div className="k" style={{ marginTop: 0 }}>Ритуалы · выполнено {rituals.filter(r => r.mine).length}</div>
           <div className="dim" style={{ fontSize: 12, marginBottom: 12 }}>Маленькие повторяющиеся традиции пары.</div>
           {!ritualOpen && (
             <button className="btn btn-s btn-w" style={{ width: '100%', marginBottom: 12 }} onClick={() => setRitualOpen(true)}>
