@@ -36,6 +36,18 @@ export async function GET(request: NextRequest) {
     orderBy: { id: 'asc' },
   })
 
+  const lastSent = await prisma.signalEvent.findFirst({
+    where: { coupleId: ctx.couple!.id, fromId: ctx.user.id },
+    orderBy: { sentAt: 'desc' },
+    include: { signal: true },
+  })
+
+  const incoming = await prisma.signalEvent.findFirst({
+    where: { coupleId: ctx.couple!.id, fromId: { not: ctx.user.id }, answeredAt: null },
+    orderBy: { sentAt: 'desc' },
+    include: { signal: true },
+  })
+
   return NextResponse.json({
     signals: signals.map((s) => ({
       id: s.id,
@@ -43,6 +55,24 @@ export async function GET(request: NextRequest) {
       meaning: s.meaning,
       suggestedReply: s.suggestedReply,
     })),
+    lastSent: lastSent
+      ? {
+          signalId: lastSent.signalId,
+          emoji: lastSent.signal.emoji,
+          meaning: lastSent.signal.meaning,
+          at: lastSent.sentAt.toISOString(),
+          answered: lastSent.answeredAt != null,
+        }
+      : null,
+    incoming: incoming
+      ? {
+          signalId: incoming.signalId,
+          emoji: incoming.signal.emoji,
+          meaning: incoming.signal.meaning,
+          suggestedReply: incoming.signal.suggestedReply,
+          at: incoming.sentAt.toISOString(),
+        }
+      : null,
   })
 }
 

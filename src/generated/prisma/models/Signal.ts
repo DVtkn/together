@@ -191,6 +191,7 @@ export type SignalWhereInput = {
   suggestedReply?: Prisma.StringFilter<"Signal"> | string
   ackedAt?: Prisma.DateTimeNullableFilter<"Signal"> | Date | string | null
   Couple?: Prisma.XOR<Prisma.CoupleScalarRelationFilter, Prisma.CoupleWhereInput>
+  events?: Prisma.SignalEventListRelationFilter
 }
 
 export type SignalOrderByWithRelationInput = {
@@ -201,6 +202,7 @@ export type SignalOrderByWithRelationInput = {
   suggestedReply?: Prisma.SortOrder
   ackedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   Couple?: Prisma.CoupleOrderByWithRelationInput
+  events?: Prisma.SignalEventOrderByRelationAggregateInput
 }
 
 export type SignalWhereUniqueInput = Prisma.AtLeast<{
@@ -214,6 +216,7 @@ export type SignalWhereUniqueInput = Prisma.AtLeast<{
   suggestedReply?: Prisma.StringFilter<"Signal"> | string
   ackedAt?: Prisma.DateTimeNullableFilter<"Signal"> | Date | string | null
   Couple?: Prisma.XOR<Prisma.CoupleScalarRelationFilter, Prisma.CoupleWhereInput>
+  events?: Prisma.SignalEventListRelationFilter
 }, "id">
 
 export type SignalOrderByWithAggregationInput = {
@@ -247,6 +250,7 @@ export type SignalCreateInput = {
   suggestedReply: string
   ackedAt?: Date | string | null
   Couple: Prisma.CoupleCreateNestedOneWithoutSignalInput
+  events?: Prisma.SignalEventCreateNestedManyWithoutSignalInput
 }
 
 export type SignalUncheckedCreateInput = {
@@ -256,6 +260,7 @@ export type SignalUncheckedCreateInput = {
   meaning: string
   suggestedReply: string
   ackedAt?: Date | string | null
+  events?: Prisma.SignalEventUncheckedCreateNestedManyWithoutSignalInput
 }
 
 export type SignalUpdateInput = {
@@ -265,6 +270,7 @@ export type SignalUpdateInput = {
   suggestedReply?: Prisma.StringFieldUpdateOperationsInput | string
   ackedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   Couple?: Prisma.CoupleUpdateOneRequiredWithoutSignalNestedInput
+  events?: Prisma.SignalEventUpdateManyWithoutSignalNestedInput
 }
 
 export type SignalUncheckedUpdateInput = {
@@ -274,6 +280,7 @@ export type SignalUncheckedUpdateInput = {
   meaning?: Prisma.StringFieldUpdateOperationsInput | string
   suggestedReply?: Prisma.StringFieldUpdateOperationsInput | string
   ackedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  events?: Prisma.SignalEventUncheckedUpdateManyWithoutSignalNestedInput
 }
 
 export type SignalCreateManyInput = {
@@ -329,6 +336,11 @@ export type SignalMinOrderByAggregateInput = {
   ackedAt?: Prisma.SortOrder
 }
 
+export type SignalScalarRelationFilter = {
+  is?: Prisma.SignalWhereInput
+  isNot?: Prisma.SignalWhereInput
+}
+
 export type SignalListRelationFilter = {
   every?: Prisma.SignalWhereInput
   some?: Prisma.SignalWhereInput
@@ -337,6 +349,20 @@ export type SignalListRelationFilter = {
 
 export type SignalOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type SignalCreateNestedOneWithoutEventsInput = {
+  create?: Prisma.XOR<Prisma.SignalCreateWithoutEventsInput, Prisma.SignalUncheckedCreateWithoutEventsInput>
+  connectOrCreate?: Prisma.SignalCreateOrConnectWithoutEventsInput
+  connect?: Prisma.SignalWhereUniqueInput
+}
+
+export type SignalUpdateOneRequiredWithoutEventsNestedInput = {
+  create?: Prisma.XOR<Prisma.SignalCreateWithoutEventsInput, Prisma.SignalUncheckedCreateWithoutEventsInput>
+  connectOrCreate?: Prisma.SignalCreateOrConnectWithoutEventsInput
+  upsert?: Prisma.SignalUpsertWithoutEventsInput
+  connect?: Prisma.SignalWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SignalUpdateToOneWithWhereWithoutEventsInput, Prisma.SignalUpdateWithoutEventsInput>, Prisma.SignalUncheckedUpdateWithoutEventsInput>
 }
 
 export type SignalCreateNestedManyWithoutCoupleInput = {
@@ -381,12 +407,65 @@ export type SignalUncheckedUpdateManyWithoutCoupleNestedInput = {
   deleteMany?: Prisma.SignalScalarWhereInput | Prisma.SignalScalarWhereInput[]
 }
 
+export type SignalCreateWithoutEventsInput = {
+  id?: string
+  emoji: string
+  meaning: string
+  suggestedReply: string
+  ackedAt?: Date | string | null
+  Couple: Prisma.CoupleCreateNestedOneWithoutSignalInput
+}
+
+export type SignalUncheckedCreateWithoutEventsInput = {
+  id?: string
+  coupleId: string
+  emoji: string
+  meaning: string
+  suggestedReply: string
+  ackedAt?: Date | string | null
+}
+
+export type SignalCreateOrConnectWithoutEventsInput = {
+  where: Prisma.SignalWhereUniqueInput
+  create: Prisma.XOR<Prisma.SignalCreateWithoutEventsInput, Prisma.SignalUncheckedCreateWithoutEventsInput>
+}
+
+export type SignalUpsertWithoutEventsInput = {
+  update: Prisma.XOR<Prisma.SignalUpdateWithoutEventsInput, Prisma.SignalUncheckedUpdateWithoutEventsInput>
+  create: Prisma.XOR<Prisma.SignalCreateWithoutEventsInput, Prisma.SignalUncheckedCreateWithoutEventsInput>
+  where?: Prisma.SignalWhereInput
+}
+
+export type SignalUpdateToOneWithWhereWithoutEventsInput = {
+  where?: Prisma.SignalWhereInput
+  data: Prisma.XOR<Prisma.SignalUpdateWithoutEventsInput, Prisma.SignalUncheckedUpdateWithoutEventsInput>
+}
+
+export type SignalUpdateWithoutEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  emoji?: Prisma.StringFieldUpdateOperationsInput | string
+  meaning?: Prisma.StringFieldUpdateOperationsInput | string
+  suggestedReply?: Prisma.StringFieldUpdateOperationsInput | string
+  ackedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  Couple?: Prisma.CoupleUpdateOneRequiredWithoutSignalNestedInput
+}
+
+export type SignalUncheckedUpdateWithoutEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  coupleId?: Prisma.StringFieldUpdateOperationsInput | string
+  emoji?: Prisma.StringFieldUpdateOperationsInput | string
+  meaning?: Prisma.StringFieldUpdateOperationsInput | string
+  suggestedReply?: Prisma.StringFieldUpdateOperationsInput | string
+  ackedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
 export type SignalCreateWithoutCoupleInput = {
   id?: string
   emoji: string
   meaning: string
   suggestedReply: string
   ackedAt?: Date | string | null
+  events?: Prisma.SignalEventCreateNestedManyWithoutSignalInput
 }
 
 export type SignalUncheckedCreateWithoutCoupleInput = {
@@ -395,6 +474,7 @@ export type SignalUncheckedCreateWithoutCoupleInput = {
   meaning: string
   suggestedReply: string
   ackedAt?: Date | string | null
+  events?: Prisma.SignalEventUncheckedCreateNestedManyWithoutSignalInput
 }
 
 export type SignalCreateOrConnectWithoutCoupleInput = {
@@ -449,6 +529,7 @@ export type SignalUpdateWithoutCoupleInput = {
   meaning?: Prisma.StringFieldUpdateOperationsInput | string
   suggestedReply?: Prisma.StringFieldUpdateOperationsInput | string
   ackedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  events?: Prisma.SignalEventUpdateManyWithoutSignalNestedInput
 }
 
 export type SignalUncheckedUpdateWithoutCoupleInput = {
@@ -457,6 +538,7 @@ export type SignalUncheckedUpdateWithoutCoupleInput = {
   meaning?: Prisma.StringFieldUpdateOperationsInput | string
   suggestedReply?: Prisma.StringFieldUpdateOperationsInput | string
   ackedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  events?: Prisma.SignalEventUncheckedUpdateManyWithoutSignalNestedInput
 }
 
 export type SignalUncheckedUpdateManyWithoutCoupleInput = {
@@ -468,6 +550,35 @@ export type SignalUncheckedUpdateManyWithoutCoupleInput = {
 }
 
 
+/**
+ * Count Type SignalCountOutputType
+ */
+
+export type SignalCountOutputType = {
+  events: number
+}
+
+export type SignalCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  events?: boolean | SignalCountOutputTypeCountEventsArgs
+}
+
+/**
+ * SignalCountOutputType without action
+ */
+export type SignalCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SignalCountOutputType
+   */
+  select?: Prisma.SignalCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * SignalCountOutputType without action
+ */
+export type SignalCountOutputTypeCountEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SignalEventWhereInput
+}
+
 
 export type SignalSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -477,6 +588,8 @@ export type SignalSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   suggestedReply?: boolean
   ackedAt?: boolean
   Couple?: boolean | Prisma.CoupleDefaultArgs<ExtArgs>
+  events?: boolean | Prisma.Signal$eventsArgs<ExtArgs>
+  _count?: boolean | Prisma.SignalCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["signal"]>
 
 export type SignalSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -511,6 +624,8 @@ export type SignalSelectScalar = {
 export type SignalOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "coupleId" | "emoji" | "meaning" | "suggestedReply" | "ackedAt", ExtArgs["result"]["signal"]>
 export type SignalInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   Couple?: boolean | Prisma.CoupleDefaultArgs<ExtArgs>
+  events?: boolean | Prisma.Signal$eventsArgs<ExtArgs>
+  _count?: boolean | Prisma.SignalCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type SignalIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   Couple?: boolean | Prisma.CoupleDefaultArgs<ExtArgs>
@@ -523,6 +638,7 @@ export type $SignalPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
   name: "Signal"
   objects: {
     Couple: Prisma.$CouplePayload<ExtArgs>
+    events: Prisma.$SignalEventPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -926,6 +1042,7 @@ readonly fields: SignalFieldRefs;
 export interface Prisma__SignalClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   Couple<T extends Prisma.CoupleDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CoupleDefaultArgs<ExtArgs>>): Prisma.Prisma__CoupleClient<runtime.Types.Result.GetResult<Prisma.$CouplePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  events<T extends Prisma.Signal$eventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Signal$eventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SignalEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1359,6 +1476,30 @@ export type SignalDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Limit how many Signals to delete.
    */
   limit?: number
+}
+
+/**
+ * Signal.events
+ */
+export type Signal$eventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SignalEvent
+   */
+  select?: Prisma.SignalEventSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SignalEvent
+   */
+  omit?: Prisma.SignalEventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SignalEventInclude<ExtArgs> | null
+  where?: Prisma.SignalEventWhereInput
+  orderBy?: Prisma.SignalEventOrderByWithRelationInput | Prisma.SignalEventOrderByWithRelationInput[]
+  cursor?: Prisma.SignalEventWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SignalEventScalarFieldEnum | Prisma.SignalEventScalarFieldEnum[]
 }
 
 /**

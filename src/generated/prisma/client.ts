@@ -127,6 +127,11 @@ export type DailyQuestion = Prisma.DailyQuestionModel
  */
 export type Signal = Prisma.SignalModel
 /**
+ * Model SignalEvent
+ * 
+ */
+export type SignalEvent = Prisma.SignalEventModel
+/**
  * Model PauseSession
  * 
  */

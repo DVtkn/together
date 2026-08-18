@@ -35,6 +35,14 @@ export async function POST(
     data: { ackedAt: new Date() },
   })
 
+  const pending = await prisma.signalEvent.findFirst({
+    where: { coupleId: ctx.couple!.id, signalId: signal.id, answeredAt: null, fromId: { not: ctx.user.id } },
+    orderBy: { sentAt: 'desc' },
+  })
+  if (pending) {
+    await prisma.signalEvent.update({ where: { id: pending.id }, data: { answeredAt: new Date() } })
+  }
+
   const sigHref = `/dashboard/ai?signal=${encodeURIComponent(signal.emoji)}&meaning=${encodeURIComponent(signal.meaning)}&id=${signal.id}`
   const notifs = await prisma.notification.findMany({
     where: { userId: ctx.user.id, type: 'signal_received', read: false },

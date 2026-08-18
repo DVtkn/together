@@ -26,6 +26,16 @@ export async function POST(
     return NextResponse.json({ error: 'Сигнал не найден' }, { status: 404 })
   }
 
+  await prisma.signalEvent.create({
+    data: {
+      id: `se_${Math.random().toString(36).slice(2, 14)}`,
+      coupleId: ctx.couple!.id,
+      signalId: signal.id,
+      fromId: ctx.user.id,
+      sentAt: new Date(),
+    },
+  })
+
   if (ctx.partner) {
     const text = `${nameOf(ctx.user)} послал(а) сигнал ${signal.emoji} — «${signal.meaning}»`
     const replyHref = `/dashboard/ai?reply=${encodeURIComponent(signal.suggestedReply)}&signal=${encodeURIComponent(signal.emoji)}&meaning=${encodeURIComponent(signal.meaning)}&id=${signal.id}`

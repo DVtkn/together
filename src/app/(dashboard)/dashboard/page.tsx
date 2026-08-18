@@ -1,11 +1,12 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
 import { cn } from '@/lib/utils/cn'
 import { toast } from '@/lib/toast'
+import { timeAgo } from '@/lib/time'
 
 interface DailyQ {
   id: string
@@ -29,6 +30,11 @@ interface Signal {
   emoji: string
   meaning: string
   suggestedReply: string
+}
+
+interface SignalStatus {
+  lastSent: { signalId: string; emoji: string; meaning: string; at: string; answered: boolean } | null
+  incoming: { signalId: string; emoji: string; meaning: string; suggestedReply: string; at: string } | null
 }
 
 interface WarmthItem {
@@ -110,7 +116,8 @@ export default function DashboardPage() {
   const [answered, setAnswered] = useState(false)
   const [care, setCare] = useState<CareForecast | null>(null)
   const [signals, setSignals] = useState<Signal[]>([])
-  const [signalSent, setSignalSent] = useState<string | null>(null)
+  const [signalStatus, setSignalStatus] = useState<SignalStatus>({ lastSent: null, incoming: null })
+  const [confirmSignal, setConfirmSignal] = useState<Signal | null>(null)
   const [warmth, setWarmth] = useState<WarmthItem[]>([])
   const [challenge, setChallenge] = useState<any>(null)
   const [pause, setPause] = useState<{ active: boolean; endsAt: string | null; secondsLeft: number }>({ active: false, endsAt: null, secondsLeft: 0 })
@@ -153,50 +160,39 @@ export default function DashboardPage() {
     return () => clearInterval(t)
   }, [])
 
-  const [signalModal, setSignalModal] = useState<{ id: string; emoji: string; meaning: string; reply: string } | null>(null)
-  const shownSignals = useRef<Set<string>>(new Set())
-
-  useEffect(() => {
-    const check = () => {
-      fetch('/api/notifications?limit=10').then(r => r.json()).then(d => {
-        if (!d || !Array.isArray(d.items)) return
-        const sig = d.items.find((n: any) => n.type === 'signal_received' && !n.read && !shownSignals.current.has(n.id))
-        if (sig) {
-          shownSignals.current.add(sig.id)
-          const params = new URLSearchParams(sig.href?.split('?')[1] ?? '')
-          setSignalModal({
-            id: params.get('id') || '',
-            emoji: params.get('signal') || '🤗',
-            meaning: params.get('meaning') || 'тихий сигнал',
-            reply: params.get('reply') || '',
-          })
-        }
-      }).catch(() => {})
-    }
-    check()
-    const t = setInterval(check, 8000)
-    return () => clearInterval(t)
+  const loadSignalStatus = useCallback(() => {
+    fetch('/api/signals').then(r => r.json()).then(d => {
+      if (!d) return
+      setSignals(d.signals ?? [])
+      setSignalStatus({ lastSent: d.lastSent ?? null, incoming: d.incoming ?? null })
+    }).catch(() => {})
   }, [])
 
-  const ackSignal = (action: 'accept' | 'later') => {
-    if (!signalModal || !signalModal.id) return
-    fetch(`/api/signals/${signalModal.id}/ack`, {
+  useEffect(() => {
+    loadSignalStatus()
+    const t = setInterval(loadSignalStatus, 8000)
+    return () => clearInterval(t)
+  }, [loadSignalStatus])
+
+  const respondToSignal = (inc: NonNullable<SignalStatus['incoming']>) => {
+    fetch(`/api/signals/${inc.signalId}/ack`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action }),
+      body: JSON.stringify({ action: 'accept' }),
     }).catch(() => {})
+    setSignalStatus(p => ({ ...p, incoming: null }))
+    router.push(inc.suggestedReply ? `/dashboard/ai?reply=${encodeURIComponent(inc.suggestedReply)}` : '/dashboard/ai')
   }
 
-  const answerSoftly = () => {
-    if (!signalModal) return
-    ackSignal('accept')
-    router.push(signalModal.reply ? `/dashboard/ai?reply=${encodeURIComponent(signalModal.reply)}` : '/dashboard/ai')
-    setSignalModal(null)
-  }
-
-  const dismissSignal = () => {
-    ackSignal('later')
-    setSignalModal(null)
+  const dismissIncoming = () => {
+    const inc = signalStatus.incoming
+    if (!inc) return
+    fetch(`/api/signals/${inc.signalId}/ack`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'later' }),
+    }).catch(() => {})
+    setSignalStatus(p => ({ ...p, incoming: null }))
   }
 
   async function submitAnswer() {
@@ -212,12 +208,13 @@ export default function DashboardPage() {
     }
   }
 
-  async function sendSignal(s: Signal) {
+async function sendSignal(s: Signal) {
     const r = await fetch(`/api/signals/${s.id}/send`, { method: 'POST' }).catch(() => null)
-    if (r?.ok) toast('Сигнал отправлен партнёру 🤗')
-    setSignalSent(s.id)
-    window.dispatchEvent(new Event('together:refresh'))
-    setTimeout(() => setSignalSent(null), 3000)
+    setConfirmSignal(null)
+    if (r?.ok) {
+      toast('Сигнал отправлен партнёру 🤗')
+      loadSignalStatus()
+    }
   }
 
   const pauseFmt = pause.active && pause.secondsLeft > 0
@@ -369,27 +366,58 @@ export default function DashboardPage() {
       {/* ТИХИЙ СИГНАЛ — всегда */}
       <div className="k">Тихий сигнал</div>
       <div className="cd static">
+        {signalStatus.incoming && (
+          <div className="signal-incoming">
+            <b>{signalStatus.incoming.emoji} {partner?.name ?? 'Партнёр'} просит о поддержке</b>
+            <span>Сигнал «{signalStatus.incoming.meaning}» · {timeAgo(signalStatus.incoming.at)}</span>
+            <button className="btn btn-p btn-w" style={{ marginTop: 10 }} onClick={() => signalStatus.incoming && respondToSignal(signalStatus.incoming)}>Ответить мягко</button>
+          </div>
+        )}
+
         <div className="cd-r">
-          <div className="cd-ic">🤗</div>
+          <div className="cd-ic">🕊️</div>
           <div className="cd-t">
-            <b>Один тап — без слов</b>
-            <span>{partner ? 'Отправьте партнёру сигнал о поддержке' : 'Создайте пару, чтобы отправлять сигналы'}</span>
+            <b>Один тап — и {partner?.name ?? 'партнёр'} поймёт</b>
+            <span>Партнёр получит сигнал и подсказку, как ответить мягко. Слова не нужны.</span>
           </div>
         </div>
+
         {signals.length > 0 ? (
           <div className="signal-row" style={{ marginTop: 12 }}>
             {signals.map(s => (
-              <button key={s.id} className="signal-btn" onClick={() => sendSignal(s)} title={s.meaning}>
-                <span>{s.emoji}</span>
+              <button key={s.id} className="signal-btn" onClick={() => setConfirmSignal(s)}>
+                <span className="signal-emoji">{s.emoji}</span>
                 <b>{s.meaning}</b>
-                {signalSent === s.id && <i className="signal-ok">✓</i>}
+                <span className="small">{partner?.name ? `${partner.name} увидит: «${s.suggestedReply}»` : s.suggestedReply}</span>
               </button>
             ))}
           </div>
         ) : (
           <div className="dim" style={{ marginTop: 10 }}>Сигналы появятся здесь — добавьте свои в настройках.</div>
         )}
+
+        {signalStatus.lastSent && (
+          <div className="signal-status">
+            {signalStatus.lastSent.answered
+              ? `🤍 ${partner?.name ?? 'Партнёр'} откликнулся(ась) · ${timeAgo(signalStatus.lastSent.at)}`
+              : `⏳ Отправлено · ждём отклика · ${timeAgo(signalStatus.lastSent.at)}`}
+          </div>
+        )}
+        <button className="link-btn" onClick={() => router.push('/dashboard/settings#signals')}>Настроить свои сигналы</button>
       </div>
+
+      {/* Подтверждение сигнала */}
+      {confirmSignal && (
+        <div className="modal active" onClick={e => e.target === e.currentTarget && setConfirmSignal(null)}>
+          <div className="modal-c" style={{ textAlign: 'center' }}>
+            <div style={{ fontSize: 44 }}>{confirmSignal.emoji}</div>
+            <h3 style={{ margin: '8px 0 6px' }}>Отправить «{confirmSignal.meaning}»?</h3>
+            <p className="dim" style={{ fontSize: 13 }}>{partner?.name ?? 'Партнёр'} получит уведомление с сигналом и подсказкой, как ответить мягко.</p>
+            <button className="btn btn-p btn-w" style={{ marginTop: 14 }} onClick={() => sendSignal(confirmSignal)}>Отправить</button>
+            <button className="btn btn-s btn-w" style={{ marginTop: 8 }} onClick={() => setConfirmSignal(null)}>Отмена</button>
+          </div>
+        </div>
+      )}
 
       {/* ПРОДОЛЖИТЬ — следующий тест или отчёт */}
       <div className="k">Продолжить</div>
@@ -505,19 +533,6 @@ export default function DashboardPage() {
           </>
         )}
       </div>
-
-      {/* Модалка тихого сигнала */}
-      {signalModal && (
-        <div className="modal active" onClick={e => { if (e.target === e.currentTarget) dismissSignal() }}>
-          <div className="modal-c" style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: 64, marginBottom: 12 }}>{signalModal.emoji}</div>
-            <h3 style={{ marginBottom: 6 }}>Партнёр просит о поддержке</h3>
-            <p className="dim" style={{ marginBottom: 20 }}>«{signalModal.meaning}»</p>
-            <button className="btn btn-p btn-w" style={{ marginBottom: 8 }} onClick={answerSoftly}>🤍 Ответить мягко</button>
-            <button className="link-btn" style={{ display: 'block', width: '100%', textAlign: 'center' }} onClick={dismissSignal}>Позже</button>
-          </div>
-        </div>
-      )}
     </DashboardLayout>
   )
 }

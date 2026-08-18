@@ -414,6 +414,7 @@ export const ModelName = {
   CoupleTyping: 'CoupleTyping',
   DailyQuestion: 'DailyQuestion',
   Signal: 'Signal',
+  SignalEvent: 'SignalEvent',
   PauseSession: 'PauseSession',
   WarmthEntry: 'WarmthEntry',
   CoupleEvent: 'CoupleEvent',
@@ -455,7 +456,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "aIConversation" | "aIMessage" | "assessment" | "assessmentResponse" | "astroProfile" | "bouquet" | "challenge" | "challengeCompletion" | "dateInvite" | "moodEntry" | "notification" | "coupleMessage" | "coupleChatRead" | "coupleTyping" | "dailyQuestion" | "signal" | "pauseSession" | "warmthEntry" | "coupleEvent" | "dateMemory" | "memory" | "ritual" | "ritualCompletion" | "letter" | "city" | "consentLog" | "couple" | "coupleLinkRequest" | "coupleReport" | "coupleAnalysis" | "flower" | "moodStatus" | "planetPosition" | "pulseCheckin" | "pushSubscription" | "question" | "smallCraving" | "synastryReport" | "venue" | "communityVenueRating" | "communityVenue" | "wishlistItem"
+    modelProps: "user" | "aIConversation" | "aIMessage" | "assessment" | "assessmentResponse" | "astroProfile" | "bouquet" | "challenge" | "challengeCompletion" | "dateInvite" | "moodEntry" | "notification" | "coupleMessage" | "coupleChatRead" | "coupleTyping" | "dailyQuestion" | "signal" | "signalEvent" | "pauseSession" | "warmthEntry" | "coupleEvent" | "dateMemory" | "memory" | "ritual" | "ritualCompletion" | "letter" | "city" | "consentLog" | "couple" | "coupleLinkRequest" | "coupleReport" | "coupleAnalysis" | "flower" | "moodStatus" | "planetPosition" | "pulseCheckin" | "pushSubscription" | "question" | "smallCraving" | "synastryReport" | "venue" | "communityVenueRating" | "communityVenue" | "wishlistItem"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1714,6 +1715,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.SignalCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.SignalCountAggregateOutputType> | number
+        }
+      }
+    }
+    SignalEvent: {
+      payload: Prisma.$SignalEventPayload<ExtArgs>
+      fields: Prisma.SignalEventFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SignalEventFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignalEventPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SignalEventFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignalEventPayload>
+        }
+        findFirst: {
+          args: Prisma.SignalEventFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignalEventPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SignalEventFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignalEventPayload>
+        }
+        findMany: {
+          args: Prisma.SignalEventFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignalEventPayload>[]
+        }
+        create: {
+          args: Prisma.SignalEventCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignalEventPayload>
+        }
+        createMany: {
+          args: Prisma.SignalEventCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SignalEventCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignalEventPayload>[]
+        }
+        delete: {
+          args: Prisma.SignalEventDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignalEventPayload>
+        }
+        update: {
+          args: Prisma.SignalEventUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignalEventPayload>
+        }
+        deleteMany: {
+          args: Prisma.SignalEventDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SignalEventUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SignalEventUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignalEventPayload>[]
+        }
+        upsert: {
+          args: Prisma.SignalEventUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignalEventPayload>
+        }
+        aggregate: {
+          args: Prisma.SignalEventAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSignalEvent>
+        }
+        groupBy: {
+          args: Prisma.SignalEventGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SignalEventGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SignalEventCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SignalEventCountAggregateOutputType> | number
         }
       }
     }
@@ -3922,6 +3997,18 @@ export const SignalScalarFieldEnum = {
 export type SignalScalarFieldEnum = (typeof SignalScalarFieldEnum)[keyof typeof SignalScalarFieldEnum]
 
 
+export const SignalEventScalarFieldEnum = {
+  id: 'id',
+  coupleId: 'coupleId',
+  signalId: 'signalId',
+  fromId: 'fromId',
+  sentAt: 'sentAt',
+  answeredAt: 'answeredAt'
+} as const
+
+export type SignalEventScalarFieldEnum = (typeof SignalEventScalarFieldEnum)[keyof typeof SignalEventScalarFieldEnum]
+
+
 export const PauseSessionScalarFieldEnum = {
   id: 'id',
   coupleId: 'coupleId',
@@ -4722,6 +4809,7 @@ export type GlobalOmitConfig = {
   coupleTyping?: Prisma.CoupleTypingOmit
   dailyQuestion?: Prisma.DailyQuestionOmit
   signal?: Prisma.SignalOmit
+  signalEvent?: Prisma.SignalEventOmit
   pauseSession?: Prisma.PauseSessionOmit
   warmthEntry?: Prisma.WarmthEntryOmit
   coupleEvent?: Prisma.CoupleEventOmit

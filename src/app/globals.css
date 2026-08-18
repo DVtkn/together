@@ -908,9 +908,16 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 .signal-btn:hover{border-color:var(--pri)}
 .signal-btn span{font-size:26px}
 .signal-btn b{font-size:12px;font-weight:600;color:var(--dim)}
+.signal-btn .small{font-size:10px;color:var(--mute);text-align:center}
 .signal-btn.sent{border-color:var(--ok)}
 .signal-btn.sent b{color:var(--ok)}
 .signal-ok{position:absolute;top:-6px;right:-6px;width:20px;height:20px;border-radius:50%;background:var(--ok);color:#fff;font-style:normal;font-size:12px;display:flex;align-items:center;justify-content:center}
+
+/* ===== Входящий сигнал + статус ===== */
+.signal-incoming{background:rgba(236,72,153,.08);border:1px solid rgba(236,72,153,.35);border-radius:14px;padding:14px;margin-bottom:14px}
+.signal-incoming b{display:block;font-size:14px}
+.signal-incoming span{font-size:12px;color:var(--dim)}
+.signal-status{margin-top:12px;font-size:12px;color:var(--dim);text-align:center}
 
 /* ===== Банк тепла ===== */
 .warmth-item{display:flex;gap:10px;align-items:flex-start;padding:8px 0}

@@ -278,15 +278,29 @@ model DailyQuestion {
 }
 
 model Signal {
-  id              String     @id @default(cuid())
+  id              String         @id @default(cuid())
   coupleId        String
   emoji           String
   meaning         String
   suggestedReply  String
   ackedAt         DateTime?
-  Couple          Couple     @relation(fields: [coupleId], references: [id], onDelete: Cascade)
+  Couple          Couple         @relation(fields: [coupleId], references: [id], onDelete: Cascade)
+  events          SignalEvent[]
 
   @@index([coupleId])
+}
+
+model SignalEvent {
+  id         String   @id @default(cuid())
+  coupleId   String
+  signalId   String
+  fromId     String
+  sentAt     DateTime @default(now())
+  answeredAt DateTime?
+  signal     Signal   @relation(fields: [signalId], references: [id], onDelete: Cascade)
+
+  @@index([coupleId, fromId, sentAt])
+  @@index([coupleId, signalId])
 }
 
 model PauseSession {

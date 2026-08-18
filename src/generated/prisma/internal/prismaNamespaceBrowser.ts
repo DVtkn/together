@@ -68,6 +68,7 @@ export const ModelName = {
   CoupleTyping: 'CoupleTyping',
   DailyQuestion: 'DailyQuestion',
   Signal: 'Signal',
+  SignalEvent: 'SignalEvent',
   PauseSession: 'PauseSession',
   WarmthEntry: 'WarmthEntry',
   CoupleEvent: 'CoupleEvent',
@@ -352,6 +353,18 @@ export const SignalScalarFieldEnum = {
 } as const
 
 export type SignalScalarFieldEnum = (typeof SignalScalarFieldEnum)[keyof typeof SignalScalarFieldEnum]
+
+
+export const SignalEventScalarFieldEnum = {
+  id: 'id',
+  coupleId: 'coupleId',
+  signalId: 'signalId',
+  fromId: 'fromId',
+  sentAt: 'sentAt',
+  answeredAt: 'answeredAt'
+} as const
+
+export type SignalEventScalarFieldEnum = (typeof SignalEventScalarFieldEnum)[keyof typeof SignalEventScalarFieldEnum]
 
 
 export const PauseSessionScalarFieldEnum = {
