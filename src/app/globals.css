@@ -565,7 +565,7 @@ body{font-family:var(--font-inter),'Inter',-apple-system,sans-serif;background:v
 .tb{display:flex;align-items:flex-end;background:rgba(11,15,25,.95);backdrop-filter:blur(20px);border-top:1px solid var(--line);padding:6px 8px calc(6px + var(--safe-b));position:fixed;bottom:0;left:0;right:0;z-index:100;justify-content:space-around}
 .tbi{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 0 6px;color:var(--dim);border:none;background:none;font-family:inherit;cursor:pointer;position:relative;text-decoration:none}
 .tbi.on{color:var(--text)}
-.tbi.on::before{content:'';position:absolute;top:-6px;left:50%;transform:translateX(-50%);width:20px;height:2px;background:var(--grad);border-radius:2px}
+.tbi.on::before{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:6px;height:6px;border-radius:50%;background:var(--grad);box-shadow:0 0 8px rgba(139,92,246,.7)}
 .tbi i{font-size:19px;font-style:normal}
 .tbi b{font-size:10px;font-weight:600}
 .tbi.fab-m{flex:0 0 60px}
