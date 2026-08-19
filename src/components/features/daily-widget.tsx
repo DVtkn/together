@@ -1,8 +1,8 @@
 'use client'
 import { useCallback, useEffect, useState } from 'react'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
+import { SupportSheet } from '@/components/features/support-sheet'
 import { cn } from '@/lib/utils/cn'
 import { toast } from '@/lib/toast'
 
@@ -75,6 +75,7 @@ export default function DailyWidget({ initial }: { initial: DailyInitial }) {
 
   const [partnerTab, setPartnerTab] = useState('mood')
   const [partnerMood, setPartnerMood] = useState<{ emoji: string; text: string | null } | null>(initial.partnerMood)
+  const [supportOpen, setSupportOpen] = useState(false)
   const [cravings, setCravings] = useState<Craving[]>([])
   const [partnerCravings, setPartnerCravings] = useState<Craving[]>([])
   const [cravingInput, setCravingInput] = useState('')
@@ -342,7 +343,7 @@ export default function DailyWidget({ initial }: { initial: DailyInitial }) {
                 <b>{partner.name} сейчас</b>
                 <span>{partner.mood.text ?? 'Отметил(а) настроение'}</span>
               </div>
-              <Link href="/dashboard/ai" className="btn btn-s btn-sm">💬 Поддержать</Link>
+              <button className="btn btn-s btn-sm" onClick={() => setSupportOpen(true)}>💬 Поддержать</button>
             </div>
           ) : (
             <div className="cd-r">
@@ -688,6 +689,13 @@ export default function DailyWidget({ initial }: { initial: DailyInitial }) {
           )}
         </div>
       </div>
+
+      <SupportSheet
+        open={supportOpen}
+        partnerName={partnerName}
+        partnerMoodText={partner?.mood?.text}
+        onClose={() => setSupportOpen(false)}
+      />
     </DashboardLayout>
   )
 }

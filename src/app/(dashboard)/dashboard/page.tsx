@@ -2,7 +2,9 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
+import { SupportSheet } from '@/components/features/support-sheet'
 import { toast } from '@/lib/toast'
 
 interface DailyQ {
@@ -52,6 +54,13 @@ interface CoupleStatus {
   couple: null | { id: string }
   outgoing: null | { id: string; toUsername: string }
   incoming: null | { id: string; fromUsername: string }
+}
+
+interface CoupleAnalytics {
+  compatibility: number | null
+  strengths: Array<{ key: string; title: string; emoji: string; score: number; text: string }>
+  weaknesses: Array<{ key: string; title: string; emoji: string; score: number; text: string }>
+  perspectives: string
 }
 
 interface NotifPointer {
@@ -123,10 +132,14 @@ export default function DashboardPage() {
   const [coupleStatus, setCoupleStatus] = useState<CoupleStatus | null>(null)
   const [challenge, setChallenge] = useState<any>(null)
   const [pause, setPause] = useState<{ active: boolean; endsAt: string | null; secondsLeft: number }>({ active: false, endsAt: null, secondsLeft: 0 })
-  const [assessments, setAssessments] = useState<AssessmentProgress[]>([])
   const [partner, setPartner] = useState<PartnerInfo | null>(null)
+  const [analytics, setAnalytics] = useState<CoupleAnalytics | null>(null)
+  const [supportOpen, setSupportOpen] = useState(false)
+  const [insightOpen, setInsightOpen] = useState(false)
   const [seenReveal, setSeenReveal] = useState(false)
   const [notifPointers, setNotifPointers] = useState<NotifPointer[]>([])
+
+  const router = useRouter()
 
   const load = useCallback(() => {
     Promise.all([
@@ -141,12 +154,14 @@ export default function DashboardPage() {
       setPause(p)
       setDq(q?.question ?? null)
       setAnswered(q?.question?.myAnswered ?? false)
-      setAssessments(d?.assessments ?? [])
       setPartner({
         name: d?.couple?.partnerA?.name === d?.user?.name ? d?.couple?.partnerB?.name ?? 'Партнёр' : d?.couple?.partnerA?.name ?? 'Партнёр',
         mood: d?.partnerMood ?? null,
       })
       setCoupleStatus(cs)
+    }).catch(() => {})
+    fetch('/api/couple-analytics').then(r => r.json()).then(d => {
+      if (d && typeof d === 'object' && 'compatibility' in d) setAnalytics(d as CoupleAnalytics)
     }).catch(() => {})
   }, [])
   useEffect(() => { load() }, [load])
@@ -208,15 +223,13 @@ export default function DashboardPage() {
     ? `${Math.floor(pause.secondsLeft / 60)}:${String(pause.secondsLeft % 60).padStart(2, '0')}`
     : null
 
-  const testsDone = assessments.filter(a => a.bothCompleted).length
-  const testsTotal = assessments.length || 10
-  const nextTest = assessments.find(a => !a.bothCompleted)
-  const hasActiveQuestion = Boolean(dq && !dq.myAnswered)
+  const partnerName = partner?.name ?? 'Партнёр'
+  const top = analytics?.strengths?.[0] ?? null
+  const weak = analytics?.weaknesses?.[0] ?? null
+  const advice = analytics?.perspectives ?? ''
 
   const headline = `Синхронизация сердец${name ? `, ${name}` : ''}…`
   const { out, done } = useTypewriter(headline)
-
-  const partnerName = partner?.name ?? 'Партнёр'
   const revealEvent = Boolean(dq?.revealed && !seenReveal)
 
   interface ActionItem { key: string; emoji: string; title: string; sub: string; href: string; cta?: string }
@@ -258,9 +271,9 @@ export default function DashboardPage() {
               ? <span>Нажмите «Поддержать», чтобы написать</span>
               : <span>Свяжите аккаунты, чтобы видеть настроение друг друга</span>}
           </div>
-          <Link href={partner ? '/dashboard/ai' : '/dashboard/couple'} className="btn btn-primary btn-sm">
-            💬 Поддержать
-          </Link>
+          {partner
+            ? <button className="btn btn-primary btn-sm" onClick={() => setSupportOpen(true)}>💬 Поддержать</button>
+            : <Link href="/dashboard/couple" className="btn btn-primary btn-sm">💬 Поддержать</Link>}
         </div>
       </div>
 
@@ -373,25 +386,49 @@ export default function DashboardPage() {
         </>
       )}
 
-      {/* 5 · ДАЛЬШЕ — следующий тест или отчёт */}
-      <div className="k">Дальше</div>
-      <div className="cd static">
-        <div className="cd-r">
-          <div className="cd-ic">🗺️</div>
-          <div className="cd-t">
-            <b>{nextTest ? `Пройти «${nextTest.title}»` : 'Отчёт пары готов'}</b>
-            <span>{testsDone} из {testsTotal} тестов пройдено вместе</span>
+      {/* 5 · ВАША ПАРА — инсайт без клика, детали — инлайн */}
+      {partner && (
+        <>
+          <div className="k">Ваша пара</div>
+          <div className="cd static">
+            {analytics?.compatibility != null ? (
+              <>
+                <div className="insight-row">
+                  <div className="insight"><b>{analytics.compatibility}%</b><span>совместимость</span></div>
+                  {top && <div className="insight ok"><b>{top.emoji} {top.title} {top.score}%</b><span>суперсила</span></div>}
+                  {weak && <div className="insight warn"><b>{weak.emoji} {weak.title} {weak.score}%</b><span>зона роста</span></div>}
+                </div>
+                <button className="link-btn" onClick={() => setInsightOpen(!insightOpen)}>
+                  {insightOpen ? 'Скрыть' : 'Что это значит?'}
+                </button>
+                {insightOpen && (
+                  <div className="insight-detail">
+                    {top?.text && <p>💪 {top.text}</p>}
+                    {weak?.text && <p>⚠️ {weak.text}</p>}
+                    {advice && <div className="ai-action">🎯 Совет недели: {advice}</div>}
+                    <button className="btn btn-s btn-w" style={{ marginTop: 10 }} onClick={() => router.push('/dashboard/ai')}>Разобрать с Совой</button>
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="cd-r">
+                <div className="cd-ic">📊</div>
+                <div className="cd-t">
+                  <b>Совместимость ещё не рассчитана</b>
+                  <span>Когда вы оба пройдёте тесты — здесь появится инсайт без лишних кликов.</span>
+                </div>
+              </div>
+            )}
           </div>
-        </div>
-        <div className="prog-line" style={{ marginTop: 12 }}><div className="prog-fill" style={{ width: `${(testsDone / testsTotal) * 100}%` }} /></div>
-        <Link
-          href={nextTest ? `/dashboard/assessments/${nextTest.key}` : '/dashboard/couple#report'}
-          className={hasActiveQuestion ? 'btn btn-secondary btn-w' : 'btn btn-primary btn-w'}
-          style={{ marginTop: 12 }}
-        >
-          {nextTest ? 'Начать тест' : 'Открыть отчёт'}
-        </Link>
-      </div>
+        </>
+      )}
+
+      <SupportSheet
+        open={supportOpen}
+        partnerName={partnerName}
+        partnerMoodText={partner?.mood?.text}
+        onClose={() => setSupportOpen(false)}
+      />
     </DashboardLayout>
   )
 }

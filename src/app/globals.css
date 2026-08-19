@@ -427,9 +427,13 @@ body.night .bg i:nth-child(4){background:rgba(245,158,11,.12)}
 .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;font-style:normal}
 .legend .dima i{background:var(--grad)}
 .legend .anya i{background:var(--blue)}
-.insight{display:flex;gap:10px;padding:12px 0;border-bottom:1px solid var(--line);font-size:14px}
-.insight:last-child{border:none}
-.insight i{font-style:normal}
+.insight-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:8px}
+.insight{background:var(--card2);border-radius:14px;padding:12px;text-align:center}
+.insight b{display:block;font-size:16px;font-weight:700}
+.insight span{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.06em}
+.insight.ok b{color:var(--ok)}
+.insight.warn b{color:var(--warn)}
+.insight-detail{margin-top:12px;font-size:13px;color:var(--dim);display:flex;flex-direction:column;gap:8px}
 
 
 /* ============ VIBES ============ */
@@ -1034,6 +1038,8 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 @media(min-width:1024px){.sheet{left:auto;top:60px;right:20px;width:320px;border-radius:16px}}
 .sheet-item{padding:12px;border:1px solid var(--line);border-radius:12px;margin-bottom:8px;cursor:pointer;transition:.15s}
 .sheet-item:hover{border-color:var(--pri)}
+.sheet-item.sheet-btn{width:100%;background:var(--card);color:var(--text);font:inherit;text-align:left;font-size:14px}
+.sheet-item.sheet-btn:disabled{opacity:.5;cursor:default}
 
 /* ===== Чат с партнёром в Сове ===== */
 .couple-chat-banner{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.25);border-radius:12px;margin:0 16px 8px;font-size:13px;font-weight:600}
