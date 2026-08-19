@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import { cookies } from 'next/headers'
 import { SWRProvider } from '@/components/providers/swr-provider'
 import './globals.css'
 
@@ -40,11 +41,12 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const theme = (await cookies()).get('loop:theme')?.value === 'night' ? 'night' : 'aurora'
   return (
     <html lang="ru" className="dark" suppressHydrationWarning>
       <head>
@@ -58,7 +60,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
-      <body className={`${inter.variable} min-h-full flex flex-col antialiased`}>
+      <body className={`${inter.variable} ${theme} min-h-full flex flex-col antialiased`} suppressHydrationWarning>
         <SWRProvider>{children}</SWRProvider>
       </body>
     </html>

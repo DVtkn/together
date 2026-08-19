@@ -263,6 +263,10 @@ export default function SettingsWidget({ initial }: { initial: SettingsInitial }
     document.body.classList.remove('aurora', 'night')
     document.body.classList.add(t)
     try {
+      localStorage.setItem('loop:theme', t)
+      document.cookie = `loop:theme=${t};path=/;max-age=31536000;samesite=lax`
+    } catch { /* ignore */ }
+    try {
       const res = await fetch('/api/user/theme', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },

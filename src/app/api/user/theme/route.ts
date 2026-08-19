@@ -43,7 +43,13 @@ export async function PATCH(request: NextRequest) {
       data: { theme: validation.data.theme },
     })
 
-    return NextResponse.json({ theme: user.theme })
+    const res = NextResponse.json({ theme: user.theme })
+    res.cookies.set('loop:theme', validation.data.theme, {
+      path: '/',
+      maxAge: 31536000,
+      sameSite: 'lax',
+    })
+    return res
   } catch (error) {
     console.error('Update theme error:', error)
     return NextResponse.json({ error: 'Внутренняя ошибка сервера' }, { status: 500 })

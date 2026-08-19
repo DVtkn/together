@@ -152,7 +152,10 @@ export function DashboardLayout({ children, user, couple }: DashboardLayoutProps
       document.body.classList.remove('aurora', 'night')
       document.body.classList.add(value)
       setTheme(value)
-      try { localStorage.setItem('loop:theme', value) } catch { /* ignore */ }
+      try {
+        localStorage.setItem('loop:theme', value)
+        document.cookie = `loop:theme=${value};path=/;max-age=31536000;samesite=lax`
+      } catch { /* ignore */ }
     }
     const load = () => {
       fetch('/api/user/theme').then(r => r.json()).then(d => apply(d?.theme ?? 'aurora')).catch(() => {})
