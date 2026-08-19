@@ -35,6 +35,9 @@ export function getRule(group: keyof typeof RULES): LimitRule {
 }
 
 export async function rateLimit(group: keyof typeof RULES, identifier: string) {
+  if (process.env.E2E_RATE_LIMIT === '1') {
+    return { ok: true, remaining: 999, retryAfter: 0 }
+  }
   const rule = getRule(group)
 
   if (redis) {

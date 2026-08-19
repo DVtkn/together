@@ -3,6 +3,7 @@ import { defineConfig, devices } from '@playwright/test'
 export default defineConfig({
   testDir: './e2e',
   fullyParallel: false,
+  workers: 1,
   retries: 1,
   reporter: 'list',
   use: {
@@ -23,7 +24,7 @@ export default defineConfig({
   ],
   globalSetup: './e2e/global-setup.ts',
   webServer: {
-    command: 'pnpm dev',
+    command: 'E2E_RATE_LIMIT=1 pnpm dev',
     url: 'http://localhost:3000',
     reuseExistingServer: true,
     timeout: 120000,
