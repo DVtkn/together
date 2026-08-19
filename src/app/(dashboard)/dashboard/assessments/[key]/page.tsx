@@ -115,7 +115,7 @@ export default function AssessmentPage() {
           answers: Object.entries(answers).map(([questionId, answer]) => ({ questionId, answer })),
         }),
       })
-      router.push('/dashboard/assessments?saved=true')
+      router.push('/dashboard/couple#tests')
       router.refresh()
       fetch('/api/report/analyze', { method: 'POST' }).catch(() => {})
     } catch (e) {

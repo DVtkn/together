@@ -298,7 +298,8 @@ export function DashboardLayout({ children, user, couple }: DashboardLayoutProps
   const myCouple = swrCouple ?? couple ?? null
 
   const isActive = (href: string) => {
-    if (pathname === href || pathname.startsWith(href + '/')) return true
+    if (pathname === href) return true
+    if (href !== '/dashboard' && pathname.startsWith(href + '/')) return true
     const group = GROUPS[href]
     return !!group && group.includes(pathname)
   }
