@@ -94,6 +94,14 @@ export default function SettingsPage() {
     fetch('/api/user/theme').then(r => r.json()).then(d => setTheme(d?.theme === 'night' ? 'night' : 'aurora')).catch(() => {})
   }, [])
 
+  useEffect(() => {
+    if (loading) return
+    if (window.location.hash === '#signals') {
+      const el = document.getElementById('signals')
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }, [loading])
+
   const addSignal = async () => {
     if (sigMeaning.trim().length < 2 || sigReply.trim().length < 2) return
     const r = await fetch('/api/signals', {
@@ -511,11 +519,12 @@ export default function SettingsPage() {
         </div>
       )}
 
-      <div className="k">Тихие сигналы</div>
-      <div className="cd static">
-        <div className="dim" style={{ fontSize: 12, marginBottom: 12 }}>
-          Один тап на «Доме» или в «Буднях» — и партнёр увидит ваш сигнал с мягким ответом.
-        </div>
+      <div id="signals" style={{ scrollMarginTop: 80 }}>
+        <div className="k">Тихие сигналы</div>
+        <div className="cd static">
+          <div className="dim" style={{ fontSize: 12, marginBottom: 12 }}>
+            Кнопка 🕊️ в углу экрана — один тап, и партнёр увидит сигнал с мягким ответом.
+          </div>
         <div className="signal-list" style={{ display: 'grid', gap: 8, marginBottom: 12 }}>
           {signals.map(s => (
             <div key={s.id} className="feed-item" style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -534,6 +543,7 @@ export default function SettingsPage() {
           </div>
           <input className="input" placeholder="Мягкий ответ: «Иду. Крепко обнимаю»" value={sigReply} onChange={e => setSigReply(e.target.value)} />
           <button className="btn btn-p btn-w" disabled={sigMeaning.trim().length < 2 || sigReply.trim().length < 2} onClick={addSignal}>Добавить сигнал</button>
+        </div>
         </div>
       </div>
 
