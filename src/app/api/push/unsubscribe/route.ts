@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { rateLimit } from '@/lib/rate-limit'
 import { getApiContext, unauthorized } from '@/lib/api-auth'
+import { pushUnsubscribeSchema } from '@/lib/utils/validation'
+import { validationError } from '@/lib/utils/http'
 
 // DELETE /api/push/unsubscribe - удалить push-подписку пользователя
 export async function DELETE(request: NextRequest) {
@@ -18,7 +20,11 @@ export async function DELETE(request: NextRequest) {
 
   try {
     const body = await request.json().catch(() => null)
-    const endpoint = typeof body?.endpoint === 'string' ? body.endpoint : null
+    const validation = pushUnsubscribeSchema.safeParse(body ?? {})
+    if (!validation.success) {
+      return validationError()
+    }
+    const endpoint = validation.data.endpoint ?? null
 
     if (endpoint) {
       await prisma.pushSubscription.deleteMany({

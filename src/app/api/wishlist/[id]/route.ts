@@ -25,7 +25,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     const body = await request.json()
     const validation = statusSchema.safeParse(body)
     if (!validation.success) {
-      return NextResponse.json({ error: 'Ошибка валидации' }, { status: 400 })
+      return NextResponse.json({ error: 'Ошибка валидации' }, { status: 422 })
     }
 
     const wish = await prisma.wishlistItem.findUnique({ where: { id } })

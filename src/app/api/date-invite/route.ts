@@ -4,7 +4,7 @@ import { rateLimit } from '@/lib/rate-limit'
 import { getApiContext, requireCouple, unauthorized } from '@/lib/api-auth'
 import { z } from 'zod'
 import { notify, nameOf } from '@/lib/notify'
-import { sendPushToUser } from '@/lib/push'
+import { sendPushToUserFireAndForget } from '@/lib/push'
 
 const createSchema = z.object({
   vibe: z.string().min(1).max(40).optional(),
@@ -95,7 +95,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const validation = createSchema.safeParse(body)
     if (!validation.success) {
-      return NextResponse.json({ error: 'Ошибка валидации' }, { status: 400 })
+      return NextResponse.json({ error: 'Ошибка валидации' }, { status: 422 })
     }
 
     const data = validation.data
@@ -122,7 +122,7 @@ export async function POST(request: NextRequest) {
         `${nameOf(ctx.user)} зовёт на свидание — выбери место`,
         '/dashboard/date'
       )
-      await sendPushToUser(ctx.partner.id, {
+      sendPushToUserFireAndForget(ctx.partner.id, {
         title: '📍 Новое свидание',
         body: `${nameOf(ctx.user)} зовёт на свидание`,
         url: '/dashboard/date',

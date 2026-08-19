@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
     const username = String(body.username ?? body.targetUsername ?? '')
     const validation = linkRequestSchema.safeParse({ username })
     if (!validation.success) {
-      return NextResponse.json({ error: 'Укажите логин партнёра' }, { status: 400 })
+      return NextResponse.json({ error: 'Укажите логин партнёра' }, { status: 422 })
     }
 
     const targetUsername = validation.data.username.trim()

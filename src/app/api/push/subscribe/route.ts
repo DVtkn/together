@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const validation = subscriptionSchema.safeParse(body)
     if (!validation.success) {
-      return NextResponse.json({ error: 'Некорректная подписка' }, { status: 400 })
+      return NextResponse.json({ error: 'Некорректная подписка' }, { status: 422 })
     }
 
     const { endpoint, keys } = validation.data

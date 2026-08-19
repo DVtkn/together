@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { rateLimit } from '@/lib/rate-limit'
 import { getApiContext, unauthorized } from '@/lib/api-auth'
+import { venueRatingSchema } from '@/lib/utils/validation'
+import { validationError } from '@/lib/utils/http'
 
 export async function POST(request: NextRequest) {
   const rl = await rateLimit('venues', request.headers.get('x-forwarded-for') || 'anon')
@@ -24,11 +26,11 @@ export async function POST(request: NextRequest) {
   }
 
   const body = await request.json()
-  const { rating } = body
-
-  if (rating === undefined || rating < 1 || rating > 5) {
-    return NextResponse.json({ error: 'Оценка должна быть от 1 до 5' }, { status: 400 })
+  const validation = venueRatingSchema.safeParse(body)
+  if (!validation.success) {
+    return validationError('Оценка должна быть от 1 до 5')
   }
+  const { rating } = validation.data
 
   // Сохраняем/обновляем голос пользователя
   const ratingEntry = await prisma.communityVenueRating.upsert({

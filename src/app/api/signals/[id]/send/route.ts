@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { rateLimit } from '@/lib/rate-limit'
 import { getApiContext, requireCouple, unauthorized } from '@/lib/api-auth'
 import { notify, nameOf } from '@/lib/notify'
-import { sendPushToUser } from '@/lib/push'
+import { sendPushToUserFireAndForget } from '@/lib/push'
 
 export async function POST(
   request: NextRequest,
@@ -40,7 +40,7 @@ export async function POST(
     const text = `${nameOf(ctx.user)} послал(а) сигнал ${signal.emoji} — «${signal.meaning}»`
     const replyHref = `/dashboard/ai?reply=${encodeURIComponent(signal.suggestedReply)}&signal=${encodeURIComponent(signal.emoji)}&meaning=${encodeURIComponent(signal.meaning)}&id=${signal.id}`
     await notify(ctx.partner.id, 'signal_received', text, replyHref)
-    await sendPushToUser(ctx.partner.id, {
+    sendPushToUserFireAndForget(ctx.partner.id, {
       title: `${signal.emoji} Тихий сигнал`,
       body: `${nameOf(ctx.user)}: ${signal.meaning}`,
       url: replyHref,

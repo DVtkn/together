@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
   try {
     body = forgotSchema.parse(await request.json())
   } catch {
-    return NextResponse.json({ error: 'Введите корректный email' }, { status: 400 })
+    return NextResponse.json({ error: 'Введите корректный email' }, { status: 422 })
   }
 
   const email = body.email!.toLowerCase()

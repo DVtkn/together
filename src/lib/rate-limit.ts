@@ -19,8 +19,8 @@ interface LimitRule {
 }
 
 const RULES: Record<string, LimitRule> = {
-  ai: { limit: 20, window: 60 },
-  auth: { limit: 10, window: 900 }, // 10 за 15 мин
+  ai: { limit: 5, window: 60 },
+  auth: { limit: 10, window: 600 }, // 10 за 10 мин
   register: { limit: 5, window: 900 },
   assessments: { limit: 60, window: 60 },
   couples: { limit: 10, window: 60 },

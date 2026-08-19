@@ -53,7 +53,7 @@ export async function PATCH(request: NextRequest) {
     const body = await request.json()
     const validation = settingsSchema.safeParse(body)
     if (!validation.success) {
-      return NextResponse.json({ error: 'Ошибка валидации' }, { status: 400 })
+      return NextResponse.json({ error: 'Ошибка валидации' }, { status: 422 })
     }
 
     const { name, email, pushEnabled, emailEnabled, weeklyPulseReminder, challengeReminder } = validation.data

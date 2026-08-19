@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
   try {
     body = resetSchema.parse(await request.json())
   } catch {
-    return NextResponse.json({ error: 'Неверные данные' }, { status: 400 })
+    return NextResponse.json({ error: 'Неверные данные' }, { status: 422 })
   }
 
   const user = await prisma.user.findFirst({ where: { resetToken: body.token } })

@@ -3787,6 +3787,7 @@ export const AIConversationScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   title: 'title',
+  mode: 'mode',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

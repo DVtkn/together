@@ -3,6 +3,8 @@ import { rateLimit } from '@/lib/rate-limit'
 import { getApiContext, unauthorized } from '@/lib/api-auth'
 import { prisma } from '@/lib/prisma'
 import { buildMessages, safeParseResponse, getAIResponse, SYSTEM_PROMPT } from '@/lib/ai/provider'
+import { aiChatSchema } from '@/lib/utils/validation'
+import { validationError } from '@/lib/utils/http'
 
 export async function GET(request: NextRequest) {
   const rl = await rateLimit('ai', request.headers.get('x-forwarded-for') || 'anon')
@@ -34,7 +36,6 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  let body: { message?: string; conversationId?: string } = {}
   try {
     const rl = await rateLimit('ai', request.headers.get('x-forwarded-for') || 'anon')
     if (!rl.ok) {
@@ -47,17 +48,20 @@ export async function POST(request: NextRequest) {
     const ctx = await getApiContext()
     if (!ctx) return unauthorized()
 
-    body = await request.json()
-    if (!body || !body.message || typeof body.message !== 'string') {
-      return NextResponse.json({ error: 'Сообщение не может быть пустым' }, { status: 400 })
+    let body: { message?: string; conversationId?: string } = {}
+    try {
+      body = await request.json()
+    } catch {
+      return validationError()
+    }
+    const validation = aiChatSchema.safeParse(body)
+    if (!validation.success) {
+      return validationError()
     }
 
-    const message = body.message.trim()
-    if (message.length === 0) {
-      return NextResponse.json({ error: 'Сообщение не может быть пустым' }, { status: 400 })
-    }
-    if (message.length > 2000) {
-      return NextResponse.json({ error: 'Сообщение слишком длинное' }, { status: 400 })
+    const message = validation.data.message.trim()
+    if (!message) {
+      return validationError('Сообщение не может быть пустым')
     }
 
     // --- жесткий системный промпт Совы ---
@@ -71,7 +75,12 @@ export async function POST(request: NextRequest) {
     let conversationId = body.conversationId || null
     if (conversationId) {
       const existing = await prisma.aIConversation.findUnique({ where: { id: conversationId } })
-      if (!existing || existing.userId !== ctx.user.id) conversationId = null
+      if (!existing) {
+        return NextResponse.json({ error: 'Диалог не найден' }, { status: 404 })
+      }
+      if (existing.mode === 'solo' && existing.userId !== ctx.user.id) {
+        return NextResponse.json({ error: 'Нет доступа к диалогу' }, { status: 403 })
+      }
     }
     if (!conversationId) {
       const created = await prisma.aIConversation.create({

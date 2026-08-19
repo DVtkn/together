@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { rateLimit } from '@/lib/rate-limit'
 import { getApiContext, requireCouple, unauthorized } from '@/lib/api-auth'
 import { notify } from '@/lib/notify'
-import { sendPushToUser } from '@/lib/push'
+import { sendPushToUserFireAndForget } from '@/lib/push'
 import { z } from 'zod'
 
 const messageSchema = z.object({
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
   const body = await request.json()
   const validation = messageSchema.safeParse(body)
   if (!validation.success) {
-    return NextResponse.json({ error: 'Сообщение не может быть пустым' }, { status: 400 })
+    return NextResponse.json({ error: 'Сообщение не может быть пустым' }, { status: 422 })
   }
 
   const content = validation.data.content
@@ -95,7 +95,7 @@ export async function POST(request: NextRequest) {
 
   if (!isSova && ctx.partner) {
     await notify(ctx.partner.id, 'couple_message', 'В чате пары новое сообщение', '/dashboard/ai')
-    await sendPushToUser(ctx.partner.id, {
+    sendPushToUserFireAndForget(ctx.partner.id, {
       title: '💬 Сообщение от партнёра',
       body: `${ctx.user.name ?? ctx.user.username ?? 'Партнёр'}: ${message.content.slice(0, 80)}`,
       url: '/dashboard/ai',

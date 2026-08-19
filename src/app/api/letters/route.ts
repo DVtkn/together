@@ -4,7 +4,7 @@ import { rateLimit } from '@/lib/rate-limit'
 import { getApiContext, requireCouple, unauthorized } from '@/lib/api-auth'
 import { z } from 'zod'
 import { notify, nameOf } from '@/lib/notify'
-import { sendPushToUser } from '@/lib/push'
+import { sendPushToUserFireAndForget } from '@/lib/push'
 
 const letterSchema = z.object({
   title: z.string().min(1).max(120).transform((s) => s.trim()),
@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
   const body = await request.json()
   const validation = letterSchema.safeParse(body)
   if (!validation.success) {
-    return NextResponse.json({ error: 'Напишите письмо' }, { status: 400 })
+    return NextResponse.json({ error: 'Напишите письмо' }, { status: 422 })
   }
 
   const letter = await prisma.letter.create({
@@ -87,7 +87,7 @@ export async function POST(request: NextRequest) {
       `${nameOf(ctx.user)} написал(а) вам письмо 💌`,
       '/dashboard/ai#letters'
     )
-    await sendPushToUser(ctx.partner.id, {
+    sendPushToUserFireAndForget(ctx.partner.id, {
       title: '💌 Вам письмо',
       body: `${nameOf(ctx.user)} написал(а) вам письмо`,
       url: '/dashboard/ai#letters',

@@ -24,7 +24,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     const body = await request.json()
     const validation = linkAnswerSchema.safeParse(body)
     if (!validation.success) {
-      return NextResponse.json({ error: 'Укажите accept: true или false' }, { status: 400 })
+      return NextResponse.json({ error: 'Укажите accept: true или false' }, { status: 422 })
     }
 
     const requestRecord = await prisma.coupleLinkRequest.findUnique({
@@ -60,25 +60,28 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
         return NextResponse.json({ error: 'Отправитель уже в паре' }, { status: 400 })
       }
 
-      const couple = await prisma.couple.create({
-        data: {
-          id: `cp_${Math.random().toString(36).slice(2, 14)}`,
-          partnerAId: requestRecord.fromUserId,
-          partnerBId: ctx.user.id,
-          status: 'ACTIVE',
-          updatedAt: new Date(),
-        },
+      const coupleId = `cp_${Math.random().toString(36).slice(2, 14)}`
+      await prisma.$transaction(async (tx) => {
+        await tx.couple.create({
+          data: {
+            id: coupleId,
+            partnerAId: requestRecord.fromUserId,
+            partnerBId: ctx.user.id,
+            status: 'ACTIVE',
+            updatedAt: new Date(),
+          },
+        })
+
+        await tx.user.updateMany({
+          where: { id: { in: [requestRecord.fromUserId, ctx.user.id] } },
+          data: { coupleId },
+        })
+
+        await tx.coupleLinkRequest.update({ where: { id }, data: { status: 'ACCEPTED', updatedAt: new Date() } })
       })
 
-      await prisma.user.updateMany({
-        where: { id: { in: [requestRecord.fromUserId, ctx.user.id] } },
-        data: { coupleId: couple.id },
-      })
-
-      await emitEvent(couple.id, 'couple_created', 'Пара создана')
-      await emitEvent(couple.id, 'anniversary', 'Старт истории пары')
-
-      await prisma.coupleLinkRequest.update({ where: { id }, data: { status: 'ACCEPTED', updatedAt: new Date() } })
+      await emitEvent(coupleId, 'couple_created', 'Пара создана')
+      await emitEvent(coupleId, 'anniversary', 'Старт истории пары')
 
       await notify(
         requestRecord.fromUserId,
@@ -87,7 +90,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
         '/dashboard/couple'
       )
 
-      return NextResponse.json({ ok: true, couple: { id: couple.id, status: couple.status } })
+      return NextResponse.json({ ok: true, couple: { id: coupleId, status: 'ACTIVE' } })
     }
 
     await prisma.coupleLinkRequest.update({ where: { id }, data: { status: 'REJECTED', updatedAt: new Date() } })

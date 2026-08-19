@@ -26,7 +26,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     const body = await request.json()
     const validation = actionSchema.safeParse(body)
     if (!validation.success) {
-      return NextResponse.json({ error: 'Ошибка валидации' }, { status: 400 })
+      return NextResponse.json({ error: 'Ошибка валидации' }, { status: 422 })
     }
 
     const craving = await prisma.smallCraving.findUnique({ where: { id } })

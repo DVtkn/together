@@ -96,7 +96,7 @@ export async function POST(request: NextRequest) {
   const body = await request.json()
   const validation = answerSchema.safeParse(body)
   if (!validation.success) {
-    return NextResponse.json({ error: 'Ответ не может быть пустым' }, { status: 400 })
+    return NextResponse.json({ error: 'Ответ не может быть пустым' }, { status: 422 })
   }
 
   const date = todayKey()

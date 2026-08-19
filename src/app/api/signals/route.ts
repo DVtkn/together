@@ -3,7 +3,9 @@ import { prisma } from '@/lib/prisma'
 import { rateLimit } from '@/lib/rate-limit'
 import { getApiContext, requireCouple, unauthorized } from '@/lib/api-auth'
 import { notify, nameOf } from '@/lib/notify'
-import { sendPushToUser } from '@/lib/push'
+import { sendPushToUserFireAndForget } from '@/lib/push'
+import { signalCreateSchema } from '@/lib/utils/validation'
+import { validationError } from '@/lib/utils/http'
 
 const DEFAULT_SIGNALS = [
   { emoji: '🤗', meaning: 'Обними меня', suggestedReply: 'Иду. Крепко обнимаю 🤗' },
@@ -87,10 +89,12 @@ export async function POST(request: NextRequest) {
   if (noCouple) return noCouple
 
   const body = await request.json()
-  const { emoji, meaning, suggestedReply } = body
-  if (!emoji || !meaning || !suggestedReply) {
-    return NextResponse.json({ error: 'Заполните эмодзи, смысл и мягкий ответ' }, { status: 400 })
+  const validation = signalCreateSchema.safeParse(body)
+  if (!validation.success) {
+    return validationError('Заполните эмодзи, смысл и мягкий ответ')
   }
+
+  const { emoji, meaning, suggestedReply } = validation.data
 
   const signal = await prisma.signal.create({
     data: {

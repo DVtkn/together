@@ -39,16 +39,16 @@ export interface UserSettings {
   [key: string]: unknown
 }
 
-export function useProfile() {
-  return useSWR<ProfileResponse>('/api/user/profile')
+export function useProfile(fallbackData?: ProfileResponse) {
+  return useSWR<ProfileResponse>('/api/user/profile', { fallbackData })
 }
 
-export function useSettings() {
-  return useSWR<{ settings?: Record<string, unknown>; couple: CoupleData | null }>('/api/user/settings')
+export function useSettings(fallbackData?: { settings?: Record<string, unknown>; couple: CoupleData | null }) {
+  return useSWR<{ settings?: Record<string, unknown>; couple: CoupleData | null }>('/api/user/settings', { fallbackData })
 }
 
-export function useCities() {
-  return useSWR<{ cities: City[] }>('/api/cities')
+export function useCities(fallbackData?: { cities: City[] }) {
+  return useSWR<{ cities: City[] }>('/api/cities', { fallbackData })
 }
 
 export function useCouple() {

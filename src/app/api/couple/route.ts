@@ -4,6 +4,8 @@ import { getApiContext, unauthorized, requireCouple } from '@/lib/api-auth'
 import { prisma } from '@/lib/prisma'
 import { emitEvent } from '@/lib/story'
 import { parseRuDate } from '@/lib/dates'
+import { relationshipStartSchema } from '@/lib/utils/validation'
+import { validationError } from '@/lib/utils/http'
 
 export async function PATCH(request: NextRequest) {
   const rl = await rateLimit('default', request.headers.get('x-forwarded-for') || 'anon')
@@ -24,10 +26,14 @@ export async function PATCH(request: NextRequest) {
   try {
     body = await request.json()
   } catch {
-    return NextResponse.json({ error: 'Неверная дата' }, { status: 400 })
+    return validationError()
+  }
+  const validation = relationshipStartSchema.safeParse(body)
+  if (!validation.success) {
+    return validationError()
   }
 
-  const raw = (body.relationshipStart ?? '').trim()
+  const raw = (validation.data.relationshipStart ?? '').trim()
   const d = parseRuDate(raw)
   if (!d) {
     return NextResponse.json({ error: 'Введите дату в формате ДД.ММ.ГГГГ' }, { status: 400 })

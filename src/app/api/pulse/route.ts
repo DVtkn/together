@@ -82,7 +82,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const validation = pulseCheckinSchema.safeParse(body)
     if (!validation.success) {
-      return NextResponse.json({ error: 'Ошибка валидации' }, { status: 400 })
+      return NextResponse.json({ error: 'Ошибка валидации' }, { status: 422 })
     }
 
     const { closeness, conflictResolution, missing } = validation.data

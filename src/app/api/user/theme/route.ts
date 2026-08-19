@@ -35,7 +35,7 @@ export async function PATCH(request: NextRequest) {
     const body = await request.json()
     const validation = themeSchema.safeParse(body)
     if (!validation.success) {
-      return NextResponse.json({ error: 'Ошибка валидации' }, { status: 400 })
+      return NextResponse.json({ error: 'Ошибка валидации' }, { status: 422 })
     }
 
     const user = await prisma.user.update({

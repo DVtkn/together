@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { rateLimit } from '@/lib/rate-limit'
 import { getApiContext, unauthorized } from '@/lib/api-auth'
+import { venueCreateSchema } from '@/lib/utils/validation'
+import { validationError } from '@/lib/utils/http'
 
 // Города с населением > 100 000
 const CITIES_100K = [
@@ -128,7 +130,12 @@ export async function POST(request: NextRequest) {
   if (!ctx) return unauthorized()
 
   const body = await request.json()
-  const { cityName, dish, name, address, phone, comment } = body
+  const validation = venueCreateSchema.safeParse(body)
+  if (!validation.success) {
+    return validationError()
+  }
+
+  const { cityName, dish, name, address, phone, comment } = validation.data
 
   // Валидации
   const canonical = canonicalCity(cityName ?? '')
@@ -137,9 +144,6 @@ export async function POST(request: NextRequest) {
       { error: 'Город должен из списка городов ≥100 тыс. чел.' },
       { status: 400 }
     )
-  }
-  if (name.length < 2) {
-    return NextResponse.json({ error: 'Название заведения минимум 2 символа' }, { status: 400 })
   }
   // дубликат (city+dish+name, без учёта регистра) → 409
   const existing = await prisma.communityVenue.findFirst({

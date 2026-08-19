@@ -78,6 +78,37 @@ export const themeSchema = z.object({
   theme: z.enum(['aurora', 'night']),
 })
 
+export const relationshipStartSchema = z.object({
+  relationshipStart: z.string().min(1).max(20),
+})
+
+export const signalCreateSchema = z.object({
+  emoji: z.string().min(1).max(8),
+  meaning: z.string().min(1).max(120),
+  suggestedReply: z.string().min(1).max(200),
+})
+
+export const signalAckSchema = z.object({
+  action: z.enum(['accept', 'later']),
+})
+
+export const venueCreateSchema = z.object({
+  cityName: z.string().min(1).max(60),
+  dish: z.string().max(60).default(''),
+  name: z.string().min(2).max(120),
+  address: z.string().max(200).optional().nullable(),
+  phone: z.string().max(30).optional().nullable(),
+  comment: z.string().max(140).optional().nullable(),
+})
+
+export const venueRatingSchema = z.object({
+  rating: z.number().min(1).max(5),
+})
+
+export const pushUnsubscribeSchema = z.object({
+  endpoint: z.string().url().optional(),
+})
+
 export function validateData<T>(schema: z.ZodSchema<T>, data: unknown): { success: true; data: T } | { success: false; errors: z.ZodError } {
   const result = schema.safeParse(data)
   if (result.success) return { success: true, data: result.data }

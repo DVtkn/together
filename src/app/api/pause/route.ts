@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { rateLimit } from '@/lib/rate-limit'
 import { getApiContext, requireCouple, unauthorized } from '@/lib/api-auth'
 import { notify, nameOf } from '@/lib/notify'
-import { sendPushToUser } from '@/lib/push'
+import { sendPushToUserFireAndForget } from '@/lib/push'
 
 const PAUSE_MINUTES = 20
 const RETURN_QUESTIONS = [
@@ -41,7 +41,7 @@ export async function GET(request: NextRequest) {
     if (partnerId) {
       const q = RETURN_QUESTIONS[new Date(session.endsAt).getDate() % RETURN_QUESTIONS.length]
       await notify(partnerId, 'pause_ended', `20 минут прошло. ${q}`, '/dashboard/daily')
-      await sendPushToUser(partnerId, {
+      sendPushToUserFireAndForget(partnerId, {
         title: '⏸️ Пауза закончилась',
         body: `20 минут прошло. ${q}`,
         url: '/dashboard/daily',
@@ -90,7 +90,7 @@ export async function POST(request: NextRequest) {
   if (ctx.partner) {
     const text = `${nameOf(ctx.user)} нажал(а) стоп-слово. Пауза на 20 минут.`
     await notify(ctx.partner.id, 'pause_started', text, '/dashboard/daily#pause')
-    await sendPushToUser(ctx.partner.id, {
+    sendPushToUserFireAndForget(ctx.partner.id, {
       title: '🛑 Пауза',
       body: `${nameOf(ctx.user)} взял(а) паузу на 20 минут. Дышите.`,
       url: '/dashboard/daily#pause',

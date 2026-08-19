@@ -5,7 +5,7 @@ import { getApiContext, unauthorized } from '@/lib/api-auth'
 import { z } from 'zod'
 import { notify, nameOf } from '@/lib/notify'
 import { emitEvent } from '@/lib/story'
-import { sendPushToUser } from '@/lib/push'
+import { sendPushToUserFireAndForget } from '@/lib/push'
 
 const patchSchema = z.object({
   vibe: z.string().min(1).max(40).optional(),
@@ -46,7 +46,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     const body = await request.json()
     const validation = patchSchema.safeParse(body)
     if (!validation.success) {
-      return NextResponse.json({ error: 'Ошибка валидации' }, { status: 400 })
+      return NextResponse.json({ error: 'Ошибка валидации' }, { status: 422 })
     }
 
     const data = validation.data
@@ -74,7 +74,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
         body,
         '/dashboard/date'
       )
-      await sendPushToUser(invite.createdBy, {
+      sendPushToUserFireAndForget(invite.createdBy, {
         title: '🗓️ Свидание спланировано',
         body,
         url: '/dashboard/date',

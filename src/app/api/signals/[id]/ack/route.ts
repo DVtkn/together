@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma'
 import { rateLimit } from '@/lib/rate-limit'
 import { getApiContext, requireCouple, unauthorized } from '@/lib/api-auth'
 import { notify, nameOf } from '@/lib/notify'
+import { signalAckSchema } from '@/lib/utils/validation'
+import { validationError } from '@/lib/utils/http'
 
 export async function POST(
   request: NextRequest,
@@ -18,10 +20,11 @@ export async function POST(
   if (noCouple) return noCouple
 
   const { id } = await params
-  const action = (await request.json().catch(() => ({}))).action as string | undefined
-  if (action !== 'accept' && action !== 'later') {
-    return NextResponse.json({ error: 'Нужен action: accept | later' }, { status: 400 })
+  const validation = signalAckSchema.safeParse(await request.json().catch(() => ({})))
+  if (!validation.success) {
+    return validationError('Нужен action: accept | later')
   }
+  const { action } = validation.data
 
   const signal = await prisma.signal.findFirst({
     where: { id, coupleId: ctx.couple!.id },

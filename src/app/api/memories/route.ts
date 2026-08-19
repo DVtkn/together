@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
   const body = await request.json()
   const validation = memorySchema.safeParse(body)
   if (!validation.success) {
-    return NextResponse.json({ error: 'Напишите подпись' }, { status: 400 })
+    return NextResponse.json({ error: 'Напишите подпись' }, { status: 422 })
   }
 
   const memory = await prisma.memory.create({

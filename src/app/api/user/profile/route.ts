@@ -59,7 +59,7 @@ export async function PUT(request: NextRequest) {
     const body = await request.json()
     const validation = profileUpdateSchema.safeParse(body)
     if (!validation.success) {
-      return NextResponse.json({ error: 'Ошибка валидации' }, { status: 400 })
+      return NextResponse.json({ error: 'Ошибка валидации' }, { status: 422 })
     }
 
     const data: { name?: string; dateOfBirth?: Date | null; cityId?: string | null } = {}

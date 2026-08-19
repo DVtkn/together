@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { rateLimit } from '@/lib/rate-limit'
 import { getApiContext, requireCouple, unauthorized } from '@/lib/api-auth'
 import { notify, nameOf } from '@/lib/notify'
-import { sendPushToUser } from '@/lib/push'
+import { sendPushToUserFireAndForget } from '@/lib/push'
 import { z } from 'zod'
 
 const warmthSchema = z.object({
@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
   const body = await request.json()
   const validation = warmthSchema.safeParse(body)
   if (!validation.success) {
-    return NextResponse.json({ error: validation.error.issues[0]?.message || 'Ошибка валидации' }, { status: 400 })
+    return NextResponse.json({ error: validation.error.issues[0]?.message || 'Ошибка валидации' }, { status: 422 })
   }
 
   const entry = await prisma.warmthEntry.create({
@@ -69,7 +69,7 @@ export async function POST(request: NextRequest) {
   if (ctx.partner) {
     const text = `${nameOf(ctx.user)} сказал(а) тёплое слово: «${validation.data.text}»`
     await notify(ctx.partner.id, 'warmth_added', text, '/dashboard/daily#warmth')
-    await sendPushToUser(ctx.partner.id, {
+    sendPushToUserFireAndForget(ctx.partner.id, {
       title: '💌 Тёплое слово',
       body: `${nameOf(ctx.user)}: «${validation.data.text}»`,
       url: '/dashboard/daily#warmth',

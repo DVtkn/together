@@ -3,7 +3,7 @@ import { rateLimit } from '@/lib/rate-limit'
 import { getApiContext, unauthorized, requireCouple } from '@/lib/api-auth'
 import { prisma } from '@/lib/prisma'
 import { notify, nameOf } from '@/lib/notify'
-import { sendPushToUser } from '@/lib/push'
+import { sendPushToUserFireAndForget } from '@/lib/push'
 import { z } from 'zod'
 
 const giftSchema = z.object({
@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
   try {
     body = giftSchema.parse(await request.json())
   } catch {
-    return NextResponse.json({ error: 'Неверные данные' }, { status: 400 })
+    return NextResponse.json({ error: 'Неверные данные' }, { status: 422 })
   }
 
   const flower = await prisma.flower.findUnique({ where: { slug: body.slug! } })
@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
   const text = `💐 ${fromName} дарит вам ${flower.name} — ${flower.meaning ?? 'символ внимания'}`
 
   notify(partner.id, 'flower_gift', text, '/dashboard/daily')
-  await sendPushToUser(partner.id, {
+  sendPushToUserFireAndForget(partner.id, {
     title: '💐 Подарок от партнёра',
     body: text,
     url: '/dashboard/daily',
