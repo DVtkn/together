@@ -15,13 +15,11 @@ const NAV_ITEMS = [
   { key: 'home', href: '/dashboard', label: 'Дом', icon: '🏠' },
   { key: 'couple', href: '/dashboard/couple', label: 'Пара', icon: '💞' },
   { key: 'date', href: '/dashboard/date', label: 'Свидание', icon: '📍' },
-  { key: 'daily', href: '/dashboard/daily', label: 'День', icon: '⚡' },
   { key: 'ai', href: '/dashboard/ai', label: 'Психолог', icon: '🦉' },
 ]
 
 const GROUPS: Record<string, string[]> = {
   '/dashboard/couple': ['/dashboard/couple', '/dashboard/assessments'],
-  '/dashboard/daily': ['/dashboard/daily'],
   '/dashboard/date': ['/dashboard/date'],
   '/dashboard/ai': ['/dashboard/ai'],
 }

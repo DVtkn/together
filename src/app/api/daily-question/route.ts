@@ -136,14 +136,14 @@ export async function POST(request: NextRequest) {
       ctx.partner.id,
       'daily_answered',
       `${nameOf(ctx.user)} ответил(а) на вопрос дня`,
-      '/dashboard/daily'
+      '/dashboard'
     )
     if (revealed) {
       await notify(
         ctx.partner.id,
         'daily_revealed',
         'Оба ответили на вопрос дня — ответы раскрыты 🔮',
-        '/dashboard/daily'
+        '/dashboard'
       )
     }
   }

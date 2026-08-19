@@ -93,8 +93,9 @@ test.describe('Свидание: wizard выбора', () => {
 test.describe('Пульс', () => {
   test('отправка пульса проходит', async ({ page }) => {
     await page.goto('/dashboard/daily#pulse')
-    await expect(page.locator('.h1', { hasText: 'ваш день' })).toBeVisible()
+    await expect(page.locator('.h1', { hasText: 'Синхронизация сердец' })).toBeVisible()
 
+    await page.getByRole('button', { name: 'Заполнить пульс' }).click()
     await page.locator('#pulse input[type="range"]').nth(0).fill('7')
     await page.locator('#pulse input[type="range"]').nth(1).fill('6')
     await page.locator('#pulse .input').fill('Хочу больше времени вдвоём')
@@ -107,7 +108,7 @@ test.describe('Пульс', () => {
 test.describe('Настроение', () => {
   test('выбор настроения сохраняется', async ({ page }) => {
     await page.goto('/dashboard/daily')
-    await expect(page.locator('.h1', { hasText: 'ваш день' })).toBeVisible()
+    await expect(page.locator('.h1', { hasText: 'Синхронизация сердец' })).toBeVisible()
 
     await page.getByRole('button', { name: 'изменить' }).click()
     await page.getByRole('button', { name: 'Всё супер' }).click()

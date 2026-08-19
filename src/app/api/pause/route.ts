@@ -40,11 +40,11 @@ export async function GET(request: NextRequest) {
     const partnerId = session.startedBy === ctx.user.id ? ctx.partner?.id : ctx.user.id
     if (partnerId) {
       const q = RETURN_QUESTIONS[new Date(session.endsAt).getDate() % RETURN_QUESTIONS.length]
-      await notify(partnerId, 'pause_ended', `20 минут прошло. ${q}`, '/dashboard/daily')
+      await notify(partnerId, 'pause_ended', `20 минут прошло. ${q}`, '/dashboard')
       sendPushToUserFireAndForget(partnerId, {
         title: '⏸️ Пауза закончилась',
         body: `20 минут прошло. ${q}`,
-        url: '/dashboard/daily',
+        url: '/dashboard',
       })
     }
     return NextResponse.json({ active: false, endsAt: null, secondsLeft: 0 })
@@ -89,11 +89,11 @@ export async function POST(request: NextRequest) {
 
   if (ctx.partner) {
     const text = `${nameOf(ctx.user)} нажал(а) стоп-слово. Пауза на 20 минут.`
-    await notify(ctx.partner.id, 'pause_started', text, '/dashboard/daily#pause')
+    await notify(ctx.partner.id, 'pause_started', text, '/dashboard')
     sendPushToUserFireAndForget(ctx.partner.id, {
       title: '🛑 Пауза',
       body: `${nameOf(ctx.user)} взял(а) паузу на 20 минут. Дышите.`,
-      url: '/dashboard/daily#pause',
+      url: '/dashboard',
     })
   }
 

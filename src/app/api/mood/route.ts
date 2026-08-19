@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
         ctx.partner.id,
         'mood_changed',
         `Настроение ${nameOf(ctx.user)}: ${emoji}`,
-        '/dashboard/daily'
+        '/dashboard'
       )
     }
 

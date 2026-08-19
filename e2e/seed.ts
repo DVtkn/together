@@ -27,10 +27,10 @@ async function main() {
   await prisma.user.deleteMany({ where: { username: { in: [E2E_USERNAME, E2E_PARTNER] } } })
 
   const userA = await prisma.user.create({
-    data: { id: 'usr_e2e_a', username: E2E_USERNAME, name: 'E2E Дим', passwordHash },
+    data: { id: 'usr_e2e_a', username: E2E_USERNAME, name: 'E2E Дим', passwordHash, onboardingDone: true },
   })
   const userB = await prisma.user.create({
-    data: { id: 'usr_e2e_b', username: E2E_PARTNER, name: 'E2E Аня', passwordHash },
+    data: { id: 'usr_e2e_b', username: E2E_PARTNER, name: 'E2E Аня', passwordHash, onboardingDone: true },
   })
 
   const couple = await prisma.couple.create({

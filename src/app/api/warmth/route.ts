@@ -68,11 +68,11 @@ export async function POST(request: NextRequest) {
 
   if (ctx.partner) {
     const text = `${nameOf(ctx.user)} сказал(а) тёплое слово: «${validation.data.text}»`
-    await notify(ctx.partner.id, 'warmth_added', text, '/dashboard/daily#warmth')
+    await notify(ctx.partner.id, 'warmth_added', text, '/dashboard#partner')
     sendPushToUserFireAndForget(ctx.partner.id, {
       title: '💌 Тёплое слово',
       body: `${nameOf(ctx.user)}: «${validation.data.text}»`,
-      url: '/dashboard/daily#warmth',
+      url: '/dashboard#partner',
     })
   }
 

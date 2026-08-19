@@ -62,7 +62,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
         ctx.partner.id,
         'challenge_completed',
         `${nameOf(ctx.user)} выполнил(а) челлендж «${challenge.title}»`,
-        '/dashboard/daily#challenges'
+        '/dashboard#challenges'
       )
     }
 

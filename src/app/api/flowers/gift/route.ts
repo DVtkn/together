@@ -38,11 +38,11 @@ export async function POST(request: NextRequest) {
   const fromName = nameOf(ctx.user) ?? 'Ваш партнёр'
   const text = `💐 ${fromName} дарит вам ${flower.name} — ${flower.meaning ?? 'символ внимания'}`
 
-  notify(partner.id, 'flower_gift', text, '/dashboard/daily')
+  notify(partner.id, 'flower_gift', text, '/dashboard')
   sendPushToUserFireAndForget(partner.id, {
     title: '💐 Подарок от партнёра',
     body: text,
-    url: '/dashboard/daily',
+    url: '/dashboard',
   })
 
   return NextResponse.json({ ok: true, flower: { slug: flower.slug, name: flower.name, emoji: flower.emoji } })

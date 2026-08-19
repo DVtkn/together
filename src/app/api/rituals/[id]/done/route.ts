@@ -52,7 +52,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
         ctx.partner.id,
         'ritual_done',
         `${nameOf(ctx.user)} выполнил(а) ритуал «${ritual.title}»`,
-        '/dashboard/daily#rituals'
+        '/dashboard#challenges'
       )
     }
   }

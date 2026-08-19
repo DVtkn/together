@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
     ctx.partner.id,
     'mood_remind',
     `${ctx.user.name ?? ctx.user.username ?? 'Партнёр'} мягко напоминает: отметь настроение 💜`,
-    '/dashboard/daily'
+    '/dashboard'
   )
 
   return NextResponse.json({ ok: true })

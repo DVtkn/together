@@ -92,7 +92,7 @@ export async function POST(request: NextRequest) {
       ctx.partner.id,
       'ritual_added',
       `${nameOf(ctx.user)} добавил(а) ритуал «${ritual.title}»`,
-      '/dashboard/daily#rituals'
+      '/dashboard#challenges'
     )
   }
 

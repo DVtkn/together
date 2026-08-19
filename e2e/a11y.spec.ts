@@ -8,7 +8,7 @@ test.describe('A11y: навигация и тап-зоны', () => {
     await expect(page.locator('.tb')).toBeVisible()
 
     const tabs = page.locator('.tbi')
-    expect(await tabs.count()).toBeGreaterThanOrEqual(5)
+    expect(await tabs.count()).toBeGreaterThanOrEqual(4)
     for (const tab of await tabs.all()) {
       const box = await tab.boundingBox()
       expect(box).not.toBeNull()
@@ -38,7 +38,7 @@ test.describe('A11y: навигация и тап-зоны', () => {
     await page.goto('/dashboard/daily')
     const nav = page.locator('.nav')
     await expect(nav).toBeVisible()
-    await expect(nav.getByRole('link', { name: 'День' })).toHaveAttribute('aria-current', 'page')
-    await expect(nav.getByRole('link', { name: 'Дом' })).not.toHaveAttribute('aria-current', 'page')
+    await expect(nav.getByRole('link', { name: 'Дом' })).toHaveAttribute('aria-current', 'page')
+    await expect(nav.getByRole('link', { name: 'День' })).toHaveCount(0)
   })
 })
