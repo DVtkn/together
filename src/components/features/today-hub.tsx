@@ -179,7 +179,7 @@ function useTypewriter(text: string, speed = 40, startDelay = 250) {
 export default function TodayHub() {
   const router = useRouter()
 
-  const [name, setName] = useState('')
+  const [, setName] = useState('')
   const [partner, setPartner] = useState<PartnerInfo | null>(null)
   const [dq, setDq] = useState<DailyQ | null>(null)
   const [answerInput, setAnswerInput] = useState('')
@@ -500,7 +500,7 @@ export default function TodayHub() {
     insights.push({ emoji: '💜', text: 'Заполните пульс недели — здесь появятся график и инсайты.' })
   }
 
-  const headline = `Синхронизация сердец${name ? `, ${name}` : ''}…`
+  const headline = 'Синхронизация сердец…'
   const { out, done } = useTypewriter(headline)
   const pauseFmt = pause.active && pause.secondsLeft > 0
     ? `${Math.floor(pause.secondsLeft / 60)}:${String(pause.secondsLeft % 60).padStart(2, '0')}`

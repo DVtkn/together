@@ -158,9 +158,6 @@ export function DashboardLayout({ children, user, couple }: DashboardLayoutProps
     const load = () => {
       fetch('/api/user/theme').then(r => r.json()).then(d => apply(d?.theme ?? 'aurora')).catch(() => {})
     }
-    let cached: string | null = null
-    try { cached = localStorage.getItem('loop:theme') } catch { /* ignore */ }
-    apply(cached ?? 'aurora')
     load()
     const onTheme = () => load()
     window.addEventListener('together:theme', onTheme)
@@ -435,16 +432,6 @@ export function DashboardLayout({ children, user, couple }: DashboardLayoutProps
           </Link>
         ))}
       </nav>
-
-      {/* ТРЕВОЖНАЯ КНОПКА */}
-      <button
-        className="fab"
-        onClick={() => setEmergencyOpen(true)}
-        title="Техника деэскалации"
-        aria-label="Техника деэскалации"
-      >
-        🕊️
-      </button>
 
       {/* МОДАЛКА */}
       <div
