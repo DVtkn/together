@@ -65,3 +65,14 @@ export async function registerServiceWorker(): Promise<void> {
     console.error('SW registration failed:', error)
   }
 }
+
+export async function testPush(): Promise<{ ok: boolean; error?: string }> {
+  try {
+    const res = await fetch('/api/push/test', { method: 'POST' })
+    const data = await res.json()
+    if (!res.ok) return { ok: false, error: data.error || 'Ошибка отправки' }
+    return { ok: data.sent === true }
+  } catch (error) {
+    return { ok: false, error: 'Ошибка сети' }
+  }
+}

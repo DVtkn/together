@@ -9,7 +9,7 @@ import { SkeletonCard } from '@/components/skeleton-card'
 import { signOut } from 'next-auth/react'
 import { useProfile, useSettings, useCities } from '@/lib/hooks'
 import type { ProfileUser } from '@/lib/hooks'
-import { subscribeToPush, unsubscribeFromPush } from '@/lib/push-client'
+import { subscribeToPush, unsubscribeFromPush, testPush } from '@/lib/push-client'
 import { DateInput } from '@/components/date-input'
 import { toast } from '@/lib/toast'
 import { parseRuDate, toRuDate } from '@/lib/dates'
@@ -77,6 +77,9 @@ export default function SettingsWidget({ initial }: { initial: SettingsInitial }
   const [sigReply, setSigReply] = useState('')
   const [theme, setTheme] = useState<'aurora' | 'night'>(initial.theme)
 
+  const [pushStatus, setPushStatus] = useState<'unsupported' | 'default' | 'granted' | 'denied' | 'loading'>('loading')
+  const [pushSubscribed, setPushSubscribed] = useState(false)
+
   const { data: settingsRes, mutate: mutateSettings } = useSettings(initial.settingsRes ?? undefined)
   const { data: citiesRes } = useCities(initial.citiesRes ?? undefined)
   const { data: profileRes, mutate: mutateProfile } = useProfile(initial.profileRes ?? undefined)
@@ -90,6 +93,30 @@ export default function SettingsWidget({ initial }: { initial: SettingsInitial }
     setCityId(profileRes?.user?.city?.id || null)
     if (settingsRes || citiesRes || profileRes) setLoading(false)
   }, [settingsRes, citiesRes, profileRes])
+
+  useEffect(() => {
+    async function checkPushStatus() {
+      if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+        setPushStatus('unsupported')
+        return
+      }
+      setPushStatus('loading')
+      try {
+        const reg = await navigator.serviceWorker.ready
+        const sub = await reg.pushManager.getSubscription()
+        if (sub) {
+          setPushStatus('granted')
+          setPushSubscribed(true)
+        } else {
+          const perm = Notification.permission
+          setPushStatus(perm === 'granted' ? 'granted' : perm === 'denied' ? 'denied' : 'default')
+        }
+      } catch {
+        setPushStatus('default')
+      }
+    }
+    checkPushStatus()
+  }, [])
 
   useEffect(() => {
     if (settingsRes?.couple) {
@@ -205,6 +232,40 @@ export default function SettingsWidget({ initial }: { initial: SettingsInitial }
     } else {
       await unsubscribeFromPush()
       setMessage({ type: 'success', text: 'Push-уведомления выключены' })
+    }
+  }
+
+  const enablePush = async () => {
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+      setPushStatus('unsupported')
+      setMessage({ type: 'error', text: 'Push не поддерживается в этом браузере' })
+      return
+    }
+    setPushStatus('loading')
+    const perm = await Notification.requestPermission()
+    if (perm !== 'granted') {
+      setPushStatus('denied')
+      setMessage({ type: 'error', text: 'Разрешение не дано. Включите в настройках браузера/системы.' })
+      return
+    }
+    const ok = await subscribeToPush()
+    if (ok) {
+      setPushStatus('granted')
+      setPushSubscribed(true)
+      setMessage({ type: 'success', text: 'Push-уведомления включены' })
+      await handleTestPush()
+    } else {
+      setPushStatus('default')
+      setMessage({ type: 'error', text: 'Не удалось сохранить подписку' })
+    }
+  }
+
+  const handleTestPush = async () => {
+    const res = await testPush()
+    if (res.ok) {
+      setMessage({ type: 'success', text: 'Тест-уведомление отправлено ✓' })
+    } else {
+      setMessage({ type: 'error', text: res.error || 'Ошибка отправки теста' })
     }
   }
 
@@ -375,13 +436,32 @@ export default function SettingsWidget({ initial }: { initial: SettingsInitial }
 
       <div className="k">Уведомления</div>
       <div className="cd static">
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
-          <div className="cd-t" style={{ padding: 0 }}>
+        <div className="cd-r">
+          <div className="cd-ic">🔔</div>
+          <div className="cd-t">
             <b>Push-уведомления</b>
-            <span>Получать уведомления в браузере</span>
+            <span>
+              {pushStatus === 'loading' ? 'проверка…' :
+               pushStatus === 'unsupported' ? 'Push не поддерживается' :
+               pushStatus === 'denied' ? 'запрещены в системе — Настройки iPhone → Уведомления → Loop' :
+               pushSubscribed ? 'включены на этом устройстве ✓' : 'не включены'}
+            </span>
           </div>
-          <button className={cn('tgl', settings.pushEnabled && 'on')} onClick={() => handleTogglePush(!settings.pushEnabled)} role="switch" aria-checked={settings.pushEnabled} aria-label="Push-уведомления" />
         </div>
+        {pushStatus !== 'unsupported' && pushStatus !== 'denied' && (
+          <>
+            <button className="btn btn-p btn-w" style={{ marginTop: 12 }} onClick={enablePush} disabled={pushStatus === 'loading' || pushSubscribed}>
+              {pushSubscribed ? 'Включены ✓' : 'Включить на этом устройстве'}
+            </button>
+            {pushSubscribed && (
+              <button className="btn btn-s btn-w" style={{ marginTop: 8 }} onClick={handleTestPush} disabled={pushStatus === 'loading'}>
+                🔔 Тест-уведомление
+              </button>
+            )}
+          </>
+        )}
+        <span className="small">На iPhone: открывайте Loop с иконки на экране «Дом» и включайте здесь — разрешение из Safari не переносится.</span>
+
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginTop: 18 }}>
           <div className="cd-t" style={{ padding: 0 }}>
             <b>Email-уведомления</b>
