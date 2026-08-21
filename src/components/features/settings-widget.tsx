@@ -65,7 +65,7 @@ export default function SettingsWidget({ initial }: { initial: SettingsInitial }
   const [deleting, setDeleting] = useState(false)
   const [leaveText, setLeaveText] = useState('')
   const [deleteText, setDeleteText] = useState('')
-  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
+  const [message, setMessage] = useState<{ type: 'loading' | 'success' | 'error'; text: string } | null>(null)
   const [cities, setCities] = useState<City[]>([])
   const [cityId, setCityId] = useState<string | null>(null)
   const [linkUsername, setLinkUsername] = useState('')
@@ -81,6 +81,7 @@ export default function SettingsWidget({ initial }: { initial: SettingsInitial }
 
   const [pushStatus, setPushStatus] = useState<'unsupported' | 'default' | 'safari' | 'granted' | 'denied' | 'loading'>('loading')
   const [pushSubscribed, setPushSubscribed] = useState(false)
+  const [diagReport, setDiagReport] = useState<Array<[string, boolean]>>([['загрузка', true]])
 
   const { data: settingsRes, mutate: mutateSettings } = useSettings(initial.settingsRes ?? undefined)
   const { data: citiesRes } = useCities(initial.citiesRes ?? undefined)
@@ -289,6 +290,66 @@ export default function SettingsWidget({ initial }: { initial: SettingsInitial }
       })
     } catch {
       setMessage({ type: 'error', text: 'Не удалось сохранить настройку' })
+    }
+  }
+
+  const diagnose = async () => {
+    setDiagReport([['загрузка', true]])
+    try {
+      let standalone = false
+      if (typeof navigator !== 'undefined') {
+        standalone = (navigator as any).standalone === true
+      }
+      if (typeof matchMedia !== 'undefined') {
+        const m = matchMedia('(display-mode: standalone)')
+        if (m.matches) standalone = true
+      }
+      let reg = undefined
+      if ('serviceWorker' in navigator) {
+        reg = await (navigator as any).serviceWorker.ready
+      }
+      let perm = 'нет API'
+      if ('Notification' in window) {
+        perm = (Notification as any).permission
+      }
+      let sub = undefined
+      if (reg) {
+        sub = await reg.pushManager.getSubscription()
+      }
+      let srvCount = 0
+      let srvLast = '—'
+      try {
+        const sr = await fetch('/api/push/debug', { cache: 'no-store' })
+        const sd = await sr.json()
+        srvCount = sd.count || 0
+        srvLast = sd.lastResult || '—'
+      } catch {}
+      setDiagReport([
+        ['Открыто как приложение (без Safari)', standalone],
+        ['Service worker активен', !!reg?.active],
+        ['Разрешение на уведомления', perm === 'granted'],
+        ['Подписка создана', !!sub],
+        ['Сервер: подписок ' + srvCount + ' · тест: ' + srvLast, srvCount > 0],
+      ])
+    } catch (error) {
+      console.error('Diagnose error:', error)
+      setDiagReport([['ошибка диагностики', true]])
+    }
+  }
+
+  const testNow = async () => {
+    setMessage({ type: 'loading', text: 'Отправка тестового уведомления…' })
+    try {
+      const res = await fetch('/api/push/test', { method: 'POST' })
+      const data = await res.json()
+      if (data.sent === true) {
+        setMessage({ type: 'success', text: 'Тестовое уведомление отправлено!' })
+      } else {
+        setMessage({ type: 'error', text: data.error || 'Не отправлено' })
+      }
+    } catch (error) {
+      console.error('Test push error:', error)
+      setMessage({ type: 'error', text: 'Ошибка сети' })
     }
   }
 
@@ -708,6 +769,16 @@ export default function SettingsWidget({ initial }: { initial: SettingsInitial }
         <div>
           <strong>Важно.</strong> Loop — инструмент самопознания, не медицинская услуга. При признаках кризиса или насилия обратитесь к специалисту.
         </div>
+      </div>
+
+      <div className="k">Push-диагностика</div>
+      <div style={{ marginTop: 12, textAlign: 'center' }}>
+        <button className="btn btn-sm" onClick={diagnose} style={{ marginRight: 8 }}>
+          Провести диагностику
+        </button>
+        <button className="btn btn-sm" onClick={testNow} >
+          Отправить тест
+        </button>
       </div>
     </DashboardLayout>
   )
