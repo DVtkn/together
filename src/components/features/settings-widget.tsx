@@ -434,7 +434,7 @@ export default function SettingsWidget({ initial }: { initial: SettingsInitial }
         <div className="small" style={{ marginTop: 6 }}>Город нужен для подборок мест в «Куда пойти вдвоём».</div>
 
         <button className="btn btn-p btn-w" style={{ marginTop: 16 }} onClick={handleSave} disabled={saving}>
-          'Сохранить профиль'
+          Сохранить профиль
         </button>
       </div>
 

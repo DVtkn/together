@@ -293,19 +293,18 @@ export default function AIChatPage() {
       <div className="chat">
         <div className="chat-w">
           <div className="chat-h">
-            <button className="icon-btn" aria-label="Диалоги" title="Диалоги" onClick={() => setListOpen(true)}>🗂</button>
-            <button className="icon-btn" aria-label="Колоды близости" title="Колоды близости" onClick={() => setDecksOpen(true)}>🎴</button>
-            <span style={{ fontSize: 20 }} aria-hidden="true">🦉</span>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <b>Психолог</b>
-              <span style={{ display: 'block' }}>🦉 Сова — ваш психолог · диалоги приватны</span>
+              <button className="icon-btn" aria-label="Диалоги" title="Диалоги" onClick={() => setListOpen(true)}>🗂</button>
+              <button className="icon-btn" aria-label="Колоды близости" title="Колоды близости" onClick={() => setDecksOpen(true)}>🎴</button>
+              <span className="chat-ava" aria-hidden="true">🦉</span>
+              <div className="chat-t">
+                <b>Сова</b>
+                <span>психолог · соло приватно</span>
+              </div>
+              <div className="seg">
+                <button className={cn(chatMode === 'solo' && 'on')} onClick={() => setChatMode('solo')}>Соло</button>
+                <button className={cn(chatMode === 'couple' && 'on')} onClick={() => setChatMode('couple')}>Вместе</button>
+              </div>
             </div>
-            <div className="seg" style={{ margin: 0, width: 'auto' }}>
-              <button className={cn(chatMode === 'solo' && 'on')} onClick={() => setChatMode('solo')}>Соло</button>
-              <button className={cn(chatMode === 'couple' && 'on')} onClick={() => setChatMode('couple')}>Вместе</button>
-            </div>
-            <span className="dot" title="онлайн" aria-label="онлайн" />
-          </div>
 
           {chatMode === 'couple' && (
             <div className="couple-chat-banner">

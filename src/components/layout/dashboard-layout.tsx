@@ -10,6 +10,7 @@ import { registerServiceWorker } from '@/lib/push-client'
 import { OnboardingTour } from '@/components/onboarding-tour'
 import { MoodModal } from '@/components/mood-modal'
 import { toast } from '@/lib/toast'
+import { Topbar } from './topbar'
 
 const NAV_ITEMS = [
   { key: 'home', href: '/dashboard', label: 'Дом', icon: '🏠' },
@@ -24,15 +25,6 @@ const GROUPS: Record<string, string[]> = {
   '/dashboard/ai': ['/dashboard/ai'],
 }
 
-interface NotificationItem {
-  id: string
-  type: string
-  text: string
-  href: string | null
-  read: boolean
-  createdAt: string
-}
-
 interface Signal {
   id: string
   emoji: string
@@ -43,42 +35,6 @@ interface Signal {
 interface SignalStatus {
   lastSent: { signalId: string; emoji: string; meaning: string; at: string; answered: boolean } | null
   incoming: { signalId: string; emoji: string; meaning: string; suggestedReply: string; at: string } | null
-}
-
-const NOTIF_ICON: Record<string, string> = {
-  couple_requested: '💞',
-  couple_accepted: '💞',
-  couple_rejected: '💞',
-  date_invited: '📍',
-  date_planned: '📍',
-  craving_added: '🎁',
-  craving_picked: '🎁',
-  mood_changed: '🫀',
-  assessment_completed: '🧪',
-  challenge_completed: '🌙',
-  couple_message: '💬',
-  daily_answered: '☀️',
-  memory_added: '📸',
-  ritual_added: '🕊️',
-  ritual_done: '✓',
-  letter_sent: '💌',
-  signal_received: '🤗',
-  signal_accepted: '🤍',
-  pause_started: '🛑',
-  pause_ended: '⏸️',
-  warmth_added: '💌',
-  daily_revealed: '🔮',
-}
-
-function timeAgo(iso: string): string {
-  const diff = Date.now() - new Date(iso).getTime()
-  const min = Math.floor(diff / 60000)
-  if (min < 1) return 'только что'
-  if (min < 60) return `${min} мин назад`
-  const hours = Math.floor(min / 60)
-  if (hours < 24) return `${hours} ч назад`
-  const days = Math.floor(hours / 24)
-  return `${days} дн назад`
 }
 
 interface DashboardLayoutProps {
@@ -107,11 +63,8 @@ export function DashboardLayout({ children, user, couple }: DashboardLayoutProps
   const pathname = usePathname()
   const router = useRouter()
   const [emergencyOpen, setEmergencyOpen] = useState(false)
-  const [notif, setNotif] = useState<{ items: NotificationItem[]; unread: number }>({ items: [], unread: 0 })
-  const [notifOpen, setNotifOpen] = useState(false)
   const [pause, setPause] = useState<{ active: boolean; secondsLeft: number }>({ active: false, secondsLeft: 0 })
   const [pauseOpen, setPauseOpen] = useState(false)
-  const [menuOpen, setMenuOpen] = useState(false)
   const [moodOpen, setMoodOpen] = useState(false)
   const [myMood, setMyMood] = useState<{ emoji: string } | null>(null)
   const [toasts, setToasts] = useState<{ id: number; text: string }[]>([])
@@ -189,28 +142,6 @@ export function DashboardLayout({ children, user, couple }: DashboardLayoutProps
     ? `${Math.floor(pause.secondsLeft / 60)}:${String(pause.secondsLeft % 60).padStart(2, '0')}`
     : ''
 
-  const loadNotif = useCallback(() => {
-    fetch('/api/notifications?limit=30').then((r) => r.json()).then((d) => {
-      if (d && Array.isArray(d.items)) setNotif({ items: d.items, unread: d.unread ?? 0 })
-    }).catch(() => {})
-  }, [])
-
-  useEffect(() => {
-    loadNotif()
-    const t = setInterval(loadNotif, 20000)
-    const refresh = () => loadNotif()
-    window.addEventListener('together:refresh', refresh)
-    return () => {
-      clearInterval(t)
-      window.removeEventListener('together:refresh', refresh)
-    }
-  }, [loadNotif])
-
-  const readAll = async () => {
-    await fetch('/api/notifications/read-all', { method: 'POST' })
-    setNotif((p) => ({ items: p.items.map((i) => ({ ...i, read: true })), unread: 0 }))
-  }
-
   const loadMood = useCallback(() => {
     fetch('/api/mood').then((r) => r.json()).then((m) => {
       if (m && m.mine) setMyMood({ emoji: m.mine.emoji })
@@ -280,15 +211,6 @@ export function DashboardLayout({ children, user, couple }: DashboardLayoutProps
     window.dispatchEvent(new Event('together:refresh'))
   }
 
-  const openItem = async (n: NotificationItem) => {
-    if (!n.read) {
-      setNotif((p) => ({ items: p.items.map((i) => (i.id === n.id ? { ...i, read: true } : i)), unread: Math.max(0, p.unread - 1) }))
-      fetch(`/api/notifications/${n.id}/read`, { method: 'POST' }).catch(() => {})
-    }
-    setNotifOpen(false)
-    if (n.href) router.push(n.href)
-  }
-
   const me = {
     name: user?.name ?? profileData?.user?.name ?? null,
     email: user?.email ?? profileData?.user?.email ?? '',
@@ -310,100 +232,17 @@ export function DashboardLayout({ children, user, couple }: DashboardLayoutProps
   return (
     <div className="app">
       <div className="bg" aria-hidden="true"><i /><i /><i /><i /></div>
-      {/* ДЕСКТОПНЫЙ HEADER */}
-      <header className="hd">
-        <div className="hd-in">
-          <Link href="/dashboard" className="logo">
-            <i>∞</i>Loop
-          </Link>
-          <nav className="nav" aria-label="Основная навигация">
-            {NAV_ITEMS.map((item) => (
-              <Link
-                key={item.key}
-                href={item.href}
-                className={cn('nv', isActive(item.href) && 'on')}
-                aria-current={isActive(item.href) ? 'page' : undefined}
-              >
-                {item.label}
-              </Link>
-            ))}
-          </nav>
-            <div className="hd-r">
-              <div className="avs-wrap">
-                <div className="avs" role="button" tabIndex={0} aria-label="Меню профиля" onClick={() => setMenuOpen(o => !o)} onKeyDown={(e) => { if (e.key === 'Enter') setMenuOpen(o => !o) }}>
-                  <div className="av" title={me.name ?? undefined} aria-hidden="true">{initials(me.name)}</div>
-                  {myCouple && myCouple.status !== 'DELETED' && myCouple.status !== 'ARCHIVED' && <div className="av p" title={partnerName ?? undefined} aria-hidden="true">{initials(partnerName)}</div>}
-                </div>
-                {menuOpen && (
-                  <div className="menu-panel" role="menu">
-                    <Link href="/dashboard/settings" className="menu-item" role="menuitem" onClick={() => setMenuOpen(false)}>👤 Профиль</Link>
-                    <Link href="/dashboard/settings" className="menu-item" role="menuitem" onClick={() => setMenuOpen(false)}>⚙ Настройки</Link>
-                    <Link href="/dashboard/story" className="menu-item" role="menuitem" onClick={() => setMenuOpen(false)}>📖 История пары</Link>
-                    <button className="menu-item" role="menuitem" onClick={() => signOut({ callbackUrl: '/' })}>⎋ Выйти</button>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </header>
 
-        {/* УВЕДОМЛЕНИЯ — фиксированные поверх всех экранов */}
-        <button className="bell" aria-label="Уведомления" onClick={() => setNotifOpen(!notifOpen)}>
-          🔔{notif.unread > 0 && <span className="bell-badge">{notif.unread > 9 ? '9+' : notif.unread}</span>}
-        </button>
+      <Topbar user={me} couple={myCouple} />
 
-        {/* НАСТРОЕНИЕ — быстрый тап с любой страницы */}
-        <button className="mood-fab" aria-label="Отметить настроение" title="Как ты?" onClick={() => setMoodOpen(true)}>
-          {myMood?.emoji ?? '🙂'}
-        </button>
-
-        {/* ТИХИЙ СИГНАЛ — быстрый доступ */}
-        <button className="sig-fab" aria-label="Тихий сигнал" title="Тихий сигнал" onClick={() => setSigOpen(true)}>
-          🕊️
-          {signalStatus.incoming && <span className="sig-badge">{signalStatus.incoming.emoji}</span>}
-        </button>
-
-        {/* НАСТРОЙКИ — доступ на мобильных, где нет шапки */}
-        <Link href="/dashboard/settings" className="settings-fab" aria-label="Профиль и настройки" title="Настройки">
-          ⚙️
-        </Link>
-
-        {moodOpen && <MoodModal onClose={() => setMoodOpen(false)} onSaved={setMyMood} />}
-
-        {notifOpen && (
-          <div className="bell-panel">
-            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 16px', borderBottom: '1px solid var(--line)' }}>
-              <b style={{ fontSize: 14 }}>Уведомления</b>
-              <button className="link-btn" style={{ margin: 0 }} onClick={readAll}>Прочитать все</button>
-            </div>
-            {notif.items.length === 0 && <div className="dim" style={{ padding: 20, textAlign: 'center', fontSize: 13 }}>Пока тихо</div>}
-            {notif.items.map((n) => (
-              <div key={n.id} className={`bell-item ${n.read ? '' : 'unread'}`} onClick={() => openItem(n)}>
-                <span className="bell-ic">{NOTIF_ICON[n.type] ?? '💜'}</span>
-                <div style={{ flex: 1 }}>
-                  <b>{n.text}</b>
-                  <span className="small">{timeAgo(n.createdAt)}</span>
-                </div>
-                {!n.read && <i className="bell-dot" />}
-              </div>
-            ))}
-          </div>
-        )}
-
-      {/* ЭКРАН */}
       <div className="sc on">
         <div className="wrap">{children}</div>
       </div>
 
-      {/* ТОСТЫ */}
       <div className="toasts" role="status" aria-live="polite">
         {toasts.map((t) => <div key={t.id} className="toast">{t.text}</div>)}
       </div>
 
-      {/* ОНБОРДИНГ */}
-      <OnboardingTour />
-
-      {/* МОБИЛЬНЫЙ ТАБ-БАР */}
       <nav className="tb" aria-label="Основная навигация">
         {NAV_ITEMS.slice(0, 2).map((item) => (
           <Link
@@ -438,7 +277,8 @@ export function DashboardLayout({ children, user, couple }: DashboardLayoutProps
         ))}
       </nav>
 
-      {/* МОДАЛКА */}
+      {moodOpen && <MoodModal onClose={() => setMoodOpen(false)} onSaved={setMyMood} />}
+
       <div
         className={cn('modal', emergencyOpen && 'active')}
         onClick={(e) => {
@@ -460,7 +300,6 @@ export function DashboardLayout({ children, user, couple }: DashboardLayoutProps
         </div>
       </div>
 
-      {/* ТИХИЙ СИГНАЛ — bottom sheet */}
       <div
         className={cn('modal', sigOpen && 'active')}
         onClick={(e) => {
@@ -512,8 +351,8 @@ export function DashboardLayout({ children, user, couple }: DashboardLayoutProps
           {signalStatus.lastSent && (
             <div className="signal-status">
               {signalStatus.lastSent.answered
-                ? `🤍 ${partnerName} откликнулся(ась) · ${timeAgo(signalStatus.lastSent.at)}`
-                : `⏳ Отправлено · ждём отклика · ${timeAgo(signalStatus.lastSent.at)}`}
+                ? `🤍 ${partnerName} откликнулся(ась) · {timeAgo(signalStatus.lastSent.at)}`
+                : `⏳ Отправлено · ждём отклика · {timeAgo(signalStatus.lastSent.at)}`}
             </div>
           )}
 
@@ -528,7 +367,6 @@ export function DashboardLayout({ children, user, couple }: DashboardLayoutProps
         </div>
       </div>
 
-      {/* ПОДТВЕРЖДЕНИЕ СИГНАЛА */}
       {confirmSignal && (
         <div className="modal active" onClick={(e) => e.target === e.currentTarget && setConfirmSignal(null)}>
           <div className="modal-c" style={{ textAlign: 'center' }}>
@@ -541,7 +379,6 @@ export function DashboardLayout({ children, user, couple }: DashboardLayoutProps
         </div>
       )}
 
-      {/* ПАУЗА (СТОП-СЛОВО) */}
       <div
         className={cn('modal', pauseOpen && 'active')}
         onClick={(e) => {
@@ -569,6 +406,19 @@ export function DashboardLayout({ children, user, couple }: DashboardLayoutProps
           </button>
         </div>
       </div>
+
+      <OnboardingTour />
     </div>
   )
+}
+
+function timeAgo(iso: string): string {
+  const diff = Date.now() - new Date(iso).getTime()
+  const min = Math.floor(diff / 60000)
+  if (min < 1) return 'только что'
+  if (min < 60) return `${min} мин назад`
+  const hours = Math.floor(min / 60)
+  if (hours < 24) return `${hours} ч назад`
+  const days = Math.floor(hours / 24)
+  return `${days} дн назад`
 }

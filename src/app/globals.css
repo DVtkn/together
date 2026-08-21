@@ -246,13 +246,13 @@ body{font-family:var(--font-inter),'Inter',-apple-system,sans-serif;background:v
 .h2{font-size:clamp(18px,4vw,24px);font-weight:700;letter-spacing:-.02em;margin-bottom:14px}
 .dim{color:var(--dim);font-size:15px}
 .small{font-size:13px;color:var(--dim)}
-.k{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin:22px 0 10px;display:flex;align-items:center;gap:8px}
+.k{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin:15px 0 7px;display:flex;align-items:center;gap:8px}
 .badge-fun{display:inline-block;padding:3px 8px;border-radius:100px;font-size:10px;font-weight:600;letter-spacing:.04em;text-transform:none;background:rgba(139,92,246,.1);color:var(--pri)}
-.mt{margin-top:24px}
+.mt{margin-top:17px}
 
 
 /* ============ SCREENS ============ */
-.sc{display:block;flex:1;overflow-y:auto;padding:calc(20px + var(--safe-t)) 20px calc(96px + var(--safe-b));-webkit-overflow-scrolling:touch;position:relative;z-index:1}
+.sc{display:block;flex:1;overflow-y:auto;padding:calc(72px + var(--safe-t)) 20px calc(96px + var(--safe-b));-webkit-overflow-scrolling:touch;position:relative;z-index:1}
 .wrap{max-width:960px;margin:0 auto}
 @keyframes screenIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .sc{animation:screenIn .35s ease}
@@ -277,7 +277,7 @@ body.night .bg i:nth-child(4){background:rgba(245,158,11,.12)}
 
 
 /* ============ CARDS ============ */
-.cd{background:var(--card);border-radius:16px;padding:18px;margin-bottom:10px;cursor:pointer;transition:.15s;border:1px solid transparent}
+.cd{background:var(--card);border-radius:16px;padding:18px;margin-bottom:7px;cursor:pointer;transition:.15s;border:1px solid transparent}
 .cd:hover{background:var(--card2)}
 .cd:active{transform:scale(.98)}
 .cd-r{display:flex;align-items:center;gap:14px}
@@ -311,8 +311,8 @@ body.night .bg i:nth-child(4){background:rgba(245,158,11,.12)}
 .badge.ok{background:rgba(16,185,129,.12);color:var(--ok)}
 .badge.warn{background:rgba(245,158,11,.12);color:var(--warn)}
 .badge.pri{background:rgba(139,92,246,.12);color:var(--pri)}
-.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
-.chip{padding:9px 16px;border-radius:100px;background:var(--card);border:1px solid var(--line);font-size:13px;font-weight:500;color:var(--dim);cursor:pointer;font-family:inherit;transition:.15s}
+.chips{display:flex;gap:6px;flex-wrap:nowrap;overflow-x:auto;margin-top:8px;-webkit-overflow-scrolling:touch;padding-bottom:4px}
+.chip{padding:9px 16px;border-radius:100px;background:var(--card);border:1px solid var(--line);font-size:13px;font-weight:500;color:var(--dim);cursor:pointer;font-family:inherit;transition:.15s;white-space:nowrap;flex-shrink:0}
 .chip:hover{color:var(--text)}
 .chip.sel{background:var(--grad);color:#fff;border-color:transparent}
 .theme-opt{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
@@ -551,20 +551,10 @@ body.night .bg i:nth-child(4){background:rgba(245,158,11,.12)}
 .wd.on{background:var(--grad);width:22px;border-radius:4px}
 .wd.done{background:var(--ok)}
 
-
-/* ============ HEADER (desktop) ============ */
-.hd{display:none;position:fixed;top:0;left:0;right:0;height:60px;background:var(--chrome);backdrop-filter:blur(20px);border-bottom:1px solid var(--line);z-index:100}
-.hd-in{max-width:960px;margin:0 auto;height:100%;display:flex;align-items:center;gap:24px;padding:0 20px}
+/* ===== Логотип ===== */
 .logo{display:flex;align-items:center;gap:8px;font-weight:700;cursor:pointer;font-size:16px;text-decoration:none;color:var(--text)}
-.logo i{width:28px;height:28px;border-radius:8px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-style:normal;color:#fff;font-size:15px;font-weight:800;line-height:1}
-.nav{display:flex;gap:2px;flex:1;justify-content:center}
-.nv{padding:8px 14px;border-radius:8px;font-size:14px;font-weight:500;color:var(--dim);cursor:pointer;border:none;background:none;font-family:inherit;transition:.15s;position:relative;text-decoration:none}
-.nv:hover{color:var(--text)}
-.nv.on{color:var(--text)}
-.nv.on::after{content:'';position:absolute;left:14px;right:14px;bottom:2px;height:2px;background:var(--grad);border-radius:2px}
-.hd-r{display:flex;align-items:center;gap:10px}
-.icon-btn{width:34px;height:34px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--dim);cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;text-decoration:none}
-.icon-btn:hover{color:var(--text)}
+.logo i{width:28px;height:28px;border-radius:8px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-style:normal;color:#fff;font-size:15px;font-weight:800;line-height:1;transition:.15s}
+.logo:hover i{transform:scale(1.08)}
 
 /* ===== Иерархия кнопок: primary · secondary · ghost ===== */
 .btn-primary{background:var(--grad);color:#fff}
@@ -590,6 +580,19 @@ body.night .bg i:nth-child(4){background:rgba(245,158,11,.12)}
 .menu-item:hover{background:var(--card2)}
 .menu-item:last-child{color:var(--red)}
 
+/* ===== TOPBAR (all screens) ===== */
+.topbar{display:flex;align-items:center;justify-content:space-between;height:52px;padding:0 16px;background:rgba(255,255,255,.7);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;border-bottom:1px solid var(--line)}
+.topbar-r{display:flex;align-items:center;gap:8px}
+.icon-btn{width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--dim);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;position:relative;text-decoration:none;transition:.15s}
+.icon-btn:hover{color:var(--text);border-color:var(--pri)}
+.bell-badge{position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;padding:0 4px;border-radius:100px;background:var(--acc);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.avatar-btn{width:44px;height:44px;border-radius:50%;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;cursor:pointer;border:none;position:relative;transition:.15s}
+.avatar-btn:hover{transform:scale(1.05)}
+.avatar-partner{position:absolute;bottom:-4px;right:-4px;width:20px;height:20px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:10px;color:#fff;border:2px solid var(--bg);box-shadow:0 2px 8px rgba(0,0,0,.2)}
+
+/* bell panel in topbar context */
+.bell-panel{position:fixed;top:calc(52px + var(--safe-t));right:12px;width:min(360px,calc(100vw - 24px));max-height:70vh;overflow-y:auto;background:var(--card);border:1px solid var(--line);border-radius:16px;z-index:120;box-shadow:0 20px 50px rgba(0,0,0,.4)}
+
 /* ===== ТОСТЫ ===== */
 .toasts{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(88px + var(--safe-b));z-index:200;display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none;width:min(92vw,360px)}
 .toast{background:var(--card);border:1px solid var(--line);color:var(--text);padding:12px 18px;border-radius:12px;font-size:14px;font-weight:500;box-shadow:0 10px 30px rgba(0,0,0,.45);animation:toastIn .2s ease}
@@ -602,8 +605,26 @@ body.night .bg i:nth-child(4){background:rgba(245,158,11,.12)}
 .typing-line{display:flex;gap:4px;align-items:center;font-size:12px;color:var(--dim);padding:6px 16px 2px}
 .typing-line i{width:5px;height:5px;border-radius:50%;background:var(--dim);animation:td 1.2s infinite}
 .typing-line i:nth-child(2){animation-delay:.2s}
-.typing-line i:nth-child(3){animation-delay:.4s}
+.typing-line i:nth_child(3){animation-delay:.4s}
 @keyframes td{0%,60%,100%{opacity:.25}30%{opacity:1}}
+
+/* ===== Чат: шапка Совы ===== */
+.chat-h{display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--chrome);backdrop-filter:blur(20px);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:50}
+.chat-h .icon-btn{width:36px;height:36px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--dim);cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:.15s}
+.chat-h .icon-btn:hover{color:var(--text);border-color:var(--pri)}
+.chat-ava{font-size:24px;flex-shrink:0}
+.chat-t{flex:1;min-width:0}
+.chat-t b{display:block;font-size:15px;font-weight:600;color:var(--text)}
+.chat-t span{display:block;font-size:11px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.seg{display:flex;gap:4px;flex-shrink:0}
+.seg button{padding:6px 12px;border-radius:8px;font-size:12px;font-weight:600;color:var(--dim);background:var(--card);border:1px solid var(--line);cursor:pointer;transition:.15s}
+.seg button.on{background:var(--grad);color:#fff;border-color:transparent}
+@media(max-width:400px){
+  .chat-h{flex-wrap:wrap;gap:8px;padding:10px 12px}
+  .chat-h .icon-btn{width:32px;height:32px;font-size:14px}
+  .seg{order:5;width:100%;justify-content:center}
+  .chat-t span{font-size:10px}
+}
 
 /* ===== Онбординг-тур ===== */
 .tour{position:fixed;inset:0;z-index:300}
@@ -803,13 +824,12 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 }
 @media(min-width:1024px){
   .tb{display:none}
-  .hd{display:block}
-  .sc{padding:calc(60px + 28px) 24px 40px}
-  .chat{height:calc(100dvh - 60px - 100px)}
+  .sc{padding:calc(52px + 28px) 24px 40px}
+  .chat{height:calc(100dvh - 52px - 100px)}
 }
 
 /* ==== FIX CARDS — финальный блок, не перемещать ==== */
-.sc .cd{display:block;width:auto;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:10px}
+.sc .cd{display:block;width:auto;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:7px}
 .sc .cd .cd-r{display:flex;align-items:center;gap:14px;width:100%}
 .sc .cd .cd-ic{width:40px;height:40px;flex:0 0 40px;align-self:center;border-radius:12px;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:19px}
 .sc .cd .cd-t{flex:1 1 auto;min-width:0}
@@ -902,24 +922,9 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 .logo i{width:28px;height:28px;border-radius:8px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-style:normal;color:#fff;font-size:15px;font-weight:800;line-height:1;transition:.15s}
 .logo:hover i{transform:scale(1.08)}
 
-/* Уведомления */
-.bell{position:fixed;top:calc(12px + var(--safe-t));right:12px;z-index:120;width:44px;height:44px;border-radius:50%;background:var(--card);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer}
-@media(min-width:1024px){.bell{top:72px;right:20px}}
-.bell-badge{position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;padding:0 4px;border-radius:100px;background:var(--acc);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center}
-.bell-panel{position:fixed;top:calc(60px + var(--safe-t));right:12px;width:min(360px,calc(100vw - 24px));max-height:70vh;overflow-y:auto;background:var(--card);border:1px solid var(--line);border-radius:16px;z-index:120;box-shadow:0 20px 50px rgba(0,0,0,.4)}
-@media(min-width:1024px){.bell-panel{top:120px;right:20px}}
+/* Уведомления panel (from topbar) */
+.bell-panel{position:fixed;top:calc(52px + var(--safe-t));right:12px;width:min(360px,calc(100vw - 24px));max-height:70vh;overflow-y:auto;background:var(--card);border:1px solid var(--line);border-radius:16px;z-index:120;box-shadow:0 20px 50px rgba(0,0,0,.4)}
 
-/* ===== Быстрое настроение в углу ===== */
-.mood-fab{position:fixed;top:calc(64px + var(--safe-t));right:12px;z-index:119;width:44px;height:44px;border-radius:50%;background:var(--card);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;transition:.15s}
-.mood-fab:hover{border-color:var(--pri)}
-@media(min-width:1024px){.mood-fab{top:124px;right:20px}}
-.sig-fab{position:fixed;top:calc(116px + var(--safe-t));right:12px;z-index:118;width:44px;height:44px;border-radius:50%;background:var(--card);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;transition:.15s}
-.sig-fab:hover{border-color:var(--pri)}
-.sig-badge{position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;padding:0 4px;border-radius:100px;background:var(--ok);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;line-height:1}
-@media(min-width:1024px){.sig-fab{top:176px;right:20px}}
-.settings-fab{position:fixed;top:calc(168px + var(--safe-t));right:12px;z-index:117;width:44px;height:44px;border-radius:50%;background:var(--card);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:20px;text-decoration:none;color:var(--text);transition:.15s}
-.settings-fab:hover{border-color:var(--pri);background:var(--card2)}
-@media(min-width:1024px){.settings-fab{top:228px;right:20px}}
 .autosave-hint{text-align:center;font-size:12px;color:var(--dim);margin-top:14px}
 .bell-item{display:flex;gap:10px;padding:12px 16px;cursor:pointer;border-bottom:1px solid var(--line);align-items:flex-start}
 .bell-item:last-child{border-bottom:none}
@@ -962,6 +967,17 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 .mood-big:active{transform:scale(.93)}
 .mood-big.sel{border-color:var(--pri);background:var(--card);box-shadow:0 4px 16px rgba(139,92,246,.25)}
 .mood-big.sel b{color:var(--text)}
+
+/* ===== Streak + Mood row ===== */
+.streak-mood{display:flex;align-items:center;gap:16px;margin-bottom:16px}
+.streak-badge{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--grad-soft);border:1px solid rgba(139,92,246,.2);border-radius:12px;min-width:0}
+.streak-badge b{font-size:16px;font-weight:700;color:var(--pri);white-space:nowrap}
+.streak-badge .dim{font-size:13px;color:var(--mute);white-space:nowrap}
+@media(max-width:420px){
+  .streak-mood{flex-wrap:wrap;gap:12px}
+  .streak-badge{width:100%;justify-content:center}
+}
+
 .partner-emoji{font-size:40px;flex-shrink:0}
 .daily-links{display:grid;grid-template-columns:1fr;gap:10px}
 @media(min-width:768px){.daily-links{grid-template-columns:1fr 1fr}}

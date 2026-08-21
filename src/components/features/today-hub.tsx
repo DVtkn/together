@@ -193,9 +193,11 @@ export default function TodayHub() {
   const [supportOpen, setSupportOpen] = useState(false)
   const [seenReveal, setSeenReveal] = useState(false)
   const [notifPointers, setNotifPointers] = useState<NotifPointer[]>([])
+  const [toasts, setToasts] = useState<{ id: number; text: string }[]>([])
 
   const [myMood, setMyMood] = useState<{ emoji: string; text: string | null } | null>(null)
   const [pulse, setPulse] = useState<PulseData | null>(null)
+  const [streak, setStreak] = useState(0)
   const [closeness, setCloseness] = useState(5)
   const [conflictResolution, setConflictResolution] = useState(5)
   const [missing, setMissing] = useState('')
@@ -245,6 +247,17 @@ export default function TodayHub() {
       setCoupleStatus(cs)
       setMyMood(m?.mine ?? null)
       setPulse(pul)
+      if (pul?.checkins) {
+        let s = 0
+        const today = new Date().toISOString().split('T')[0]
+        const sorted = [...pul.checkins].sort((a, b) => new Date(b.year * 100 + b.weekNumber).getTime() - new Date(a.year * 100 + a.weekNumber).getTime())
+        for (const c of sorted) {
+          const d = c.user
+          if (d && d.closeness > 0) s++
+          else break
+        }
+        setStreak(s)
+      }
       setChallenges(ch?.challenges ?? [])
       setRituals(rt?.items ?? [])
       setWarmth(wm?.entries ?? [])
@@ -509,12 +522,37 @@ export default function TodayHub() {
 
   return (
     <DashboardLayout>
-      <h1 className="h1" aria-label={headline}>{out}{!done && <span className="tw-caret" aria-hidden="true" />}</h1>
-      <div className="dim">Что сейчас важнее всего — прямо здесь.</div>
+      {/* STREAK + MOOD — одна строка */}
+      <div className="streak-mood">
+        <div className="streak-badge" style={{ flex: 1 }}>
+          {streak > 0 ? (
+            <span aria-label={`стрик ${streak} дней`}>
+              <b>🔥 {streak}</b>
+              {streak === 1 ? ' день' : streak < 5 ? ' дня' : ' дней'} подряд
+            </span>
+          ) : (
+            <span className="dim">Начните стрик — отметьте настроение</span>
+          )}
+        </div>
+        <div className="mood-row" role="group" aria-label="Настроение сегодня">
+          {MOODS.map(m => (
+            <button
+              key={m.emoji}
+              className={cn('mood-big', myMood?.emoji === m.emoji && 'sel')}
+              onClick={() => tapMood(m.emoji)}
+              aria-label={m.label}
+              aria-pressed={myMood?.emoji === m.emoji}
+            >
+              <i>{m.emoji}</i>
+              <b>{myMood?.emoji === m.emoji ? 'это ты' : m.label}</b>
+            </button>
+          ))}
+        </div>
+      </div>
 
       {/* ИНВАЙТ — если партнёр ждёт решения */}
       {coupleStatus?.incoming && (
-        <div className="cd static">
+        <div className="cd static mt">
           <div className="cd-r">
             <div className="cd-ic">💌</div>
             <div className="cd-t">
@@ -526,109 +564,47 @@ export default function TodayHub() {
         </div>
       )}
 
-      {/* 1 · ВАША ПАРА — инсайт без клика, детали инлайн */}
+      {/* ПАРТНЁР СЕЙЧАС + Поддержать + Сигнал */}
       {partner && (
-        <>
-          <div className="k">Ваша пара</div>
+        <div id="partner-now" className="mt" style={{ scrollMarginTop: 80 }}>
+          <div className="k">{partnerName} сейчас</div>
           <div className="cd static">
-            {analytics?.compatibility != null ? (
-              <>
-                <div className="insight-row">
-                  <div className="insight"><b>{analytics.compatibility}%</b><span>совместимость</span></div>
-                  {top && <div className="insight ok"><b>{top.emoji} {top.title} {top.score}%</b><span>суперсила</span></div>}
-                  {weak && <div className="insight warn"><b>{weak.emoji} {weak.title} {weak.score}%</b><span>зона роста</span></div>}
+            {partner?.mood ? (
+              <div className="cd-r">
+                <div className="cd-ic" style={{ fontSize: 24 }}>{partner.mood.emoji}</div>
+                <div className="cd-t">
+                  <b>{partner.name}</b>
+                  <span>{partner.mood.text ?? 'Отметил(а) настроение'}</span>
                 </div>
-                <button className="link-btn" onClick={() => setInsightOpen(!insightOpen)}>
-                  {insightOpen ? 'Скрыть' : 'Что это значит?'}
-                </button>
-                {insightOpen && (
-                  <div className="insight-detail">
-                    {top?.text && <p>💪 {top.text}</p>}
-                    {weak?.text && <p>⚠️ {weak.text}</p>}
-                    {advice && <div className="ai-action">🎯 Совет недели: {advice}</div>}
-                    <button className="btn btn-s btn-w" style={{ marginTop: 10 }} onClick={() => router.push('/dashboard/ai')}>Разобрать с Совой</button>
-                  </div>
-                )}
-              </>
+                <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                  <button className="btn btn-primary btn-sm" onClick={() => setSupportOpen(true)}>💬 Поддержать</button>
+                  <button className="btn btn-secondary btn-sm" onClick={() => window.dispatchEvent(new CustomEvent('together:open', { detail: { type: 'signal' } }))}>🕊 Сигнал</button>
+                </div>
+              </div>
             ) : (
               <div className="cd-r">
-                <div className="cd-ic">📊</div>
+                <div className="cd-ic" style={{ fontSize: 24 }}>💤</div>
                 <div className="cd-t">
-                  <b>Совместимость ещё не рассчитана</b>
-                  <span>Когда вы оба пройдёте тесты — здесь появится инсайт без лишних кликов.</span>
+                  <b>{partnerName} ещё не отметил(а)</b>
+                  <span>Когда отметит — увидите здесь</span>
                 </div>
+                <button className="btn btn-secondary btn-sm" onClick={remind}>🔔 Напомнить</button>
+              </div>
+            )}
+            {signalStatus.incoming && (
+              <div className="notice" style={{ marginTop: 10, alignItems: 'center' }}>
+                <span>🕊️</span>
+                <div style={{ flex: 1 }}><b>{partnerName} просит поддержки</b> · «{signalStatus.incoming.meaning}»</div>
+                <button className="btn btn-secondary btn-sm" onClick={() => window.dispatchEvent(new CustomEvent('together:open', { detail: { type: 'signal' } }))}>Ответить</button>
               </div>
             )}
           </div>
-        </>
+        </div>
       )}
 
-      {/* 2 · КАК ТЫ? — настроение, 1 тап */}
-      <div id="mood" style={{ scrollMarginTop: 80 }}>
-        <div className="k">Как ты?</div>
-        <div className="mood-row">
-          {MOODS.map(m => (
-            <button
-              key={m.emoji}
-              className={cn('mood-big', myMood?.emoji === m.emoji && 'sel')}
-              onClick={() => tapMood(m.emoji)}
-              aria-label={m.label}
-            >
-              <i>{m.emoji}</i>
-              <b>{myMood?.emoji === m.emoji ? 'это ты' : m.label}</b>
-            </button>
-          ))}
-        </div>
-        <button className="link-btn" onClick={() => window.dispatchEvent(new CustomEvent('together:open', { detail: { type: 'mood' } }))}>
-          изменить
-        </button>
-      </div>
-
-      {/* 3 · ПАРТНЁР СЕЙЧАС + Поддержать */}
-      <div id="partner-now" style={{ scrollMarginTop: 80 }}>
-        <div className="k">{partnerName} сейчас</div>
-      <div className="cd static">
-        {partner?.mood ? (
-          <div className="cd-r">
-            <div className="cd-ic" style={{ fontSize: 24 }}>{partner.mood.emoji}</div>
-            <div className="cd-t">
-              <b>{partner.name}</b>
-              <span>{partner.mood.text ?? 'Отметил(а) настроение'}</span>
-            </div>
-            <button className="btn btn-primary btn-sm" onClick={() => setSupportOpen(true)}>💬 Поддержать</button>
-          </div>
-        ) : partner ? (
-          <div className="cd-r">
-            <div className="cd-ic" style={{ fontSize: 24 }}>💤</div>
-            <div className="cd-t">
-              <b>{partnerName} ещё не отметил(а)</b>
-              <span>Когда отметит — увидите здесь</span>
-            </div>
-            <button className="btn btn-s btn-sm" onClick={remind}>🔔 Напомнить</button>
-          </div>
-        ) : (
-          <div className="cd-r">
-            <div className="cd-ic">💞</div>
-            <div className="cd-t">
-              <b>Создать пару</b>
-              <span>Свяжите аккаунты — тесты, отчёт и Психолог станут общими</span>
-            </div>
-            <Link href="/dashboard/couple" className="btn btn-primary btn-sm">Создать</Link>
-          </div>
-        )}
-        {signalStatus.incoming && partner && (
-          <div className="notice" style={{ marginTop: 10, alignItems: 'center' }}>
-            <span>🕊️</span>
-            <div style={{ flex: 1 }}><b>{partnerName} просит поддержки</b> · «{signalStatus.incoming.meaning}»</div>
-            <button className="btn btn-s btn-sm" onClick={() => window.dispatchEvent(new CustomEvent('together:open', { detail: { type: 'signal' } }))}>Ответить</button>
-          </div>
-        )}
-        </div>
-      </div>
-
-      {/* 4 · ВОПРОС ДНЯ — инлайн */}
+      {/* ВОПРОС ДНЯ — инлайн */}
       {dq && (
-        <>
+        <div id="dailyq" className="mt" style={{ scrollMarginTop: 80 }}>
           <div className="k">Вопрос дня</div>
           <div className="cd static" id="dailyq">
             <div className="cd-r">
@@ -657,373 +633,51 @@ export default function TodayHub() {
                   <p>{dq?.partnerAnswer ?? '—'}</p>
                 </div>
                 <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
-                  <Link href="/dashboard/ai" className="btn btn-s btn-sm btn-w">💬 Обсудить с Психологом</Link>
+                  <Link href="/dashboard/ai" className="btn btn-secondary btn-sm btn-w">💬 Обсудить с Психологом</Link>
                   <button className="link-btn" onClick={() => setSeenReveal(true)}>Понятно</button>
                 </div>
               </div>
             )}
           </div>
-        </>
+        </div>
       )}
 
-      {/* НОВОЕ — компактно */}
-      {(notifPointers.length > 0 || pauseFmt || care) && (
-        <>
-          <div className="k">Новое</div>
-          <div className="feed" style={{ display: 'grid', gap: 10 }}>
-            {care && (
-              <div className="cd static">
-                <div className="cd-r">
-                  <div className="cd-ic">🌦</div>
-                  <div className="cd-t">
-                    <b>Прогноз заботы</b>
-                    <span>{care.text}</span>
-                  </div>
-                </div>
-              </div>
-            )}
-            {notifPointers.map(p => (
-              <Link key={p.key} href={p.href} className="cd" style={{ textDecoration: 'none' }}>
-                <div className="cd-r">
-                  <div className="cd-ic">{p.emoji}</div>
-                  <div className="cd-t">
-                    <b>{p.title}</b>
-                    <span>{p.text}</span>
-                  </div>
-                  <span className="arr">›</span>
-                </div>
-              </Link>
-            ))}
-            {pauseFmt && (
-              <div className="cd static pause-card">
-                <div className="cd-r">
-                  <div className="cd-ic">🛑</div>
-                  <div className="cd-t">
-                    <b>Пауза активна</b>
-                    <span>Осталось {pauseFmt}. Дышите — и мягко возвращайтесь.</span>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        </>
-      )}
-
-      {/* 5 · СЕГОДНЯ ВМЕСТЕ — челлендж + ритуалы */}
-      <div id="challenges" style={{ scrollMarginTop: 80 }}>
-        <div className="k">Сегодня вместе</div>
-        {activeChallenges.map(challenge => (
-          <div key={challenge.id} className="cd static mt">
+      {/* СОВМЕСТИМОСТЬ — компактная сводка + аккордеон */}
+      {partner && analytics?.compatibility != null && (
+        <div id="compatibility" className="mt" style={{ scrollMarginTop: 80 }}>
+          <div className="k">Совместимость</div>
+          <div className="cd static">
             <div className="cd-r">
-              <div className="cd-ic">🌙</div>
               <div className="cd-t">
-                <b>{challenge.title}</b>
-                <span>{challenge.description}</span>
+                <b>{analytics.compatibility}% совпадаете</b>
+                <span>
+                  <button className="link-btn" onClick={() => setInsightOpen(!insightOpen)} style={{ marginRight: 8 }}>
+                    {insightOpen ? 'Скрыть' : 'Что это значит?'}
+                  </button>
+                  <Link href="/dashboard/couple" className="link-btn">Подробнее →</Link>
+                </span>
               </div>
             </div>
-            <div className="small" style={{ marginTop: 8 }}>Ось: {challenge.axis} · сложность {challenge.difficulty}/3 · {challenge.durationMin} мин</div>
-            {challenge.examplePhrase && (
-              <div className="notice notice-amber" style={{ marginTop: 12 }}>
-                <span>💬</span>
-                <div><strong>Пример фразы:</strong> «{challenge.examplePhrase}»</div>
+            {insightOpen && (
+              <div className="insight-row" style={{ marginTop: 12 }}>
+                <div className="insight"><b>{analytics.compatibility}%</b><span>совместимость</span></div>
+                {top && <div className="insight ok"><b>{top.emoji} {top.title} {top.score}%</b><span>суперсила</span></div>}
+                {weak && <div className="insight warn"><b>{weak.emoji} {weak.title} {weak.score}%</b><span>зона роста</span></div>}
               </div>
             )}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 16 }}>
-              <button
-                className={cn('btn', challenge.completedByCurrent ? 'btn-ok' : 'btn-secondary')}
-                disabled={challenge.completedByCurrent || completing === challenge.id}
-                onClick={() => !challenge.completedByCurrent && completeChallenge(challenge.id)}
-              >
-                {challenge.completedByCurrent ? '✓ Я сделал(а)' : completing === challenge.id ? '…' : 'Я сделал(а)'}
-              </button>
-              <span className="small" style={{ color: 'var(--mute)' }}>
-                {challenge.completedByCurrent ? 'Вы — сделали' : 'Вы — ещё нет'} · {challenge.completedByPartner ? `${partnerName} — сделал(а)` : `${partnerName} — ещё нет`}
-              </span>
-            </div>
+            {insightOpen && (
+              <div className="insight-detail" style={{ marginTop: 8 }}>
+                {top?.text && <p>💪 {top.text}</p>}
+                {weak?.text && <p>⚠️ {weak.text}</p>}
+                {advice && <div className="ai-action">🎯 Совет недели: {advice}</div>}
+                <button className="btn btn-secondary btn-w" style={{ marginTop: 10 }} onClick={() => router.push('/dashboard/ai')}>Разобрать с Совой</button>
+              </div>
+            )}
           </div>
-        ))}
-        {activeChallenges.length === 0 && (
-          <div className="dim" style={{ fontSize: 13, padding: '8px 0' }}>
-            {challenges.length === 0 ? 'Челленджи появятся после заполнения пульса.' : 'На этой неделе челленджей нет.'}
-          </div>
-        )}
-
-        <div className="cd static mt">
-          <div className="k" style={{ marginTop: 0 }}>Ритуалы · выполнено {rituals.filter(r => r.mine).length}</div>
-          <div className="dim" style={{ fontSize: 12, marginBottom: 12 }}>Маленькие повторяющиеся традиции пары.</div>
-          {!ritualOpen && (
-            <button className="btn btn-s btn-w" style={{ width: '100%', marginBottom: 12 }} onClick={() => setRitualOpen(true)}>
-              + Добавить ритуал
-            </button>
-          )}
-          {ritualOpen && (
-            <div style={{ marginBottom: 12 }}>
-              <div className="rit-ideas" style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 8 }}>
-                {RITUAL_IDEAS.map(idea => (
-                  <button key={idea.t} className="chip" onClick={() => addRitual(idea.t)}>{idea.e} {idea.t}</button>
-                ))}
-              </div>
-              <div style={{ display: 'flex', gap: 8 }}>
-                <input className="input" style={{ flex: 1 }} placeholder="Свой ритуал…" value={ritualInput}
-                  onChange={e => setRitualInput(e.target.value)}
-                  onKeyDown={e => e.key === 'Enter' && addRitual()} />
-                <button className="btn btn-secondary" disabled={ritualInput.trim().length < 2} onClick={() => addRitual()}>OK</button>
-              </div>
-            </div>
-          )}
-          {rituals.length === 0 ? (
-            <div className="dim" style={{ fontSize: 13 }}>Ритуалов пока нет. Добавьте первый — например, «Утренний кофе молча».</div>
-          ) : (
-            <div className="feed">
-              {rituals.map(r => (
-                <div key={r.id} className="cd-r" style={{ padding: '8px 0' }}>
-                  <div className="cd-ic">{r.emoji}</div>
-                  <div className="cd-t">
-                    <b>{r.title}</b>
-                    <span>{r.mine ? 'Вы ✓' : 'Вы —'} · {r.partner ? 'Партнёр ✓' : 'Партнёр —'}</span>
-                  </div>
-                  <button className={r.mine ? 'btn btn-ok btn-sm' : 'btn btn-s btn-sm'} onClick={() => toggleRitual(r.id)}>
-                    {r.mine ? '✓' : 'Отметить'}
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* 6 · ПУЛЬС НЕДЕЛИ — компактно */}
-      <div id="pulse" style={{ scrollMarginTop: 80 }}>
-        <div className="k">Пульс недели</div>
-        <div className="cd static">
-          {chartWeeks.length >= 2 ? (
-            <>
-              <svg viewBox="0 0 300 112" style={{ width: '100%', height: 'auto' }} role="img" aria-label="График близости по неделям">
-                {myLine && <polyline points={myLine} fill="none" stroke="var(--accent)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />}
-                {ptLine && <polyline points={ptLine} fill="none" stroke="var(--pink)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />}
-              </svg>
-              <div style={{ display: 'flex', gap: 16, marginTop: 8, fontSize: 12 }}>
-                <span style={{ color: 'var(--mute)' }}><i style={{ display: 'inline-block', width: 10, height: 3, background: 'var(--accent)', borderRadius: 2, marginRight: 6 }} />Вы</span>
-                <span style={{ color: 'var(--mute)' }}><i style={{ display: 'inline-block', width: 10, height: 3, background: 'var(--pink)', borderRadius: 2, marginRight: 6 }} />Партнёр</span>
-              </div>
-            </>
-          ) : (
-            <div className="dim" style={{ fontSize: 13 }}>После пары недель здесь появится график близости.</div>
-          )}
-          {insights[0] && (
-            <div className="notice" style={{ marginTop: 10, alignItems: 'center' }}>
-              <span>{insights[0].emoji}</span>
-              <div style={{ fontSize: 13 }}>{insights[0].text}</div>
-            </div>
-          )}
-          <button className="link-btn" onClick={() => setPulseFormOpen(!pulseFormOpen)}>
-            {pulseFormOpen ? 'Скрыть форму' : 'Заполнить пульс'}
-          </button>
-          {pulseFormOpen && (
-            <div className="range-stack" style={{ marginTop: 8 }}>
-              <label>
-                <span>Близость</span>
-                <div className="range-line">
-                  <span style={{ fontSize: 12, color: 'var(--mute)' }}>далеко</span>
-                  <input type="range" min={1} max={10} value={closeness} onChange={e => setCloseness(Number(e.target.value))} />
-                  <span style={{ fontSize: 12, color: 'var(--mute)' }}>очень близко</span>
-                </div>
-                <b className="range-val">{closeness}</b>
-              </label>
-              <label>
-                <span>Конструктивность конфликтов</span>
-                <div className="range-line">
-                  <span style={{ fontSize: 12, color: 'var(--mute)' }}>деструктивно</span>
-                  <input type="range" min={1} max={10} value={conflictResolution} onChange={e => setConflictResolution(Number(e.target.value))} />
-                  <span style={{ fontSize: 12, color: 'var(--mute)' }}>конструктивно</span>
-                </div>
-                <b className="range-val">{conflictResolution}</b>
-              </label>
-              <label>
-                <span>Чего не хватило? (опционально)</span>
-                <input className="input" value={missing} onChange={e => setMissing(e.target.value)} placeholder="Например: больше времени вдвоём…" />
-              </label>
-              <button className="btn btn-secondary btn-w" style={{ marginTop: 8 }} onClick={submitPulse} disabled={pulseSubmitting}>
-                {pulseSubmitting ? 'Сохраняем…' : 'Сохранить пульс'}
-              </button>
-              {userCurrent && (
-                <div className="small" style={{ marginTop: 10, textAlign: 'center', color: 'var(--ok)' }}>
-                  ✓ Уже заполнено на этой неделе: близость {userCurrent.closeness}/10 · конфликты {userCurrent.conflictResolution}/10
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* 7 · ПАРТНЁР — аккордеон (свёрнут) */}
-      <button
-        className="cd acc"
-        onClick={() => setPartnerOpen(!partnerOpen)}
-        aria-expanded={partnerOpen}
-      >
-        <span>💐 Партнёр</span>
-        <span className="arr">{partnerOpen ? '⌄' : '›'}</span>
-      </button>
-      {partnerOpen && (
-        <div className="cd static" id="partner" style={{ marginTop: 8 }}>
-          <div className="tabs" role="tablist">
-            {([['cravings', 'Хотелки'], ['wishlist', 'Виш-лист'], ['flowers', 'Цветы'], ['warmth', 'Тепло']] as const).map(([key, label]) => (
-              <button key={key} className={cn('tab', partnerTab === key && 'on')} onClick={() => setPartnerTab(key)}>{label}</button>
-            ))}
-          </div>
-
-          {partnerTab === 'cravings' && (
-            <div style={{ padding: '4px 0' }}>
-              <div className="craving-form" style={{ display: 'flex', gap: 8, marginBottom: 10 }}>
-                <input className="input" style={{ flex: 1 }} placeholder="Хочется…" value={cravingInput}
-                  onChange={e => setCravingInput(e.target.value)}
-                  onKeyDown={e => e.key === 'Enter' && addCraving()} />
-                <button className="btn btn-secondary" disabled={!cravingInput.trim()} onClick={addCraving}>Добавить</button>
-              </div>
-              {cravings.length > 0 && (
-                <div className="feed">
-                  {cravings.map(c => (
-                    <div key={c.id} className="feed-item">
-                      <b>{c.item}</b>
-                      <span>{c.status === 'PICKED_UP' ? '✓ забрали' : 'ждёт'}</span>
-                    </div>
-                  ))}
-                </div>
-              )}
-              {partnerCravings.length > 0 && (
-                <>
-                  <div className="small" style={{ margin: '10px 0 4px', color: 'var(--mute)' }}>Хотелки партнёра:</div>
-                  <div className="feed">
-                    {partnerCravings.map(c => (
-                      <div key={c.id} className="feed-item">
-                        <b>{c.item}</b>
-                        <span>{c.status === 'PICKED_UP' ? '✓ подарено' : 'ждёт'}</span>
-                        {c.status !== 'PICKED_UP' && (
-                          <button className="btn btn-s btn-sm" onClick={() => pickCraving(c.id)}>Отметить подаренным</button>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </>
-              )}
-            </div>
-          )}
-
-          {partnerTab === 'wishlist' && (
-            <div style={{ padding: '4px 0' }}>
-              <div style={{ display: 'flex', gap: 8, marginBottom: 6 }}>
-                <input className="input" style={{ flex: 1 }} placeholder="Что хочешь?" value={wishTitle}
-                  onChange={e => setWishTitle(e.target.value)}
-                  onKeyDown={e => e.key === 'Enter' && addWish()} />
-                <button className="btn btn-secondary" disabled={!wishTitle.trim()} onClick={addWish}>Добавить</button>
-              </div>
-              <input className="input" style={{ width: '100%', marginBottom: 10 }} placeholder="Ссылка на подарок (необязательно)" value={wishLink}
-                onChange={e => setWishLink(e.target.value)}
-                onKeyDown={e => e.key === 'Enter' && addWish()} />
-              {wishes.length > 0 && (
-                <div className="feed">
-                  {wishes.map(w => (
-                    <div key={w.id} className="feed-item">
-                      <b>{w.title}</b>
-                      <span>{w.status === 'BOUGHT' ? '✓ куплено' : 'в списке'}</span>
-                      {w.link && <a href={w.link} target="_blank" rel="noopener noreferrer" className="wish-link">🔗 ссылка</a>}
-                    </div>
-                  ))}
-                </div>
-              )}
-              {partnerWishes.length > 0 && (
-                <>
-                  <div className="small" style={{ margin: '10px 0 4px', color: 'var(--mute)' }}>Виш-лист партнёра:</div>
-                  <div className="feed">
-                    {partnerWishes.map(w => (
-                      <div key={w.id} className="feed-item">
-                        <b>{w.title}</b>
-                        <span>{w.status === 'BOUGHT' ? '✓ подарено' : 'в списке'}</span>
-                        {w.link && <a href={w.link} target="_blank" rel="noopener noreferrer" className="wish-link">🔗 ссылка</a>}
-                        {w.status !== 'BOUGHT' && (
-                          <button className="btn btn-s btn-sm" onClick={() => markGifted(w.id)}>Отметить подаренным</button>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </>
-              )}
-            </div>
-          )}
-
-          {partnerTab === 'flowers' && (
-            <div style={{ padding: '4px 0' }}>
-              {flowers.length === 0 && <div className="dim" style={{ fontSize: 13, padding: '4px 0' }}>Загружаем цветы…</div>}
-              <div className="flower-grid">
-                {flowers.map(f => (
-                  <div key={f.slug} className={`flower-card ${f.favorite ? 'fav' : ''}`}>
-                    <div className="flower-top">
-                      <i>{f.emoji}</i>
-                      <button
-                        className="heart"
-                        aria-label={f.favorite ? 'Убрать из любимых' : 'В любимые'}
-                        onClick={async () => {
-                          await fetch('/api/flowers', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ slug: f.slug }) })
-                          setFlowers(prev => prev.map(x => x.slug === f.slug ? { ...x, favorite: !x.favorite } : x))
-                          toast(f.favorite ? 'Убрано из любимых' : 'Добавлено в любимые')
-                        }}
-                      >{f.favorite ? '❤️' : '🤍'}</button>
-                    </div>
-                    <b>{f.name}</b>
-                    <span className="dim" style={{ fontSize: 11 }}>{f.meaning}</span>
-                    <button
-                      className="btn btn-s btn-sm"
-                      style={{ marginTop: 8 }}
-                      disabled={flowerBusy}
-                      onClick={async () => {
-                        setFlowerBusy(true)
-                        try {
-                          const r = await fetch('/api/flowers/gift', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ slug: f.slug }) })
-                          if (r.ok) toast(`Цветок «${f.name}» подарен 💐`)
-                          window.dispatchEvent(new Event('together:refresh'))
-                        } finally { setFlowerBusy(false) }
-                      }}
-                    >💐 Подарить</button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {partnerTab === 'warmth' && (
-            <div style={{ padding: '4px 0' }}>
-              <div className="dim" style={{ fontSize: 12, marginBottom: 12 }}>Скажите партнёру спасибо или что-то тёплое — это копится и согревает в трудный день.</div>
-              <div className="warmth-form" style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
-                <input className="input" style={{ flex: 1 }} placeholder="Спасибо за…" value={warmthText}
-                  onChange={e => setWarmthText(e.target.value)}
-                  onKeyDown={e => e.key === 'Enter' && addWarmth()} />
-                <button className="btn btn-secondary" disabled={warmthText.trim().length < 2} onClick={addWarmth}>💌</button>
-              </div>
-              {warmth.length > 0 && (
-                <div className="warmth-list">
-                  {warmth.map(w => (
-                    <div key={w.id} className="warmth-item">
-                      <span className="warmth-ic">💌</span>
-                      <div>
-                        <b>{w.text}</b>
-                        <span className="small">{w.fromName} · {new Date(w.createdAt).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' })}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
         </div>
       )}
 
-      <SupportSheet
-        open={supportOpen}
-        partnerName={partnerName}
-        partnerMoodText={partner?.mood?.text}
-        onClose={() => setSupportOpen(false)}
-      />
+      {toasts.map((t) => <div key={t.id} className="toast">{t.text}</div>)}
     </DashboardLayout>
   )
 }
