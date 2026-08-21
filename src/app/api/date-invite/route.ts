@@ -4,7 +4,7 @@ import { rateLimit } from '@/lib/rate-limit'
 import { getApiContext, requireCouple, unauthorized } from '@/lib/api-auth'
 import { z } from 'zod'
 import { notify, nameOf } from '@/lib/notify'
-import { sendPushToUserFireAndForget } from '@/lib/push'
+
 
 const createSchema = z.object({
   vibe: z.string().min(1).max(40).optional(),
@@ -118,15 +118,10 @@ export async function POST(request: NextRequest) {
     if (ctx.partner) {
       await notify(
         ctx.partner.id,
-        'date_invited',
+        'date_invite',
         `${nameOf(ctx.user)} зовёт на свидание — выбери место`,
         '/dashboard/date'
       )
-      sendPushToUserFireAndForget(ctx.partner.id, {
-        title: '📍 Новое свидание',
-        body: `${nameOf(ctx.user)} зовёт на свидание`,
-        url: '/dashboard/date',
-      })
     }
 
     return NextResponse.json({ invite: toDto(invite) }, { status: 201 })

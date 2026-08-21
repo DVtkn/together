@@ -18,9 +18,10 @@ interface UserSettings {
   name: string | null
   email: string
   pushEnabled: boolean
-  emailEnabled: boolean
-  weeklyPulseReminder: boolean
-  challengeReminder: boolean
+  notifyMessages: boolean
+  notifyStatus: boolean
+  notifyDates: boolean
+  notifyChallenges: boolean
 }
 
 interface City {
@@ -53,9 +54,10 @@ export default function SettingsWidget({ initial }: { initial: SettingsInitial }
     name: initialSettings.name ?? null,
     email: initialSettings.email ?? '',
     pushEnabled: initialSettings.pushEnabled ?? true,
-    emailEnabled: initialSettings.emailEnabled ?? true,
-    weeklyPulseReminder: initialSettings.weeklyPulseReminder ?? true,
-    challengeReminder: initialSettings.challengeReminder ?? true,
+    notifyMessages: initialSettings.notifyMessages ?? true,
+    notifyStatus: initialSettings.notifyStatus ?? true,
+    notifyDates: initialSettings.notifyDates ?? true,
+    notifyChallenges: initialSettings.notifyChallenges ?? false,
   })
   const [couple, setCouple] = useState<CoupleData | null>(initial.settingsRes?.couple ?? null)
   const [loading, setLoading] = useState(false)
@@ -77,7 +79,7 @@ export default function SettingsWidget({ initial }: { initial: SettingsInitial }
   const [sigReply, setSigReply] = useState('')
   const [theme, setTheme] = useState<'aurora' | 'night'>(initial.theme)
 
-  const [pushStatus, setPushStatus] = useState<'unsupported' | 'default' | 'granted' | 'denied' | 'loading'>('loading')
+  const [pushStatus, setPushStatus] = useState<'unsupported' | 'default' | 'safari' | 'granted' | 'denied' | 'loading'>('loading')
   const [pushSubscribed, setPushSubscribed] = useState(false)
 
   const { data: settingsRes, mutate: mutateSettings } = useSettings(initial.settingsRes ?? undefined)
@@ -100,6 +102,7 @@ export default function SettingsWidget({ initial }: { initial: SettingsInitial }
         setPushStatus('unsupported')
         return
       }
+      const isStandalone = window.matchMedia('(display-mode: standalone)').matches || (navigator as any).standalone === true
       setPushStatus('loading')
       try {
         const reg = await navigator.serviceWorker.ready
@@ -109,7 +112,13 @@ export default function SettingsWidget({ initial }: { initial: SettingsInitial }
           setPushSubscribed(true)
         } else {
           const perm = Notification.permission
-          setPushStatus(perm === 'granted' ? 'granted' : perm === 'denied' ? 'denied' : 'default')
+          if (perm === 'granted') {
+            setPushStatus('granted')
+          } else if (perm === 'denied') {
+            setPushStatus('denied')
+          } else {
+            setPushStatus(isStandalone ? 'default' : 'safari')
+          }
         }
       } catch {
         setPushStatus('default')
@@ -266,6 +275,20 @@ export default function SettingsWidget({ initial }: { initial: SettingsInitial }
       setMessage({ type: 'success', text: 'Тест-уведомление отправлено ✓' })
     } else {
       setMessage({ type: 'error', text: res.error || 'Ошибка отправки теста' })
+    }
+  }
+
+  const toggleNotify = async (key: keyof Pick<UserSettings, 'notifyMessages' | 'notifyStatus' | 'notifyDates' | 'notifyChallenges'>) => {
+    const newValue = !settings[key]
+    setSettings((s) => ({ ...s, [key]: newValue }))
+    try {
+      await fetch('/api/user/notify-prefs', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ [key]: newValue }),
+      })
+    } catch {
+      setMessage({ type: 'error', text: 'Не удалось сохранить настройку' })
     }
   }
 
@@ -444,49 +467,53 @@ export default function SettingsWidget({ initial }: { initial: SettingsInitial }
             <span>
               {pushStatus === 'loading' ? 'проверка…' :
                pushStatus === 'unsupported' ? 'Push не поддерживается' :
-               pushStatus === 'denied' ? 'запрещены в системе — Настройки iPhone → Уведомления → Loop' :
-               pushSubscribed ? 'включены на этом устройстве ✓' : 'не включены'}
+               pushStatus === 'safari' ? 'доступны в приложении на экране «Дом»' :
+               pushStatus === 'denied' ? 'запрещены в системе' :
+               pushSubscribed ? 'включены ✓' : 'не включены'}
             </span>
           </div>
         </div>
-        {pushStatus !== 'unsupported' && pushStatus !== 'denied' && (
+
+        {!pushSubscribed && pushStatus !== 'unsupported' && pushStatus !== 'denied' && (
+          <button className="btn btn-p btn-w" style={{ marginTop: 12 }} onClick={enablePush} disabled={pushStatus === 'loading'}>
+            Включить на этом устройстве
+          </button>
+        )}
+
+        {pushSubscribed && (
+          <button className="btn btn-s btn-w" style={{ marginTop: 8 }} onClick={handleTestPush} disabled={pushStatus === 'loading'}>
+            🔔 Тест
+          </button>
+        )}
+
+        {pushSubscribed && (
           <>
-            <button className="btn btn-p btn-w" style={{ marginTop: 12 }} onClick={enablePush} disabled={pushStatus === 'loading' || pushSubscribed}>
-              {pushSubscribed ? 'Включены ✓' : 'Включить на этом устройстве'}
-            </button>
-            {pushSubscribed && (
-              <button className="btn btn-s btn-w" style={{ marginTop: 8 }} onClick={handleTestPush} disabled={pushStatus === 'loading'}>
-                🔔 Тест-уведомление
-              </button>
-            )}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginTop: 18 }}>
+              <div className="cd-t" style={{ padding: 0 }}>
+                <b>Сообщения от партнёра</b>
+              </div>
+              <button className={cn('tgl', settings.notifyMessages && 'on')} onClick={() => toggleNotify('notifyMessages')} role="switch" aria-checked={settings.notifyMessages} aria-label="Сообщения от партнёра" />
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginTop: 12 }}>
+              <div className="cd-t" style={{ padding: 0 }}>
+                <b>Статус и настроение партнёра</b>
+              </div>
+              <button className={cn('tgl', settings.notifyStatus && 'on')} onClick={() => toggleNotify('notifyStatus')} role="switch" aria-checked={settings.notifyStatus} aria-label="Статус и настроение партнёра" />
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginTop: 12 }}>
+              <div className="cd-t" style={{ padding: 0 }}>
+                <b>Инвайты и свидания</b>
+              </div>
+              <button className={cn('tgl', settings.notifyDates && 'on')} onClick={() => toggleNotify('notifyDates')} role="switch" aria-checked={settings.notifyDates} aria-label="Инвайты и свидания" />
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginTop: 12 }}>
+              <div className="cd-t" style={{ padding: 0 }}>
+                <b>Челлендж недели</b>
+              </div>
+              <button className={cn('tgl', settings.notifyChallenges && 'on')} onClick={() => toggleNotify('notifyChallenges')} role="switch" aria-checked={settings.notifyChallenges} aria-label="Челлендж недели" />
+            </div>
           </>
         )}
-        <span className="small">На iPhone: открывайте Loop с иконки на экране «Дом» и включайте здесь — разрешение из Safari не переносится.</span>
-
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginTop: 18 }}>
-          <div className="cd-t" style={{ padding: 0 }}>
-            <b>Email-уведомления</b>
-            <span>Письма на email</span>
-          </div>
-          <button className={cn('tgl', settings.emailEnabled && 'on')} onClick={toggle('emailEnabled')} role="switch" aria-checked={settings.emailEnabled} aria-label="Email-уведомления" />
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginTop: 18 }}>
-          <div className="cd-t" style={{ padding: 0 }}>
-            <b>Еженедельный пульс</b>
-            <span>Напоминание заполнить чек-ин в понедельник</span>
-          </div>
-          <button className={cn('tgl', settings.weeklyPulseReminder && 'on')} onClick={toggle('weeklyPulseReminder')} role="switch" aria-checked={settings.weeklyPulseReminder} aria-label="Еженедельный пульс" />
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginTop: 18 }}>
-          <div className="cd-t" style={{ padding: 0 }}>
-            <b>Новые челленджи</b>
-            <span>Сообщить, когда появится челлендж недели</span>
-          </div>
-          <button className={cn('tgl', settings.challengeReminder && 'on')} onClick={toggle('challengeReminder')} role="switch" aria-checked={settings.challengeReminder} aria-label="Новые челленджи" />
-        </div>
-        <button className="btn btn-s btn-w" style={{ marginTop: 16 }} onClick={handleSave} disabled={saving}>
-          'Сохранить уведомления'
-        </button>
       </div>
 
       <div className="k">Пара</div>

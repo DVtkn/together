@@ -5,7 +5,7 @@ import { getApiContext, unauthorized } from '@/lib/api-auth'
 import { z } from 'zod'
 import { notify, nameOf } from '@/lib/notify'
 import { emitEvent } from '@/lib/story'
-import { sendPushToUserFireAndForget } from '@/lib/push'
+
 
 const patchSchema = z.object({
   vibe: z.string().min(1).max(40).optional(),
@@ -74,11 +74,6 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
         body,
         '/dashboard/date'
       )
-      sendPushToUserFireAndForget(invite.createdBy, {
-        title: '🗓️ Свидание спланировано',
-        body,
-        url: '/dashboard/date',
-      })
     }
 
     if (invite.status === 'CONFIRMED' && ctx.couple) {
@@ -89,6 +84,9 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
         date: invite.date,
         time: invite.time,
       })
+      if (invite.createdBy && invite.createdBy !== ctx.user.id) {
+        await notify(invite.createdBy, 'date_accepted', `${nameOf(ctx.user)} подтвердил свидание`, '/dashboard/date')
+      }
     }
 
     return NextResponse.json({

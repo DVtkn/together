@@ -3,7 +3,6 @@ import { prisma } from '@/lib/prisma'
 import { rateLimit } from '@/lib/rate-limit'
 import { getApiContext, requireCouple, unauthorized } from '@/lib/api-auth'
 import { notify } from '@/lib/notify'
-import { sendPushToUserFireAndForget } from '@/lib/push'
 import { z } from 'zod'
 
 const messageSchema = z.object({
@@ -94,12 +93,8 @@ export async function POST(request: NextRequest) {
   })
 
   if (!isSova && ctx.partner) {
-    await notify(ctx.partner.id, 'couple_message', 'В чате пары новое сообщение', '/dashboard/ai')
-    sendPushToUserFireAndForget(ctx.partner.id, {
-      title: '💬 Сообщение от партнёра',
-      body: `${ctx.user.name ?? ctx.user.username ?? 'Партнёр'}: ${message.content.slice(0, 80)}`,
-      url: '/dashboard/ai',
-    })
+    const senderName = ctx.user.name ?? ctx.user.username ?? 'Партнёр'
+    await notify(ctx.partner.id, 'couple_message', `💬 Новое от ${senderName}: ${message.content.slice(0, 60)}`, '/dashboard/ai')
   }
 
   return NextResponse.json({

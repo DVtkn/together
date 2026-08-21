@@ -21,9 +21,10 @@ export async function GET(request: NextRequest) {
       name: ctx.user.name,
       email: ctx.user.email ?? '',
       pushEnabled: ctx.user.pushEnabled,
-      emailEnabled: ctx.user.emailEnabled,
-      weeklyPulseReminder: ctx.user.weeklyPulseReminder,
-      challengeReminder: ctx.user.challengeReminder,
+      notifyMessages: ctx.user.notifyMessages,
+      notifyStatus: ctx.user.notifyStatus,
+      notifyDates: ctx.user.notifyDates,
+      notifyChallenges: ctx.user.notifyChallenges,
     },
     couple: ctx.couple
       ? {
@@ -56,7 +57,7 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ error: 'Ошибка валидации' }, { status: 422 })
     }
 
-    const { name, email, pushEnabled, emailEnabled, weeklyPulseReminder, challengeReminder } = validation.data
+    const { name, email, pushEnabled, notifyMessages, notifyStatus, notifyDates, notifyChallenges } = validation.data
 
     const user = await prisma.user.update({
       where: { id: ctx.user.id },
@@ -64,9 +65,10 @@ export async function PATCH(request: NextRequest) {
         ...(name !== undefined ? { name } : {}),
         ...(email !== undefined ? { email } : {}),
         ...(pushEnabled !== undefined ? { pushEnabled } : {}),
-        ...(emailEnabled !== undefined ? { emailEnabled } : {}),
-        ...(weeklyPulseReminder !== undefined ? { weeklyPulseReminder } : {}),
-        ...(challengeReminder !== undefined ? { challengeReminder } : {}),
+        ...(notifyMessages !== undefined ? { notifyMessages } : {}),
+        ...(notifyStatus !== undefined ? { notifyStatus } : {}),
+        ...(notifyDates !== undefined ? { notifyDates } : {}),
+        ...(notifyChallenges !== undefined ? { notifyChallenges } : {}),
       },
     })
 
@@ -75,9 +77,10 @@ export async function PATCH(request: NextRequest) {
         name: user.name,
         email: user.email ?? '',
         pushEnabled: user.pushEnabled,
-        emailEnabled: user.emailEnabled,
-        weeklyPulseReminder: user.weeklyPulseReminder,
-        challengeReminder: user.challengeReminder,
+        notifyMessages: user.notifyMessages,
+        notifyStatus: user.notifyStatus,
+        notifyDates: user.notifyDates,
+        notifyChallenges: user.notifyChallenges,
       },
     })
   } catch (error) {

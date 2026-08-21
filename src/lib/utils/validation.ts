@@ -64,9 +64,10 @@ export const settingsSchema = z.object({
   name: z.string().min(2).max(50).optional(),
   email: z.string().email().optional(),
   pushEnabled: z.boolean().optional(),
-  emailEnabled: z.boolean().optional(),
-  weeklyPulseReminder: z.boolean().optional(),
-  challengeReminder: z.boolean().optional(),
+  notifyMessages: z.boolean().optional(),
+  notifyStatus: z.boolean().optional(),
+  notifyDates: z.boolean().optional(),
+  notifyChallenges: z.boolean().optional(),
 })
 
 export const consentSchema = z.object({

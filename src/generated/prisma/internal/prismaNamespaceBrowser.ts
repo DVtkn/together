@@ -131,9 +131,10 @@ export const UserScalarFieldEnum = {
   coupleId: 'coupleId',
   cityId: 'cityId',
   pushEnabled: 'pushEnabled',
-  emailEnabled: 'emailEnabled',
-  weeklyPulseReminder: 'weeklyPulseReminder',
-  challengeReminder: 'challengeReminder',
+  notifyMessages: 'notifyMessages',
+  notifyStatus: 'notifyStatus',
+  notifyDates: 'notifyDates',
+  notifyChallenges: 'notifyChallenges',
   onboardingDone: 'onboardingDone',
   theme: 'theme'
 } as const
