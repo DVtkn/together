@@ -363,6 +363,11 @@ export function DashboardLayout({ children, user, couple }: DashboardLayoutProps
           {signalStatus.incoming && <span className="sig-badge">{signalStatus.incoming.emoji}</span>}
         </button>
 
+        {/* НАСТРОЙКИ — доступ на мобильных, где нет шапки */}
+        <Link href="/dashboard/settings" className="settings-fab" aria-label="Профиль и настройки" title="Настройки">
+          ⚙️
+        </Link>
+
         {moodOpen && <MoodModal onClose={() => setMoodOpen(false)} onSaved={setMyMood} />}
 
         {notifOpen && (

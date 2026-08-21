@@ -357,6 +357,7 @@ export default function SettingsWidget({ initial }: { initial: SettingsInitial }
     <DashboardLayout user={{ name: settings.name, email: settings.email }} couple={couple!}>
       <div className="h1">Настройки</div>
       <div className="dim">Профиль, уведомления, пара, данные.</div>
+      <button className="btn btn-s mobile-back" onClick={() => router.back()}>← Назад</button>
 
       {message && (
         <div className={cn('notice', message.type === 'success' ? 'notice-amber' : 'notice-rose')} role="status">
