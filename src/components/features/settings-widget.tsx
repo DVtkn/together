@@ -66,6 +66,8 @@ export default function SettingsWidget({ initial }: { initial: SettingsInitial }
   const [leaveText, setLeaveText] = useState('')
   const [deleteText, setDeleteText] = useState('')
   const [message, setMessage] = useState<{ type: 'loading' | 'success' | 'error'; text: string } | null>(null)
+  const [diag, setDiag] = useState<string | null>(null)
+  const [busy, setBusy] = useState(false)
   const [cities, setCities] = useState<City[]>([])
   const [cityId, setCityId] = useState<string | null>(null)
   const [linkUsername, setLinkUsername] = useState('')
@@ -338,20 +340,21 @@ export default function SettingsWidget({ initial }: { initial: SettingsInitial }
   }
 
   const testNow = async () => {
-    setMessage({ type: 'loading', text: 'Отправка тестового уведомления…' })
-    try {
-      const res = await fetch('/api/push/test', { method: 'POST' })
-      const data = await res.json()
-      if (data.sent === true) {
-        setMessage({ type: 'success', text: 'Тестовое уведомление отправлено!' })
-      } else {
-        setMessage({ type: 'error', text: data.error || 'Не отправлено' })
-      }
-    } catch (error) {
-      console.error('Test push error:', error)
-      setMessage({ type: 'error', text: 'Ошибка сети' })
-    }
-  }
+  setBusy(true); setDiag('⏳ Отправляю…')
+  try {
+    const res = await fetch('/api/push/test', { method: 'POST' })
+    if (!res.ok) { setDiag(`❌ Сервер ответил ${res.status} — маршрут /api/push/test не найден или упал`); return }
+    const r = await res.json()
+    if (r.error === 'no-subscription') { setDiag('❌ Подписки нет на этом устройстве. Нажмите «Включить на этом устройстве» и разрешите уведомления.'); return }
+    const bad = (r.results ?? []).find((x: any) => !x.ok)
+    setDiag(r.ok
+      ? '✅ Сервер отправил. Нет баннера? → вы в Safari или уведомления выключены в iOS: Настройки → Уведомления → Loop.'
+      : `❌ Apple отклонил: ${bad?.status ?? '?'} ${bad?.error ?? ''}`)
+  } catch (e) {
+    console.error('push test failed', e)
+    setDiag(`❌ Не удалось достучаться до сервера: ${(e as Error).message}`)
+  } finally { setBusy(false) }
+}
 
   const handleLeaveCouple = async () => {
     if (leaveText.trim().toLowerCase() !== 'leave') return
@@ -776,10 +779,11 @@ export default function SettingsWidget({ initial }: { initial: SettingsInitial }
         <button className="btn btn-sm" onClick={diagnose} style={{ marginRight: 8 }}>
           Провести диагностику
         </button>
-        <button className="btn btn-sm" onClick={testNow} >
-          Отправить тест
+        <button className="btn btn-sm" onClick={testNow} disabled={busy}>
+          {busy ? '⏳ …' : '🔔 Тест-уведомление'}
         </button>
       </div>
+      {diag && <div className="diag" role="status">{diag}</div>}
     </DashboardLayout>
   )
 }

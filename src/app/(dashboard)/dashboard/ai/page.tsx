@@ -323,7 +323,7 @@ export default function AIChatPage() {
             </div>
           )}
 
-          <div className="msgs" ref={scrollRef}>
+          <div className="msgs" ref={scrollRef} style={{"background": "transparent"}}>
             {chatMode === 'couple' ? (
               <>
                 {coupleMessages.length === 0 && (

@@ -116,6 +116,7 @@ export function Topbar({ user, couple }: TopbarProps) {
           >
             🔔{notif.unread > 0 && <span className="bell-badge">{notif.unread > 9 ? '9+' : notif.unread}</span>}
           </button>
+          <Link className="icon-btn" aria-label="Настройки" href="/dashboard/settings">⚙️</Link>
           <button
             className="avatar-btn"
             aria-label="Меню профиля"
