@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma'
-import { sendPushToUserFireAndForget } from '@/lib/push'
+import { pushToUser } from '@/lib/push'
 
 const PREF_KEY: Record<string, keyof { notifyMessages: boolean; notifyStatus: boolean; notifyDates: boolean; notifyChallenges: boolean }> = {
   couple_message: 'notifyMessages',
@@ -25,7 +25,9 @@ export async function notify(userId: string, type: string, text: string, href?: 
         select: { [prefKey]: true, pushEnabled: true },
       })
       if (user?.pushEnabled && user[prefKey]) {
-        sendPushToUserFireAndForget(userId, { title: 'Loop', body: text, url: href || '/dashboard' })
+        pushToUser(userId, { title: 'Loop', body: text, url: href || '/dashboard' }).catch(
+          (err) => console.error('[push] notify failed:', err)
+        )
       }
     }
   } catch (error) {
