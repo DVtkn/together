@@ -129,10 +129,14 @@ export default function DateWidget({ initial }: { initial: DateInitial }) {
 
   useEffect(() => {
     const onHash = () => {
-      if (window.location.hash === '#memories') setTab('memories')
+      if (window.location.hash === '#memories') {
+        setTimeout(() => setTab('memories'), 0)
+      }
     }
     window.addEventListener('hashchange', onHash)
-    if (window.location.hash === '#memories') setTab('memories')
+    if (window.location.hash === '#memories') {
+      setTimeout(() => setTab('memories'), 0)
+    }
     return () => window.removeEventListener('hashchange', onHash)
   }, [])
 

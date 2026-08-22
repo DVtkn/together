@@ -38,7 +38,33 @@ const getVenueStats = async (venueId: string) => {
   }
 }
 
-const formatVenue = (v: any, stats: { avgRating: number | null; ratingsCount: number }) => ({
+interface CommunityVenueWithStats {
+  id: string
+  name: string
+  address: string | null
+  phone: string | null
+  comment: string | null
+  avgRating: number | null
+  ratingsCount: number
+  picks: number | null
+  createdBy: string
+  isNew: boolean
+  createdAt: Date
+}
+
+interface RawVenue {
+  id: string
+  name: string
+  address: string | null
+  phone: string | null
+  comment: string | null
+  picks: number | null
+  createdBy: string
+  avgRating?: number | null
+  createdAt: Date
+}
+
+const formatVenue = (v: RawVenue, stats: { avgRating: number | null; ratingsCount: number }) => ({
   id: v.id,
   name: v.name,
   address: v.address,
@@ -47,7 +73,7 @@ const formatVenue = (v: any, stats: { avgRating: number | null; ratingsCount: nu
   avgRating: stats.avgRating,
   ratingsCount: stats.ratingsCount,
   picks: v.picks ?? 0,
-  addedBy: v.createdBy,
+  createdBy: v.createdBy,
   isNew: v.avgRating == null,
 })
 
@@ -83,7 +109,7 @@ export async function GET(request: NextRequest) {
   })
 
   // Считаем статистику для каждого (avgRating — вычисляемое поле, не хранится в БД)
-  const withStats = await Promise.all(all.map(async (v: any) => {
+  const withStats = await Promise.all(all.map(async (v) => {
     const stats = await getVenueStats(v.id)
     return { venue: v, stats }
   }))
@@ -97,10 +123,10 @@ export async function GET(request: NextRequest) {
 
   // Новые без рейтинга (чтобы база росла)
   const freshVenues = all
-    .filter((v: any) => !withStats.find(({ venue }) => venue.id === v.id)?.stats.avgRating)
-    .sort((a: any, b: any) => b.createdAt.getTime() - a.createdAt.getTime())
+    .filter((v) => !withStats.find(({ venue }) => venue.id === v.id)?.stats.avgRating)
+    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
     .slice(0, 3)
-  const freshResult = freshVenues.map((v: any) => ({
+  const freshResult: CommunityVenueWithStats[] = (freshVenues as unknown as CommunityVenueWithStats[]).map((v) => ({
     id: v.id,
     name: v.name,
     address: v.address,
@@ -109,8 +135,9 @@ export async function GET(request: NextRequest) {
     avgRating: null,
     ratingsCount: 0,
     picks: v.picks ?? 0,
-    addedBy: v.createdBy,
+    createdBy: v.createdBy,
     isNew: true,
+    createdAt: v.createdAt,
   }))
 
   return NextResponse.json({ top, fresh: freshResult })

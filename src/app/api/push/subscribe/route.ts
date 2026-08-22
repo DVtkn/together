@@ -34,13 +34,16 @@ export async function POST(request: NextRequest) {
 
     const { endpoint, keys } = validation.data
 
+    const rawUa = request.headers.get('user-agent') ?? ''
+    const userAgent = rawUa.slice(0, 200).replace(/[<>"'`]/g, '')
+
     await prisma.pushSubscription.upsert({
       where: { endpoint },
       update: {
         userId: ctx.user.id,
         keysP256dh: keys.p256dh,
         keysAuth: keys.auth,
-        userAgent: request.headers.get('user-agent') || undefined,
+        userAgent,
       },
       create: {
         id: `ps_${Math.random().toString(36).slice(2, 14)}`,
@@ -48,7 +51,7 @@ export async function POST(request: NextRequest) {
         endpoint,
         keysP256dh: keys.p256dh,
         keysAuth: keys.auth,
-        userAgent: request.headers.get('user-agent') || undefined,
+        userAgent,
       },
     })
 

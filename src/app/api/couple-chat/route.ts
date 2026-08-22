@@ -94,7 +94,7 @@ export async function POST(request: NextRequest) {
 
   if (!isSova && ctx.partner) {
     const senderName = ctx.user.name ?? ctx.user.username ?? 'Партнёр'
-    await notify(ctx.partner.id, 'couple_message', `💬 Новое от ${senderName}: ${message.content.slice(0, 60)}`, '/dashboard/ai')
+    await notify(ctx.partner.id, 'couple_message', `💬 Новое от ${senderName}: ${message.content.slice(0, 60)}`, '/dashboard/ai?mode=together')
   }
 
   return NextResponse.json({

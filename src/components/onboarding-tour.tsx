@@ -41,7 +41,7 @@ export function OnboardingTour() {
 
   useEffect(() => {
     if (!show) return
-    refreshRect()
+    setTimeout(refreshRect, 0)
     const t = setInterval(refreshRect, 500)
     const onResize = () => refreshRect()
     window.addEventListener('resize', onResize)

@@ -1,10 +1,9 @@
 'use client'
 
-import { ReactNode, useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { signOut } from 'next-auth/react'
-import { cn } from '@/lib/utils/cn'
 import { useProfile } from '@/lib/hooks'
 
 interface TopbarProps {
@@ -28,8 +27,30 @@ function initials(name: string | null | undefined): string {
   return parts[0]?.slice(0, 2).toUpperCase() || 'Д'
 }
 
+function timeAgo(iso: string, now: number): string {
+  const diff = now - new Date(iso).getTime()
+  const min = Math.floor(diff / 60000)
+  if (min < 1) return 'только что'
+  if (min < 60) return `${min} мин назад`
+  const hours = Math.floor(min / 60)
+  if (hours < 24) return `${hours} ч назад`
+  const days = Math.floor(hours / 24)
+  return `${days} дн назад`
+}
+
+const NOTIF_ICON: Record<string, string> = {
+  couple_requested: '💞', couple_accepted: '💞', couple_rejected: '💞',
+  date_invited: '📍', date_planned: '📍',
+  craving_added: '🎁', craving_picked: '🎁',
+  mood_changed: '🫀', assessment_completed: '🧪', challenge_completed: '🌙',
+  couple_message: '💬', daily_answered: '☀️', memory_added: '📸',
+  ritual_added: '🕊️', ritual_done: '✓', letter_sent: '💌',
+  signal_received: '🤗', signal_accepted: '🤍',
+  pause_started: '🛑', pause_ended: '⏸️', warmth_added: '💌',
+  daily_revealed: '🔮',
+}
+
 export function Topbar({ user, couple }: TopbarProps) {
-  const pathname = usePathname()
   const router = useRouter()
   const [menuOpen, setMenuOpen] = useState(false)
   const [notifOpen, setNotifOpen] = useState(false)
@@ -47,6 +68,12 @@ export function Topbar({ user, couple }: TopbarProps) {
       ? myCouple.partnerA.name
       : myCouple.partnerB.name
     : null
+
+  const [now, setNow] = useState(() => Date.now())
+  useEffect(() => {
+    const id = setInterval(() => setNow(Date.now()), 30000)
+    return () => clearInterval(id)
+  }, [])
 
   const loadNotif = () => {
     fetch('/api/notifications?limit=30').then((r) => r.json()).then((d) => {
@@ -79,28 +106,10 @@ export function Topbar({ user, couple }: TopbarProps) {
     if (n.href) router.push(n.href)
   }
 
-  const timeAgo = (iso: string): string => {
-    const diff = Date.now() - new Date(iso).getTime()
-    const min = Math.floor(diff / 60000)
-    if (min < 1) return 'только что'
-    if (min < 60) return `${min} мин назад`
-    const hours = Math.floor(min / 60)
-    if (hours < 24) return `${hours} ч назад`
-    const days = Math.floor(hours / 24)
-    return `${days} дн назад`
-  }
-
-  const NOTIF_ICON: Record<string, string> = {
-    couple_requested: '💞', couple_accepted: '💞', couple_rejected: '💞',
-    date_invited: '📍', date_planned: '📍',
-    craving_added: '🎁', craving_picked: '🎁',
-    mood_changed: '🫀', assessment_completed: '🧪', challenge_completed: '🌙',
-    couple_message: '💬', daily_answered: '☀️', memory_added: '📸',
-    ritual_added: '🕊️', ritual_done: '✓', letter_sent: '💌',
-    signal_received: '🤗', signal_accepted: '🤍',
-    pause_started: '🛑', pause_ended: '⏸️', warmth_added: '💌',
-    daily_revealed: '🔮',
-  }
+  const notificationsWithTime = useMemo(() => ({
+    ...notif,
+    items: notif.items.map((n) => ({ ...n, timeAgo: timeAgo(n.createdAt, now) }))
+  }), [notif, now])
 
   return (
     <>
@@ -134,13 +143,13 @@ export function Topbar({ user, couple }: TopbarProps) {
             <b style={{ fontSize: 14 }}>Уведомления</b>
             <button className="link-btn" style={{ margin: 0 }} onClick={readAll}>Прочитать все</button>
           </div>
-          {notif.items.length === 0 && <div className="dim" style={{ padding: 20, textAlign: 'center', fontSize: 13 }}>Пока тихо</div>}
-          {notif.items.map((n) => (
+          {notificationsWithTime.items.length === 0 && <div className="dim" style={{ padding: 20, textAlign: 'center', fontSize: 13 }}>Пока тихо</div>}
+          {notificationsWithTime.items.map((n) => (
             <div key={n.id} className={`bell-item ${n.read ? '' : 'unread'}`} onClick={() => openItem(n)}>
               <span className="bell-ic">{NOTIF_ICON[n.type] ?? '💜'}</span>
               <div style={{ flex: 1 }}>
                 <b>{n.text}</b>
-                <span className="small">{timeAgo(n.createdAt)}</span>
+                <span className="small">{n.timeAgo}</span>
               </div>
               {!n.read && <i className="bell-dot" />}
             </div>

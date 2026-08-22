@@ -1,8 +1,7 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import { DashboardLayout } from '@/components/layout/dashboard-layout'
 import { cn } from '@/lib/utils/cn'
 import { toast } from '@/lib/toast'
 import { DECKS, IntimacyDeck } from '@/lib/decks'
@@ -48,11 +47,8 @@ export default function AIChatPage() {
   const [lettersOpen, setLettersOpen] = useState(false)
   const [me, setMe] = useState<{ id: string } | null>(null)
   const [partnerName, setPartnerName] = useState('партнёр')
-  const [hasCouple, setHasCouple] = useState(false)
   const [coupleMessages, setCoupleMessages] = useState<CoupleMsg[]>([])
   const [coupleBusy, setCoupleBusy] = useState(false)
-  const [sovaConnected, setSovaConnected] = useState(false)
-  const [sovaBusy, setSovaBusy] = useState(false)
   const [partnerTyping, setPartnerTyping] = useState(false)
   const [partnerLastReadAt, setPartnerLastReadAt] = useState<string | null>(null)
 
@@ -62,16 +58,19 @@ export default function AIChatPage() {
   const [letterContent, setLetterContent] = useState('')
   const [letterBusy, setLetterBusy] = useState(false)
 
-  const loadLetters = () => {
+  const loadLetters = useCallback(() => {
     fetch('/api/letters').then(r => r.json()).then(d => setLetters(d?.items ?? [])).catch(() => {})
-  }
+  }, [])
+
   useEffect(() => {
     if (window.location.hash === '#letters') {
-      setLettersOpen(true)
-      loadLetters()
+      setTimeout(() => {
+        setLettersOpen(true)
+        loadLetters()
+      }, 0)
       window.history.replaceState({}, '', window.location.pathname)
     }
-  }, [])
+  }, [loadLetters])
 
   const sendLetter = async () => {
     if (!letterTitle.trim() || !letterContent.trim() || letterBusy) return
@@ -100,15 +99,20 @@ export default function AIChatPage() {
     fetch('/api/user/profile').then(r => r.json()).then(d => {
       setMe({ id: d.user.id })
       setPartnerName(d.couple?.partnerName ?? 'партнёр')
-      setHasCouple(Boolean(d.couple?.partnerName))
     }).catch(() => {})
 
     const q = new URLSearchParams(window.location.search)
     const reply = q.get('reply')
+    const mode = q.get('mode')
     if (reply) {
-      setInput(reply)
-      setChatMode('couple')
+      setTimeout(() => {
+        setInput(reply)
+        setChatMode('couple')
+      }, 0)
       window.history.replaceState({}, '', window.location.pathname)
+    }
+    if (mode === 'together') {
+      setTimeout(() => setChatMode('couple'), 0)
     }
   }, [])
 
@@ -219,14 +223,15 @@ export default function AIChatPage() {
     fetch('/api/couple-chat', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({}) }).catch(() => {})
   }
 
-  const loadCouple = () => {
+  const loadCouple = useCallback(() => {
     fetch('/api/couple-chat?limit=50').then(r => r.json()).then(d => {
       setCoupleMessages(d.items ?? [])
       setPartnerTyping(Boolean(d.partnerTyping))
       if (d.partnerLastReadAt) setPartnerLastReadAt(d.partnerLastReadAt)
       reportRead()
     }).catch(() => {})
-  }
+  }, [])
+
   useEffect(() => {
     if (chatMode !== 'couple') return
     loadCouple()
@@ -237,7 +242,7 @@ export default function AIChatPage() {
       clearInterval(t)
       window.removeEventListener('together:refresh', refresh)
     }
-  }, [chatMode])
+  }, [chatMode, loadCouple])
 
   const lastTypingSent = useRef(0)
   const sendTyping = () => {
@@ -266,20 +271,6 @@ export default function AIChatPage() {
     finally { setCoupleBusy(false) }
   }
 
-  const connectSova = async () => {
-    if (sovaBusy) return
-    setSovaBusy(true)
-    try {
-      const r = await fetch('/api/couple-chat/sova', { method: 'POST' })
-      const j = await r.json()
-      if (r.ok && j.item) {
-        setCoupleMessages(prev => [...prev, j.item])
-        window.dispatchEvent(new Event('together:refresh'))
-      }
-    } catch { /* ignore */ }
-    finally { setSovaBusy(false) }
-  }
-
   const formatTime = (d: string) => new Date(d).toLocaleTimeString('ru-RU')
 
   const openDeck = (d: IntimacyDeck) => {
@@ -289,260 +280,259 @@ export default function AIChatPage() {
   }
 
   return (
-    <DashboardLayout user={{ name: null, email: '' }} couple={null}>
-      <div className="chat">
-        <div className="chat-w">
-          <div className="chat-h">
-              <button className="icon-btn" aria-label="Диалоги" title="Диалоги" onClick={() => setListOpen(true)}>🗂</button>
-              <button className="icon-btn" aria-label="Колоды близости" title="Колоды близости" onClick={() => setDecksOpen(true)}>🎴</button>
-              <span className="chat-ava" aria-hidden="true">🦉</span>
-              <div className="chat-t">
-                <b>Сова</b>
-                <span>психолог · соло приватно</span>
-              </div>
-              <div className="seg">
-                <button className={cn(chatMode === 'solo' && 'on')} onClick={() => setChatMode('solo')}>Соло</button>
-                <button className={cn(chatMode === 'couple' && 'on')} onClick={() => setChatMode('couple')}>Вместе</button>
-              </div>
-            </div>
+    <div className="app-chat">
+      <div className="bg" aria-hidden="true"><i /><i /><i /><i /></div>
 
-          {chatMode === 'couple' && (
-            <div className="couple-chat-banner">
-              <span>Чат с {partnerName} — только вы двое</span>
-              <button
-                className="btn btn-s btn-sm"
-                disabled={sovaBusy}
-                onClick={() => {
-                  if (sovaConnected) { setSovaConnected(false); return }
-                  connectSova()
-                  setSovaConnected(true)
-                }}
-              >
-                {sovaBusy ? '🦉 Психолог думает…' : sovaConnected ? '🦉 Психолог в диалоге ✓' : '🦉 Подключить психолога'}
-              </button>
-            </div>
-          )}
-
-          <div className="msgs" ref={scrollRef} style={{"background": "transparent"}}>
-            {chatMode === 'couple' ? (
-              <>
-                {coupleMessages.length === 0 && (
-                  <div className="empty" style={{ margin: 'auto' }}>
-                    <i>💬</i>
-                    <div className="dim">Напишите первое сообщение — в паре тоже есть, о чём поболтать.</div>
-                  </div>
-                )}
-                {coupleMessages.map((msg) => {
-                  const mine = msg.senderId === me?.id
-                  const read = mine && partnerLastReadAt && new Date(msg.createdAt) <= new Date(partnerLastReadAt)
-                  return (
-                    <div key={msg.id} className={mine ? 'm you' : 'm ai'}>
-                      {!mine && <div className="who">{msg.senderName}</div>}
-                      {msg.content}
-                      <div className="msg-t">
-                        {fmtTime(msg.createdAt)}
-                        {mine && <span className={read ? 'ticks read' : 'ticks'}>{read ? '✓✓' : '✓'}</span>}
-                      </div>
-                    </div>
-                  )
-                })}
-              </>
-            ) : (
-              <>
-                {messages.length === 0 && !isLoading && (
-                  <div className="sova-empty">
-                    <div style={{ fontSize: 40 }}>🦉</div>
-                    <b>Привет, я Сова — ваш психолог.</b>
-                    <span className="dim">Диалоги приватные — только вы и Сова. Чем помочь?</span>
-                    <div className="chips" style={{ justifyContent: 'center', marginTop: 12 }}>
-                      {['Что ты умеешь?', 'Помоги сформулировать мысль', 'Разбери наш спор', 'Идея свидания'].map(q => (
-                        <button key={q} className="chip" onClick={() => setInput(q + ' ')}>{q}</button>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {messages.map((msg) => {
-                  if (msg.role === 'USER') {
-                    return (
-                      <div key={msg.id} className="m you">
-                        <div dangerouslySetInnerHTML={{ __html: msg.content }} />
-                        <div className="msg-t">{formatTime(msg.createdAt)}</div>
-                      </div>
-                    )
-                  }
-                  if (msg.role === 'SYSTEM') {
-                    return (
-                      <div key={msg.id} className="m ai">
-                        <div className="who">⚠️ Уведомление</div>
-                        <div dangerouslySetInnerHTML={{ __html: msg.content }} />
-                      </div>
-                    )
-                  }
-                  return (
-                    <div key={msg.id} className="m ai">
-                      <div className="who">🦉 Сова</div>
-                      <div dangerouslySetInnerHTML={{ __html: msg.content }} />
-                      <div className="msg-t">{formatTime(msg.createdAt)}</div>
-                    </div>
-                  )
-                })}
-
-                {isLoading && (
-                  <div className="typing" role="status" aria-label="Сова печатает">
-                    <i />
-                    <i />
-                    <i />
-                  </div>
-                )}
-              </>
-            )}
+      <header className="chat-header">
+        <Link href="/dashboard" className="logo" aria-label="Loop — Дом">
+          <i>∞</i>Loop
+        </Link>
+        <div className="chat-header-center">
+          <button className="icon-btn" aria-label="Диалоги" title="Диалоги" onClick={() => setListOpen(true)}>🗂</button>
+          <button className="icon-btn" aria-label="Колоды близости" title="Колоды близости" onClick={() => setDecksOpen(true)}>🎴</button>
+          <span className="chat-ava" aria-hidden="true">🦉</span>
+          <div className="chat-title">
+            <b>Психолог</b>
+            <span>приватно · соло</span>
           </div>
-
-          <div className="chat-in">
-            {chatMode === 'couple' && partnerTyping && (
-              <div className="typing-line" role="status" aria-label="Партнёр набирает">
-                {partnerName} набирает<i /><i /><i />
-              </div>
-            )}
-            <form
-              onSubmit={(e) => {
-                e.preventDefault()
-                if (chatMode === 'couple') sendCouple()
-                else handleSend()
-              }}
-            >
-              <div className="chat-b">
-                <textarea
-                  rows={1}
-                  placeholder={chatMode === 'couple' ? 'Сообщение паре…' : 'Напишите сообщение…'}
-                  value={input}
-                  onChange={(e) => { setInput(e.target.value); if (chatMode === 'couple') sendTyping() }}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                      e.preventDefault()
-                      if (chatMode === 'couple') sendCouple()
-                      else handleSend()
-                    }
-                  }}
-                  aria-label="Сообщение"
-                />
-                <button type="submit" className="send" disabled={!input.trim() || isLoading || coupleBusy} aria-label="Отправить">
-                  ➤
-                </button>
-              </div>
-            </form>
+          <div className="seg">
+            <button className={cn(chatMode === 'solo' && 'on')} onClick={() => setChatMode('solo')}>Соло</button>
+            <button className={cn(chatMode === 'couple' && 'on')} onClick={() => setChatMode('couple')}>Вместе</button>
           </div>
         </div>
+        <div className="chat-header-right">
+          <Link className="icon-btn" aria-label="Настройки" href="/dashboard/settings">⚙️</Link>
+        </div>
+      </header>
+
+      {chatMode === 'couple' && (
+        <div className="couple-chat-banner">
+          <span>Чат с {partnerName} — только вы двое</span>
+        </div>
+      )}
+
+      <div className="chat-messages" ref={scrollRef}>
+        {chatMode === 'couple' ? (
+          <>
+            {coupleMessages.length === 0 && (
+              <div className="empty" style={{ margin: 'auto' }}>
+                <i>💬</i>
+                <div className="dim">Напишите первое сообщение — в паре тоже есть, о чём поболтать.</div>
+              </div>
+            )}
+            {coupleMessages.map((msg) => {
+              const mine = msg.senderId === me?.id
+              const read = mine && partnerLastReadAt && new Date(msg.createdAt) <= new Date(partnerLastReadAt)
+              return (
+                <div key={msg.id} className={mine ? 'msg you' : 'msg ai'}>
+                  {!mine && <div className="msg-who">{msg.senderName}</div>}
+                  <div className="msg-content">{msg.content}</div>
+                  <div className="msg-time">
+                    {fmtTime(msg.createdAt)}
+                    {mine && <span className={cn('ticks', read && 'read')}>{read ? '✓✓' : '✓'}</span>}
+                  </div>
+                </div>
+              )
+            })}
+          </>
+        ) : (
+          <>
+            {messages.length === 0 && !isLoading && (
+              <div className="chat-empty">
+                <div style={{ fontSize: 40 }}>🦉</div>
+                <b>Привет, я ваш Психолог.</b>
+                <span className="dim">Диалоги приватные — только вы и Психолог. Чем помочь?</span>
+                <div className="chips" style={{ justifyContent: 'center', marginTop: 12 }}>
+                  {['Что ты умеешь?', 'Помоги сформулировать мысль', 'Разбери наш спор', 'Идея свидания'].map(q => (
+                    <button key={q} className="chip" onClick={() => setInput(q + ' ')}>{q}</button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {messages.map((msg) => {
+              if (msg.role === 'USER') {
+                return (
+                  <div key={msg.id} className="msg you">
+                    <div className="msg-content" dangerouslySetInnerHTML={{ __html: msg.content }} />
+                    <div className="msg-time">{formatTime(msg.createdAt)}</div>
+                  </div>
+                )
+              }
+              if (msg.role === 'SYSTEM') {
+                return (
+                  <div key={msg.id} className="msg ai">
+                    <div className="msg-who">⚠️ Уведомление</div>
+                    <div className="msg-content" dangerouslySetInnerHTML={{ __html: msg.content }} />
+                  </div>
+                )
+              }
+              return (
+                <div key={msg.id} className="msg ai">
+                  <div className="msg-who">🦉 Психолог</div>
+                  <div className="msg-content" dangerouslySetInnerHTML={{ __html: msg.content }} />
+                  <div className="msg-time">{formatTime(msg.createdAt)}</div>
+                </div>
+              )
+            })}
+
+            {isLoading && (
+              <div className="typing" role="status" aria-label="Психолог печатает">
+                <i /><i /><i />
+              </div>
+            )}
+          </>
+        )}
+      </div>
+
+      <div className="chat-input-wrap">
+        {chatMode === 'couple' && partnerTyping && (
+          <div className="typing-line" role="status" aria-label="Партнёр набирает">
+            {partnerName} набирает<i /><i /><i />
+          </div>
+        )}
+        <form
+          onSubmit={(e) => {
+            e.preventDefault()
+            if (chatMode === 'couple') sendCouple()
+            else handleSend()
+          }}
+        >
+          <div className="chat-input-inner">
+            <textarea
+              rows={1}
+              placeholder={chatMode === 'couple' ? 'Сообщение паре…' : 'Напишите сообщение…'}
+              value={input}
+              onChange={(e) => { setInput(e.target.value); if (chatMode === 'couple') sendTyping() }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault()
+                  if (chatMode === 'couple') sendCouple()
+                  else handleSend()
+                }
+              }}
+              aria-label="Сообщение"
+            />
+            <button type="submit" className="send-btn" disabled={!input.trim() || isLoading || coupleBusy} aria-label="Отправить">
+              ➤
+            </button>
+          </div>
+        </form>
       </div>
 
       {listOpen && (
-        <div className="sheet">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-            <b>Диалоги</b>
-            <button className="link-btn" onClick={() => setListOpen(false)}>✕</button>
-          </div>
-          <button className="btn btn-p btn-w" style={{ marginBottom: 10 }} onClick={() => { handleNewChat(); setListOpen(false) }}>+ Новый диалог</button>
-          {conversations.length === 0 && <div className="dim" style={{ padding: '12px 0', textAlign: 'center' }}>Диалогов пока нет.</div>}
-          {conversations.map((c) => (
-            <div key={c.id} className="sheet-item" onClick={() => { setCurrentConversationId(c.id); setListOpen(false) }}>
-              <b>{c.title}</b>
-              <span className="small dim">{c.lastMessage} · {formatTime(c.updatedAt)}</span>
+        <div className="sheet-overlay" onClick={() => setListOpen(false)}>
+          <div className="sheet" onClick={(e) => e.stopPropagation()}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+              <b>Диалоги</b>
+              <button className="link-btn" onClick={() => setListOpen(false)}>✕</button>
             </div>
-          ))}
-          <div style={{ marginTop: 12, borderTop: '1px solid var(--line)', paddingTop: 10 }}>
-            <button className="btn btn-s btn-w" style={{ width: '100%' }} onClick={() => { setListOpen(false); setLettersOpen(true); loadLetters() }}>💌 Письма</button>
+            <button className="btn btn-primary btn-wide" style={{ marginBottom: 10 }} onClick={() => { handleNewChat(); setListOpen(false) }}>+ Новый диалог</button>
+            {conversations.length === 0 && <div className="dim" style={{ padding: '12px 0', textAlign: 'center' }}>Диалогов пока нет.</div>}
+            {conversations.map((c) => (
+              <div key={c.id} className="sheet-item" onClick={() => { setCurrentConversationId(c.id); setListOpen(false) }}>
+                <b>{c.title}</b>
+                <span className="small dim">{c.lastMessage} · {formatTime(c.updatedAt)}</span>
+              </div>
+            ))}
+            <div style={{ marginTop: 12, borderTop: '1px solid var(--line)', paddingTop: 10 }}>
+              <button className="btn btn-secondary btn-wide" style={{ width: '100%' }} onClick={() => { setListOpen(false); setLettersOpen(true); loadLetters() }}>💌 Письма</button>
+            </div>
           </div>
         </div>
       )}
 
       {decksOpen && (
-        <div className="sheet" id="decks">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-            <b>🎴 Колоды близости</b>
-            <button className="link-btn" onClick={() => setDecksOpen(false)}>✕</button>
-          </div>
-          <div className="dim" style={{ fontSize: 13, marginBottom: 12 }}>Вопросы для разговора вдвоём. Обсудите — и почувствуйте себя ближе.</div>
-          {!deck ? (
-            <div className="deck-grid">
-              {DECKS.map(d => (
-                <button key={d.key} className="cd deck-card" onClick={() => openDeck(d)}>
-                  <div className="deck-emoji">{d.emoji}</div>
-                  <b>{d.title}</b>
-                  <span className="dim" style={{ fontSize: 12 }}>{d.questions.length} вопросов</span>
-                  <span className="dim" style={{ fontSize: 12 }}>{d.description}</span>
-                </button>
-              ))}
+        <div className="sheet-overlay" onClick={() => setDecksOpen(false)}>
+          <div className="sheet" id="decks" onClick={(e) => e.stopPropagation()}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+              <b>🎴 Колоды близости</b>
+              <button className="link-btn" onClick={() => setDecksOpen(false)}>✕</button>
             </div>
-          ) : (
-            <div className="cd static">
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-                <b>{deck.emoji} {deck.title}</b>
-                <button className="link-btn" onClick={() => setDeck(null)}>← ко всем колодам</button>
+            <div className="dim" style={{ fontSize: 13, marginBottom: 12 }}>Вопросы для разговора вдвоём. Обсудите — и почувствуйте себя ближе.</div>
+            {!deck ? (
+              <div className="deck-grid">
+                {DECKS.map(d => (
+                  <button key={d.key} className="deck-card" onClick={() => openDeck(d)}>
+                    <div className="deck-emoji">{d.emoji}</div>
+                    <b>{d.title}</b>
+                    <span className="dim" style={{ fontSize: 12 }}>{d.questions.length} вопросов</span>
+                    <span className="dim" style={{ fontSize: 12 }}>{d.description}</span>
+                  </button>
+                ))}
               </div>
-              {deckIdx < deck.questions.length ? (
-                <>
-                  <div className="deck-q">«{deck.questions[deckIdx].question}»</div>
-                  <div className="dim" style={{ fontSize: 12, margin: '8px 0 16px' }}>
-                    {deck.questions[deckIdx].axis
-                      ? `Сфера: ${deck.questions[deckIdx].axis}`
-                      : 'Просто о важном'} · вопрос {deckIdx + 1} из {deck.questions.length}
-                  </div>
-                  <div style={{ display: 'flex', gap: 8 }}>
-                    <button className="btn btn-secondary" style={{ flex: 1 }} onClick={() => { setDoneCount(d => d + 1); setDeckIdx(i => Math.min(i + 1, deck.questions.length - 1)) }}>
-                      Обсудили ✓
-                    </button>
-                    <button className="btn btn-s" style={{ flex: 1 }} onClick={() => setDeckIdx(i => Math.min(i + 1, deck.questions.length - 1))}>
-                      Следующий →
-                    </button>
-                  </div>
-                  <div className="prog-line" style={{ marginTop: 16 }}><div className="prog-fill" style={{ width: `${(doneCount / deck.questions.length) * 100}%` }} /></div>
-                </>
-              ) : (
-                <div className="empty" style={{ padding: '12px 0' }}>
-                  <i>🎉</i>
-                  <div className="h2" style={{ marginBottom: 6 }}>Колода пройдена</div>
-                  <div className="dim" style={{ marginBottom: 16 }}>Обсудили {doneCount} из {deck.questions.length} вопросов.</div>
-                  <button className="btn btn-secondary" onClick={() => setDeck(null)}>К другим колодам</button>
+            ) : (
+              <div className="deck-static">
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+                  <b>{deck.emoji} {deck.title}</b>
+                  <button className="link-btn" onClick={() => setDeck(null)}>← ко всем колодам</button>
                 </div>
-              )}
-            </div>
-          )}
+                {deckIdx < deck.questions.length ? (
+                  <>
+                    <div className="deck-question">«{deck.questions[deckIdx].question}»</div>
+                    <div className="dim" style={{ fontSize: 12, margin: '8px 0 16px' }}>
+                      {deck.questions[deckIdx].axis
+                        ? `Сфера: ${deck.questions[deckIdx].axis}`
+                        : 'Просто о важном'} · вопрос {deckIdx + 1} из {deck.questions.length}
+                    </div>
+                    <div style={{ display: 'flex', gap: 8 }}>
+                      <button className="btn btn-secondary" style={{ flex: 1 }} onClick={() => { setDoneCount(d => d + 1); setDeckIdx(i => Math.min(i + 1, deck.questions.length - 1)) }}>
+                        Обсудили ✓
+                      </button>
+                      <button className="btn btn-secondary" style={{ flex: 1 }} onClick={() => setDeckIdx(i => Math.min(i + 1, deck.questions.length - 1))}>
+                        Следующий →
+                      </button>
+                    </div>
+                    <div className="prog-line" style={{ marginTop: 16 }}><div className="prog-fill" style={{ width: `${(doneCount / deck.questions.length) * 100}%` }} /></div>
+                  </>
+                ) : (
+                  <div className="empty" style={{ padding: '12px 0' }}>
+                    <i>🎉</i>
+                    <div className="h2" style={{ marginBottom: 6 }}>Колода пройдена</div>
+                    <div className="dim" style={{ marginBottom: 16 }}>Обсудили {doneCount} из {deck.questions.length} вопросов.</div>
+                    <button className="btn btn-secondary" onClick={() => setDeck(null)}>К другим колодам</button>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       )}
 
       {lettersOpen && (
-        <div className="sheet" id="letters">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-            <b>💌 Письма</b>
-            <button className="link-btn" onClick={() => setLettersOpen(false)}>✕</button>
-          </div>
-          {!letterOpen && (
-            <button className="btn btn-p btn-w" style={{ marginBottom: 10 }} onClick={() => setLetterOpen(true)}>+ Написать письмо</button>
-          )}
-          {letterOpen && (
-            <div className="cd static" style={{ marginBottom: 12, padding: 14 }}>
-              <div className="k">Новое письмо</div>
-              <label className="field-label">Тема</label>
-              <input className="input" value={letterTitle} onChange={e => setLetterTitle(e.target.value)} placeholder="О чём?" />
-              <label className="field-label">Текст</label>
-              <textarea className="mood-note" value={letterContent} onChange={e => setLetterContent(e.target.value)} placeholder="Дорогая…" rows={4} />
-              <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
-                <button className="btn btn-p" style={{ flex: 1 }} disabled={!letterTitle.trim() || !letterContent.trim() || letterBusy} onClick={sendLetter}>Отправить</button>
-                <button className="btn btn-s" style={{ flex: 1 }} onClick={() => setLetterOpen(false)}>Отмена</button>
+        <div className="sheet-overlay" onClick={() => setLettersOpen(false)}>
+          <div className="sheet" id="letters" onClick={(e) => e.stopPropagation()}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+              <b>💌 Письма</b>
+              <button className="link-btn" onClick={() => setLettersOpen(false)}>✕</button>
+            </div>
+            {!letterOpen && (
+              <button className="btn btn-primary btn-wide" style={{ marginBottom: 10 }} onClick={() => setLetterOpen(true)}>+ Написать письмо</button>
+            )}
+            {letterOpen && (
+              <div className="letter-form" style={{ marginBottom: 12, padding: 14 }}>
+                <div className="k">Новое письмо</div>
+                <label className="field-label">Тема</label>
+                <input className="input" value={letterTitle} onChange={e => setLetterTitle(e.target.value)} placeholder="О чём?" />
+                <label className="field-label">Текст</label>
+                <textarea className="mood-note" value={letterContent} onChange={e => setLetterContent(e.target.value)} placeholder="Дорогая…" rows={4} />
+                <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
+                  <button className="btn btn-primary" style={{ flex: 1 }} disabled={!letterTitle.trim() || !letterContent.trim() || letterBusy} onClick={sendLetter}>Отправить</button>
+                  <button className="btn btn-secondary" style={{ flex: 1 }} onClick={() => setLetterOpen(false)}>Отмена</button>
+                </div>
               </div>
-            </div>
-          )}
-          {letters.length === 0 && <div className="dim" style={{ padding: '12px 0', textAlign: 'center' }}>Писем пока нет.</div>}
-          {letters.map((l) => (
-            <div key={l.id} className="sheet-item" onClick={() => !l.isMine && !l.read && markLetterRead(l.id)}>
-              <b>{l.title}</b>
-              <span className="small dim">{l.fromName} · {l.isMine ? 'вы' : l.read ? 'прочитано' : 'новое'}</span>
-              <p className="small dim" style={{ marginTop: 4, whiteSpace: 'pre-wrap' }}>{l.content}</p>
-            </div>
-          ))}
+            )}
+            {letters.length === 0 && <div className="dim" style={{ padding: '12px 0', textAlign: 'center' }}>Писем пока нет.</div>}
+            {letters.map((l) => (
+              <div key={l.id} className="sheet-item" onClick={() => !l.isMine && !l.read && markLetterRead(l.id)}>
+                <b>{l.title}</b>
+                <span className="small dim">{l.fromName} · {l.isMine ? 'вы' : l.read ? 'прочитано' : 'новое'}</span>
+                <p className="small dim" style={{ marginTop: 4, whiteSpace: 'pre-wrap' }}>{l.content}</p>
+              </div>
+            ))}
+          </div>
         </div>
       )}
-    </DashboardLayout>
+    </div>
   )
 }

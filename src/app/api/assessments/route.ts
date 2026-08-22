@@ -216,13 +216,23 @@ async function maybeGenerateReport(ctx: NonNullable<Awaited<ReturnType<typeof ge
   })
 
   const userIds = [user.id, partner.id]
-  for (const assessment of assessments) {
-    const total = assessment.Question.length
+  const assessmentIds = assessments.map((a) => a.id)
+
+  const responses = await prisma.assessmentResponse.findMany({
+    where: { userId: { in: userIds }, assessmentId: { in: assessmentIds } },
+    select: { userId: true, assessmentId: true },
+  })
+
+  const counts = new Map<string, number>()
+  for (const r of responses) {
+    const k = `${r.userId}:${r.assessmentId}`
+    counts.set(k, (counts.get(k) ?? 0) + 1)
+  }
+
+  for (const a of assessments) {
     for (const uid of userIds) {
-      const count = await prisma.assessmentResponse.count({
-        where: { userId: uid, assessmentId: assessment.id },
-      })
-      if (count < total) return
+      const c = counts.get(`${uid}:${a.id}`) ?? 0
+      if (c < a.Question.length) return
     }
   }
 

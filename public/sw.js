@@ -90,28 +90,17 @@ self.addEventListener("push", (event) => {
 
 // Notification click event - focus the app or open URL
 self.addEventListener("notificationclick", (event) => {
-  const notification = event.notification;
-
-  // Close the notification by default
-  notification.close();
-
-  // Check if there's already a window/tab focused
+  event.notification.close();
+  const url = event.notification.data?.url || '/dashboard/ai?mode=together';
   event.waitUntil(
-    clients.matchAll({ type: "window" }).then((clientList) => {
-      // If there's a focused window, focus it and send a message
-      const focusedClient = clientList.find((c) => c.focused);
-      if (focusedClient) {
-        focusedClient.postMessage({
-          type: "loop-notification-click",
-          data: event.notification.data
-        });
-        return;
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then((list) => {
+      for (const client of list) {
+        if ('focus' in client && client.url.includes(self.location.origin)) {
+          if ('navigate' in client) client.navigate(url);
+          return client.focus();
+        }
       }
-
-      // Otherwise, open a new window/tab
-      if (clients.openWindow) {
-        clients.openWindow("/dashboard");
-      }
+      return clients.openWindow(url);
     })
   );
 });

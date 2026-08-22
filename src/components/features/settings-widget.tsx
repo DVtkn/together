@@ -1,5 +1,9 @@
 'use client'
 
+interface NavigatorWithStandalone extends Navigator {
+  standalone?: boolean
+}
+
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -10,6 +14,8 @@ import { signOut } from 'next-auth/react'
 import { useProfile, useSettings, useCities } from '@/lib/hooks'
 import type { ProfileUser } from '@/lib/hooks'
 import { subscribeToPush, unsubscribeFromPush, testPush } from '@/lib/push-client'
+import type { EnablePushResult, DisablePushResult } from '@/lib/push-client'
+import { enablePush, disablePush } from '@/lib/push-client'
 import { DateInput } from '@/components/date-input'
 import { toast } from '@/lib/toast'
 import { parseRuDate, toRuDate } from '@/lib/dates'
@@ -105,7 +111,7 @@ export default function SettingsWidget({ initial }: { initial: SettingsInitial }
         setPushStatus('unsupported')
         return
       }
-      const isStandalone = window.matchMedia('(display-mode: standalone)').matches || (navigator as any).standalone === true
+      const isStandalone = window.matchMedia('(display-mode: standalone)').matches || (navigator as NavigatorWithStandalone).standalone === true
       setPushStatus('loading')
       try {
         const reg = await navigator.serviceWorker.ready
@@ -247,7 +253,7 @@ export default function SettingsWidget({ initial }: { initial: SettingsInitial }
     }
   }
 
-  const enablePush = async () => {
+  const handleEnablePush = async () => {
     if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
       setPushStatus('unsupported')
       setMessage({ type: 'error', text: 'Push не поддерживается в этом браузере' })
@@ -300,19 +306,19 @@ export default function SettingsWidget({ initial }: { initial: SettingsInitial }
     try {
       let standalone = false
       if (typeof navigator !== 'undefined') {
-        standalone = (navigator as any).standalone === true
+        standalone = (navigator as NavigatorWithStandalone).standalone === true
       }
       if (typeof matchMedia !== 'undefined') {
         const m = matchMedia('(display-mode: standalone)')
         if (m.matches) standalone = true
       }
-      let reg = undefined
+      let reg: ServiceWorkerRegistration | undefined
       if ('serviceWorker' in navigator) {
-        reg = await (navigator as any).serviceWorker.ready
+        reg = await navigator.serviceWorker.ready
       }
       let perm = 'нет API'
       if ('Notification' in window) {
-        perm = (Notification as any).permission
+        perm = Notification.permission
       }
       let sub = undefined
       if (reg) {
@@ -339,22 +345,54 @@ export default function SettingsWidget({ initial }: { initial: SettingsInitial }
     }
   }
 
+  const [testResult, setTestResult] = useState<string | null>(null)
+
   const testNow = async () => {
-  setBusy(true); setDiag('⏳ Отправляю…')
-  try {
-    const res = await fetch('/api/push/test', { method: 'POST' })
-    if (!res.ok) { setDiag(`❌ Сервер ответил ${res.status} — маршрут /api/push/test не найден или упал`); return }
-    const r = await res.json()
-    if (r.error === 'no-subscription') { setDiag('❌ Подписки нет на этом устройстве. Нажмите «Включить на этом устройстве» и разрешите уведомления.'); return }
-    const bad = (r.results ?? []).find((x: any) => !x.ok)
-    setDiag(r.ok
-      ? '✅ Сервер отправил. Нет баннера? → вы в Safari или уведомления выключены в iOS: Настройки → Уведомления → Loop.'
-      : `❌ Apple отклонил: ${bad?.status ?? '?'} ${bad?.error ?? ''}`)
-  } catch (e) {
-    console.error('push test failed', e)
-    setDiag(`❌ Не удалось достучаться до сервера: ${(e as Error).message}`)
-  } finally { setBusy(false) }
-}
+    setBusy(true)
+    setTestResult('⏳ Отправляю тестовый пуш…')
+    try {
+      const res = await fetch('/api/push/test', { method: 'POST' })
+      if (!res.ok) {
+        const text = await res.text().catch(() => '')
+        setTestResult(`❌ Сервер ${res.status}: ${text.slice(0, 200)}`)
+        return
+      }
+      const r = await res.json()
+      if (r.error === 'no-subscription') {
+        setTestResult('❌ Подписки нет. Нажмите «Включить на этом устройстве» и разрешите уведомления.')
+        return
+      }
+      const failed = (r.details ?? r.results ?? []).find((x: any) => !x.ok)
+      const sentCount = r.sent ?? (r.details ?? r.results ?? []).filter((x: any) => x.ok).length
+      const failedCount = r.failed ?? (r.details ?? r.results ?? []).filter((x: any) => !x.ok).length
+      if (r.ok && sentCount > 0) {
+        setTestResult(`✅ Успешно: отправлено ${sentCount}, ошибок ${failedCount}. Если баннера нет — проверьте Настройки → Уведомления → Loop.`)
+      } else if (failed) {
+        setTestResult(`❌ Apple отклонил: статус ${failed.statusCode ?? '?'} — ${failed.error ?? 'unknown'}. Нажмите «Переподписаться».`)
+      } else {
+        setTestResult(`❌ Ошибка: ${JSON.stringify(r).slice(0, 200)}`)
+      }
+    } catch (e) {
+      console.error('push test failed', e)
+      setTestResult(`❌ Сеть: ${(e as Error).message}`)
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  const resubscribe = async () => {
+    setBusy(true)
+    setTestResult('⏳ Переподписываемся…')
+    try {
+      const disableResult = await disablePush() as { ok: boolean; message: string }
+      const enableResult = await enablePush() as { ok: boolean; message: string }
+      setTestResult(enableResult.ok ? '✅ Подписка обновлена. Нажмите Тест.' : `❌ ${enableResult.message}`)
+    } catch (e) {
+      setTestResult(`❌ Переподписка: ${(e as Error).message}`)
+    } finally {
+      setBusy(false)
+    }
+  }
 
   const handleLeaveCouple = async () => {
     if (leaveText.trim().toLowerCase() !== 'leave') return
@@ -539,15 +577,26 @@ export default function SettingsWidget({ initial }: { initial: SettingsInitial }
         </div>
 
         {!pushSubscribed && pushStatus !== 'unsupported' && pushStatus !== 'denied' && (
-          <button className="btn btn-p btn-w" style={{ marginTop: 12 }} onClick={enablePush} disabled={pushStatus === 'loading'}>
+          <button className="btn btn-p btn-w" style={{ marginTop: 12 }} onClick={enablePush} disabled={pushStatus === 'loading' || busy}>
             Включить на этом устройстве
           </button>
         )}
 
         {pushSubscribed && (
-          <button className="btn btn-s btn-w" style={{ marginTop: 8 }} onClick={handleTestPush} disabled={pushStatus === 'loading'}>
-            🔔 Тест
-          </button>
+          <div style={{ marginTop: 8, display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <button className="btn btn-s btn-w" onClick={testNow} disabled={busy || pushStatus === 'loading'}>
+              🔔 Тест
+            </button>
+            <button className="btn btn-secondary btn-w" onClick={resubscribe} disabled={busy}>
+              🔄 Переподписаться
+            </button>
+          </div>
+        )}
+
+        {testResult && (
+          <div style={{ marginTop: 12, padding: 12, background: 'var(--card2)', borderRadius: 12, fontSize: 13, lineHeight: 1.5, whiteSpace: 'pre-wrap' }}>
+            {testResult}
+          </div>
         )}
 
         {pushSubscribed && (

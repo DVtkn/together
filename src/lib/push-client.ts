@@ -1,4 +1,11 @@
-export const VAPID_PUBLIC_KEY =
+// src/lib/push-client.ts
+'use client'
+
+interface NavigatorWithStandalone extends Navigator {
+  standalone?: boolean
+}
+
+const VAPID_PUBLIC_KEY =
   (typeof process !== 'undefined' && process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY) || null
 
 export function urlBase64ToUint8Array(base64String: string): Uint8Array {
@@ -12,32 +19,185 @@ export function urlBase64ToUint8Array(base64String: string): Uint8Array {
   return outputArray
 }
 
-export async function subscribeToPush(): Promise<boolean> {
-  if (!('serviceWorker' in navigator) || !('PushManager' in window)) return false
-  if (!VAPID_PUBLIC_KEY) return false
+export async function checkPushStatus(): Promise<{
+  supported: boolean
+  standalone: boolean
+  permission: NotificationPermission | 'no-api'
+  subscribed: boolean
+}> {
+  const supported =
+    'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window
+
+  const standalone =
+    window.matchMedia('(display-mode: standalone)').matches ||
+    (navigator as NavigatorWithStandalone).standalone === true
+
+  const permission: NotificationPermission | 'no-api' = supported
+    ? Notification.permission
+    : 'no-api'
+
+  let subscribed = false
+  if (supported) {
+    try {
+      const reg = await navigator.serviceWorker.ready
+      const sub = await reg.pushManager.getSubscription()
+      subscribed = !!sub
+    } catch {
+      subscribed = false
+    }
+  }
+
+  return { supported, standalone, permission, subscribed }
+}
+
+export interface EnablePushResult {
+  ok: boolean
+  message: string
+}
+
+export interface DisablePushResult {
+  ok: boolean
+  message: string
+}
+
+export interface PushStatus {
+  supported: boolean
+  standalone: boolean
+  permission: NotificationPermission | 'no-api'
+  subscribed: boolean
+}
+
+export async function enablePush(): Promise<EnablePushResult> {
+  // 1. Поддержка API
+  if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+    return { ok: false, message: '❌ Браузер не поддерживает Push API' }
+  }
+
+  // 2. Standalone-режим (критично для iOS)
+  const standalone =
+    window.matchMedia('(display-mode: standalone)').matches ||
+    (navigator as NavigatorWithStandalone).standalone === true
+  if (!standalone) {
+    return {
+      ok: false,
+      message: '❌ Добавьте Loop на экран \'Домой\' и откройте с иконки',
+    }
+  }
+
+  // 3. VAPID-ключ
+  if (!VAPID_PUBLIC_KEY) {
+    return { ok: false, message: '❌ NEXT_PUBLIC_VAPID_PUBLIC_KEY не задан' }
+  }
+
+  // 4. Разрешение (строго по тапу пользователя)
+  let permission: NotificationPermission
+  try {
+    permission = await Notification.requestPermission()
+  } catch {
+    return { ok: false, message: '❌ Ошибка запроса разрешения' }
+  }
+  if (permission !== 'granted') {
+    return {
+      ok: false,
+      message: '❌ Разрешение отклонено. Включите в Настройки iPhone → Уведомления → Loop',
+    }
+  }
+
+  // 5. Ждём готовности SW
+  let reg: ServiceWorkerRegistration
+  try {
+    reg = await navigator.serviceWorker.ready
+  } catch {
+    return { ok: false, message: '❌ Service Worker не активен' }
+  }
+
+  // 6. Удаляем старую подписку, если есть
+  try {
+    const oldSub = await reg.pushManager.getSubscription()
+    if (oldSub) await oldSub.unsubscribe()
+  } catch {}
+
+  // 7. Создаём новую подписку
+  let sub: PushSubscription
+  try {
+    const appServerKey = urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
+    sub = await reg.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: appServerKey as BufferSource,
+    })
+  } catch (err) {
+    console.error('subscribe failed', err)
+    return { ok: false, message: `❌ Ошибка подписки: ${(err as Error).message}` }
+  }
+
+  // 8. Отправляем на сервер
+  try {
+    const res = await fetch('/api/push/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(sub.toJSON()),
+    })
+    if (!res.ok) {
+      const text = await res.text()
+      return { ok: false, message: `❌ Сервер не сохранил: ${res.status} ${text.slice(0, 200)}` }
+    }
+  } catch (err) {
+    return { ok: false, message: `❌ Сеть: ${(err as Error).message}` }
+  }
+
+  return { ok: true, message: '✅ Push-уведомления включены' }
+}
+
+export async function disablePush(): Promise<DisablePushResult> {
+  try {
+    const reg = await navigator.serviceWorker.ready
+    const sub = await reg.pushManager.getSubscription()
+    if (sub) {
+      await sub.unsubscribe()
+      await fetch('/api/push/unsubscribe', { method: 'POST' })
+    }
+    return { ok: true, message: 'Отключено' }
+  } catch (err) {
+    return { ok: false, message: `❌ Ошибка: ${(err as Error).message}` }
+  }
+}
+
+export async function subscribeToPush(): Promise<EnablePushResult> {
+  if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+    return { ok: false, message: '❌ Браузер не поддерживает Push API' }
+  }
+  if (!VAPID_PUBLIC_KEY) {
+    return { ok: false, message: '❌ NEXT_PUBLIC_VAPID_PUBLIC_KEY не задан' }
+  }
 
   try {
     const registration = await navigator.serviceWorker.ready
     const existing = await registration.pushManager.getSubscription()
     const subscription = existing || (await registration.pushManager.subscribe({
       userVisibleOnly: true,
-      applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY).buffer as ArrayBuffer,
+      applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY) as BufferSource,
     }))
 
-    await fetch('/api/push/subscribe', {
+    const res = await fetch('/api/push/subscribe', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(subscription.toJSON()),
     })
-    return true
+    if (!res.ok) {
+      const text = await res.text()
+      return { ok: false, message: `❌ Сервер не сохранил: ${res.status} ${text.slice(0, 200)}` }
+    }
+    return { ok: true, message: '✅ Push-уведомления включены' }
   } catch (error) {
     console.error('Push subscribe failed:', error)
-    return false
+    return { ok: false, message: `❌ Ошибка: ${(error as Error).message}` }
   }
 }
 
-export async function unsubscribeFromPush(): Promise<boolean> {
-  if (!('serviceWorker' in navigator) || !('PushManager' in window)) return false
+export async function unsubscribeFromPush(): Promise<{ ok: boolean; message: string }> {
+  if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+    return { ok: false, message: '❌ Браузер не поддерживает Push API' }
+  }
   try {
     const registration = await navigator.serviceWorker.ready
     const subscription = await registration.pushManager.getSubscription()
@@ -50,10 +210,10 @@ export async function unsubscribeFromPush(): Promise<boolean> {
         body: JSON.stringify({ endpoint }),
       })
     }
-    return true
+    return { ok: true, message: 'Отключено' }
   } catch (error) {
     console.error('Push unsubscribe failed:', error)
-    return false
+    return { ok: false, message: `❌ Ошибка: ${(error as Error).message}` }
   }
 }
 
