@@ -40,11 +40,6 @@ export async function POST(
     const text = `${nameOf(ctx.user)} послал(а) сигнал ${signal.emoji} — «${signal.meaning}»`
     const replyHref = `/dashboard/ai?reply=${encodeURIComponent(signal.suggestedReply)}&signal=${encodeURIComponent(signal.emoji)}&meaning=${encodeURIComponent(signal.meaning)}&id=${signal.id}`
     await notify(ctx.partner.id, 'signal_received', text, replyHref)
-    sendPushToUserFireAndForget(ctx.partner.id, {
-      title: `${signal.emoji} Тихий сигнал`,
-      body: `${nameOf(ctx.user)}: ${signal.meaning}`,
-      url: replyHref,
-    })
   }
 
   return NextResponse.json({ ok: true, signal: { emoji: signal.emoji, meaning: signal.meaning, suggestedReply: signal.suggestedReply } })
