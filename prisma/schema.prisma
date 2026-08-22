@@ -218,7 +218,7 @@ model MoodEntry {
   createdAt DateTime @default(now())
   User      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([userId])
+  @@index([userId, createdAt])
   @@index([coupleId])
   @@index([createdAt])
 }
