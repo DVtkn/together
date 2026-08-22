@@ -29,7 +29,7 @@ const Footer = () => {
 
         <div>
           <h4>Контакты</h4>
-          <a href="https://t.me/together_app" target="_blank" rel="noopener noreferrer">
+          <a href="https://t.me/loop" target="_blank" rel="noopener noreferrer">
             Telegram
           </a>
         </div>
