@@ -44,7 +44,7 @@ export async function POST() {
     const body = JSON.stringify({
       title: 'Loop 🔔',
       body: 'Тест-уведомление работает',
-      url: '/dashboard/ai?mode=together',
+      url: '/dashboard/chat',
       tag: 'test',
     })
 

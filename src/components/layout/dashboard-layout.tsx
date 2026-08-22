@@ -1,5 +1,3 @@
-'use client'
-
 import { ReactNode, useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
@@ -11,13 +9,8 @@ import { OnboardingTour } from '@/components/onboarding-tour'
 import { MoodModal } from '@/components/mood-modal'
 import { toast } from '@/lib/toast'
 import { Topbar } from './topbar'
-
-const NAV_ITEMS = [
-  { key: 'home', href: '/dashboard', label: 'Дом', icon: '🏠' },
-  { key: 'couple', href: '/dashboard/couple', label: 'Пара', icon: '💞' },
-  { key: 'date', href: '/dashboard/date', label: 'Свидание', icon: '📍' },
-  { key: 'ai', href: '/dashboard/ai', label: 'Психолог', icon: '🦉' },
-]
+import { TabBar } from '@/components/navigation/tab-bar'
+import { TopNav } from '@/components/navigation/top-nav'
 
 const GROUPS: Record<string, string[]> = {
   '/dashboard/couple': ['/dashboard/couple', '/dashboard/assessments'],
@@ -42,7 +35,7 @@ interface DashboardLayoutProps {
   user?: {
     name: string | null
     email: string
-    image?: string | null
+    image?: null
   }
   couple?: {
     id: string
@@ -57,6 +50,11 @@ function initials(name: string | null | undefined): string {
   const parts = name.trim().split(/\s+/)
   if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase()
   return parts[0]?.slice(0, 2).toUpperCase() || 'Д'
+}
+
+function getNavMode(pathname: string): 'large' | 'inline' {
+  if (pathname === '/dashboard' || pathname === '/dashboard/chat') return 'large'
+  return 'inline'
 }
 
 export function DashboardLayout({ children, user, couple }: DashboardLayoutProps) {
@@ -99,23 +97,22 @@ export function DashboardLayout({ children, user, couple }: DashboardLayoutProps
   }
   const myCouple = swrCouple ?? couple ?? null
 
-  const isActive = (href: string) => {
-    if (pathname === href) return true
-    if (href !== '/dashboard' && pathname.startsWith(href + '/')) return true
-    const group = GROUPS[href]
-    return !!group && group.includes(pathname)
-  }
-  const partnerName = myCouple
-    ? myCouple.partnerA.name !== me.name
-      ? myCouple.partnerA.name
-      : myCouple.partnerB.name
-    : null
+  const navMode = getNavMode(pathname)
+  const backHandler = navMode === 'inline'
+    ? () => router.replace('/dashboard')
+    : undefined
 
   return (
     <div className="app">
       <div className="bg" aria-hidden="true"><i /><i /><i /><i /></div>
 
       <Topbar user={me} couple={myCouple} />
+
+      <TopNav
+        title={navMode === 'large' ? 'Loop' : 'Loop'}
+        mode={navMode}
+        onBack={backHandler}
+      />
 
       <div className="sc on">
         <div className="wrap">{children}</div>
@@ -125,19 +122,7 @@ export function DashboardLayout({ children, user, couple }: DashboardLayoutProps
         {toasts.map((t) => <div key={t.id} className="toast">{t.text}</div>)}
       </div>
 
-      <nav className="tb" aria-label="Основная навигация">
-        {NAV_ITEMS.map((item) => (
-          <Link
-            key={item.key}
-            href={item.href}
-            className={cn('tbi', isActive(item.href) && 'on')}
-            aria-current={isActive(item.href) ? 'page' : undefined}
-          >
-            <i>{item.icon}</i>
-            <b>{item.label}</b>
-          </Link>
-        ))}
-      </nav>
+      <TabBar />
 
       {moodOpen && <MoodModal onClose={() => setMoodOpen(false)} onSaved={setMyMood} />}
       <OnboardingTour />
